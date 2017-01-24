@@ -22,7 +22,7 @@ class Common:
         """
         list_of_id = []
         for record in table:
-            list_of_id.append(record[0])
+            list_of_id.append(record.id)
 
         generated = ''
 
