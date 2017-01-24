@@ -1,5 +1,6 @@
 import csv
 
+
 class Common:
 
     @staticmethod
@@ -19,7 +20,7 @@ class Common:
         """
         list_of_id = []
         for record in table:
-            list_of_id.append(record[0])
+            list_of_id.append(record.id)
 
         generated = ''
 
@@ -78,7 +79,7 @@ class Common:
                 f.write(';'.join(item) + '\n')
 
 
-lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
-
-Common.save_file('test.csv', lista)
-print(Common.read_file('test.csv'))
+# lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
+#
+# Common.save_file('test.csv', lista)
+# print(Common.read_file('test.csv'))

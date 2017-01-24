@@ -20,7 +20,14 @@ class Attendance:
 
     @classmethod
     def create_attendance_list(cls):
-        cls.attendance_list = Common.read_file('csv/attendance.csv')
+        student_list = Common.read_file('csv/attendance.csv')
+        for student in student_list:
+            print(student[0])
+            print(student[1])
+            print(student[2])
+            # cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
+            # cls.attendance_list = Common.read_file('csv/attendance.csv')
 
 
-# Attendance.
+Attendance.create_attendance_list()
+# print(Attendance.attendance_list)
