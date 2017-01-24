@@ -1,1 +1,4 @@
-id;name;last name;mail;telephone;attendance_list;assignment_list
+id;name;last name;mail;telephone
+1;kamil;mika;ja@o2.pl;535555555
+2;Sebastian;Kurant;sebastian@gmail.com;555565656
+3;Matuesz;Siga;oo@op.pl;111111111

@@ -1,4 +1,5 @@
 from user import *
+from common import *
 
 class Student(User):
     """
@@ -8,23 +9,17 @@ class Student(User):
 
 
 
-    def __init__(self, name, last_name, mail, telephone, attendance_list = None, assignment_list = None):
+    def __init__(self, id, name, last_name, mail, telephone):
+        self.id = id
         self.name = name
         self.last_name = last_name
         self.mail = mail
         self.telephone = telephone
-        if attendance_list == None:
-            self.attendance_list = []
-        else:
-            self.attendance_list = attendance_list
-        if assignment_list == None:
-            self.assignment_list = []
-        else:
-            self.assignment_list =assignment_list
 
 
 
-    def edit_student(self, name_of_attribute, new_value, data = None):
+
+    def edit_student(self, name_of_attribute, new_value):
         if name_of_attribute == 'Name':
             self.name = new_value
         elif name_of_attribute == 'Last Name':
@@ -33,23 +28,35 @@ class Student(User):
             self.mail = new_value
         elif name_of_attribute == 'telephone':
             self.telephone = new_value
-        elif name_of_attribute == 'attendance':
-            self.attendance_list = self.change_attendance(self.attendance_list, data, new_value)
-
-
-
-    def change_attendance(self, attandance_list, data, new_value):
-        for item in attandance_list:
-            if item[0] == data:
-                item[1] = new_value
-        return attandance_list
-
 
     @classmethod
-    def add_student(cls):
-        pass
+    def add_student(cls, name, last_name, mail, telephone):
+        new_id = 5
+        new_student = Student(new_id ,name, last_name, mail, telephone)
+        Student.students_list.append(new_student)
 
     @classmethod
-    def remove_student(cls):
+    def remove_student(cls, id):
+        for student in Student.students_list:
+            if student.id == id:
+                Student.students_list.remove(student)
 
-        pass
+    @classmethod
+    def add_attendance(cls, attandance_list):
+        i = 0
+        for student in Student.students_list:
+            student.attendance_list.append(attandance_list[i])
+
+    @classmethod
+    def create_student_list(cls):
+        list_from_csv = Common.read_file('csv/students.csv')
+        for person in list_from_csv:
+            Student.students_list.append(Student(person[0], person[1], person[2], person[3], person[4]))
+
+    def __str__(self):
+        return 'ID: {} Name: {} Last Name: {}'.format(self.id, self.name, self.last_name)
+
+
+
+
+
