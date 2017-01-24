@@ -174,7 +174,7 @@ class Ui:
 # Ui.print_head('To jest header', 'header') #displaying header of site
 # Ui.print_head('To jest warning', 'warning') #displaying header of site
 
-Ui.print_text("Simple text to print \n\n")
-
-inputs = ['First input', 'Second input', 'Third input']
-print(Ui.get_inputs(inputs))
+# Ui.print_text("Simple text to print \n\n")
+#
+# inputs = ['First input', 'Second input', 'Third input']
+# print(Ui.get_inputs(inputs))
