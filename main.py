@@ -1,4 +1,5 @@
 from menu import *
 from ui import *
 
-def main()
+def main():
+    pass
