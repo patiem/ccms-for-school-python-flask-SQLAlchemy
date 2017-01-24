@@ -9,7 +9,7 @@ class User:
     @classmethod
     def login(cls, login, password):
 
-        
+
         Logged = True
 
         Logged = False
