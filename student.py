@@ -10,6 +10,14 @@ class Student(User):
 
 
     def __init__(self, id, name, last_name, mail, telephone):
+        """
+        Create Student object
+        :param id: string (id of student)
+        :param name: string (name of student)
+        :param last_name: string (last name of student)
+        :param mail: string  (mail of student)
+        :param telephone: string (telephone number)
+        """
         self.id = id
         self.name = name
         self.last_name = last_name
@@ -20,6 +28,12 @@ class Student(User):
 
 
     def edit_student(self, name_of_attribute, new_value):
+        """
+        Edit student passed attribute
+        :param name_of_attribute: string (what attribute should be edit)
+        :param new_value: string (new value for attribute)
+        :return: None
+        """
         if name_of_attribute == 'Name':
             self.name = new_value
         elif name_of_attribute == 'Last Name':
@@ -31,32 +45,45 @@ class Student(User):
 
     @classmethod
     def add_student(cls, name, last_name, mail, telephone):
-        new_id = 5
+        """
+        Add new student object to list
+        :param name: string (name of student)
+        :param last_name: string (last name)
+        :param mail: string (mail of student)
+        :param telephone: string (telephone to student)
+        :return: None
+        """
+        new_id = Common.generate_id(Student.students_list)
         new_student = Student(new_id ,name, last_name, mail, telephone)
         Student.students_list.append(new_student)
 
     @classmethod
     def remove_student(cls, id):
+        """
+        Remove student from list of students
+        :param id: string ( id of student to remove)
+        :return: None
+        """
         for student in Student.students_list:
             if student.id == id:
                 Student.students_list.remove(student)
 
-    @classmethod
-    def add_attendance(cls, attandance_list):
-        i = 0
-        for student in Student.students_list:
-            student.attendance_list.append(attandance_list[i])
 
     @classmethod
     def create_student_list(cls):
+        """
+        Create list containing object of students
+        :return: None
+        """
         list_from_csv = Common.read_file('csv/students.csv')
         for person in list_from_csv:
             Student.students_list.append(Student(person[0], person[1], person[2], person[3], person[4]))
 
     def __str__(self):
+        """
+        :return: String representation for object
+        """
         return 'ID: {} Name: {} Last Name: {}'.format(self.id, self.name, self.last_name)
-
-
 
 
 

@@ -1,5 +1,6 @@
 import csv
 import re
+import random
 
 
 class Common:
@@ -13,8 +14,6 @@ class Common:
 
     @staticmethod
     def generate_id(table):
-        import random
-
         """
         Generates random and unique string. Used for id/key generation.
         Args:
@@ -104,24 +103,54 @@ class Common:
         Argument: str
         Return: Bool
         """
-        pattern = r'^\s*(\+?48)*\s*((\d{3})[ -]?){3}\s*$'
+        pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
         if re.search(pattern, phone):
             print(phone, ' ok')
             return True
         print(phone, ' No')
         return False
 
+    @staticmethod
+    def is_name_correct(name):
+        """
+        Validates if name is correct - can have more than one part with space or '-' between.
+        Argument: str
+        Return: Bool
+        """
+        pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
+        if re.search(pattern, name):
+            print(name, ' ok')
+            return True
+        print(name, ' No')
+        return False
+
+    @staticmethod
+    def does_file_exist(file):
+        """
+        Validates if file exists.
+        Argument: str
+        Return: Bool
+        """
+        try:
+            open(file, 'r')
+            return True
+        except FileNotFoundError:
+            return False
 
 
-# lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
-#
-# Common.save_file('test.csv', lista)
-# print(Common.read_file('test.csv'))
-# emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',
-#           '22.poo@gmail.com']
-# for email in emails:
-#     Common.is_email_correct(email)
-# phones = ['123123123', '123 123 123', '123-123-123', ' 123123123', '123 123123', '123-123-123 ',
-#           '1231231231', 'a23 123 123', '12#-123-123', '+48123123123', '48 123 123 123', ' + 48 123-123-123']
-# for number in phones:
-#     Common.is_phone_correct(number)
+"""lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
+
+Common.save_file('test.csv', lista)
+print(Common.read_file('test.csv'))
+emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',
+          '22.poo@gmail.com']
+for email in emails:
+    Common.is_email_correct(email)
+phones = ['123123123', '123 123 123', '123-123-123', ' 123123123', '123 123123', '123-123-123 ',
+          '1231231231', 'a23 123 123', '12#-123-123', '+48123123123', '48 123 123 123', ' + 48 123-123-123']
+for number in phones:
+    Common.is_phone_correct(number)
+names = ['Aaa', 'AAaa', 'Aą Aa', 'Aa-Aa', 'A2aa', 'Ćwiek']
+for name in names:
+    Common.is_name_correct(name)
+print(Common.does_file_exist('csv/students.csv'))"""
