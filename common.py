@@ -28,7 +28,7 @@ class Common:
         generated = ''
 
         special_char_index = list(range(33, 48)) + list(range(58, 59)) + list(range(60, 65)) \
-                             + list(range(91, 97)) + list(range(124, 127))
+                                                 + list(range(91, 97)) + list(range(124, 127))
         start = True
         max_len_id = 3
         while start:
@@ -53,7 +53,6 @@ class Common:
                 start = False
 
         return generated
-
 
     @staticmethod
     def read_file(file):
