@@ -117,3 +117,11 @@ class Common:
 #
 # Common.save_file('test.csv', lista)
 # print(Common.read_file('test.csv'))
+# emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',
+#           '22.poo@gmail.com']
+# for email in emails:
+#     Common.is_email_correct(email)
+# phones = ['123123123', '123 123 123', '123-123-123', ' 123123123', '123 123123', '123-123-123 ',
+#           '1231231231', 'a23 123 123', '12#-123-123', '+48123123123', '48 123 123 123', ' + 48 123-123-123']
+# for number in phones:
+#     Common.is_phone_correct(number)
