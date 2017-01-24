@@ -1,20 +1,20 @@
 from user import *
 
-class Mentor(User):
-    
+class Employee(User):
+
     def __init__(self, name, last_name, mail, telephone):
         self.name = name
         self.last_name = last_name
         self.main = mail
         self.telephone = telephone
 
-    def edit_mentor(self):
+    def edit_manager(self):
         pass
 
     @classmethod
-    def add_mentor(cls):
+    def add_manager(cls):
         pass
 
     @classmethod
-    def remove_mentor(cls):
+    def remove_manager(cls):
         pass
