@@ -5,8 +5,6 @@ from ui import *
 
 class User:
 
-    _users_csv = 'csv/users.csv'  # database with users
-
     def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
@@ -60,13 +58,13 @@ class User:
             raise ValueError('Wrong e-mail')
 
     @classmethod
-    def create_object_list(cls, file, object_list):
+    def create_object_list(cls, object_list):
         """
         Create list containing objects
-        :param file : string (path to file with data)
         :param object_list: list (class list)
         :return: None
         """
+        file = cls.file
         list_from_csv = Common.read_file(file)
         for person in list_from_csv:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4]))

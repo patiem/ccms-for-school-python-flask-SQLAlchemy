@@ -6,6 +6,7 @@ class Student(User):
     Class represent student
     """
     students_list = []
+    file = 'csv/students.csv'
 
     def __init__(self, idx, name, last_name, mail, telephone):
         """

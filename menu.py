@@ -1,15 +1,17 @@
 from ui import Ui
 from user import User
-from manager import *
-from student import *
+from manager import Manager
+from student import Student
 from mentor import Mentor
+from employee import Employee
 
 
 class Menu:
 
     @staticmethod
     def logged_as(logged_user):
-        Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+        #Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+        pass
 
     # @staticmethod
     # def print_menu():
@@ -23,6 +25,11 @@ class Menu:
     def run():
 
         logged_user = User.login()
+
+        Student.create_object_list(Student.pass_list())
+        Mentor.create_object_list(Mentor.pass_list())
+        Employee.create_object_list(Employee.pass_list())
+        Manager.create_object_list(Manager.pass_list())
 
         if logged_user[3] == 'student':
             StudentMenu.print_menu()
@@ -107,8 +114,6 @@ class ManagerMenu(Menu):
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
 
-    @staticmethod
-    def
 
 Student.create_object_list('csv/students.csv', Student.students_list)
 ManagerMenu.print_menu(Student.students_list[0])

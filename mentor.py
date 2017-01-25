@@ -3,6 +3,7 @@ from common import *
 
 class Mentor(User):
     mentors_list = []
+    file = 'csv/mentors.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone):
         """
