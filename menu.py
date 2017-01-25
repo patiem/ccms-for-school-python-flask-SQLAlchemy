@@ -9,7 +9,6 @@ from common import Common
 
 class Menu:
 
-
     @staticmethod
     def add_user(object_list):
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
@@ -26,10 +25,6 @@ class Menu:
         Ui.print_table(print_list,
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
-
-    @staticmethod
-    def show_all_students():
-        pass
 
     @staticmethod
     def choose_option(choice):
@@ -87,19 +82,21 @@ class StudentMenu(Menu):
         Ui.print_head('Student menu:', 'header')
 
         options = '\t1: Add submit assignment\n' \
-                  '\t2: View my grades'
+                  '\t2: View my grades' \
+                  '\t0: Exit program'
 
-        user_choice = Ui.get_menu(options, 1, 2)
+        user_choice = Ui.get_menu(options, 0, 2)
 
     @staticmethod
     def choose_option(choice):
         if choice == '1':
+            # Add submit
             pass
-
-    @staticmethod
-    def add_student():
-        pass
-
+        elif choice == '2':
+            # View grades
+            pass
+        elif choice == '0':
+            exit()
 
 class MentorMenu(Menu):
 
@@ -115,14 +112,36 @@ class MentorMenu(Menu):
                   '\t4: Check attendance of students\n' \
                   '\t5: Add student\n' \
                   '\t6: Remove student\n' \
-                  '\t7: Edit student\'s data'
+                  '\t7: Edit student\'s data' \
+                  '\t0: Exit program'
 
-        user_choice = Ui.get_menu(options, 1, 7)
+        user_choice = Ui.get_menu(options, 0, 7)
 
     @staticmethod
     def choose_option(choice):
         if choice == '1':
+            MentorMenu.print_user(Student.pass_list())
+
+        elif choice == '2':
             pass
+
+        elif choice == '3':
+            pass
+
+        elif choice == '4':
+            pass
+
+        elif choice == '5':
+            MentorMenu.add_user(Student.pass_list())
+
+        elif choice == '6':
+            pass
+
+        elif choice == '7':
+            pass
+
+        elif choice == '0':
+            exit()
 
 
 class EmployeeMenu(Menu):
@@ -133,19 +152,18 @@ class EmployeeMenu(Menu):
         Ui.print_head('Mentor menu:', 'header')
 
         options = '\t1: Show students\n' \
-                  '\t2: Add assignment\n' \
-                  '\t3: Grade assignment\n' \
-                  '\t4: Check attendance of students\n' \
-                  '\t5: Add student\n' \
-                  '\t6: Remove student\n' \
-                  '\t7: Edit student\'s data'
+                  '\t0: Exit program'
 
-        user_choice = Ui.get_menu(options, 1, 7)
+        user_choice = Ui.get_menu(options, 0, 1)
 
     @staticmethod
     def choose_option(choice):
+
         if choice == '1':
-            pass
+
+            EmployeeMenu.print_user(Student.pass_list())
+        elif choice == '0':
+            exit()
 
 
 class ManagerMenu(Menu):
