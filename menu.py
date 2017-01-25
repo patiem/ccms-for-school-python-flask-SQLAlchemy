@@ -4,14 +4,18 @@ from ui import Ui
 class Menu:
     pass
 
-class StudentMenu:
+
+class StudentMenu(Menu):
     pass
 
-class MentorMenu:
+
+class MentorMenu(Menu):
     pass
 
-class EmployeeMenu:
+
+class EmployeeMenu(Menu):
     pass
 
-class ManagerMenu:
+
+class ManagerMenu(Menu):
     pass
