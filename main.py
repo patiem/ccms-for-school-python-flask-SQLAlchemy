@@ -1,5 +1,10 @@
 from menu import *
 from ui import *
+from user import *
 
 def main():
-    pass
+
+    print(User.login())
+
+if __name__ == '__main__':
+    main()
