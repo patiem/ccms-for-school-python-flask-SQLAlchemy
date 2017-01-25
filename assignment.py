@@ -1,5 +1,5 @@
 from common import *
-
+import datetime
 
 class Assignment:
     """
@@ -22,7 +22,7 @@ class Assignment:
         Create list containing object of assignments
         :return: None
         """
-        list_from_csv = Common.read_file('csv/assigments.csv')
+        list_from_csv = Common.read_file('csv/assignments.csv')
         for item in list_from_csv:
             idx = item[0]
             title = item[1]
@@ -31,7 +31,7 @@ class Assignment:
                 start_date = Common.make_corect_date(item[3])
                 if Common.is_date_correct(item[4]):
                     end_date = Common.make_corect_date(item[4])
-                    if Common.does_file_exist(item[5]):
+                    if Common.does_file_exist('csv/assignments_description/'+ item[5]):
                         file_name = item[5]
                         cls.assigments_list.append(cls(idx, title, author, start_date, end_date, file_name))
 
@@ -49,3 +49,37 @@ class Assignment:
         new_id = Common.generate_id(cls.assigments_list)
         new_assignment = cls(new_id, title, author, start_date, end_date, file_name)
         cls.assigments_list.append(new_assignment)
+
+    @classmethod
+    def create_list_to_save(cls):
+        list_to_save = []
+        for assigment in cls.assigments_list:
+            list_to_save.append([assigment.idx, assigment.title, assigment.author,
+                                assigment.start_date, assigment.end_date, assigment.file_name])
+        return list_to_save
+
+    @classmethod
+    def pass_assign_for_mentor(cls):
+        return cls.assigments_list
+
+    @classmethod
+    def pass_assign_for_student(cls):
+        today = datetime.date.today()
+        assignments_for_students =[]
+        for assignment in cls.assigments_list:
+            if assignment.start_date <= today:
+                if assignment.end_date >= today:
+                    assignments_for_students.append(assignment)
+        return assignments_for_students
+
+    def __str__(self):
+        return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
+
+"""Assignment.create_assignment_list()
+print(Assignment.assigments_list)
+#Assignment.add_assignment('dupa', 'Gargamel', '1234.05.23', '1234.05.30', 'ass_3.txt')
+#print(Assignment.assigments_list)
+Common.save_file('csv/assignments.csv', Assignment.create_list_to_save())
+lista = Assignment.pass_assign_for_student()
+for item in lista:
+    print(item)"""
