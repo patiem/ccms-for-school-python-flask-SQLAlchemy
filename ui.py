@@ -171,8 +171,7 @@ class Ui:
     def get_menu(menu, menu_from, menu_to):
 
         while True:
-
-            #os.system('clear')
+            # os.system('clear')
             print(menu)
             try:
 

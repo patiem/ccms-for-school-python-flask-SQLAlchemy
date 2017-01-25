@@ -1,11 +1,42 @@
 from ui import Ui
+from user import User
 from manager import *
 from student import *
 from mentor import Mentor
 
+
 class Menu:
-    #logged_user = User.login()
-    pass
+
+    @staticmethod
+    def logged_as(logged_user):
+        Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+
+    # @staticmethod
+    # def print_menu():
+    #     raise NotImplementedError()
+
+    @staticmethod
+    def print_menu():
+        raise NotImplementedError()
+
+    @staticmethod
+    def run():
+
+        logged_user = User.login()
+
+        if logged_user[3] == 'student':
+            StudentMenu.print_menu()
+
+        if logged_user[3] == 'mentor':
+            MentorMenu.print_menu()
+
+        if logged_user[3] == 'manager':
+            EmployeeMenu.print_menu()
+
+        if logged_user[3] == 'employee':
+            ManagerMenu.print_menu()
+
+
 
 class StudentMenu(Menu):
     pass
