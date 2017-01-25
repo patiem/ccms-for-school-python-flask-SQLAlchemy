@@ -5,8 +5,6 @@ from ui import *
 
 class User:
 
-    _users_csv = 'csv/users.csv'  # database with users
-
     def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
@@ -22,21 +20,31 @@ class User:
         self.mail = mail
         self.telephone = telephone
 
-    def edit_user(self, name_of_attribute, new_value):
+    def change_value(self, name_of_attribute, new_value):
+        if name_of_attribute == 'name':
+            self.name = new_value
+        elif name_of_attribute == 'last Name':
+            self.last_name = new_value
+        elif name_of_attribute == 'mail':
+            self.mail = new_value
+        elif name_of_attribute == 'telephone':
+            self.telephone = new_value
+
+    @staticmethod
+    def edit_user(mail, object_list, name_of_attribute, new_value):
         """
         Edit user passed attribute
         :param name_of_attribute: string (what attribute should be edit)
         :param new_value: string (new value for attribute)
         :return: None
         """
-        if name_of_attribute == 'Name':
-            self.name = new_value
-        elif name_of_attribute == 'Last Name':
-            self.last_name = new_value
-        elif name_of_attribute == 'mail':
-            self.mail = new_value
-        elif name_of_attribute == 'telephone':
-            self.telephone = new_value
+        for person in object_list:
+            if person.mail == mail:
+                person.change_value(name_of_attribute, new_value)
+
+
+
+
 
     @classmethod
     def add_user(cls, name, last_name, mail, telephone, object_list):
@@ -60,28 +68,29 @@ class User:
             raise ValueError('Wrong e-mail')
 
     @classmethod
-    def create_object_list(cls, file, object_list):
+    def create_object_list(cls, object_list):
         """
         Create list containing objects
-        :param file : string (path to file with data)
         :param object_list: list (class list)
         :return: None
         """
+        file = cls.file
         list_from_csv = Common.read_file(file)
         for person in list_from_csv:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4]))
 
     @classmethod
-    def remove_object(cls, idx, object_list):
+    def remove_object(cls, mail):
         """
         Remove object from list
         :param idx: string ( id of student to remove)
-        :return: None
+        :return: None or True if object removed
         """
+        object_list = cls.object_list
         for person in object_list:
-            if person.idx == idx:
+            if person.mail == mail:
                 object_list.remove(person)
-                break
+                return True
 
     @classmethod
     def create_list_to_save(cls,object_list):
@@ -106,6 +115,10 @@ class User:
 
             if user[1] == login and user[2] == str(password):
                 return user
+
+    @classmethod
+    def pass_list(cls):
+        return cls.object_list
 
     @staticmethod
     def login():

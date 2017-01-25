@@ -2,7 +2,8 @@ from user import *
 from common import *
 
 class Mentor(User):
-    mentors_list = []
+    object_list = []
+    file = 'csv/mentors.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone):
         """
@@ -14,6 +15,3 @@ class Mentor(User):
         """
         User.__init__(self, idx, name, last_name, mail, telephone)
 
-    @classmethod
-    def pass_list(cls):
-        return cls.mentors_list
