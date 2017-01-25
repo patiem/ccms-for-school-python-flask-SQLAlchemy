@@ -88,6 +88,8 @@ class User:
         """
         object_list = cls.object_list
         for person in object_list:
+            print(person.mail)
+            print(mail)
             if person.mail == mail:
                 object_list.remove(person)
                 return True

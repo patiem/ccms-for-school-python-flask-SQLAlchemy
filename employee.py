@@ -3,7 +3,7 @@ from common import *
 
 class Employee(User):
     object_list = []
-    file = 'csv/employess.csv'
+    file = 'csv/employees.csv'
 
     def __init__(self, idx, name, last_name, mail, telephone):
         """
