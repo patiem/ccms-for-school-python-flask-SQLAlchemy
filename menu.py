@@ -5,7 +5,8 @@ from student import Student
 from mentor import Mentor
 from employee import Employee
 from common import Common
-
+from assignment import Assignment
+from submission import Submission
 
 class Menu:
 
@@ -81,22 +82,52 @@ class StudentMenu(Menu):
         Menu.logged_as(user_object)
         Ui.print_head('Student menu:', 'header')
 
-        options = '\t1: Add submit assignment\n' \
-                  '\t2: View my grades' \
+        options = '\t1: Show assignment list\n' \
+                  '\t2: Add submit assignment\n' \
+                  '\t3: View my grades\n' \
                   '\t0: Exit program'
 
-        user_choice = Ui.get_menu(options, 0, 2)
+        user_choice = Ui.get_menu(options, 0, 3)
 
-    @staticmethod
-    def choose_option(choice):
+    @classmethod
+    def choose_option(cls, choice, logged_user):
         if choice == '1':
-            # Add submit
+            cls.get_assignment_list_with_grades(logged_user)
             pass
         elif choice == '2':
             # View grades
             pass
+        elif choice == '3':
+            # View grades
+            pass
         elif choice == '0':
             exit()
+
+    @staticmethod
+    def get_assignment_list_with_grades(logged_user):
+        """
+        Makes list with assignments visible for student with notation if assignment was submitted
+        and how it was graded.
+        :param logged_user: (user object)
+        :return:
+        """
+        title_list = ['title', 'author', 'start date', 'end date', 'submitted', 'grade']
+        assignments_list= Assignment.pass_assign_for_student()
+        assignments_list_to_print =[]
+        for assignment in assignments_list:
+            new_line = [assignment.title, assignment.author, assignment.start_date, assignment.end_date]
+            submission = Submission.find_submission(logged_user, assignment)
+            if submission:
+                new_line.append('submitted')
+                if submission.grade:
+                    new_line.append(submission.grade)
+                else:
+                    new_line.append('None')
+            else:
+                new_line.append('not submitted')
+                new_line.append('None')
+            assignments_list_to_print.append(new_line)
+        Ui.print_table(assignments_list_to_print, title_list)
 
 class MentorMenu(Menu):
 
