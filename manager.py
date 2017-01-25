@@ -2,7 +2,7 @@ from user import *
 from common import *
 
 class Manager(User):
-    managers_list = []
+    object_list = []
     file = 'csv/managers.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone):
@@ -16,6 +16,4 @@ class Manager(User):
         """
         User.__init__(self, idx, name, last_name, mail, telephone)
 
-    @classmethod
-    def pass_list(cls):
-        return cls.managers_list
+

@@ -114,6 +114,10 @@ class ManagerMenu(Menu):
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
 
-
-Student.create_object_list('csv/students.csv', Student.students_list)
-ManagerMenu.print_menu(Student.students_list[0])
+    @staticmethod
+    def remove_mentor():
+        mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
+        if Mentor.remove_object(mail):
+            Ui.print_text('Mentor removed')
+        else:
+            Ui.print_text('No mentor of passed mail')
