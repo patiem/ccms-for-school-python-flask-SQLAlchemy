@@ -9,8 +9,39 @@ class Common:
     """
 
     @staticmethod
-    def get_by_id():
-        pass
+    def get_by_id(index, file=None):
+        """
+        Returns list
+        :param index: string (user_id/attendance_id/...)
+        :param file: string (file path - 'csv/students.csv')
+        :return: list (row from file)
+        """
+        files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/manager.csv']
+
+        if file:
+            row = Common.get_row(index, file)
+            if row:
+                return row
+
+        for item in files_list:
+            row = Common.get_row(index, item)
+            if row:
+                return row
+        raise IndexError("There is no such index")
+
+    @staticmethod
+    def get_row(index, filename):
+        """
+        Helper for get_by_id()
+        :param index: string
+        :param filename: string
+        :return: list or bool (row from file or False)
+        """
+        array = Common.read_file(filename)
+        for row in array:
+            if row[0] == index:
+                return row
+        return False
 
     @staticmethod
     def generate_id(table):
@@ -137,7 +168,7 @@ class Common:
             return False
 
 
-"""lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
+"""lista = [['a', '1', 11], ['b', '2', 22]kH35Ju#&, ['c', '3', 33], ['d', '4', 44]]
 
 Common.save_file('test.csv', lista)
 print(Common.read_file('test.csv'))
@@ -153,3 +184,5 @@ names = ['Aaa', 'AAaa', 'Aą Aa', 'Aa-Aa', 'A2aa', 'Ćwiek']
 for name in names:
     Common.is_name_correct(name)
 print(Common.does_file_exist('csv/students.csv'))"""
+
+print(Common.get_by_id('20', 'csv/attendance.csv'))
