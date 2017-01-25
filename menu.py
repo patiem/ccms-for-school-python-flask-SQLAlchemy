@@ -4,6 +4,7 @@ from manager import Manager
 from student import Student
 from mentor import Mentor
 from employee import Employee
+from common import Common
 
 
 class Menu:
@@ -47,6 +48,7 @@ class Menu:
 
     @staticmethod
     def find_user(logged_user):
+        pass
 
 
 
@@ -142,19 +144,21 @@ class ManagerMenu(Menu):
     def add_student():
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
         user_data = Ui.get_inputs(label_list)
-        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Student.pass_list())
+        password = User.encode('1')
+        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, Student.pass_list())
 
     @staticmethod
     def add_mentor():
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
         user_data = Ui.get_inputs(label_list)
-        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Mentor.pass_list())
+        password = User.encode('1')
+        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, Mentor.pass_list())
 
     @staticmethod
     def print_students():
         Ui.clear()
         Ui.print_table(User.create_list_to_save(Student.pass_list()),
-                       ['id', 'name', 'last name', 'mail', 'telephone'])
+                       ['id', 'name', 'last name', 'mail', 'telephone', 'password'])
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
@@ -173,9 +177,9 @@ class ManagerMenu(Menu):
             Ui.print_text('No mentor of passed mail')
             
 
-# Student.create_object_list(Student.pass_list())
-# Mentor.create_object_list(Mentor.pass_list())
-# Employee.create_object_list(Employee.pass_list())
-# Manager.create_object_list(Manager.pass_list())
-#
-# ManagerMenu.print_menu(Student.object_list[0])
+Student.create_object_list(Student.pass_list())
+Mentor.create_object_list(Mentor.pass_list())
+Employee.create_object_list(Employee.pass_list())
+Manager.create_object_list(Manager.pass_list())
+
+ManagerMenu.print_menu(Student.object_list[0])

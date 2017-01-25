@@ -5,7 +5,7 @@ class Manager(User):
     object_list = []
     file = 'csv/managers.csv'
     
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create Manager object
         :param idx: string (id of student)
@@ -14,6 +14,6 @@ class Manager(User):
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone)
+        User.__init__(self, idx, name, last_name, mail, telephone, password)
 
 

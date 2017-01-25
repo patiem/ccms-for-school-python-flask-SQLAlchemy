@@ -5,7 +5,7 @@ from ui import *
 
 class User:
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create object
         :param idx: string (id of student)
@@ -19,6 +19,7 @@ class User:
         self.last_name = last_name
         self.mail = mail
         self.telephone = telephone
+        self.password = password
 
     def change_value(self, name_of_attribute, new_value):
         if name_of_attribute == 'name':
@@ -47,7 +48,7 @@ class User:
 
 
     @classmethod
-    def add_user(cls, name, last_name, mail, telephone, object_list):
+    def add_user(cls, name, last_name, mail, telephone, password, object_list):
         """
         Add new user object to list
         :param name: string (name of student)
@@ -60,7 +61,8 @@ class User:
         if Common.is_email_correct(mail):
             if Common.is_phone_correct(telephone):
                 new_id = Common.generate_id(object_list)
-                new_student = cls(new_id, name, last_name, mail, telephone)
+                password = User.encode('1')
+                new_student = cls(new_id, name, last_name, mail, telephone, password)
                 object_list.append(new_student)
             else:
                 raise ValueError('Wrong number')
@@ -77,7 +79,7 @@ class User:
         file = cls.file
         list_from_csv = Common.read_file(file)
         for person in list_from_csv:
-            object_list.append(cls(person[0], person[1], person[2], person[3], person[4]))
+            object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
 
     @classmethod
     def remove_object(cls, mail):
@@ -88,8 +90,6 @@ class User:
         """
         object_list = cls.object_list
         for person in object_list:
-            print(person.mail)
-            print(mail)
             if person.mail == mail:
                 object_list.remove(person)
                 return True
@@ -98,7 +98,7 @@ class User:
     def create_list_to_save(cls,object_list):
         return_list = []
         for person in object_list:
-            person_list = [person.idx, person.name, person.last_name, person.mail, person.telephone]
+            person_list = [person.idx, person.name, person.last_name, person.mail, person.telephone, person.password]
             return_list.append(person_list)
         return return_list
 
