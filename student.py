@@ -53,9 +53,15 @@ class Student(User):
         :param telephone: string (telephone to student)
         :return: None
         """
-        new_id = Common.generate_id(Student.students_list)
-        new_student = Student(new_id ,name, last_name, mail, telephone)
-        Student.students_list.append(new_student)
+        if Common.is_email_correct(mail):
+            if Common.is_phone_correct(telephone):
+                new_id = Common.generate_id(Student.students_list)
+                new_student = Student(new_id ,name, last_name, mail, telephone)
+                Student.students_list.append(new_student)
+            else:
+                raise ValueError('Wrong number')
+        else:
+            raise ValueError('Wrong e-mail')
 
     @classmethod
     def remove_student(cls, id):
