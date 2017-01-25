@@ -133,43 +133,33 @@ class ManagerMenu(Menu):
     @staticmethod
     def choose_option(choice):
         if choice == '1':
-            ManagerMenu.add_mentor()
+            ManagerMenu.add_user(Mentor.pass_list())
         elif choice == '2':
-            ManagerMenu.print_mentors()
+            ManagerMenu.print_user(Mentor.pass_list())
         elif choice == '3':
             ManagerMenu.remove_mentor()
         elif choice == '4':
-            ManagerMenu.add_student()
+            ManagerMenu.add_user(Student.pass_list())
         elif choice == '5':
-            ManagerMenu.print_students()
+            ManagerMenu.print_user(Student.pass_list())
         else:
             exit()
 
+
     @staticmethod
-    def add_student():
+    def add_user(object_list):
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
         user_data = Ui.get_inputs(label_list)
         password = User.encode('1')
-        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, Student.pass_list())
+        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, object_list)
 
     @staticmethod
-    def add_mentor():
-        label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
-        user_data = Ui.get_inputs(label_list)
-        password = User.encode('1')
-        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, Mentor.pass_list())
-
-    @staticmethod
-    def print_students():
+    def print_user(object_list):
         Ui.clear()
-        Ui.print_table(User.create_list_to_save(Student.pass_list()),
-                       ['id', 'name', 'last name', 'mail', 'telephone', 'password'])
-        Ui.get_inputs(['Enter anything to leave: '])
-
-    @staticmethod
-    def print_mentors():
-        Ui.clear()
-        Ui.print_table(User.create_list_to_save(Mentor.pass_list()),
+        print_list = []
+        for list in User.create_list_to_save(object_list):
+            print_list.append([list[0], list[1], list[2], list[3], list[4]])
+        Ui.print_table(print_list,
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
 
