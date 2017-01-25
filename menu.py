@@ -11,11 +11,14 @@ class Menu:
 
 
     @staticmethod
-    def add_user(object_list):
+    def add_user(object_list , class_name):
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
         user_data = Ui.get_inputs(label_list)
         password = User.encode('1')
         User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, object_list)
+        for object in object_list:
+            print(object)
+        Common.save_file(class_name.file, User.create_list_to_save(object_list))
 
     @staticmethod
     def print_user(object_list):
@@ -26,6 +29,13 @@ class Menu:
         Ui.print_table(print_list,
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
+
+    @staticmethod
+    def edit_user(object_list, class_name):
+        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ', 'what to edit (name,last name,mail,telephone,password): ',
+                       'new value: '])
+        User.edit_user(edit_arguments_list[0], object_list, edit_arguments_list[1], edit_arguments_list[2])
+        Common.save_file(class_name.file, User.create_list_to_save(object_list))
 
     @staticmethod
     def show_all_students():
@@ -161,24 +171,27 @@ class ManagerMenu(Menu):
                       '\t3: Remove mentor\n' \
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
+                      '\t6: Edit Mentor' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 5)
+            user_choice = Ui.get_menu(options, 0, 6)
 
             ManagerMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
         if choice == '1':
-            ManagerMenu.add_user(Mentor.pass_list())
+            ManagerMenu.add_user(Mentor.pass_list(), Mentor)
         elif choice == '2':
             ManagerMenu.print_user(Mentor.pass_list())
         elif choice == '3':
             ManagerMenu.remove_mentor()
         elif choice == '4':
-            ManagerMenu.add_user(Student.pass_list())
+            ManagerMenu.add_user(Student.pass_list(), Student)
         elif choice == '5':
             ManagerMenu.print_user(Student.pass_list())
+        elif choice == '6':
+            ManagerMenu.edit_user(Mentor.pass_list(), Mentor)
         else:
             exit()
 
@@ -189,6 +202,8 @@ class ManagerMenu(Menu):
             Ui.print_text('Mentor removed')
         else:
             Ui.print_text('No mentor of passed mail')
+
+
             
 
 Student.create_object_list(Student.pass_list())

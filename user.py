@@ -30,6 +30,8 @@ class User:
             self.mail = new_value
         elif name_of_attribute == 'telephone':
             self.telephone = new_value
+        elif name_of_attribute == 'password':
+            self.password = User.encode(new_value)
 
     @staticmethod
     def edit_user(mail, object_list, name_of_attribute, new_value):
@@ -58,16 +60,10 @@ class User:
         :param object_list: list (list of objects to expand)
         :return: None
         """
-        if Common.is_email_correct(mail):
-            if Common.is_phone_correct(telephone):
-                new_id = Common.generate_id(object_list)
-                password = User.encode('1')
-                new_student = cls(new_id, name, last_name, mail, telephone, password)
-                object_list.append(new_student)
-            else:
-                raise ValueError('Wrong number')
-        else:
-            raise ValueError('Wrong e-mail')
+        new_id = Common.generate_id(object_list)
+        password = User.encode('1')
+        new_student = cls(new_id, name, last_name, mail, telephone, password)
+        object_list.append(new_student)
 
     @classmethod
     def create_object_list(cls, object_list):

@@ -123,8 +123,8 @@ class Common:
     def save_file(cls, file, list_to_save):
         """
         Saves list to csv file.
-        Args: file (str with file's path)
-              list_to_save (list)
+        Args:
+             list_to_save (list)
         """
         atributes_names = cls.read_file(file, 1)
 
