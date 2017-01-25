@@ -78,7 +78,7 @@ class Attendance:
         for student in student_list:
             cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
 
-# 
+#
 #
 # Student.create_student_list()
 # Attendance.create_attendance_list()
