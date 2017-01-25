@@ -230,6 +230,8 @@ class Common:
 
 """lista = [['a', '1', 11], ['b', '2', 22]kH35Ju#&, ['c', '3', 33], ['d', '4', 44]]
 
+
+
 Common.save_file('test.csv', lista)
 print(Common.read_file('test.csv'))
 emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',

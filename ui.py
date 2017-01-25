@@ -1,4 +1,5 @@
 import os
+import getpass
 
 class color:
     """Simple Class of coloring text"""
@@ -161,6 +162,10 @@ class Ui:
 
         return inputs
 
+    @staticmethod
+    def get_pass(label):
+
+        return getpass.getpass(label)
 
 #Examples of using Ui
 
