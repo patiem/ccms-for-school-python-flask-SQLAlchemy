@@ -6,6 +6,10 @@ from student import *
 
 class Menu:
 
+    @staticmethod
+    def logged_as(logged_user):
+        Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+
     # @staticmethod
     # def print_menu():
     #     raise NotImplementedError()
