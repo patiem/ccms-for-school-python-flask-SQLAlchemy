@@ -167,6 +167,27 @@ class Ui:
 
         return getpass.getpass(label)
 
+    @staticmethod
+    def get_menu(menu, menu_from, menu_to):
+
+        while True:
+
+            os.system('clear')
+            print(menu)
+            try:
+
+                option = input("Select an option: ")
+                if menu_from > int(option) or int(option) > menu_to:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
+
+
+
 #Examples of using Ui
 
 # Ui.clear() #clearing site
