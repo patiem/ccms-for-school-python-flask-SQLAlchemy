@@ -1,7 +1,11 @@
 from common import *
 
+import hashlib
+from ui import *
+
 class User:
 
+    _salt = "Coder"
     _users_csv = 'csv/users.csv'  # database with users
 
     def __init__(self, idx, name, last_name, mail, telephone):
@@ -95,11 +99,47 @@ class User:
         return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
 
     @classmethod
-    def login(cls, login, password):
+    def get_id_by_login_and_pass(cls, login, password):
 
 
-        Logged = True
+        users_list = Common.aggregation_users()
 
-        Logged = False
+        for user in users_list:
 
-        return Logged
+            if user[1] == login and user[2] == str(password):
+                return user
+
+    @classmethod
+    def login(cls):
+
+        Ui.clear()
+        Ui.print_head('Authentication', 'header') #displaying header of site
+
+        attempt = 0
+        while True:
+
+            inputs = ['Login: ']
+            login = Ui.get_inputs(inputs)
+            login = login[0]
+            encoded_password = User.encode(Ui.get_pass('Password: ')) #get passoword and encode using hash and salt
+
+            if User.get_id_by_login_and_pass(login, encoded_password) is not None:
+                Ui.clear()
+                return User.get_id_by_login_and_pass(login, encoded_password)
+
+            attempt += 1
+
+            if attempt == 3:
+                break
+
+        return None
+
+    @classmethod
+    def encode(cls, password):
+
+        encoded_password = hashlib.sha256()
+        encoded_password.update(cls._salt.encode('utf-8') + password.encode('utf-8'))
+        encoded_password = encoded_password.digest()
+
+        return str(encoded_password)
+
