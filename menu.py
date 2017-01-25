@@ -37,18 +37,24 @@ class Menu:
                     StudentMenu.print_menu(user)
 
         if logged_user[3] == 'mentor':
-            MentorMenu.print_menu(logged_user)
+
+            for mentor in Mentor.object_list:
+                if mentor.idx == logged_user[0]:
+                    user = mentor
+                    MentorMenu.print_menu(user)
 
         if logged_user[3] == 'manager':
-            EmployeeMenu.print_menu(logged_user)
+
+            for manager in Manager.object_list:
+                if manager.idx == logged_user[0]:
+                    user = manager
+                    ManagerMenu.print_menu(user)
 
         if logged_user[3] == 'employee':
-            ManagerMenu.print_menu(logged_user)
-
-    @staticmethod
-    def find_user(logged_user):
-
-
+            for employee in Employee.object_list:
+                if employee.idx == logged_user[0]:
+                    user = employee
+                    ManagerMenu.print_menu(user)
 
 
 class StudentMenu(Menu):
@@ -59,7 +65,7 @@ class StudentMenu(Menu):
         Menu.logged_as(user_object)
         Ui.print_head('Student menu:', 'header')
 
-        options = '\t1: Add submit assignment' \
+        options = '\t1: Add submit assignment\n' \
                   '\t2: View my grades' \
 
         user_choice = Ui.get_menu(options, 1, 2)
@@ -82,12 +88,12 @@ class MentorMenu(Menu):
         Menu.logged_as(user_object)
         Ui.print_head('Mentor menu:', 'header')
 
-        options = '\t1: Show students' \
-                  '\t2: Add assignment' \
-                  '\t3: Grade assignment' \
-                  '\t4: Check attendance of students' \
-                  '\t5: Add student' \
-                  '\t6: Remove student' \
+        options = '\t1: Show students\n' \
+                  '\t2: Add assignment\n' \
+                  '\t3: Grade assignment\n' \
+                  '\t4: Check attendance of students\n' \
+                  '\t5: Add student\n' \
+                  '\t6: Remove student\n' \
                   '\t7: Edit student\'s data'
 
         user_choice = Ui.get_menu(options, 1, 7)
@@ -122,7 +128,7 @@ class ManagerMenu(Menu):
                       '\t5: Show student list\n' \
                       '\t0: Exit program'
             user_choice = Ui.get_menu(options, 1, 5)
-            ManagerMenu.chose_option(user_choice)
+            ManagerMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
