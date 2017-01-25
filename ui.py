@@ -168,9 +168,26 @@ class Ui:
         return getpass.getpass(label)
 
     @staticmethod
-    def print_menu(options_list, ):
-        for item in options_list:
-            print('\t{}'.format(item))
+    def get_menu(menu, menu_from, menu_to):
+
+        while True:
+
+            os.system('clear')
+            print(menu)
+            try:
+
+                option = input("Select an option: ")
+                if menu_from > int(option) or int(option) > menu_to:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
+
+
+
 
 #Examples of using Ui
 
