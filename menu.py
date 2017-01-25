@@ -118,16 +118,17 @@ class ManagerMenu(Menu):
     def print_menu(user_object):
 
         while True:
-            Ui.clear()
             Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
             Ui.print_head('Manager menu:', 'header')
             options = '\t1: Add mentor\n' \
-                      '\t2: Remove Mentor\n' \
-                      '\t3: Edit Mentor\n' \
-                      '\t4: Show mentor list\n' \
-                      '\t5: Show student list\n' \
+                      '\t2: Show mentor list\n' \
+                      '\t3: Remove mentor\n' \
+                      '\t4: Add student\n' \
+                      '\t5: Show student\n' \
                       '\t0: Exit program'
-            user_choice = Ui.get_menu(options, 1, 5)
+
+            user_choice = Ui.get_menu(options, 0, 5)
+
             ManagerMenu.choose_option(user_choice)
 
     @staticmethod
@@ -136,6 +137,8 @@ class ManagerMenu(Menu):
             ManagerMenu.add_mentor()
         elif choice == '2':
             ManagerMenu.print_mentors()
+        elif choice == '3':
+            ManagerMenu.remove_mentor()
         elif choice == '4':
             ManagerMenu.add_student()
         elif choice == '5':
@@ -152,7 +155,8 @@ class ManagerMenu(Menu):
     @staticmethod
     def add_mentor():
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
-        user_data = Ui.get_inputs(label_list)
+        user_data = Ui.get_inputs(>>>>>>> 3777aef7d799a7c4d9d031f595146682c035b587
+label_list)
         User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Mentor.pass_list())
 
     @staticmethod
@@ -172,7 +176,15 @@ class ManagerMenu(Menu):
     @staticmethod
     def remove_mentor():
         mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
-        if Mentor.remove_object(mail):
+        if Mentor.remove_object(mail[0]):
             Ui.print_text('Mentor removed')
         else:
             Ui.print_text('No mentor of passed mail')
+            
+
+# Student.create_object_list(Student.pass_list())
+# Mentor.create_object_list(Mentor.pass_list())
+# Employee.create_object_list(Employee.pass_list())
+# Manager.create_object_list(Manager.pass_list())
+#
+# ManagerMenu.print_menu(Student.object_list[0])
