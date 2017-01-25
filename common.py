@@ -1,6 +1,5 @@
 import csv
 import re
-import random
 import datetime
 
 
@@ -22,6 +21,8 @@ class Common:
         Returns:
             Random and unique string
         """
+        import random
+
         list_of_id = []
         for record in table:
             list_of_id.append(record.id)
