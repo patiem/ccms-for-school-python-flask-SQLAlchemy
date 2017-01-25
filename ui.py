@@ -188,6 +188,7 @@ class Ui:
 
 
 
+
 #Examples of using Ui
 
 # Ui.clear() #clearing site

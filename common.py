@@ -1,6 +1,6 @@
 import csv
 import re
-import random
+import datetime
 
 
 class Common:
@@ -71,7 +71,7 @@ class Common:
 
         list_of_id = []
         for record in table:
-            list_of_id.append(record.id)
+            list_of_id.append(record.idx)
 
         generated = ''
 
@@ -179,7 +179,7 @@ class Common:
         Argument: date (str)
         Return: Bool
         """
-        pattern = r'^\d{4}\.(0\d|1[012])\.([012]\d|3[01])$'
+        pattern = r'^\d{4}[-\.](0\d|1[012])[-\.]([012]\d|3[01])$'
         if re.search(pattern, date):
             return True
         return False
@@ -217,7 +217,10 @@ class Common:
         Args: date(string): year.month.day
         Returns: datetime object
         """
-        date_list = date.split('.')
+        if '.' in date:
+            date_list = date.split('.')
+        elif '-' in date:
+            date_list = date.split('-')
         correct_date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
         return correct_date
 
