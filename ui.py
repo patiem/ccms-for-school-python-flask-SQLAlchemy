@@ -167,6 +167,11 @@ class Ui:
 
         return getpass.getpass(label)
 
+    @staticmethod
+    def print_menu(options_list, ):
+        for item in options_list:
+            print('\t{}'.format(item))
+
 #Examples of using Ui
 
 # Ui.clear() #clearing site
