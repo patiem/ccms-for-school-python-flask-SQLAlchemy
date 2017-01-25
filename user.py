@@ -5,7 +5,6 @@ from ui import *
 
 class User:
 
-    _salt = "Coder"
     _users_csv = 'csv/users.csv'  # database with users
 
     def __init__(self, idx, name, last_name, mail, telephone):
@@ -98,9 +97,8 @@ class User:
         """
         return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
 
-    @classmethod
-    def get_id_by_login_and_pass(cls, login, password):
-
+    @staticmethod
+    def get_id_by_login_and_pass(login, password):
 
         users_list = Common.aggregation_users()
 
@@ -109,8 +107,8 @@ class User:
             if user[1] == login and user[2] == str(password):
                 return user
 
-    @classmethod
-    def login(cls):
+    @staticmethod
+    def login():
 
         Ui.clear()
         Ui.print_head('Authentication', 'header') #displaying header of site
@@ -129,18 +127,20 @@ class User:
 
             attempt += 1
 
-            Ui.print_head("Wrong password. It's your {}/3".format(attempt), 'error')
+            Ui.print_head("Wrong password. It's your {}/3 attempt".format(attempt), 'error')
 
             if attempt == 3:
+
+                Ui.print_head("Wrong password!!! Exit program", 'error')
+                exit(0)
                 return None
 
+    @staticmethod
+    def encode(password):
 
-
-    @classmethod
-    def encode(cls, password):
-
+        _salt = "Coder"
         encoded_password = hashlib.sha256()
-        encoded_password.update(cls._salt.encode('utf-8') + password.encode('utf-8'))
+        encoded_password.update(_salt.encode('utf-8') + password.encode('utf-8'))
         encoded_password = encoded_password.digest()
 
         return str(encoded_password)
