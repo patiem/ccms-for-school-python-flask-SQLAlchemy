@@ -2,9 +2,10 @@ from user import *
 from common import *
 
 class Employee(User):
-    employees_list = []
+    object_list = []
+    file = 'csv/employees.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create Employee object
         :param idx: string (id of student)
@@ -12,8 +13,6 @@ class Employee(User):
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone)
+        User.__init__(self, idx, name, last_name, mail, telephone, password)
 
-    @classmethod
-    def pass_list(cls):
-        return cls.employees_list
+

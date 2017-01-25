@@ -5,9 +5,10 @@ class Student(User):
     """
     Class represent student
     """
-    students_list = []
+    object_list = []
+    file = 'csv/students.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create Student object
         :param id: string (id of student)
@@ -16,14 +17,8 @@ class Student(User):
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone)
-
-    @classmethod
-    def pass_list(cls):
-        return cls.students_list
+        User.__init__(self, idx, name, last_name, mail, telephone, password)
 
 
 
-Student.create_object_list('csv/students.csv', Student.students_list)
-new = Student.create_list_to_save(Student.students_list)
-print(new)
+

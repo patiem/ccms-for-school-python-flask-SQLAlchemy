@@ -2,9 +2,10 @@ from user import *
 from common import *
 
 class Mentor(User):
-    mentors_list = []
+    object_list = []
+    file = 'csv/mentors.csv'
     
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create Mentor object
         :param idx: string (id of student)
@@ -12,8 +13,5 @@ class Mentor(User):
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone)
+        User.__init__(self, idx, name, last_name, mail, telephone, password)
 
-    @classmethod
-    def pass_list(cls):
-        return cls.mentors_list
