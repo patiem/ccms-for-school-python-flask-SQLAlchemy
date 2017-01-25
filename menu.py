@@ -155,8 +155,7 @@ class ManagerMenu(Menu):
     @staticmethod
     def add_mentor():
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
-        user_data = Ui.get_inputs(>>>>>>> 3777aef7d799a7c4d9d031f595146682c035b587
-label_list)
+        user_data = Ui.get_inputs(label_list)
         User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Mentor.pass_list())
 
     @staticmethod
