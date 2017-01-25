@@ -18,7 +18,6 @@ class Common:
         files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/managers.csv']
 
         for file in files_list:
-            print(file)
             array = Common.read_file(file)
             for person in array:
                 users_list.append([person[0], person[3], person[5], file[4:-5]])
