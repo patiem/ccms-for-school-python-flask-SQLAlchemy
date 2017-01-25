@@ -1,4 +1,5 @@
 from common import *
+
 import hashlib
 from ui import *
 
@@ -124,5 +125,4 @@ class User:
         encoded_password = encoded_password.digest()
 
         return str(encoded_password)
-
 
