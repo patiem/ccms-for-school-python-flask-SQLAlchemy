@@ -121,10 +121,12 @@ class User:
 
             attempt += 1
 
-            if attempt == 3:
-                break
+            Ui.print_head("Wrong password. It's your {}/3".format(attempt), 'error')
 
-        return None
+            if attempt == 3:
+                return None
+
+
 
     @classmethod
     def encode(cls, password):
