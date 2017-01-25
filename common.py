@@ -1,6 +1,7 @@
 import csv
 import re
 import random
+import datetime
 
 
 class Common:
@@ -55,23 +56,30 @@ class Common:
         return generated
 
     @staticmethod
-    def read_file(file):
+    def read_file(file, header=None):
         """
         Loads list from csv file.
+        Args: file (str with file's path)
+              header (if set to not None returns first line of file with data structure)
+        Returns: imported_list[1:] (2d list from file)
         """
         imported_list = []
         with open(file, 'r') as f:
             reader = csv.reader(f, delimiter=';')
             for line in reader:
                 imported_list.append(line)
+        if header:
+            return imported_list[0]
         return imported_list[1:]
 
     @classmethod
     def save_file(cls, file, list_to_save):
         """
         Saves list to csv file.
+        Args: file (str with file's path)
+              list_to_save (list)
         """
-        atributes_names = cls.read_file(file)[0]
+        atributes_names = cls.read_file(file, 1)
 
         with open(file, 'w') as f:
             f.write(';'.join(atributes_names) + '\n')
@@ -85,50 +93,56 @@ class Common:
     def is_email_correct(email):
         """
         Validates if email is correct gmail adress.
-        Argument: str
+        Argument: email (str)
         Return: Bool
         """
         pattern = r'^((\w+\.*)+)@gmail.com$'
         if re.search(pattern, email):
-            print(email, ' ok')
             return True
-        print(email, ' No')
         return False
 
     @staticmethod
     def is_phone_correct(phone):
         """
         Validates if phone number is correct polish mobile number.
-        Argument: str
+        Argument: phone (str)
         Return: Bool
         """
         pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
         if re.search(pattern, phone):
-            print(phone, ' ok')
             return True
-        print(phone, ' No')
         return False
 
     @staticmethod
     def is_name_correct(name):
         """
         Validates if name is correct - can have more than one part with space or '-' between.
-        Argument: str
+        Argument: name (str)
         Return: Bool
         """
         pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
         if re.search(pattern, name):
-            print(name, ' ok')
             return True
-        print(name, ' No')
+        return False
+
+    @staticmethod
+    def is_date_correct(date):
+        """
+        Validates if date is correct and can be made datetime object.
+        Argument: date (str)
+        Return: Bool
+        """
+        pattern = r'^\d{4}\.(0\d|1[012])\.([012]\d|3[01])$'
+        if re.search(pattern, date):
+            return True
         return False
 
     @staticmethod
     def does_file_exist(file):
         """
         Validates if file exists.
-        Argument: str
-        Return: Bool
+        Args: file (str with file's path)
+        Return: Boolean
         """
         try:
             open(file, 'r')
@@ -136,6 +150,29 @@ class Common:
         except FileNotFoundError:
             return False
 
+    @staticmethod
+    def is_user_choice_correct(user_input, choices):
+        """
+        Checks if number is in range
+        Args: user_input(string): should be number in range of options
+              choices(int): max number in options
+        Returns: Boolean
+        """
+        if user_input.isnumeric():
+            if int(user_input) <= choices and int(user_input) >= 0:
+                return True
+        return False
+
+    @staticmethod
+    def make_corect_date(date):
+        """
+        Take string and returns date as datetime object.
+        Args: date(string): year.month.day
+        Returns: datetime object
+        """
+        date_list = date.split('.')
+        correct_date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+        return correct_date
 
 """lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
 
@@ -152,4 +189,9 @@ for number in phones:
 names = ['Aaa', 'AAaa', 'Aą Aa', 'Aa-Aa', 'A2aa', 'Ćwiek']
 for name in names:
     Common.is_name_correct(name)
-print(Common.does_file_exist('csv/students.csv'))"""
+print(Common.does_file_exist('csv/students.csv'))
+dates = ['1234.12.30', '9999.13.01', '2011.01.43']
+for date in dates:
+    print(Common.is_date_correct(date))
+
+print(Common.make_corect_date('1234.12.30'))"""
