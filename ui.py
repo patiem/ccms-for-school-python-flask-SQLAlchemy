@@ -172,7 +172,7 @@ class Ui:
 
         while True:
 
-            os.system('clear')
+            #os.system('clear')
             print(menu)
             try:
 

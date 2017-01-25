@@ -29,9 +29,9 @@ class User:
         :param new_value: string (new value for attribute)
         :return: None
         """
-        if name_of_attribute == 'Name':
+        if name_of_attribute == 'name':
             self.name = new_value
-        elif name_of_attribute == 'Last Name':
+        elif name_of_attribute == 'last Name':
             self.last_name = new_value
         elif name_of_attribute == 'mail':
             self.mail = new_value
