@@ -9,6 +9,28 @@ from common import Common
 
 class Menu:
 
+
+    @staticmethod
+    def add_user(object_list):
+        label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
+        user_data = Ui.get_inputs(label_list)
+        password = User.encode('1')
+        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, object_list)
+
+    @staticmethod
+    def print_user(object_list):
+        Ui.clear()
+        print_list = []
+        for list in User.create_list_to_save(object_list):
+            print_list.append([list[0], list[1], list[2], list[3], list[4]])
+        Ui.print_table(print_list,
+                       ['id', 'name', 'last name', 'mail', 'telephone'])
+        Ui.get_inputs(['Enter anything to leave: '])
+
+    @staticmethod
+    def show_all_students():
+        pass
+
     @staticmethod
     def choose_option(choice):
         raise NotImplementedError()
@@ -65,7 +87,7 @@ class StudentMenu(Menu):
         Ui.print_head('Student menu:', 'header')
 
         options = '\t1: Add submit assignment\n' \
-                  '\t2: View my grades' \
+                  '\t2: View my grades'
 
         user_choice = Ui.get_menu(options, 1, 2)
 
@@ -102,13 +124,28 @@ class MentorMenu(Menu):
         if choice == '1':
             pass
 
-    @staticmethod
-    def add_student():
-        pass
-
 
 class EmployeeMenu(Menu):
-    pass
+    @staticmethod
+    def print_menu(user_object):
+        Ui.clear()
+        Menu.logged_as(user_object)
+        Ui.print_head('Mentor menu:', 'header')
+
+        options = '\t1: Show students\n' \
+                  '\t2: Add assignment\n' \
+                  '\t3: Grade assignment\n' \
+                  '\t4: Check attendance of students\n' \
+                  '\t5: Add student\n' \
+                  '\t6: Remove student\n' \
+                  '\t7: Edit student\'s data'
+
+        user_choice = Ui.get_menu(options, 1, 7)
+
+    @staticmethod
+    def choose_option(choice):
+        if choice == '1':
+            pass
 
 
 class ManagerMenu(Menu):
@@ -144,24 +181,6 @@ class ManagerMenu(Menu):
             ManagerMenu.print_user(Student.pass_list())
         else:
             exit()
-
-
-    @staticmethod
-    def add_user(object_list):
-        label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
-        user_data = Ui.get_inputs(label_list)
-        password = User.encode('1')
-        User.add_user(user_data[0], user_data[1], user_data[2], user_data[3], password, object_list)
-
-    @staticmethod
-    def print_user(object_list):
-        Ui.clear()
-        print_list = []
-        for list in User.create_list_to_save(object_list):
-            print_list.append([list[0], list[1], list[2], list[3], list[4]])
-        Ui.print_table(print_list,
-                       ['id', 'name', 'last name', 'mail', 'telephone'])
-        Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
     def remove_mentor():
