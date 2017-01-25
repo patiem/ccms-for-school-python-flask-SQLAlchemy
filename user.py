@@ -96,8 +96,7 @@ class User:
         users_list = Common.read_file(cls._users_csv)
 
         for user in users_list:
-            print(user)
-            print(password)
+            
             if user[2] == login and user[3] == str(password):
                 return user
 
