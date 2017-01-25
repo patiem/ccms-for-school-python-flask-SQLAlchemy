@@ -8,16 +8,16 @@ class User:
     _salt = "Coder"
     _users_csv = 'csv/users.csv'  # database with users
 
-    def __init__(self, id, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
-        :param id: string (id of student)
+        :param idx: string (id of student)
         :param name: string (name of student)
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        self.id = id
+        self.idx = idx
         self.name = name
         self.last_name = last_name
         self.mail = mail
@@ -73,22 +73,30 @@ class User:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4]))
 
     @classmethod
-    def remove_object(cls, id, object_list):
+    def remove_object(cls, idx, object_list):
         """
         Remove object from list
-        :param id: string ( id of student to remove)
+        :param idx: string ( id of student to remove)
         :return: None
         """
         for person in object_list:
-            if person.id == id:
+            if person.idx == idx:
                 object_list.remove(person)
                 break
+
+    @classmethod
+    def create_list_to_save(cls,object_list):
+        return_list = []
+        for person in object_list:
+            person_list = [person.idx, person.name, person.last_name, person.mail, person.telephone]
+            return_list.append(person_list)
+        return return_list
 
     def __str__(self):
         """
         :return: String representation for object
         """
-        return 'ID: {} Name: {} Last Name: {}'.format(self.id, self.name, self.last_name)
+        return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
 
     @classmethod
     def get_id_by_login_and_pass(cls, login, password):
