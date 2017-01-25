@@ -1,19 +1,22 @@
 from common import *
 
+import hashlib
+from ui import *
+
 class User:
 
     _users_csv = 'csv/users.csv'  # database with users
 
-    def __init__(self, id, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
-        :param id: string (id of student)
+        :param idx: string (id of student)
         :param name: string (name of student)
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        self.id = id
+        self.idx = idx
         self.name = name
         self.last_name = last_name
         self.mail = mail
@@ -69,29 +72,76 @@ class User:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4]))
 
     @classmethod
-    def remove_object(cls, id, object_list):
+    def remove_object(cls, idx, object_list):
         """
         Remove object from list
-        :param id: string ( id of student to remove)
+        :param idx: string ( id of student to remove)
         :return: None
         """
         for person in object_list:
-            if person.id == id:
+            if person.idx == idx:
                 object_list.remove(person)
                 break
+
+    @classmethod
+    def create_list_to_save(cls,object_list):
+        return_list = []
+        for person in object_list:
+            person_list = [person.idx, person.name, person.last_name, person.mail, person.telephone]
+            return_list.append(person_list)
+        return return_list
 
     def __str__(self):
         """
         :return: String representation for object
         """
-        return 'ID: {} Name: {} Last Name: {}'.format(self.id, self.name, self.last_name)
+        return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
 
-    @classmethod
-    def login(cls, login, password):
+    @staticmethod
+    def get_id_by_login_and_pass(login, password):
 
+        users_list = Common.aggregation_users()
 
-        Logged = True
+        for user in users_list:
 
-        Logged = False
+            if user[1] == login and user[2] == str(password):
+                return user
 
-        return Logged
+    @staticmethod
+    def login():
+
+        Ui.clear()
+        Ui.print_head('Authentication', 'header') #displaying header of site
+
+        attempt = 0
+        while True:
+
+            inputs = ['Login: ']
+            login = Ui.get_inputs(inputs)
+            login = login[0]
+            encoded_password = User.encode(Ui.get_pass('Password: ')) #get passoword and encode using hash and salt
+
+            if User.get_id_by_login_and_pass(login, encoded_password) is not None:
+                Ui.clear()
+                return User.get_id_by_login_and_pass(login, encoded_password)
+
+            attempt += 1
+
+            Ui.print_head("Wrong password. It's your {}/3 attempt".format(attempt), 'error')
+
+            if attempt == 3:
+
+                Ui.print_head("Wrong password!!! Exit program", 'error')
+                exit(0)
+                return None
+
+    @staticmethod
+    def encode(password):
+
+        _salt = "Coder"
+        encoded_password = hashlib.sha256()
+        encoded_password.update(_salt.encode('utf-8') + password.encode('utf-8'))
+        encoded_password = encoded_password.digest()
+
+        return str(encoded_password)
+

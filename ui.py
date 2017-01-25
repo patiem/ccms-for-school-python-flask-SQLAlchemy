@@ -1,4 +1,5 @@
 import os
+import getpass
 
 class color:
     """Simple Class of coloring text"""
@@ -160,6 +161,31 @@ class Ui:
             inputs.append(input(label + ' '))
 
         return inputs
+
+    @staticmethod
+    def get_pass(label):
+
+        return getpass.getpass(label)
+
+    @staticmethod
+    def get_menu(menu, menu_from, menu_to):
+
+        while True:
+
+            os.system('clear')
+            print(menu)
+            try:
+
+                option = input("Select an option: ")
+                if menu_from > int(option) or int(option) > menu_to:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
+
 
 
 #Examples of using Ui

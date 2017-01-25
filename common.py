@@ -9,6 +9,21 @@ class Common:
     """
 
     @staticmethod
+    def aggregation_users():
+        """
+        Generates full list of users
+        :return: list (user list: ID|E-MAIL|PASSWORD|TYPE)
+        """
+        users_list = []
+        files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/managers.csv']
+
+        for file in files_list:
+            array = Common.read_file(file)
+            for person in array:
+                users_list.append([person[0], person[3], person[5], file[4:-5]])
+        return users_list
+
+    @staticmethod
     def get_by_id(index, file=None):
         """
         Returns list
@@ -211,6 +226,8 @@ class Common:
 
 """lista = [['a', '1', 11], ['b', '2', 22]kH35Ju#&, ['c', '3', 33], ['d', '4', 44]]
 
+
+
 Common.save_file('test.csv', lista)
 print(Common.read_file('test.csv'))
 emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',
@@ -230,3 +247,5 @@ for date in dates:
     print(Common.is_date_correct(date))
 
 print(Common.make_corect_date('1234.12.30'))"""
+
+# print(Common.aggregation_users())
