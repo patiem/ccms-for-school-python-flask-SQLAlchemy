@@ -234,7 +234,6 @@ class Menu:
         Submission.create_submission_list()
         Attendance.create_attendance_list()
 
-
         if logged_user[3] == 'student':
             for student in Student.object_list:
                 if student.idx == logged_user[0]:
@@ -334,7 +333,6 @@ class StudentMenu(Menu):
             Ui.print_text("You can't submit this assignment - it's already submitted")
 
 
-
 class MentorMenu(Menu):
 
     @staticmethod
@@ -347,7 +345,7 @@ class MentorMenu(Menu):
 
             options = '\t1: Show students\n' \
                       '\t2: Add assignment\n' \
-                      '\t3: Grade assignment\n' \
+                      '\t3: Grade submission\n' \
                       '\t4: Check attendance of students\n' \
                       '\t5: Add student\n' \
                       '\t6: Remove student\n' \
@@ -367,7 +365,9 @@ class MentorMenu(Menu):
             pass
 
         elif choice == '3':
-            MentorMenu.grade_assignment()
+            Ui.clear()
+            MentorMenu.grade_submission()
+            Ui.get_inputs([''])
 
         elif choice == '4':
             Ui.clear()
@@ -393,9 +393,22 @@ class MentorMenu(Menu):
         Ui.print_table(engagement_list, titles)
 
     @staticmethod
-    def grade_assignment():
-        submissions = Common.read_file('csv/submission.csv')
-
+    def grade_submission():
+        titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade']
+        grades_list = []
+        n = 1
+        for submission in Submission.submission_list:
+            student = Common.get_by_id(submission.student_idx, Student.file)
+            assignment = Common.get_by_id(submission.assignment_idx, 'csv/assignments.csv')
+            grades_list.append([str(n), student[3], assignment[1], str(submission.date_of_submission),
+                                str(submission.grade)])
+            n += 1
+        Ui.print_table(grades_list, titles)
+        options = 'Choose number of submission to grade'
+        user_choice = int(Ui.get_menu(options, 1, n))
+        submission_to_grade = Submission.submission_list[user_choice - 1]
+        new_grade = Ui.get_inputs(['New grade:'])[0]
+        submission_to_grade.change_grade(new_grade)
 
 
 class EmployeeMenu(Menu):

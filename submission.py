@@ -93,5 +93,5 @@ class Submission:
                     return submission
         return False
 
-    def change_grade(self, assignment_to_grade, grade):
-        assignment_to_grade.grade = grade
+    def change_grade(self, grade):
+        self.grade = grade
