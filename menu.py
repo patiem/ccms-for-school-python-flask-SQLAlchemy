@@ -44,6 +44,9 @@ class Menu:
             Ui.print_text('No user of passed mail')
         Menu.what_save(class_name)
 
+    # @staticmethod
+    # def where_to_remove(class_name, mail):
+
     @staticmethod
     def what_save(class_name):
         if class_name == 'Student':
@@ -58,13 +61,13 @@ class Menu:
     @staticmethod
     def where_to_add(class_name, user_data):
         if class_name == 'Student':
-            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Student.object_list)
+            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Mentor':
-            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Mentor.object_list)
+            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Manager':
-            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Manager.object_list)
+            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Employee':
-            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Employee.object_list)
+            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         
             
     
