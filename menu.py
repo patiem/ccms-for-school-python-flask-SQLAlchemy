@@ -8,6 +8,7 @@ from common import Common
 from assignment import Assignment
 from submission import Submission
 
+
 class Menu:
 
     @staticmethod
@@ -128,6 +129,7 @@ class StudentMenu(Menu):
                 new_line.append('None')
             assignments_list_to_print.append(new_line)
         Ui.print_table(assignments_list_to_print, title_list)
+
 
 class MentorMenu(Menu):
 
