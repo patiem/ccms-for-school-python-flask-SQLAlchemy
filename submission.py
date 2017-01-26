@@ -1,5 +1,4 @@
 from common import *
-import datetime
 
 class Submission:
     """
@@ -53,6 +52,7 @@ class Submission:
         """
         new_submission = cls(student_idx, assignment_idx, date_of_submission, link)
         cls.submission_list.append(new_submission)
+        Common.save_file('csv/submission.csv', cls.create_list_to_save())
 
     @classmethod
     def create_list_to_save(cls):
@@ -62,8 +62,8 @@ class Submission:
         """
         list_to_save = []
         for submission in cls.submission_list:
-            list_to_save.append([submission.student_idx, submission.assignment_idx, submission.date_of_submission,
-                                 str(submission.grade)])
+            list_to_save.append([submission.student_idx, submission.assignment_idx, str(submission.date_of_submission),
+                                 submission.link, str(submission.grade)])
         return list_to_save
 
     @classmethod
@@ -93,5 +93,5 @@ class Submission:
                     return submission
         return False
 
-    def change_grade(self):
-        pass
+    def change_grade(self, assignment_to_grade, grade):
+        assignment_to_grade.grade = grade
