@@ -218,10 +218,6 @@ class Menu:
         Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
     @staticmethod
-    def print_menu(user_object):
-        raise NotImplementedError()
-
-    @staticmethod
     def run():
 
         logged_user = User.login()
@@ -354,20 +350,20 @@ class MentorMenu(Menu):
 
             user_choice = Ui.get_menu(options, 0, 7)
 
-            MentorMenu.choose_option(user_choice)
+            MentorMenu.choose_option(user_choice, user_object)
 
     @staticmethod
-    def choose_option(choice):
+    def choose_option(choice, user_object):
         if choice == '1':
             MentorMenu.print_user(Student.object_list)
 
         elif choice == '2':
-            pass
+            MentorMenu.add_assignment(user_object)
+            Ui.get_inputs([''])
 
         elif choice == '3':
             Ui.clear()
             MentorMenu.grade_submission()
-            Ui.get_inputs([''])
 
         elif choice == '4':
             Ui.clear()
@@ -410,6 +406,21 @@ class MentorMenu(Menu):
         new_grade = Ui.get_inputs(['New grade:'])[0]
         submission_to_grade.change_grade(new_grade)
 
+    @staticmethod
+    def add_assignment(user_object):
+        author = user_object.name + ' ' + user_object.last_name
+        title = Ui.get_input('title')
+        start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
+        end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+
+        filename_from_title = '_'.join(title.split(' '))
+        filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
+
+        with open(filename, 'w'):
+            Ui.print_text('File is created')
+
+        Assignment.add_assignment(title, author, start_date, end_date, filename)
+
 
 class EmployeeMenu(Menu):
     @staticmethod
@@ -427,7 +438,6 @@ class EmployeeMenu(Menu):
     def choose_option(choice):
 
         if choice == '1':
-
             EmployeeMenu.print_user(Student.object_list)
         elif choice == '0':
             exit()

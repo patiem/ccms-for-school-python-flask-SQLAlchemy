@@ -49,6 +49,7 @@ class Assignment:
         new_id = Common.generate_id()
         new_assignment = cls(new_id, title, author, start_date, end_date, file_name)
         cls.assigments_list.append(new_assignment)
+        Common.save_file('csv/assignments.csv', cls.create_list_to_save())
 
     @classmethod
     def create_list_to_save(cls):
