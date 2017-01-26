@@ -7,6 +7,7 @@ from employee import Employee
 from common import Common
 from assignment import Assignment
 from submission import Submission
+from attandance import Attendance
 
 class Menu:
 
@@ -114,6 +115,7 @@ class Menu:
         Manager.create_object_list(Manager.pass_list())
         Assignment.create_assignment_list()
         Submission.create_submission_list()
+        Attendance.create_attendance_list()
 
 
         if logged_user[3] == 'student':
@@ -202,7 +204,7 @@ class StudentMenu(Menu):
                 new_line.append('None')
             assignments_list_to_print.append(new_line)
             n += 1
-        Ui.print_table(assignments_list_to_print, title_list)
+        Ui.print_table(assignments_list_toattendance.id_student == student.idx_print, title_list)
         return len(assignments_list_to_print)
 
     @classmethod
@@ -230,6 +232,8 @@ class MentorMenu(Menu):
 
         user_choice = Ui.get_menu(options, 0, 7)
 
+        MentorMenu.choose_option(user_choice)
+
     @staticmethod
     def choose_option(choice):
         if choice == '1':
@@ -242,7 +246,9 @@ class MentorMenu(Menu):
             pass
 
         elif choice == '4':
+            Ui.clear()
             MentorMenu.show_attendance_of_students()
+            Ui.get_inputs([''])
 
         elif choice == '5':
             MentorMenu.add_user(Student.object_list)
@@ -258,7 +264,9 @@ class MentorMenu(Menu):
 
     @staticmethod
     def show_attendance_of_students():
-        pass
+        titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
+        engagement_list = Attendance.students_engagement()
+        Ui.print_table(engagement_list, titles)
 
 
 class EmployeeMenu(Menu):
