@@ -217,22 +217,24 @@ class MentorMenu(Menu):
 
     @staticmethod
     def print_menu(user_object):
-        Ui.clear()
-        Menu.logged_as(user_object)
-        Ui.print_head('Mentor menu:', 'header')
 
-        options = '\t1: Show students\n' \
-                  '\t2: Add assignment\n' \
-                  '\t3: Grade assignment\n' \
-                  '\t4: Check attendance of students\n' \
-                  '\t5: Add student\n' \
-                  '\t6: Remove student\n' \
-                  '\t7: Edit student\'s data' \
-                  '\t0: Exit program'
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Mentor menu:', 'header')
 
-        user_choice = Ui.get_menu(options, 0, 7)
+            options = '\t1: Show students\n' \
+                      '\t2: Add assignment\n' \
+                      '\t3: Grade assignment\n' \
+                      '\t4: Check attendance of students\n' \
+                      '\t5: Add student\n' \
+                      '\t6: Remove student\n' \
+                      '\t7: Edit student\n' \
+                      '\t0: Exit program'
 
-        MentorMenu.choose_option(user_choice)
+            user_choice = Ui.get_menu(options, 0, 7)
+
+            MentorMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
@@ -254,10 +256,10 @@ class MentorMenu(Menu):
             MentorMenu.add_user(Student.object_list)
 
         elif choice == '6':
-            pass
+            MentorMenu.remove_user('Student')
 
         elif choice == '7':
-            pass
+            MentorMenu.edit_user('Student')
 
         elif choice == '0':
             exit()
