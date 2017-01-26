@@ -23,6 +23,12 @@ class User:
         self.password = password
 
     def change_value(self, name_of_attribute, new_value):
+        """
+        change attribute of instance
+        :param name_of_attribute: string (what attribute should be change)
+        :param new_value: string (new value of attribute)
+        :return: None
+        """
         if name_of_attribute == 'name':
             self.name = new_value
         elif name_of_attribute == 'last name':
@@ -38,16 +44,15 @@ class User:
     def edit_user(cls, mail, name_of_attribute, new_value):
         """
         Edit user passed attribute
-        :param mail: string (e-mail of user to edit)
-        :param object_list: list ( object list contain user)
+        :param mail: string (e-mail of user to edit))
         :param name_of_attribute: string (what attribute should be edit)
         :param new_value: string (new value for attribute)
-        :return: None
+        :return: None or True if attribute is changed
         """
         for person in cls.object_list:
             if person.mail == mail:
                 person.change_value(name_of_attribute, new_value)
-
+                return True
 
 
 
@@ -60,7 +65,6 @@ class User:
         :param last_name: string (last name)
         :param mail: string (mail of student)
         :param telephone: string (telephone to student)
-        :param object_list: list (list of objects to expand)
         :return: None
         """
         new_id = Common.generate_id()
@@ -69,22 +73,21 @@ class User:
         cls.object_list.append(new_student)
 
     @classmethod
-    def create_object_list(cls, object_list):
+    def create_object_list(cls):
         """
-        Create list containing objects
-        :param object_list: list (class list)
+        Create list containing instance of class
         :return: None
         """
         file = cls.file
         list_from_csv = Common.read_file(file)
         for person in list_from_csv:
-            object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
+            cls.object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
 
     @classmethod
     def remove_object(cls, mail):
         """
         Remove object from list
-        :param idx: string ( id of student to remove)
+        :param mail: string ( mail of user to remove)
         :return: None or True if object removed
         """
         for person in cls.object_list:
@@ -92,8 +95,13 @@ class User:
                 cls.object_list.remove(person)
                 return True
 
-    @classmethod
-    def create_list_to_save(cls,object_list):
+    @staticmethod
+    def create_list_to_save(object_list):
+        """
+        crate two dimension list from list contain objects
+        :param object_list: list ( list of objects)
+        :return:
+        """
         return_list = []
         for person in object_list:
             person_list = [person.idx, person.name, person.last_name, person.mail, person.telephone, person.password]
@@ -108,6 +116,12 @@ class User:
 
     @staticmethod
     def get_id_by_login_and_pass(login, password):
+        """
+
+        :param login:
+        :param password:
+        :return:
+        """
 
         users_list = Common.aggregation_users()
 
@@ -116,9 +130,6 @@ class User:
             if user[1] == login and user[2] == str(password):
                 return user
 
-    @classmethod
-    def pass_list(cls):
-        return cls.object_list
 
     @staticmethod
     def login():

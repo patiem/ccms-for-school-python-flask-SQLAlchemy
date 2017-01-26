@@ -13,6 +13,11 @@ class Menu:
 
     @staticmethod
     def add_user(class_name):
+        """
+        add new user to class
+        :param class_name:  string (name of class where new user should be created)
+        :return: None
+        """
         label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
         user_data = Ui.get_inputs(label_list)
         Menu.where_to_add(class_name, user_data)
@@ -20,6 +25,11 @@ class Menu:
 
     @staticmethod
     def print_user(object_list):
+        """
+        Display passed list
+        :param object_list: list ( list to display)
+        :return: None
+        """
         Ui.clear()
         print_list = []
         for list in User.create_list_to_save(object_list):
@@ -30,6 +40,11 @@ class Menu:
 
     @staticmethod
     def edit_user(class_name):
+        """
+        Edit user
+        :param class_name: string ( name of class where user should be edited)
+        :return: None
+        """
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
                                              'what to edit (name,last name,mail,telephone,password): ',
                                              'new value: '])
@@ -38,15 +53,28 @@ class Menu:
 
     @staticmethod
     def remove_user(class_name):
+        """
+        Remove user from list
+        :param class_name: string ( name of class where user should be removed)
+        :return: None
+        """
         mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
         if Menu.where_to_remove(class_name, mail[0]):
             Ui.print_text('User removed')
+            Ui.get_inputs(['Enter to continue: '])
         else:
             Ui.print_text('No user of passed mail')
+            Ui.get_inputs(['Enter to continue: '])
         Menu.what_save(class_name)
 
     @staticmethod
     def where_to_edit(class_name, edit_arguments_list):
+        """
+        Check which class should edit user
+        :param class_name: string (name of class that method should be started)
+        :param edit_arguments_list: ( list of arguments to run run method)
+        :return: None
+        """
         if class_name == 'Student':
             Student.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
         elif class_name == 'Mentor':
@@ -58,6 +86,12 @@ class Menu:
 
     @staticmethod
     def where_to_remove(class_name, mail):
+        """
+        Check which class should remove user
+        :param class_name: string (name of class that method should be started)
+        :param mail: string ( mail of user to remove)
+        :return:
+        """
         if class_name == 'Student':
             return Student.remove_object(mail)
         elif class_name == 'Mentor':
@@ -69,6 +103,11 @@ class Menu:
 
     @staticmethod
     def what_save(class_name):
+        """
+        Check whitch class list should be saved
+        :param class_name: string ( name of class that list should be saved)
+        :return: None
+        """
         if class_name == 'Student':
             Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
         elif class_name == 'Mentor':
@@ -80,6 +119,12 @@ class Menu:
 
     @staticmethod
     def where_to_add(class_name, user_data):
+        """
+        Check witch class should add user
+        :param class_name: string ( name of class that user should be add)
+        :param user_data: list ( list of attributes to create user)
+        :return: None
+        """
         if class_name == 'Student':
             Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Mentor':
@@ -110,10 +155,10 @@ class Menu:
 
         logged_user = User.login()
 
-        Student.create_object_list(Student.pass_list())
-        Mentor.create_object_list(Mentor.pass_list())
-        Employee.create_object_list(Employee.pass_list())
-        Manager.create_object_list(Manager.pass_list())
+        Student.create_object_list()
+        Mentor.create_object_list()
+        Employee.create_object_list()
+        Manager.create_object_list()
         Assignment.create_assignment_list()
         Submission.create_submission_list()
         Attendance.create_attendance_list()
@@ -188,7 +233,7 @@ class StudentMenu(Menu):
         Ui.clear()
         Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
         title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
-        assignments_list = Assignment.pass_assign_for_student()    #doublled list of assignments!!
+        assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
         for assignment in assignments_list:
@@ -205,7 +250,7 @@ class StudentMenu(Menu):
                 new_line.append('None')
             assignments_list_to_print.append(new_line)
             n += 1
-        Ui.print_table(assignments_list_toattendance.id_student == student.idx_print, title_list)
+        Ui.print_table(assignments_list_to_print, title_list)
         return len(assignments_list_to_print)
 
     @classmethod
@@ -298,8 +343,13 @@ class ManagerMenu(Menu):
 
     @staticmethod
     def print_menu(user_object):
-
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
+            Ui.clear()
             Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
             Ui.print_head('Manager menu:', 'header')
             options = '\t1: Add mentor\n' \
@@ -316,6 +366,11 @@ class ManagerMenu(Menu):
 
     @staticmethod
     def choose_option(choice):
+        """
+        Check witch option was chosen by user and run assigned method
+        :param choice: string ( user input)
+        :return: None
+        """
         if choice == '1':
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
@@ -335,9 +390,4 @@ class ManagerMenu(Menu):
 
 
             
-# Student.create_object_list(Student.pass_list())
-# Mentor.create_object_list(Mentor.pass_list())
-# Employee.create_object_list(Employee.pass_list())
-# Manager.create_object_list(Manager.pass_list())
-#
-# ManagerMenu.print_menu(Student.object_list[0])
+
