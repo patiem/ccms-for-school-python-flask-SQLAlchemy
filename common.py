@@ -146,9 +146,10 @@ class Common:
         Argument: email (str)
         Return: Bool
         """
-        pattern = r'^((\w+\.*)+)@\w+.\w+$'
-        if re.search(pattern, email):
-            return True
+        if email:
+            pattern = r'^((\w+\.*)+)@\w+.\w+$'
+            if re.search(pattern, email):
+                return True
         return False
 
     @staticmethod
@@ -158,9 +159,10 @@ class Common:
         Argument: phone (str)
         Return: Bool
         """
-        pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
-        if re.search(pattern, phone):
-            return True
+        if phone:
+            pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
+            if re.search(pattern, phone):
+                return True
         return False
 
     @staticmethod
@@ -180,12 +182,13 @@ class Common:
     def is_date_correct(date):
         """
         Validates if date is correct and can be made datetime object.
-        Argument: date (str)
+        Argument: date (str - should be in format YYYY.MM.DD or YYYY-MM-DD or YYYY MM DD)
         Return: Bool
         """
-        pattern = r'^\d{4}[-\.](0\d|1[012])[-\.]([012]\d|3[01])$'
-        if re.search(pattern, date):
-            return True
+        if date:
+            pattern = r'^\d{4}[ -\.](0\d|1[012])[ -\.]([012]\d|3[01])$'
+            if re.search(pattern, date):
+                return True
         return False
 
     @staticmethod
@@ -202,19 +205,6 @@ class Common:
             return False
 
     @staticmethod
-    def is_user_choice_correct(user_input, choices):
-        """
-        Checks if number is in range
-        Args: user_input(string): should be number in range of options
-              choices(int): max number in options
-        Returns: Boolean
-        """
-        if user_input.isnumeric():
-            if int(user_input) <= choices and int(user_input) >= 0:
-                return True
-        return False
-
-    @staticmethod
     def make_corect_date(date):
         """
         Take string and returns date as datetime object.
@@ -225,28 +215,7 @@ class Common:
             date_list = date.split('.')
         elif '-' in date:
             date_list = date.split('-')
+        elif ' ' in date:
+            date_list = date.split(' ')
         correct_date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
         return correct_date
-
-"""lista = [['a', '1', 11], ['b', '2', 22], ['c', '3', 33], ['d', '4', 44]]
-Common.save_file('test.csv', lista)
-print(Common.read_file('test.csv'))
-emails = ['dupa@gmail.com', 'dupa.dupa@gmail.com', 'dupa@gail.com', 'dupa,f@gmai.com', '.dupa@gmail.com',
-          '22.poo@gmail.com']
-for email in emails:
-    print(email, Common.is_email_correct(email))
-phones = ['123123123', '123 123 123', '123-123-123', ' 123123123', '123 123123', '123-123-123 ',
-          '1231231231', 'a23 123 123', '12#-123-123', '+48123123123', '48 123 123 123', ' + 48 123-123-123']
-for number in phones:
-    Common.is_phone_correct(number)
-names = ['Aaa', 'AAaa', 'Aą Aa', 'Aa-Aa', 'A2aa', 'Ćwiek']
-for name in names:
-    Common.is_name_correct(name)
-print(Common.does_file_exist('csv/students.csv'))
-dates = ['1234.12.30', '9999.13.01', '2011.01.43']
-for date in dates:
-    print(Common.is_date_correct(date))
-
-print(Common.make_corect_date('1234.12.30'))"""
-
-# print(Common.aggregation_users())
