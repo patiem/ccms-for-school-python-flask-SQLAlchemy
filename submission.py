@@ -95,3 +95,4 @@ class Submission:
 
     def change_grade(self, grade):
         self.grade = grade
+        Common.save_file('csv/submission.csv', Submission.create_list_to_save())

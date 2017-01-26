@@ -31,7 +31,7 @@ class Assignment:
                 start_date = Common.make_corect_date(item[3])
                 if Common.is_date_correct(item[4]):
                     end_date = Common.make_corect_date(item[4])
-                    if Common.does_file_exist('csv/assignments_description/'+ item[5]):
+                    if Common.does_file_exist('csv/assignments_description/' + item[5]):
                         file_name = item[5]
                         cls.assigments_list.append(cls(idx, title, author, start_date, end_date, file_name))
 
@@ -39,16 +39,17 @@ class Assignment:
     def add_assignment(cls, title, author, start_date, end_date, file_name):
         """
         Add new student object to list
-        :param title: string (name of student)
-        :param author: string (last name)
-        :param start_date: string (mail of student)
-        :param end_date: string (telephone to student)
-        :param file_name: string (telephone to student)
+        :param title: string (assignment name)
+        :param author: string (name of mentor)
+        :param start_date: datetime object (date of start)
+        :param end_date: datetime object (date of end )
+        :param file_name: string (file path)
         :return: None
         """
         new_id = Common.generate_id()
         new_assignment = cls(new_id, title, author, start_date, end_date, file_name)
         cls.assigments_list.append(new_assignment)
+        Common.save_file('csv/assignments.csv', cls.create_list_to_save())
 
     @classmethod
     def create_list_to_save(cls):

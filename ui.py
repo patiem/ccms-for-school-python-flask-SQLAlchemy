@@ -27,6 +27,11 @@ class color:
 class Ui:
 
     @staticmethod
+    def get_input(text):
+        user_input = input('Type ' + text + ': ')
+        return user_input
+
+    @staticmethod
     def clear():
         """clear screen"""
 
