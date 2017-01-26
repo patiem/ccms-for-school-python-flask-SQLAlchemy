@@ -59,19 +59,22 @@ class Common:
         return False
 
     @staticmethod
-    def generate_id(table):
+    def generate_id():
         """
         Generates random and unique string. Used for id/key generation.
-        Args:
-            table: list containing keys. Generated string should be different then all of them
         Returns:
             Random and unique string
         """
         import random
 
+        table = Common.aggregation_users()
+        assignments = Common.read_file('csv/assignments.csv')
+        for assignment in assignments:
+            table.append(assignment)
+
         list_of_id = []
         for record in table:
-            list_of_id.append(record.idx)
+            list_of_id.append(record.[0])
 
         generated = ''
 
