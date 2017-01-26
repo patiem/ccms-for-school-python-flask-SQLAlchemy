@@ -1,5 +1,6 @@
 import re
 from ui import Ui
+from common import Common
 
 
 class Test:
@@ -20,15 +21,15 @@ class Test:
 
     @classmethod
     def check_argument(cls, label, argument):
-        if label == 'Name':
+        if label.lower() == 'Name'.lower():
             argument = cls.test_name(argument)
-        elif label == 'Last Name':
+        elif label.lower() == 'Last Name'.lower():
             argument = cls.test_last_name(argument)
-        elif label == 'E-mail':
+        elif label.lower() == 'E-mail'.lower():
             argument = cls.test_mail(argument)
-        elif label == 'Phone Number':
+        elif label.lower() == 'Phone Number'.lower():
             argument = cls.test_phone_number(argument)
-        elif label == 'telephone':
+        elif label.lower() == 'telephone'.lower():
             argument = cls.test_phone_number(argument)
         return argument
 
@@ -39,9 +40,21 @@ class Test:
         :param mail: string ( e-mail to check)
         :return: mail
         """
-        while not cls.is_email_correct(mail):
-            Ui.print_text('Wrong mail')
-            mail = Ui.get_inputs(['Mail:'])[0]
+        mail_list = []
+        users_list = Common.aggregation_users()
+        for item in users_list:
+            mail_list.append(item[1])
+        while True:
+            if cls.is_email_correct(mail):
+                if mail in mail_list:
+                    Ui.print_text('\n E-mail already exist')
+                    mail = Ui.get_inputs(['Mail:'])[0]
+                    break
+            else:
+                Ui.print_text('\nWrong mail format')
+                mail = Ui.get_inputs(['Mail:'])[0]
+
+
         return mail
 
     @classmethod
@@ -52,7 +65,7 @@ class Test:
         :return: phone_number
         """
         while not cls.is_phone_correct(phone_number):
-            Ui.print_text('Wrong phone number')
+            Ui.print_text('\nWrong phone number')
             phone_number = Ui.get_inputs(['Phone number:'])[0]
         return phone_number
 
@@ -64,7 +77,7 @@ class Test:
         :return: name
         """
         while not cls.is_name_correct(name):
-            Ui.print_text('Wrong name')
+            Ui.print_text('\nWrong name')
             name = Ui.get_inputs(['Name:'])[0]
         return name
 
@@ -76,7 +89,7 @@ class Test:
         :return: last_name
         """
         while not cls.is_name_correct(last_name):
-            Ui.print_text('Wrong last name')
+            Ui.print_text('\nWrong last name')
             last_name = Ui.get_inputs(['Last Name:'])[0]
         return last_name
 
@@ -88,7 +101,7 @@ class Test:
             if attribute_name in attribute_list:
                 break
             else:
-                Ui.print_text('Wrong attribute to edit')
+                Ui.print_text('\nWrong attribute to edit')
                 attribute_name = Ui.get_inputs(['Attribute to edit (name,last name,mail,telephone,password): '])[0  ]
         return attribute_name
 
