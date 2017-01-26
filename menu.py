@@ -7,6 +7,7 @@ from employee import Employee
 from common import Common
 from assignment import Assignment
 from submission import Submission
+from datetime import date
 
 class Menu:
 
@@ -133,25 +134,20 @@ class StudentMenu(Menu):
 
             options = '\t1: Show assignment list\n' \
                       '\t2: Add submit assignment\n' \
-                      '\t3: View my grades\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 3)
+            user_choice = Ui.get_menu(options, 0, 2)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
     def choose_option(cls, choice, logged_user):
-
+        students_assignments = Assignment.pass_assign_for_student()
         if choice == '1':
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
-
         elif choice == '2':
-            cls.student_makes_submission(logged_user)
-            pass
-        elif choice == '3':
-            # View grades
-            pass
+            cls.student_makes_submission(logged_user, students_assignments)
+            input('Enter to back to menu')
         elif choice == '0':
             exit()
 
@@ -184,13 +180,19 @@ class StudentMenu(Menu):
             assignments_list_to_print.append(new_line)
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
-        return len(assignments_list_to_print)
+        return assignments_list_to_print
 
     @classmethod
-    def student_makes_submission(cls, logged_user):
-        n = cls.get_assignment_list_with_grades(logged_user)
-        user_choice = Ui.get_menu('', 0, n)
-
+    def student_makes_submission(cls, logged_user, students_assignments):
+        list_to_submit = cls.get_assignment_list_with_grades(logged_user)
+        n = len(list_to_submit)
+        Ui.print_text("Choose number of assignment you want to submit")
+        user_choice = int(Ui.get_menu('', 0, n))
+        assignment_to_submit = students_assignments[user_choice - 1]
+        print(assignment_to_submit)
+        if not Submission.find_submission(logged_user, assignment_to_submit):
+            link = Ui.get_inputs(['Link to your repo:'])
+            Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
 
 class MentorMenu(Menu):
 
