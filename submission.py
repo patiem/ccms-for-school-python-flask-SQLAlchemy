@@ -1,6 +1,7 @@
 from common import *
 from test import Test
 
+
 class Submission:
     """
     Class

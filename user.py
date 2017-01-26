@@ -1,10 +1,9 @@
 from common import *
-
 import hashlib
 from ui import *
 
-class User:
 
+class User:
 
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
@@ -54,9 +53,6 @@ class User:
             if person.mail == mail:
                 person.change_value(name_of_attribute, new_value)
                 return True
-
-
-
 
     @classmethod
     def add_user(cls, name, last_name, mail, telephone):
@@ -131,12 +127,11 @@ class User:
             if user[1] == login and user[2] == str(password):
                 return user
 
-
     @staticmethod
     def login():
 
         Ui.clear()
-        Ui.print_head('Authentication', 'header') #displaying header of site
+        Ui.print_head('Authentication', 'header')  # displaying header of site
 
         attempt = 0
         while True:
@@ -144,7 +139,7 @@ class User:
             inputs = ['Login: ']
             login = Ui.get_inputs(inputs)
             login = login[0]
-            encoded_password = User.encode(Ui.get_pass('Password: ')) #get passoword and encode using hash and salt
+            encoded_password = User.encode(Ui.get_pass('Password: '))  # get passoword and encode using hash and salt
 
             if User.get_id_by_login_and_pass(login, encoded_password) is not None:
                 Ui.clear()
@@ -162,11 +157,8 @@ class User:
 
     @staticmethod
     def encode(password):
-
         _salt = "Coder"
         encoded_password = hashlib.sha256()
         encoded_password.update(_salt.encode('utf-8') + password.encode('utf-8'))
         encoded_password = encoded_password.digest()
-
         return str(encoded_password)
-

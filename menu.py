@@ -11,6 +11,7 @@ from attandance import Attendance
 from datetime import date
 from test import Test
 
+
 class Menu:
 
     @staticmethod
@@ -35,8 +36,8 @@ class Menu:
         """
         Ui.clear()
         print_list = []
-        for list in User.create_list_to_save(object_list):
-            print_list.append([list[0], list[1], list[2], list[3], list[4]])
+        for user in User.create_list_to_save(object_list):
+            print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
@@ -139,14 +140,12 @@ class Menu:
         elif class_name == 'Employee':
             Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
 
-
-
     @staticmethod
     def show_all_students():
         pass
 
     @staticmethod
-    def choose_option(choice):   #a co z przekazaniem zalogowanego uzytkownika??
+    def choose_option(choice):
         raise NotImplementedError()
 
     @staticmethod
@@ -249,7 +248,6 @@ class StudentMenu(Menu):
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
         return assignments_list_to_print
-
 
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
@@ -361,14 +359,13 @@ class MentorMenu(Menu):
 class EmployeeMenu(Menu):
     @staticmethod
     def print_menu(user_object):
-        Ui.clear()
-        Menu.logged_as(user_object)
-        Ui.print_head('Mentor menu:', 'header')
-
-        options = '\t1: Show students\n' \
-                  '\t0: Exit program'
-
-        user_choice = Ui.get_menu(options, 0, 1)
+        while True:
+            Ui.clear()
+            Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+            options = '\t1: Show students\n' \
+                      '\t0: Exit program'
+            user_choice = Ui.get_menu(options, 0, 1)
+            Menu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):

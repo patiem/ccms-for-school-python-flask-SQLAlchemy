@@ -1,6 +1,7 @@
 from user import *
 from common import *
 
+
 class Employee(User):
     object_list = []
     file = 'csv/employees.csv'
@@ -14,5 +15,3 @@ class Employee(User):
         :param mail: string  (mail of student)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
-
-

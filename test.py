@@ -53,8 +53,6 @@ class Test:
             else:
                 Ui.print_text('\nWrong mail format')
                 mail = Ui.get_inputs(['Mail:'])[0]
-
-
         return mail
 
     @classmethod
@@ -102,7 +100,7 @@ class Test:
                 break
             else:
                 Ui.print_text('\nWrong attribute to edit')
-                attribute_name = Ui.get_inputs(['Attribute to edit (name,last name,mail,telephone,password): '])[0  ]
+                attribute_name = Ui.get_inputs(['Attribute to edit (name,last name,mail,telephone,password): '])[0]
         return attribute_name
 
     @staticmethod

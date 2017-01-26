@@ -124,9 +124,10 @@ class Common:
     @classmethod
     def save_file(cls, file, list_to_save):
         """
-        Saves list to csv file.
-        Args:
-             list_to_save (list)
+        Save list to csv
+        :param file: string ( path of file)
+        :param list_to_save: list (list to save in file)
+        :return: None
         """
         atributes_names = cls.read_file(file, 1)
 
@@ -138,6 +139,7 @@ class Common:
                         item[n] = str(cell)
                 f.write(';'.join(item) + '\n')
 
+    @staticmethod
     def make_corect_date(date):
         """
         Take string and returns date as datetime object.
