@@ -170,9 +170,10 @@ class Common:
         Argument: name (str)
         Return: Bool
         """
-        pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
-        if re.search(pattern, name):
-            return True
+        if name:
+            pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
+            if re.search(pattern, name):
+                return True
         return False
 
     @staticmethod

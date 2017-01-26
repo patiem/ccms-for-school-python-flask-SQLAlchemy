@@ -60,7 +60,7 @@ class Menu:
         :param class_name: string ( name of class where user should be removed)
         :return: None
         """
-        mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
+        mail = Ui.get_inputs(['Enter user\'s e-mail to remove him : '])
         if Menu.where_to_remove(class_name, mail[0]):
             Ui.print_text('User removed')
             Ui.get_inputs(['Enter to continue: '])
@@ -371,7 +371,7 @@ class MentorMenu(Menu):
             Ui.get_inputs([''])
 
         elif choice == '5':
-            MentorMenu.add_user(Student.object_list)
+            MentorMenu.add_user('Student')
 
         elif choice == '6':
             MentorMenu.remove_user('Student')
