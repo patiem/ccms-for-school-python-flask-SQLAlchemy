@@ -160,7 +160,7 @@ class MentorMenu(Menu):
             pass
 
         elif choice == '4':
-            pass
+            MentorMenu.show_attendance_of_students()
 
         elif choice == '5':
             MentorMenu.add_user(Student.pass_list())
@@ -173,6 +173,10 @@ class MentorMenu(Menu):
 
         elif choice == '0':
             exit()
+
+    @staticmethod
+    def show_attendance_of_students():
+        pass
 
 
 class EmployeeMenu(Menu):

@@ -46,7 +46,7 @@ class Attendance:
         output_string = ''
         for attendance in cls.attendance_list:
             if attendance.date == date:
-                for student in Student.students_list:
+                for student in Student.object_list:
                     if student.id == attendance.id_student:
                         output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' +\
                                          attendance.present + '\n'
