@@ -46,7 +46,7 @@ class Assignment:
         :param file_name: string (telephone to student)
         :return: None
         """
-        new_id = Common.generate_id(cls.assigments_list)
+        new_id = Common.generate_id()
         new_assignment = cls(new_id, title, author, start_date, end_date, file_name)
         cls.assigments_list.append(new_assignment)
 
@@ -68,18 +68,19 @@ class Assignment:
         assignments_for_students =[]
         for assignment in cls.assigments_list:
             if assignment.start_date <= today:
-                if assignment.end_date >= today:
-                    assignments_for_students.append(assignment)
+                assignments_for_students.append(assignment)
+                """if assignment.end_date >= today:
+                    assignments_for_students.append(assignment)"""
         return assignments_for_students
 
     def __str__(self):
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
 
-"""Assignment.create_assignment_list()
-print(Assignment.assigments_list)
-#Assignment.add_assignment('dupa', 'Gargamel', '1234.05.23', '1234.05.30', 'ass_3.txt')
-#print(Assignment.assigments_list)
-Common.save_file('csv/assignments.csv', Assignment.create_list_to_save())
-lista = Assignment.pass_assign_for_student()
-for item in lista:
-    print(item)"""
+# """Assignment.create_assignment_list()
+# print(Assignment.assigments_list)
+# #Assignment.add_assignment('dupa', 'Gargamel', '1234.05.23', '1234.05.30', 'ass_3.txt')
+# #print(Assignment.assigments_list)
+# Common.save_file('csv/assignments.csv', Assignment.create_list_to_save())
+# lista = Assignment.pass_assign_for_student()
+# for item in lista:
+#     print(item)"""

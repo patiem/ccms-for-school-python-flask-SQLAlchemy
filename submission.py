@@ -89,7 +89,7 @@ class Submission:
         """
         for submission in cls.submission_list:
             if submission.student_idx == student.idx:
-                if submission.assignment_idx == assignment.idx
+                if submission.assignment_idx == assignment.idx:
                     return submission
         return False
 

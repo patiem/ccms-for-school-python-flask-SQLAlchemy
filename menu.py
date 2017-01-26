@@ -28,7 +28,7 @@ class Menu:
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
-    def choose_option(choice):
+    def choose_option(choice):   #a co z przekazaniem zalogowanego uzytkownika??
         raise NotImplementedError()
 
     @staticmethod
@@ -48,6 +48,9 @@ class Menu:
         Mentor.create_object_list(Mentor.pass_list())
         Employee.create_object_list(Employee.pass_list())
         Manager.create_object_list(Manager.pass_list())
+        Assignment.create_assignment_list()
+        Submission.create_submission_list()
+
 
         if logged_user[3] == 'student':
             for student in Student.object_list:
@@ -76,26 +79,30 @@ class Menu:
 
 class StudentMenu(Menu):
 
-    @staticmethod
-    def print_menu(user_object):
-        Ui.clear()
-        Menu.logged_as(user_object)
-        Ui.print_head('Student menu:', 'header')
+    @classmethod
+    def print_menu(cls, user_object):
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Student menu:', 'header')
 
-        options = '\t1: Show assignment list\n' \
-                  '\t2: Add submit assignment\n' \
-                  '\t3: View my grades\n' \
-                  '\t0: Exit program'
+            options = '\t1: Show assignment list\n' \
+                      '\t2: Add submit assignment\n' \
+                      '\t3: View my grades\n' \
+                      '\t0: Exit program'
 
-        user_choice = Ui.get_menu(options, 0, 3)
+            user_choice = Ui.get_menu(options, 0, 3)
+            cls.choose_option(user_choice, user_object)
 
     @classmethod
     def choose_option(cls, choice, logged_user):
+
         if choice == '1':
             cls.get_assignment_list_with_grades(logged_user)
-            pass
+            input('Enter to back to menu')
+
         elif choice == '2':
-            # View grades
+            cls.student_makes_submission(logged_user)
             pass
         elif choice == '3':
             # View grades
@@ -111,11 +118,14 @@ class StudentMenu(Menu):
         :param logged_user: (user object)
         :return:
         """
-        title_list = ['title', 'author', 'start date', 'end date', 'submitted', 'grade']
-        assignments_list= Assignment.pass_assign_for_student()
-        assignments_list_to_print =[]
+        Ui.clear()
+        Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
+        title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
+        assignments_list = Assignment.pass_assign_for_student()    #doublled list of assignments!!
+        assignments_list_to_print = []
+        n = 1
         for assignment in assignments_list:
-            new_line = [assignment.title, assignment.author, assignment.start_date, assignment.end_date]
+            new_line = [str(n), assignment.title, assignment.author, assignment.start_date, assignment.end_date]
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
                 new_line.append('submitted')
@@ -127,7 +137,15 @@ class StudentMenu(Menu):
                 new_line.append('not submitted')
                 new_line.append('None')
             assignments_list_to_print.append(new_line)
+            n += 1
         Ui.print_table(assignments_list_to_print, title_list)
+        return len(assignments_list_to_print)
+
+    @classmethod
+    def student_makes_submission(cls, logged_user):
+        n = cls.get_assignment_list_with_grades(logged_user)
+        user_choice = Ui.get_menu('', 0, n)
+
 
 class MentorMenu(Menu):
 
@@ -239,10 +257,9 @@ class ManagerMenu(Menu):
         else:
             Ui.print_text('No mentor of passed mail')
             
-
-Student.create_object_list(Student.pass_list())
+"""Student.create_object_list(Student.pass_list())
 Mentor.create_object_list(Mentor.pass_list())
 Employee.create_object_list(Employee.pass_list())
 Manager.create_object_list(Manager.pass_list())
 
-ManagerMenu.print_menu(Student.object_list[0])
+StudentMenu.print_menu(Student.object_list[0])"""
