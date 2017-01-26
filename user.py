@@ -5,6 +5,7 @@ from ui import *
 
 class User:
 
+
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create object

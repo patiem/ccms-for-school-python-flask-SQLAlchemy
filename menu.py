@@ -19,8 +19,9 @@ class Menu:
         :param class_name:  string (name of class where new user should be created)
         :return: None
         """
-        label_list = ['Name', 'Last Name', 'E-mail', 'telephone']
+        label_list = ['Name', 'Last Name', 'E-mail', 'Phone Number']
         user_data = Ui.get_inputs(label_list)
+        user_data = Menu.test_arguments(label_list, user_data)
         Menu.where_to_add(class_name, user_data)
         Menu.what_save(class_name)
 
@@ -91,7 +92,7 @@ class Menu:
         Check which class should remove user
         :param class_name: string (name of class that method should be started)
         :param mail: string ( mail of user to remove)
-        :return:
+        :return: True or None
         """
         if class_name == 'Student':
             return Student.remove_object(mail)
@@ -134,6 +135,75 @@ class Menu:
             Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Employee':
             Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+
+    @staticmethod
+    def test_arguments(label_list, arguments_list):
+        """
+        test passed arguments are correct
+        :param label_list: list ( list with names of attribute to check)
+        :param arguments_list: list ( list of arguments to test)
+        :return: arguments_list
+        """
+        idx = 0
+        for label in label_list:
+            if label == 'Name':
+                arguments_list[idx] = Menu.test_name(arguments_list[idx])
+            elif label == 'Last Name':
+                arguments_list[idx] = Menu.test_last_name(arguments_list[idx])
+            elif label == 'E-mail':
+                arguments_list[idx] = Menu.test_mail(arguments_list[idx])
+            elif label == 'Phone Number':
+                arguments_list[idx] =Menu.test_phone_number(arguments_list[idx])
+            idx += 1
+        return arguments_list
+
+    @staticmethod
+    def test_mail(mail):
+        """
+        test if e-mail is correct
+        :param mail: string ( e-mail to check)
+        :return: mail
+        """
+        while not Common.is_email_correct(mail):
+            Ui.print_text('Wrong mail')
+            mail = Ui.get_inputs(['Mail:'])[0]
+        return mail
+
+    @staticmethod
+    def test_phone_number(phone_number):
+        """
+        test phone number
+        :param phone_number: string (phone number to test)
+        :return: phone_number
+        """
+        while not Common.is_phone_correct(phone_number):
+            Ui.print_text('Wrong phone number')
+            phone_number = Ui.get_inputs(['Phone number:'])[0]
+        return phone_number
+
+    @staticmethod
+    def test_name(name):
+        """
+        test name is correct
+        :param name: string ( name to test)
+        :return: name
+        """
+        while not Common.is_name_correct(name):
+            Ui.print_text('Wrong name')
+            name = Ui.get_inputs(['Name:'])[0]
+        return name
+
+    @staticmethod
+    def test_last_name(last_name):
+        """
+        test last name is correct
+        :param last_name: string (last name to test)
+        :return: last_name
+        """
+        while not Common.is_name_correct(last_name):
+            Ui.print_text('Wrong last name')
+            last_name = Ui.get_inputs(['Last Name:'])[0]
+        return last_name
 
     @staticmethod
     def show_all_students():
