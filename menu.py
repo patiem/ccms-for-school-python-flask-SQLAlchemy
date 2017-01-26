@@ -28,23 +28,42 @@ class Menu:
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
-    def edit_user(object_list, class_name):
+    def edit_user(class_name):
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ', 'what to edit (name,last name,mail,telephone,password): ',
                        'new value: '])
-        User.edit_user(object_list, edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
 
     @staticmethod
-    def remove_user(object_list, class_name):
+    def remove_user(class_name):
         mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
-        if User.remove_object(mail[0], object_list):
+        if Menu.where_to_remove(class_name, mail[0]):
             Ui.print_text('User removed')
         else:
             Ui.print_text('No user of passed mail')
         Menu.what_save(class_name)
 
-    # @staticmethod
-    # def where_to_remove(class_name, mail):
+    @staticmethod
+    def where_to_edit(class_name, edit_arguments_list):
+        if class_name == 'Student':
+            Student.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Mentor':
+            Mentor.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Manager':
+            Manager.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Employee':
+            Employee.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+
+    @staticmethod
+    def where_to_remove(class_name, mail):
+        if class_name == 'Student':
+            return Student.remove_object(mail)
+        elif class_name == 'Mentor':
+            return Mentor.remove_object(mail)
+        elif class_name == 'Manager':
+            return Manager.remove_object(mail)
+        elif class_name == 'Employee':
+            return Employee.remove_object(mail)
 
     @staticmethod
     def what_save(class_name):
@@ -291,13 +310,13 @@ class ManagerMenu(Menu):
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
         elif choice == '3':
-            ManagerMenu.remove_user(Mentor.object_list, 'Mentor')
+            ManagerMenu.remove_user('Mentor')
         elif choice == '4':
             ManagerMenu.add_user('Student')
         elif choice == '5':
             ManagerMenu.print_user(Student.object_list)
         elif choice == '6':
-            ManagerMenu.edit_user(Mentor.object_list, 'Mentor')
+            ManagerMenu.edit_user('Mentor')
         else:
             exit()
 
@@ -305,9 +324,9 @@ class ManagerMenu(Menu):
 
 
             
-"""Student.create_object_list(Student.pass_list())
-Mentor.create_object_list(Mentor.pass_list())
-Employee.create_object_list(Employee.pass_list())
-Manager.create_object_list(Manager.pass_list())
-
-StudentMenu.print_menu(Student.object_list[0])"""
+# Student.create_object_list(Student.pass_list())
+# Mentor.create_object_list(Mentor.pass_list())
+# Employee.create_object_list(Employee.pass_list())
+# Manager.create_object_list(Manager.pass_list())
+#
+# ManagerMenu.print_menu(Student.object_list[0])

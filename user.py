@@ -34,8 +34,8 @@ class User:
         elif name_of_attribute == 'password':
             self.password = User.encode(new_value)
 
-    @staticmethod
-    def edit_user(object_list, mail, name_of_attribute, new_value):
+    @classmethod
+    def edit_user(cls, mail, name_of_attribute, new_value):
         """
         Edit user passed attribute
         :param mail: string (e-mail of user to edit)
@@ -44,7 +44,7 @@ class User:
         :param new_value: string (new value for attribute)
         :return: None
         """
-        for person in object_list:
+        for person in cls.object_list:
             if person.mail == mail:
                 person.change_value(name_of_attribute, new_value)
 
