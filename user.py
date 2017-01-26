@@ -25,7 +25,7 @@ class User:
     def change_value(self, name_of_attribute, new_value):
         if name_of_attribute == 'name':
             self.name = new_value
-        elif name_of_attribute == 'last Name':
+        elif name_of_attribute == 'last name':
             self.last_name = new_value
         elif name_of_attribute == 'mail':
             self.mail = new_value

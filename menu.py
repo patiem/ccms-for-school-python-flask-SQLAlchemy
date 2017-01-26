@@ -29,8 +29,9 @@ class Menu:
 
     @staticmethod
     def edit_user(class_name):
-        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ', 'what to edit (name,last name,mail,telephone,password): ',
-                       'new value: '])
+        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
+                                             'what to edit (name,last name,mail,telephone,password): ',
+                                             'new value: '])
         Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
 
