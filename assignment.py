@@ -1,5 +1,6 @@
 from common import *
 import datetime
+from test import Test
 
 class Assignment:
     """
@@ -27,11 +28,11 @@ class Assignment:
             idx = item[0]
             title = item[1]
             author = item[2]
-            if Common.is_date_correct(item[3]):
+            if Test.is_date_correct(item[3]):
                 start_date = Common.make_corect_date(item[3])
-                if Common.is_date_correct(item[4]):
+                if Test.is_date_correct(item[4]):
                     end_date = Common.make_corect_date(item[4])
-                    if Common.does_file_exist('csv/assignments_description/'+ item[5]):
+                    if Test.does_file_exist('csv/assignments_description/'+ item[5]):
                         file_name = item[5]
                         cls.assigments_list.append(cls(idx, title, author, start_date, end_date, file_name))
 
