@@ -1,6 +1,7 @@
 from user import *
 from common import *
 
+
 class Manager(User):
     object_list = []
     file = 'csv/managers.csv'
@@ -15,5 +16,3 @@ class Manager(User):
         :param telephone: string (telephone number)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
-
-

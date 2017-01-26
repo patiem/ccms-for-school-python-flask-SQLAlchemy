@@ -9,6 +9,8 @@ from assignment import Assignment
 from submission import Submission
 from attandance import Attendance
 from datetime import date
+from test import Test
+
 
 class Menu:
 
@@ -21,7 +23,7 @@ class Menu:
         """
         label_list = ['Name', 'Last Name', 'E-mail', 'Phone Number']
         user_data = Ui.get_inputs(label_list)
-        user_data = Menu.test_arguments(label_list, user_data)
+        user_data = Test.test_add_arguments(label_list, user_data)
         Menu.where_to_add(class_name, user_data)
         Menu.what_save(class_name)
 
@@ -34,8 +36,8 @@ class Menu:
         """
         Ui.clear()
         print_list = []
-        for list in User.create_list_to_save(object_list):
-            print_list.append([list[0], list[1], list[2], list[3], list[4]])
+        for user in User.create_list_to_save(object_list):
+            print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
                        ['id', 'name', 'last name', 'mail', 'telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
@@ -48,8 +50,10 @@ class Menu:
         :return: None
         """
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (name,last name,mail,telephone,password): ',
+                                             'what to edit (name,last name,e-mail,telephone,password): ',
                                              'new value: '])
+        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
+        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
 
@@ -135,75 +139,6 @@ class Menu:
             Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Employee':
             Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
-
-    @staticmethod
-    def test_arguments(label_list, arguments_list):
-        """
-        test passed arguments are correct
-        :param label_list: list ( list with names of attribute to check)
-        :param arguments_list: list ( list of arguments to test)
-        :return: arguments_list
-        """
-        idx = 0
-        for label in label_list:
-            if label == 'Name':
-                arguments_list[idx] = Menu.test_name(arguments_list[idx])
-            elif label == 'Last Name':
-                arguments_list[idx] = Menu.test_last_name(arguments_list[idx])
-            elif label == 'E-mail':
-                arguments_list[idx] = Menu.test_mail(arguments_list[idx])
-            elif label == 'Phone Number':
-                arguments_list[idx] =Menu.test_phone_number(arguments_list[idx])
-            idx += 1
-        return arguments_list
-
-    @staticmethod
-    def test_mail(mail):
-        """
-        test if e-mail is correct
-        :param mail: string ( e-mail to check)
-        :return: mail
-        """
-        while not Common.is_email_correct(mail):
-            Ui.print_text('Wrong mail')
-            mail = Ui.get_inputs(['Mail:'])[0]
-        return mail
-
-    @staticmethod
-    def test_phone_number(phone_number):
-        """
-        test phone number
-        :param phone_number: string (phone number to test)
-        :return: phone_number
-        """
-        while not Common.is_phone_correct(phone_number):
-            Ui.print_text('Wrong phone number')
-            phone_number = Ui.get_inputs(['Phone number:'])[0]
-        return phone_number
-
-    @staticmethod
-    def test_name(name):
-        """
-        test name is correct
-        :param name: string ( name to test)
-        :return: name
-        """
-        while not Common.is_name_correct(name):
-            Ui.print_text('Wrong name')
-            name = Ui.get_inputs(['Name:'])[0]
-        return name
-
-    @staticmethod
-    def test_last_name(last_name):
-        """
-        test last name is correct
-        :param last_name: string (last name to test)
-        :return: last_name
-        """
-        while not Common.is_name_correct(last_name):
-            Ui.print_text('Wrong last name')
-            last_name = Ui.get_inputs(['Last Name:'])[0]
-        return last_name
 
     @staticmethod
     def show_all_students():
@@ -456,14 +391,13 @@ class MentorMenu(Menu):
 class EmployeeMenu(Menu):
     @staticmethod
     def print_menu(user_object):
-        Ui.clear()
-        Menu.logged_as(user_object)
-        Ui.print_head('Mentor menu:', 'header')
-
-        options = '\t1: Show students\n' \
-                  '\t0: Exit program'
-
-        user_choice = Ui.get_menu(options, 0, 1)
+        while True:
+            Ui.clear()
+            Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
+            options = '\t1: Show students\n' \
+                      '\t0: Exit program'
+            user_choice = Ui.get_menu(options, 0, 1)
+            Menu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
@@ -507,16 +441,22 @@ class ManagerMenu(Menu):
         :return: None
         """
         if choice == '1':
+            Ui.clear()
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
+            Ui.clear()
         elif choice == '3':
+            Ui.clear()
             ManagerMenu.remove_user('Mentor')
         elif choice == '4':
+            Ui.clear()
             ManagerMenu.add_user('Student')
         elif choice == '5':
+            Ui.clear()
             ManagerMenu.print_user(Student.object_list)
         elif choice == '6':
+            Ui.clear()
             ManagerMenu.edit_user('Mentor')
         else:
             exit()

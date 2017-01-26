@@ -1,6 +1,7 @@
 from user import *
 from common import *
 
+
 class Mentor(User):
     object_list = []
     file = 'csv/mentors.csv'
@@ -14,4 +15,3 @@ class Mentor(User):
         :param mail: string  (mail of student)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
-

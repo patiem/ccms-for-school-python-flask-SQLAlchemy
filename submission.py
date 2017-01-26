@@ -1,4 +1,6 @@
 from common import *
+from test import Test
+
 
 class Submission:
     """
@@ -31,7 +33,7 @@ class Submission:
         for item in list_from_csv:
             student_idx = item[0]
             assignment_idx = item[1]
-            if Common.is_date_correct(item[2]):
+            if Test.is_date_correct(item[2]):
                 date_of_submission = Common.make_corect_date(item[2])
                 link = item[3]
                 if item[4] != 'None':

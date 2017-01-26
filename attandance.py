@@ -104,9 +104,7 @@ class Attendance:
             for attendance in cls.attendance_list:
                 if attendance.id_student == student.idx:
                     student_attendance[attendance.present] += 1
-
-            engagement_list.append([student.name, student.last_name, str(student_attendance['Present']), str(student_attendance['Late']),
+            engagement_list.append([student.name, student.last_name, str(student_attendance['Present']),
+                                    str(student_attendance['Late']),
                                     str(student_attendance['Absent'])])
-
-        # print(engagement_list)
         return engagement_list

@@ -1,17 +1,18 @@
 import os
 import getpass
 
-class color:
+
+class Color:
     """Simple Class of coloring text"""
 
-    #terminal design
+    # terminal design
     Header = '\033[92m'
     Warning = '\033[93m'
     Error = '\033[91m'
 
     TableHead = '\033[92m'
 
-    #additional colors
+    # additional colors
     Red = '\033[91m'
     Green = '\033[92m'
     Blue = '\033[94m'
@@ -23,6 +24,7 @@ class color:
     Black = '\033[90m'
     End = '\033[0m'
     Default = '\033[99m'
+
 
 class Ui:
 
@@ -78,14 +80,14 @@ class Ui:
         cell_size = table_size[1]
         table_size = table_size[0]
 
-        print(color.TableHead + '', '-' * table_size)
+        print(Color.TableHead + '', '-' * table_size)
 
         for i, title in enumerate(title_list):
             if i == 0:
                 print(' |', end="")
             print(' {:{width}} |'.format(title, width=cell_size[i]), end="")
 
-        print('\n ' + '-' * table_size + color.End )
+        print('\n ' + '-' * table_size + Color.End)
 
         for items in table:
             for i, item in enumerate(items):
@@ -99,7 +101,7 @@ class Ui:
         print()
 
     @staticmethod
-    def print_head(message, type = ''):
+    def print_head(message, type=''):
         """
         Displays header
 
@@ -112,19 +114,19 @@ class Ui:
 
         """
 
-        message = '| '+message+ ' |'
+        message = '| ' + message + ' |'
 
         if type == 'header':
-            print(color.Header + '-' * len(message))  # separator
+            print(Color.Header + '-' * len(message))  # separator
         elif type == 'warning':
-            print(color.Warning + '-' * len(message))  # separator
+            print(Color.Warning + '-' * len(message))  # separator
         elif type == 'error':
-            print(color.Error + '-' * len(message))  # separator
+            print(Color.Error + '-' * len(message))  # separator
         else:
-            print(color.White + '-' * len(message))  # separator
+            print(Color.White + '-' * len(message))  # separator
 
         print(message)
-        print('-' * (len(message)) + color.End)  # separator
+        print('-' * (len(message)) + Color.End)  # separator
 
     @staticmethod
     def print_text(text):
@@ -154,7 +156,6 @@ class Ui:
 
         Args:
             list_labels: list of strings - labels of inputs
-            title: title of the "input section"
 
         Returns:
             List of data given by the user. Sample return:
@@ -189,23 +190,3 @@ class Ui:
                 print('Wrong select!')
 
         return option
-
-
-
-
-#Examples of using Ui
-
-# Ui.clear() #clearing site
-#
-# table = list([['cell 1', 'cell 2', 'cell 3'], ['cell 1', 'cell 2', 'cell 3']])
-# table_title = list(['title 1', 'title 2', 'title 3'])
-#
-# Ui.print_table(table, table_title) #displaying table
-# Ui.print_head('To jest error', 'error' ) #displaying errors
-# Ui.print_head('To jest header', 'header') #displaying header of site
-# Ui.print_head('To jest warning', 'warning') #displaying header of site
-
-# Ui.print_text("Simple text to print \n\n")
-#
-# inputs = ['First input', 'Second input', 'Third input']
-# print(Ui.get_inputs(inputs))
