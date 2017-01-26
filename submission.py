@@ -1,5 +1,4 @@
 from common import *
-import datetime
 
 class Submission:
     """
@@ -94,5 +93,5 @@ class Submission:
                     return submission
         return False
 
-    def change_grade(self):
-        pass
+    def change_grade(self, assignment_to_grade, grade):
+        assignment_to_grade.grade = grade
