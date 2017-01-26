@@ -215,6 +215,7 @@ class StudentMenu(Menu):
             link = Ui.get_inputs(['Link to your repo:'])
             Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
 
+
 class MentorMenu(Menu):
 
     @staticmethod
@@ -247,7 +248,7 @@ class MentorMenu(Menu):
             pass
 
         elif choice == '3':
-            pass
+            MentorMenu.grade_assignment()
 
         elif choice == '4':
             Ui.clear()
@@ -271,6 +272,11 @@ class MentorMenu(Menu):
         titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
         engagement_list = Attendance.students_engagement()
         Ui.print_table(engagement_list, titles)
+
+    @staticmethod
+    def grade_assignment():
+        submissions = Common.read_file('csv/submission.csv')
+
 
 
 class EmployeeMenu(Menu):
