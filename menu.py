@@ -49,7 +49,7 @@ class Menu:
         :return: None
         """
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (name,last name,mail,telephone,password): ',
+                                             'what to edit (name,last name,e-mail,telephone,password): ',
                                              'new value: '])
         edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
@@ -402,16 +402,22 @@ class ManagerMenu(Menu):
         :return: None
         """
         if choice == '1':
+            Ui.clear()
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
+            Ui.clear()
         elif choice == '3':
+            Ui.clear()
             ManagerMenu.remove_user('Mentor')
         elif choice == '4':
+            Ui.clear()
             ManagerMenu.add_user('Student')
         elif choice == '5':
+            Ui.clear()
             ManagerMenu.print_user(Student.object_list)
         elif choice == '6':
+            Ui.clear()
             ManagerMenu.edit_user('Mentor')
         else:
             exit()
