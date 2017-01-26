@@ -210,10 +210,6 @@ class Menu:
         pass
 
     @staticmethod
-    def choose_option(choice):   #a co z przekazaniem zalogowanego uzytkownika??
-        raise NotImplementedError()
-
-    @staticmethod
     def logged_as(logged_user):
         Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
@@ -314,7 +310,6 @@ class StudentMenu(Menu):
         Ui.print_table(assignments_list_to_print, title_list)
         return assignments_list_to_print
 
-
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
         list_to_submit = cls.get_assignment_list_with_grades(logged_user)
@@ -343,9 +338,10 @@ class MentorMenu(Menu):
                       '\t2: Add assignment\n' \
                       '\t3: Grade submission\n' \
                       '\t4: Check attendance of students\n' \
-                      '\t5: Add student\n' \
-                      '\t6: Remove student\n' \
-                      '\t7: Edit student\n' \
+                      '\t5: Checking the presence\n' \
+                      '\t6: Add student\n' \
+                      '\t7: Remove student\n' \
+                      '\t8: Edit student\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 7)
@@ -371,12 +367,16 @@ class MentorMenu(Menu):
             Ui.get_inputs([''])
 
         elif choice == '5':
-            MentorMenu.add_user('Student')
+            MentorMenu.switch_attendance()
+            Ui.get_inputs([''])
 
         elif choice == '6':
-            MentorMenu.remove_user('Student')
+            MentorMenu.add_user('Student')
 
         elif choice == '7':
+            MentorMenu.remove_user('Student')
+
+        elif choice == '8':
             MentorMenu.edit_user('Student')
 
         elif choice == '0':
@@ -384,12 +384,20 @@ class MentorMenu(Menu):
 
     @staticmethod
     def show_attendance_of_students():
+        """
+        Prints students in table with their presences
+        :return:None
+        """
         titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
         engagement_list = Attendance.students_engagement()
         Ui.print_table(engagement_list, titles)
 
     @staticmethod
     def grade_submission():
+        """
+        It enables assessment tasks
+        :return:None
+        """
         titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade']
         grades_list = []
         n = 1
@@ -408,6 +416,11 @@ class MentorMenu(Menu):
 
     @staticmethod
     def add_assignment(user_object):
+        """
+        Adds new assignment
+        :param user_object: User object (The currently logged in user)
+        :return: None
+        """
         author = user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
         start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
@@ -420,6 +433,24 @@ class MentorMenu(Menu):
             Ui.print_text('File is created')
 
         Assignment.add_assignment(title, author, start_date, end_date, filename)
+
+    @staticmethod
+    def switch_attendance():
+        """
+        Sets the state of the presence each student at today
+        :return: None
+        """
+        Attendance.create_new_day()
+        for student in Attendance.attendance_list:
+            Ui.clear()
+            if student.date == str(date.today()):
+                student_data = Common.get_by_id(student.id_student)
+                Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
+
+                text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
+                mentor_choice = Ui.get_menu(text, 1, 3)
+
+                Attendance.toggle_present(student, mentor_choice)
 
 
 class EmployeeMenu(Menu):
@@ -489,9 +520,3 @@ class ManagerMenu(Menu):
             ManagerMenu.edit_user('Mentor')
         else:
             exit()
-
-
-
-
-            
-

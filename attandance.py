@@ -1,8 +1,10 @@
 from common import Common
 from student import Student
+import datetime
 
 
 class Attendance:
+    file = 'csv/attendance.csv'
     attendance_list = []
 
     def __init__(self, id_student, date, present):
@@ -17,24 +19,38 @@ class Attendance:
         self.present = present
 
     @classmethod
-    def toggle_present(cls, date, student_id, choice):
+    def toggle_present(cls, student, choice):
         """
         Set the presence of a student
-        :param date: string (date: DD.MM.YYYY)
-        :param student_id: string (user id)
+        :param student: Attendance object
         :param choice: string (1/2/3)
         :return: None
         """
-        for student in cls.attendance_list:
-            if student.id_student == student_id:
-                if student.date == date:
-                    if choice == '1':
-                        student.present = 'Present'
-                    elif choice == '2':
-                        student.present = 'Late'
-                    elif choice == '3':
-                        student.present = 'Absent'
-                    return
+
+        if choice == '1':
+            student.present = 'Present'
+        elif choice == '2':
+            student.present = 'Late'
+        elif choice == '3':
+            student.present = 'Absent'
+
+        cls.save_attendance_list()
+
+    @classmethod
+    def save_attendance_list(cls):
+        list_to_save = []
+        for record in cls.attendance_list:
+            list_to_save.append([record.id_student, record.date, record.present])
+
+        Common.save_file(cls.file, list_to_save)
+
+    @classmethod
+    def create_new_day(cls):
+        today = str(datetime.date.today())
+        for student in Student.object_list:
+            cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
+        cls.save_attendance_list()
+
 
     @classmethod
     def get_attendance_by_date(cls, date):
@@ -74,7 +90,7 @@ class Attendance:
         """
         Creates attendance_list with Attendance objects
         """
-        student_list = Common.read_file('csv/attendance.csv')
+        student_list = Common.read_file(cls.file)
         for student in student_list:
             cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
 
