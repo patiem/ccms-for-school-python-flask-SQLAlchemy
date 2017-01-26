@@ -183,7 +183,7 @@ class StudentMenu(Menu):
         Ui.clear()
         Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
         title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
-        assignments_list = Assignment.pass_assign_for_student()    #doublled list of assignments!!
+        assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
         for assignment in assignments_list:
@@ -210,10 +210,12 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        print(assignment_to_submit)
         if not Submission.find_submission(logged_user, assignment_to_submit):
             link = Ui.get_inputs(['Link to your repo:'])
             Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
+        else:
+            Ui.print_text("You can't submit this assignment - it's already submitted")
+
 
 
 class MentorMenu(Menu):
