@@ -489,9 +489,3 @@ class ManagerMenu(Menu):
             ManagerMenu.edit_user('Mentor')
         else:
             exit()
-
-
-
-
-            
-
