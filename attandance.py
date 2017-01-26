@@ -46,7 +46,7 @@ class Attendance:
         output_string = ''
         for attendance in cls.attendance_list:
             if attendance.date == date:
-                for student in Student.students_list:
+                for student in Student.object_list:
                     if student.id == attendance.id_student:
                         output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' +\
                                          attendance.present + '\n'
@@ -62,7 +62,7 @@ class Attendance:
         output_string = ''
         for attendance in cls.attendance_list:
             if attendance.id_student == student_id:
-                for student in Student.students_list:
+                for student in Student.object_list:
                     if student.id == attendance.id_student:
                         output_string += attendance.date + ' ' + student.name + ' ' + student.last_name \
                                          + ' presence: ' + attendance.present + '\n'
@@ -77,6 +77,21 @@ class Attendance:
         student_list = Common.read_file('csv/attendance.csv')
         for student in student_list:
             cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
+
+    @classmethod
+    def students_engagement(cls):
+        engagement_list = []
+        titles = ['Student', 'Engagement [%]']
+        for student in Student.object_list:
+            student_attendance = {'Present': 0, 'Late': 0, 'Absent': 0}
+            for attendance in cls.attendance_list:
+                if attendance.id_student == student.idx:
+                    student_attendance[attendance.present] += 1
+
+            engagement_list.append([str(student_attendance['Present']), str(student_attendance['Late']),
+                                    str(student_attendance['Absent'])])
+
+
 
 #
 #

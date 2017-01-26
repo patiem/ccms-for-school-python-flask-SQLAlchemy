@@ -13,6 +13,7 @@ class User:
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
+        :param password: string (encode password to usser account)
         """
         self.idx = idx
         self.name = name
@@ -30,11 +31,15 @@ class User:
             self.mail = new_value
         elif name_of_attribute == 'telephone':
             self.telephone = new_value
+        elif name_of_attribute == 'password':
+            self.password = User.encode(new_value)
 
     @staticmethod
-    def edit_user(mail, object_list, name_of_attribute, new_value):
+    def edit_user(object_list, mail, name_of_attribute, new_value):
         """
         Edit user passed attribute
+        :param mail: string (e-mail of user to edit)
+        :param object_list: list ( object list contain user)
         :param name_of_attribute: string (what attribute should be edit)
         :param new_value: string (new value for attribute)
         :return: None
@@ -48,7 +53,7 @@ class User:
 
 
     @classmethod
-    def add_user(cls, name, last_name, mail, telephone, password, object_list):
+    def add_user(cls, name, last_name, mail, telephone, object_list):
         """
         Add new user object to list
         :param name: string (name of student)
@@ -58,16 +63,10 @@ class User:
         :param object_list: list (list of objects to expand)
         :return: None
         """
-        if Common.is_email_correct(mail):
-            if Common.is_phone_correct(telephone):
-                new_id = Common.generate_id(object_list)
-                password = User.encode('1')
-                new_student = cls(new_id, name, last_name, mail, telephone, password)
-                object_list.append(new_student)
-            else:
-                raise ValueError('Wrong number')
-        else:
-            raise ValueError('Wrong e-mail')
+        new_id = Common.generate_id(object_list)
+        password = User.encode('1')
+        new_student = cls(new_id, name, last_name, mail, telephone, password)
+        object_list.append(new_student)
 
     @classmethod
     def create_object_list(cls, object_list):
@@ -81,14 +80,13 @@ class User:
         for person in list_from_csv:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
 
-    @classmethod
-    def remove_object(cls, mail):
+    @staticmethod
+    def remove_object(mail, object_list):
         """
         Remove object from list
         :param idx: string ( id of student to remove)
         :return: None or True if object removed
         """
-        object_list = cls.object_list
         for person in object_list:
             if person.mail == mail:
                 object_list.remove(person)
