@@ -25,7 +25,7 @@ class User:
     def change_value(self, name_of_attribute, new_value):
         if name_of_attribute == 'name':
             self.name = new_value
-        elif name_of_attribute == 'last Name':
+        elif name_of_attribute == 'last name':
             self.last_name = new_value
         elif name_of_attribute == 'mail':
             self.mail = new_value
@@ -34,8 +34,8 @@ class User:
         elif name_of_attribute == 'password':
             self.password = User.encode(new_value)
 
-    @staticmethod
-    def edit_user(object_list, mail, name_of_attribute, new_value):
+    @classmethod
+    def edit_user(cls, mail, name_of_attribute, new_value):
         """
         Edit user passed attribute
         :param mail: string (e-mail of user to edit)
@@ -44,7 +44,7 @@ class User:
         :param new_value: string (new value for attribute)
         :return: None
         """
-        for person in object_list:
+        for person in cls.object_list:
             if person.mail == mail:
                 person.change_value(name_of_attribute, new_value)
 
@@ -53,7 +53,7 @@ class User:
 
 
     @classmethod
-    def add_user(cls, name, last_name, mail, telephone, object_list):
+    def add_user(cls, name, last_name, mail, telephone):
         """
         Add new user object to list
         :param name: string (name of student)
@@ -63,10 +63,10 @@ class User:
         :param object_list: list (list of objects to expand)
         :return: None
         """
-        new_id = Common.generate_id(object_list)
+        new_id = Common.generate_id()
         password = User.encode('1')
         new_student = cls(new_id, name, last_name, mail, telephone, password)
-        object_list.append(new_student)
+        cls.object_list.append(new_student)
 
     @classmethod
     def create_object_list(cls, object_list):
@@ -80,16 +80,16 @@ class User:
         for person in list_from_csv:
             object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
 
-    @staticmethod
-    def remove_object(mail, object_list):
+    @classmethod
+    def remove_object(cls, mail):
         """
         Remove object from list
         :param idx: string ( id of student to remove)
         :return: None or True if object removed
         """
-        for person in object_list:
+        for person in cls.object_list:
             if person.mail == mail:
-                object_list.remove(person)
+                cls.object_list.remove(person)
                 return True
 
     @classmethod

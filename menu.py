@@ -7,7 +7,7 @@ from employee import Employee
 from common import Common
 from assignment import Assignment
 from submission import Submission
-from datetime import date
+from attandance import Attendance
 
 class Menu:
 
@@ -29,20 +29,42 @@ class Menu:
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
-    def edit_user(object_list, class_name):
+    def edit_user(class_name):
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ', 'what to edit (name,last name,mail,telephone,password): ',
                        'new value: '])
-        User.edit_user(object_list, edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
 
     @staticmethod
-    def remove_user(object_list, class_name):
+    def remove_user(class_name):
         mail = Ui.get_inputs(['Enter mentor e-mail to remove him : '])
-        if User.remove_object(mail[0], object_list):
+        if Menu.where_to_remove(class_name, mail[0]):
             Ui.print_text('User removed')
         else:
             Ui.print_text('No user of passed mail')
         Menu.what_save(class_name)
+
+    @staticmethod
+    def where_to_edit(class_name, edit_arguments_list):
+        if class_name == 'Student':
+            Student.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Mentor':
+            Mentor.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Manager':
+            Manager.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+        elif class_name == 'Employee':
+            Employee.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+
+    @staticmethod
+    def where_to_remove(class_name, mail):
+        if class_name == 'Student':
+            return Student.remove_object(mail)
+        elif class_name == 'Mentor':
+            return Mentor.remove_object(mail)
+        elif class_name == 'Manager':
+            return Manager.remove_object(mail)
+        elif class_name == 'Employee':
+            return Employee.remove_object(mail)
 
     @staticmethod
     def what_save(class_name):
@@ -58,16 +80,13 @@ class Menu:
     @staticmethod
     def where_to_add(class_name, user_data):
         if class_name == 'Student':
-            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Student.object_list)
+            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Mentor':
-            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Mentor.object_list)
+            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Manager':
-            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Manager.object_list)
+            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
         elif class_name == 'Employee':
-            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3], Employee.object_list)
-
-
-
+            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
 
     @staticmethod
     def show_all_students():
@@ -96,6 +115,7 @@ class Menu:
         Manager.create_object_list(Manager.pass_list())
         Assignment.create_assignment_list()
         Submission.create_submission_list()
+        Attendance.create_attendance_list()
 
 
         if logged_user[3] == 'student':
@@ -198,20 +218,24 @@ class MentorMenu(Menu):
 
     @staticmethod
     def print_menu(user_object):
-        Ui.clear()
-        Menu.logged_as(user_object)
-        Ui.print_head('Mentor menu:', 'header')
 
-        options = '\t1: Show students\n' \
-                  '\t2: Add assignment\n' \
-                  '\t3: Grade assignment\n' \
-                  '\t4: Check attendance of students\n' \
-                  '\t5: Add student\n' \
-                  '\t6: Remove student\n' \
-                  '\t7: Edit student\'s data' \
-                  '\t0: Exit program'
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Mentor menu:', 'header')
 
-        user_choice = Ui.get_menu(options, 0, 7)
+            options = '\t1: Show students\n' \
+                      '\t2: Add assignment\n' \
+                      '\t3: Grade assignment\n' \
+                      '\t4: Check attendance of students\n' \
+                      '\t5: Add student\n' \
+                      '\t6: Remove student\n' \
+                      '\t7: Edit student\n' \
+                      '\t0: Exit program'
+
+            user_choice = Ui.get_menu(options, 0, 7)
+
+            MentorMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
@@ -225,23 +249,27 @@ class MentorMenu(Menu):
             pass
 
         elif choice == '4':
+            Ui.clear()
             MentorMenu.show_attendance_of_students()
+            Ui.get_inputs([''])
 
         elif choice == '5':
             MentorMenu.add_user(Student.object_list)
 
         elif choice == '6':
-            pass
+            MentorMenu.remove_user('Student')
 
         elif choice == '7':
-            pass
+            MentorMenu.edit_user('Student')
 
         elif choice == '0':
             exit()
 
     @staticmethod
     def show_attendance_of_students():
-        pass
+        titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
+        engagement_list = Attendance.students_engagement()
+        Ui.print_table(engagement_list, titles)
 
 
 class EmployeeMenu(Menu):
@@ -293,13 +321,13 @@ class ManagerMenu(Menu):
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
         elif choice == '3':
-            ManagerMenu.remove_user(Mentor.object_list, 'Mentor')
+            ManagerMenu.remove_user('Mentor')
         elif choice == '4':
             ManagerMenu.add_user('Student')
         elif choice == '5':
             ManagerMenu.print_user(Student.object_list)
         elif choice == '6':
-            ManagerMenu.edit_user(Mentor.object_list, 'Mentor')
+            ManagerMenu.edit_user('Mentor')
         else:
             exit()
 
@@ -307,9 +335,9 @@ class ManagerMenu(Menu):
 
 
             
-"""Student.create_object_list(Student.pass_list())
-Mentor.create_object_list(Mentor.pass_list())
-Employee.create_object_list(Employee.pass_list())
-Manager.create_object_list(Manager.pass_list())
-
-StudentMenu.print_menu(Student.object_list[0])"""
+# Student.create_object_list(Student.pass_list())
+# Mentor.create_object_list(Mentor.pass_list())
+# Employee.create_object_list(Employee.pass_list())
+# Manager.create_object_list(Manager.pass_list())
+#
+# ManagerMenu.print_menu(Student.object_list[0])
