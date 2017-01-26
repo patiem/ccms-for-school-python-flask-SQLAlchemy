@@ -1,5 +1,4 @@
 import csv
-import re
 import datetime
 
 
@@ -139,72 +138,6 @@ class Common:
                         item[n] = str(cell)
                 f.write(';'.join(item) + '\n')
 
-    @staticmethod
-    def is_email_correct(email):
-        """
-        Validates if email is correct gmail adress.
-        Argument: email (str)
-        Return: Bool
-        """
-        if email:
-            pattern = r'^((\w+\.*)+)@\w+.\w+$'
-            if re.search(pattern, email):
-                return True
-        return False
-
-    @staticmethod
-    def is_phone_correct(phone):
-        """
-        Validates if phone number is correct polish mobile number.
-        Argument: phone (str)
-        Return: Bool
-        """
-        if phone:
-            pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
-            if re.search(pattern, phone):
-                return True
-        return False
-
-    @staticmethod
-    def is_name_correct(name):
-        """
-        Validates if name is correct - can have more than one part with space or '-' between.
-        Argument: name (str)
-        Return: Bool
-        """
-        if name:
-            pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
-            if re.search(pattern, name):
-                return True
-        return False
-
-    @staticmethod
-    def is_date_correct(date):
-        """
-        Validates if date is correct and can be made datetime object.
-        Argument: date (str - should be in format YYYY.MM.DD or YYYY-MM-DD or YYYY MM DD)
-        Return: Bool
-        """
-        if date:
-            pattern = r'^\d{4}[ -\.](0\d|1[012])[ -\.]([012]\d|3[01])$'
-            if re.search(pattern, date):
-                return True
-        return False
-
-    @staticmethod
-    def does_file_exist(file):
-        """
-        Validates if file exists.
-        Args: file (str with file's path)
-        Return: Boolean
-        """
-        try:
-            open(file, 'r')
-            return True
-        except FileNotFoundError:
-            return False
-
-    @staticmethod
     def make_corect_date(date):
         """
         Take string and returns date as datetime object.
