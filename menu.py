@@ -282,6 +282,7 @@ class StudentMenu(Menu):
         for assignment in assignments_list:
             assignments_list_to_print.append([str(n), assignment.title, str(assignment.start_date),
                                               str(assignment.end_date)])
+            n += 1
         Ui.print_table(assignments_list_to_print, ['nr', 'title', 'start date', 'end date'])
         n = len(assignments_list)
         Ui.print_text("Choose number of assignment you want read, 0 for exit")
