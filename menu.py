@@ -248,7 +248,7 @@ class StudentMenu(Menu):
         :return: assignments_list_to_print
         """
         Ui.clear()
-        Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
+        Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
         title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
@@ -276,7 +276,9 @@ class StudentMenu(Menu):
         Prints description of a chosen assignment
         :return:
         """
+
         Ui.clear()
+        Ui.print_head("List of assigments", "header")
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
@@ -293,6 +295,7 @@ class StudentMenu(Menu):
         else:
             Ui.clear()
             description = assignments_list[user_choice - 1].assignment_description()
+        Ui.print_head("Description", "header")
         Ui.print_text(description)
 
 
@@ -324,6 +327,7 @@ class StudentMenu(Menu):
         :return:
         """
         Ui.clear()
+        Ui.print_head("My submissions", "header")
         logged_user_submission = Submission.pass_submission_for_student(logged_user)
         logged_user_submission_to_print = []
         for sub in logged_user_submission:
