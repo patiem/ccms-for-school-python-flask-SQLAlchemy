@@ -141,15 +141,21 @@ class Menu:
             Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
 
     @staticmethod
-    def show_all_students():
-        pass
-
-    @staticmethod
     def logged_as(logged_user):
+        """
+        Prints logged user at the top of the window
+        :param logged_user:
+        :return: None
+        """
         Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
     @staticmethod
     def run():
+        """
+        Starts program. Creates a list with objects.
+        It allows the user to log in to the program.
+        :return: None
+        """
 
         logged_user = User.login()
 
@@ -190,6 +196,11 @@ class StudentMenu(Menu):
 
     @classmethod
     def print_menu(cls, user_object):
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Menu.logged_as(user_object)
@@ -301,8 +312,8 @@ class StudentMenu(Menu):
 
 class MentorMenu(Menu):
 
-    @staticmethod
-    def print_menu(user_object):
+    @classmethod
+    def print_menu(cls, user_object):
 
         while True:
             Ui.clear()
@@ -312,47 +323,53 @@ class MentorMenu(Menu):
             options = '\t1: Show students\n' \
                       '\t2: Add assignment\n' \
                       '\t3: Grade submission\n' \
-                      '\t4: Check attendance of students\n' \
-                      '\t5: Checking the presence\n' \
+                      '\t4: Show attendance\n' \
+                      '\t5: Check attendance of students\n' \
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 7)
+            user_choice = Ui.get_menu(options, 0, 8)
 
-            MentorMenu.choose_option(user_choice, user_object)
+            cls.choose_option(user_choice, user_object)
 
-    @staticmethod
-    def choose_option(choice, user_object):
+    @classmethod
+    def choose_option(cls, choice, user_object):
+        """
+        Check witch option was chosen by user and run assigned method
+        :param choice: string ( user input)
+        :param user_object: User object (logged user)
+        :return: None
+        """
         if choice == '1':
-            MentorMenu.print_user(Student.object_list)
+            cls.print_user(Student.object_list)
 
         elif choice == '2':
-            MentorMenu.add_assignment(user_object)
+            cls.add_assignment(user_object)
             Ui.get_inputs([''])
 
         elif choice == '3':
             Ui.clear()
-            MentorMenu.grade_submission()
+            cls.grade_submission()
 
         elif choice == '4':
             Ui.clear()
-            MentorMenu.show_attendance_of_students()
+            cls.show_attendance_of_students()
             Ui.get_inputs([''])
 
         elif choice == '5':
-            MentorMenu.switch_attendance()
+            cls.switch_attendance()
             Ui.get_inputs([''])
 
         elif choice == '6':
-            MentorMenu.add_user('Student')
+            cls.add_user('Student')
 
         elif choice == '7':
-            MentorMenu.remove_user('Student')
+            cls.remove_user('Student')
 
         elif choice == '8':
-            MentorMenu.edit_user('Student')
+            cls.edit_user('Student')
 
         elif choice == '0':
             exit()
@@ -437,7 +454,7 @@ class EmployeeMenu(Menu):
             options = '\t1: Show students\n' \
                       '\t0: Exit program'
             user_choice = Ui.get_menu(options, 0, 1)
-            Menu.choose_option(user_choice)
+            EmployeeMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
@@ -477,7 +494,7 @@ class ManagerMenu(Menu):
     def choose_option(choice):
         """
         Check witch option was chosen by user and run assigned method
-        :param choice: string ( user input)
+        :param choice: string (user input)
         :return: None
         """
         if choice == '1':
