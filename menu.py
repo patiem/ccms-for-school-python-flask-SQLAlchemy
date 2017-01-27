@@ -247,6 +247,12 @@ class StudentMenu(Menu):
 
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
+        """
+        Makes submission of chosen assignment.
+        :param logged_user: user object
+        :param students_assignments: assignment object
+        :return:
+        """
         list_to_submit = cls.get_assignment_list_with_grades(logged_user)
         n = len(list_to_submit)
         Ui.print_text("Choose number of assignment you want to submit")
