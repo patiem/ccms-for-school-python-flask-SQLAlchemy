@@ -180,7 +180,13 @@ class Ui:
 
     @staticmethod
     def get_menu(menu, menu_from, menu_to):
-
+        """
+        printing menu from menu, menu from option to option
+        :param menu:
+        :param menu_from:
+        :param menu_to:
+        :return option:
+        """
         while True:
             # os.system('clear')
             print(menu)
