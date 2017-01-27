@@ -276,6 +276,7 @@ class StudentMenu(Menu):
         Prints description of a chosen assignment
         :return:
         """
+        Ui.clear()
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
@@ -303,6 +304,7 @@ class StudentMenu(Menu):
         :param students_assignments: assignment object
         :return:
         """
+        Ui.clear()
         list_to_submit = cls.get_assignment_list_with_grades(logged_user)
         n = len(list_to_submit)
         Ui.print_text("Choose number of assignment you want to submit")
@@ -321,6 +323,7 @@ class StudentMenu(Menu):
         :param logged_user: user object.
         :return:
         """
+        Ui.clear()
         logged_user_submission = Submission.pass_submission_for_student(logged_user)
         logged_user_submission_to_print = []
         for sub in logged_user_submission:
