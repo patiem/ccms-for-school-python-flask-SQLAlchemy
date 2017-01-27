@@ -268,6 +268,7 @@ class StudentMenu(Menu):
             assignments_list_to_print.append(new_line)
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
+
         return assignments_list_to_print
 
     @staticmethod
@@ -294,7 +295,6 @@ class StudentMenu(Menu):
             Ui.clear()
             description = assignments_list[user_choice - 1].assignment_description()
         Ui.print_text(description)
-
 
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
@@ -337,7 +337,11 @@ class MentorMenu(Menu):
 
     @classmethod
     def print_menu(cls, user_object):
-
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Menu.logged_as(user_object)
@@ -471,6 +475,11 @@ class MentorMenu(Menu):
 class EmployeeMenu(Menu):
     @staticmethod
     def print_menu(user_object):
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
@@ -481,7 +490,11 @@ class EmployeeMenu(Menu):
 
     @staticmethod
     def choose_option(choice):
-
+        """
+        Check witch option was chosen by user and run assigned method
+        :param choice: string (user input)
+        :return: None
+        """
         if choice == '1':
             EmployeeMenu.print_user(Student.object_list)
         elif choice == '0':
