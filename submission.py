@@ -72,7 +72,7 @@ class Submission:
     @classmethod
     def pass_submission_for_student(cls, student):
         """
-        EEeee nie wiem w sumie po to miało być.
+        EEeee nie wiem w sumie po co to miało być.
         Może mnie potem oswieci.
         :param student:
         :return:

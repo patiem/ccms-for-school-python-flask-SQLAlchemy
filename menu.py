@@ -110,7 +110,7 @@ class Menu:
     @staticmethod
     def what_save(class_name):
         """
-        Check whitch class list should be saved
+        Check which class list should be saved
         :param class_name: string ( name of class that list should be saved)
         :return: None
         """
@@ -196,10 +196,12 @@ class StudentMenu(Menu):
             Ui.print_head('Student menu:', 'header')
 
             options = '\t1: Show assignment list with grades\n' \
-                      '\t2: Submit assignment\n' \
+                      '\t2: Show assignment description\n' \
+                      '\t3: Submit assignment\n' \
+                      '\t4: Show my submission list \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 2)
+            user_choice = Ui.get_menu(options, 0, 4)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
@@ -209,6 +211,12 @@ class StudentMenu(Menu):
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
         elif choice == '2':
+            cls.assignment_description()
+            input('Enter to back to menu')
+        elif choice == '3':
+            cls.student_makes_submission(logged_user, students_assignments)
+            input('Enter to back to menu')
+        elif choice == '4':
             cls.student_makes_submission(logged_user, students_assignments)
             input('Enter to back to menu')
         elif choice == '0':
@@ -220,7 +228,7 @@ class StudentMenu(Menu):
         Makes list with assignments visible for student with notation if assignment was submitted
         and how it was graded.
         :param logged_user: (user object)
-        :return:
+        :return: assignments_list_to_print
         """
         Ui.clear()
         Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
@@ -244,9 +252,6 @@ class StudentMenu(Menu):
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
 
-        read_desc = Ui.get_input('Do you want read descryption? Y/N')
-        if read_desc.lower() == 'y':
-            StudentMenu.assignment_description()
 
         return assignments_list_to_print
 
@@ -257,6 +262,12 @@ class StudentMenu(Menu):
         :return:
         """
         assignments_list = Assignment.pass_assign_for_student()
+        assignments_list_to_print = []
+        n = 1
+        for assignment in assignments_list:
+            assignments_list_to_print.append([str(n), assignment.title, str(assignment.start_date),
+                                              str(assignment.end_date)])
+        Ui.print_table(assignments_list_to_print, ['nr', 'title', 'start date', 'end date'])
         n = len(assignments_list)
         Ui.print_text("Choose number of assignment you want read, 0 for exit")
         user_choice = int(Ui.get_menu('', 0, n))
