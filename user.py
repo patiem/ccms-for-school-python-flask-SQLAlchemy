@@ -115,9 +115,9 @@ class User:
     def get_id_by_login_and_pass(login, password):
         """
 
-        :param login:
-        :param password:
-        :return:
+        :param login: string ( user mail)
+        :param password: string (user password)
+        :return: list (data of user)
         """
 
         users_list = Common.aggregation_users()

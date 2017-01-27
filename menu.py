@@ -141,10 +141,6 @@ class Menu:
             Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
 
     @staticmethod
-    def show_all_students():
-        pass
-
-    @staticmethod
     def logged_as(logged_user):
         Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
