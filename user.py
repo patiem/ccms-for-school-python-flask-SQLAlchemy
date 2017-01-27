@@ -114,7 +114,7 @@ class User:
     @staticmethod
     def get_id_by_login_and_pass(login, password):
         """
-
+        Get id of user by login and pass from user list
         :param login:
         :param password:
         :return:
@@ -129,6 +129,10 @@ class User:
 
     @staticmethod
     def login():
+        """
+        login method
+        :return user_id:
+        """
 
         Ui.clear()
         Ui.print_head('Authentication', 'header')  # displaying header of site
@@ -157,6 +161,10 @@ class User:
 
     @staticmethod
     def encode(password):
+        """Encoding password using salt and hash sha256
+        :param password:
+        :return encoded_password:
+        """
         _salt = "Coder"
         encoded_password = hashlib.sha256()
         encoded_password.update(_salt.encode('utf-8') + password.encode('utf-8'))

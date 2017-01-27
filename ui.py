@@ -170,6 +170,11 @@ class Ui:
 
     @staticmethod
     def get_pass(label):
+        """
+        hidden input from user
+        :param: label
+        return: users input
+        """
 
         return getpass.getpass(label)
 
