@@ -333,6 +333,7 @@ class StudentMenu(Menu):
         Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
                                                          'link to repo', 'grade'])
 
+
 class MentorMenu(Menu):
 
     @classmethod
