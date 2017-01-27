@@ -103,3 +103,16 @@ class Assignment:
         :return: String representation for object
         """
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
+
+
+    def assignment_description(self):
+        """
+        Creates string from description file of assignment.
+        :return: text_to_print (str)
+        """
+        filename = 'csv/assignments_description/{}'.format(self.file_name)
+        with open(filename, 'r') as f:
+            text_to_print = f.read()
+        return text_to_print
+
+
