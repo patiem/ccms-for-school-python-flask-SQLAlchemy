@@ -110,7 +110,7 @@ class Menu:
     @staticmethod
     def what_save(class_name):
         """
-        Check whitch class list should be saved
+        Check which class list should be saved
         :param class_name: string ( name of class that list should be saved)
         :return: None
         """
@@ -142,10 +142,20 @@ class Menu:
 
     @staticmethod
     def logged_as(logged_user):
+        """
+        Prints logged user at the top of the window
+        :param logged_user:
+        :return: None
+        """
         Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
     @staticmethod
     def run():
+        """
+        Starts program. Creates a list with objects.
+        It allows the user to log in to the program.
+        :return: None
+        """
 
         logged_user = User.login()
 
@@ -186,16 +196,23 @@ class StudentMenu(Menu):
 
     @classmethod
     def print_menu(cls, user_object):
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Menu.logged_as(user_object)
             Ui.print_head('Student menu:', 'header')
 
             options = '\t1: Show assignment list with grades\n' \
-                      '\t2: Submit assignment\n' \
+                      '\t2: Show assignment description\n' \
+                      '\t3: Submit assignment\n' \
+                      '\t4: Show my submission list \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 2)
+            user_choice = Ui.get_menu(options, 0, 4)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
@@ -205,6 +222,12 @@ class StudentMenu(Menu):
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
         elif choice == '2':
+            cls.assignment_description()
+            input('Enter to back to menu')
+        elif choice == '3':
+            cls.student_makes_submission(logged_user, students_assignments)
+            input('Enter to back to menu')
+        elif choice == '4':
             cls.student_makes_submission(logged_user, students_assignments)
             input('Enter to back to menu')
         elif choice == '0':
@@ -216,7 +239,7 @@ class StudentMenu(Menu):
         Makes list with assignments visible for student with notation if assignment was submitted
         and how it was graded.
         :param logged_user: (user object)
-        :return:
+        :return: assignments_list_to_print
         """
         Ui.clear()
         Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
@@ -240,9 +263,6 @@ class StudentMenu(Menu):
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
 
-        read_desc = Ui.get_input('Do you want read descryption? Y/N')
-        if read_desc.lower() == 'y':
-            StudentMenu.assignment_description()
 
         return assignments_list_to_print
 
@@ -253,6 +273,12 @@ class StudentMenu(Menu):
         :return:
         """
         assignments_list = Assignment.pass_assign_for_student()
+        assignments_list_to_print = []
+        n = 1
+        for assignment in assignments_list:
+            assignments_list_to_print.append([str(n), assignment.title, str(assignment.start_date),
+                                              str(assignment.end_date)])
+        Ui.print_table(assignments_list_to_print, ['nr', 'title', 'start date', 'end date'])
         n = len(assignments_list)
         Ui.print_text("Choose number of assignment you want read, 0 for exit")
         user_choice = int(Ui.get_menu('', 0, n))
@@ -286,8 +312,8 @@ class StudentMenu(Menu):
 
 class MentorMenu(Menu):
 
-    @staticmethod
-    def print_menu(user_object):
+    @classmethod
+    def print_menu(cls, user_object):
 
         while True:
             Ui.clear()
@@ -297,47 +323,53 @@ class MentorMenu(Menu):
             options = '\t1: Show students\n' \
                       '\t2: Add assignment\n' \
                       '\t3: Grade submission\n' \
-                      '\t4: Check attendance of students\n' \
-                      '\t5: Checking the presence\n' \
+                      '\t4: Show attendance\n' \
+                      '\t5: Check attendance of students\n' \
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 7)
+            user_choice = Ui.get_menu(options, 0, 8)
 
-            MentorMenu.choose_option(user_choice, user_object)
+            cls.choose_option(user_choice, user_object)
 
-    @staticmethod
-    def choose_option(choice, user_object):
+    @classmethod
+    def choose_option(cls, choice, user_object):
+        """
+        Check witch option was chosen by user and run assigned method
+        :param choice: string ( user input)
+        :param user_object: User object (logged user)
+        :return: None
+        """
         if choice == '1':
-            MentorMenu.print_user(Student.object_list)
+            cls.print_user(Student.object_list)
 
         elif choice == '2':
-            MentorMenu.add_assignment(user_object)
+            cls.add_assignment(user_object)
             Ui.get_inputs([''])
 
         elif choice == '3':
             Ui.clear()
-            MentorMenu.grade_submission()
+            cls.grade_submission()
 
         elif choice == '4':
             Ui.clear()
-            MentorMenu.show_attendance_of_students()
+            cls.show_attendance_of_students()
             Ui.get_inputs([''])
 
         elif choice == '5':
-            MentorMenu.switch_attendance()
+            cls.switch_attendance()
             Ui.get_inputs([''])
 
         elif choice == '6':
-            MentorMenu.add_user('Student')
+            cls.add_user('Student')
 
         elif choice == '7':
-            MentorMenu.remove_user('Student')
+            cls.remove_user('Student')
 
         elif choice == '8':
-            MentorMenu.edit_user('Student')
+            cls.edit_user('Student')
 
         elif choice == '0':
             exit()
@@ -422,7 +454,7 @@ class EmployeeMenu(Menu):
             options = '\t1: Show students\n' \
                       '\t0: Exit program'
             user_choice = Ui.get_menu(options, 0, 1)
-            Menu.choose_option(user_choice)
+            EmployeeMenu.choose_option(user_choice)
 
     @staticmethod
     def choose_option(choice):
@@ -462,7 +494,7 @@ class ManagerMenu(Menu):
     def choose_option(choice):
         """
         Check witch option was chosen by user and run assigned method
-        :param choice: string ( user input)
+        :param choice: string (user input)
         :return: None
         """
         if choice == '1':

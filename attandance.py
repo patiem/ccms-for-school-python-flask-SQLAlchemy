@@ -4,6 +4,9 @@ import datetime
 
 
 class Attendance:
+    """
+
+    """
     file = 'csv/attendance.csv'
     attendance_list = []
 
@@ -38,6 +41,10 @@ class Attendance:
 
     @classmethod
     def save_attendance_list(cls):
+        """
+        Saves cls.attendance_list to .csv file
+        :return: None
+        """
         list_to_save = []
         for record in cls.attendance_list:
             list_to_save.append([record.id_student, record.date, record.present])
@@ -46,13 +53,14 @@ class Attendance:
 
     @classmethod
     def create_new_day(cls):
+        """
+        Add to attendance_list new day
+        :return:
+        """
         today = str(datetime.date.today())
         for student in Student.object_list:
             cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
         cls.save_attendance_list()
-
-
-
 
     @classmethod
     def get_attendance_by_date(cls, date):
