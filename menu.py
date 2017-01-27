@@ -39,7 +39,7 @@ class Menu:
         for user in User.create_list_to_save(object_list):
             print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
-                       ['id', 'name', 'last name', 'mail', 'telephone'])
+                       ['Id', 'Name', 'Last Name', 'E-mail', 'Telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
@@ -191,8 +191,8 @@ class StudentMenu(Menu):
             Menu.logged_as(user_object)
             Ui.print_head('Student menu:', 'header')
 
-            options = '\t1: Show assignment list\n' \
-                      '\t2: Add submit assignment\n' \
+            options = '\t1: Show assignment list with grades\n' \
+                      '\t2: Submit assignment\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 2)
@@ -239,10 +239,39 @@ class StudentMenu(Menu):
             assignments_list_to_print.append(new_line)
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
+
+        read_desc = Ui.get_input('Do you want read descryption? Y/N')
+        if read_desc.lower() == 'y':
+            StudentMenu.assignment_description()
+
         return assignments_list_to_print
+
+    @staticmethod
+    def assignment_description():
+        """
+        Prints description of a chosen assignment
+        :return:
+        """
+        assignments_list = Assignment.pass_assign_for_student()
+        n = len(assignments_list)
+        Ui.print_text("Choose number of assignment you want read, 0 for exit")
+        user_choice = int(Ui.get_menu('', 0, n))
+        if user_choice == 0:
+            return None
+        else:
+            Ui.clear()
+            description = assignments_list[user_choice - 1].assignment_description()
+        Ui.print_text(description)
+
 
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
+        """
+        Makes submission of chosen assignment.
+        :param logged_user: user object
+        :param students_assignments: assignment object
+        :return:
+        """
         list_to_submit = cls.get_assignment_list_with_grades(logged_user)
         n = len(list_to_submit)
         Ui.print_text("Choose number of assignment you want to submit")

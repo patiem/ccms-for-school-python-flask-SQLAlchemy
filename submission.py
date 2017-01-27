@@ -4,13 +4,14 @@ from test import Test
 
 class Submission:
     """
-    Class
+    Class of students submission.
     """
 
     submission_list = []
 
     def __init__(self, student_idx, assignment_idx, date_of_submission, link, grade=None):
         """
+        Creates object of Submission class.
         :param student_idx: str (idx of student who wants to make submission)
         :param assignment_idx: str (idx of assignment which will be submitted)
         :param date_of_submission: str (date when submission is made)
@@ -26,7 +27,7 @@ class Submission:
     @classmethod
     def create_submission_list(cls):
         """
-        Create list containing object of assignments
+        Create list containing object of submission of all students. Validates if data is correct.
         :return: None
         """
         list_from_csv = Common.read_file('csv/submission.csv')
@@ -60,7 +61,7 @@ class Submission:
     def create_list_to_save(cls):
         """
         Creates 2d list which can be use for saving process
-        :return: list_to_save
+        :return: list_to_save - 2d list ready to be saved in csv file
         """
         list_to_save = []
         for submission in cls.submission_list:
@@ -96,5 +97,10 @@ class Submission:
         return False
 
     def change_grade(self, grade):
+        """
+        Changes grade of submission. Then saves to file.
+        :param grade: int
+        :return: None
+        """
         self.grade = grade
         Common.save_file('csv/submission.csv', Submission.create_list_to_save())
