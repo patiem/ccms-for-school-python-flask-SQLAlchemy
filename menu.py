@@ -189,7 +189,7 @@ class Menu:
             for employee in Employee.object_list:
                 if employee.idx == logged_user[0]:
                     user = employee
-                    ManagerMenu.print_menu(user)
+                    EmployeeMenu.print_menu(user)
 
 
 class StudentMenu(Menu):
