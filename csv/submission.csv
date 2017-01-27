@@ -1,6 +1,12 @@
 student_idx;assignment_idx;date_of_submission;link;grade=None
 fa32;0a;2017-01-26;www;5
 21e2;1a;2017-01-26;wwww;5
+3wd1;2a;2017-01-26;www;4
+scs4;5a;2017-01-26;fgh;None
+/a1D9_bZS@b8;1a;2017-01-27;;None
+/a1D9_bZS@b8;2a;2017-01-27;;None
+/a1D9_bZS@b8;0a;2017-01-27;;None
+21e2;1a;2017-01-26;wwww;5
 scs4;0a;2017-01-27;gsdfgfdsg;None
 scs4;5a;2017-01-27;asdf;None
 scs4;1a;2017-01-27;sadf;None
@@ -8,3 +14,5 @@ scs4;1a;2017-01-27;sadf;None
 scs4;5a;2017-01-26;fgh;8
 3wd1;0a;2017-01-27;fghjhgf;None
 3wd1;5a;2017-01-27;dup/dupa;None
+scs4;3a;2017-01-27;asdf;None
+scs4;2a;2017-01-27;asdf;None

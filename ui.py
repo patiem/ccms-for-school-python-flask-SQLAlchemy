@@ -10,7 +10,7 @@ class Color:
     Warning = '\033[93m'
     Error = '\033[91m'
 
-    TableHead = '\033[92m'
+    TableHead = '\033[93m'
 
     # additional colors
     Red = '\033[91m'

@@ -39,7 +39,7 @@ class Menu:
         for user in User.create_list_to_save(object_list):
             print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
-                       ['id', 'name', 'last name', 'mail', 'telephone'])
+                       ['Id', 'Name', 'Last Name', 'E-mail', 'Telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
@@ -189,7 +189,7 @@ class Menu:
             for employee in Employee.object_list:
                 if employee.idx == logged_user[0]:
                     user = employee
-                    ManagerMenu.print_menu(user)
+                    EmployeeMenu.print_menu(user)
 
 
 class StudentMenu(Menu):
@@ -248,7 +248,7 @@ class StudentMenu(Menu):
         :return: assignments_list_to_print
         """
         Ui.clear()
-        Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
+        Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
         title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
@@ -277,7 +277,9 @@ class StudentMenu(Menu):
         Prints description of a chosen assignment
         :return:
         """
+
         Ui.clear()
+        Ui.print_head("List of assigments", "header")
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
@@ -294,6 +296,7 @@ class StudentMenu(Menu):
         else:
             Ui.clear()
             description = assignments_list[user_choice - 1].assignment_description()
+        Ui.print_head("Description", "header")
         Ui.print_text(description)
 
     @classmethod
@@ -324,6 +327,7 @@ class StudentMenu(Menu):
         :return:
         """
         Ui.clear()
+        Ui.print_head("My submissions", "header")
         logged_user_submission = Submission.pass_submission_for_student(logged_user)
         logged_user_submission_to_print = []
         for sub in logged_user_submission:

@@ -21,6 +21,12 @@ class Test:
 
     @classmethod
     def check_argument(cls, label, argument):
+        '''
+        Choose how to check argument
+        :param label: string ( name of argument)
+        :param argument: string ( argument to check)
+        :return: argument
+        '''
         if label.lower() == 'Name'.lower():
             argument = cls.test_name(argument)
         elif label.lower() == 'Last Name'.lower():
@@ -93,6 +99,11 @@ class Test:
 
     @classmethod
     def test_edit_user(cls, attribute_name):
+        """
+        Test name of chosen  argument to edit user
+        :param attribute_name:
+        :return:
+        """
         attribute_list = ['name', 'last name', 'mail', 'telephone', 'password']
 
         while True:
