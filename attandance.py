@@ -4,9 +4,7 @@ import datetime
 
 
 class Attendance:
-    """
 
-    """
     file = 'csv/attendance.csv'
     attendance_list = []
 
@@ -54,8 +52,9 @@ class Attendance:
     @classmethod
     def create_new_day(cls):
         """
-
-        :return:
+        Adds new day to attendance list.
+        Creates new rows in attendance.csv for each student
+        :return: None
         """
         today = str(datetime.date.today())
         for student in Student.object_list:
@@ -106,6 +105,11 @@ class Attendance:
 
     @classmethod
     def students_engagement(cls):
+        """
+        Creates list with students attendance.
+        Counts the presence of students.
+        :return engagement_list: two dimensional list
+        """
         engagement_list = []
         for student in Student.object_list:
             student_attendance = {'Present': 0, 'Late': 0, 'Absent': 0}
