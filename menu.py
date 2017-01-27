@@ -197,9 +197,9 @@ class StudentMenu(Menu):
     @classmethod
     def print_menu(cls, user_object):
         """
-        Display menu to user
-        :param user_object: object ( object contain logged user)
-        :return: None
+        Prints menu with options for student.
+        :param user_object: object of one of user's subclass
+        :return:
         """
         while True:
             Ui.clear()
@@ -217,6 +217,12 @@ class StudentMenu(Menu):
 
     @classmethod
     def choose_option(cls, choice, logged_user):
+        """
+        Creates action for option, which was chosen.
+        :param choice: str - users choice
+        :param logged_user: user object
+        :return:
+        """
         students_assignments = Assignment.pass_assign_for_student()
         if choice == '1':
             cls.get_assignment_list_with_grades(logged_user)
@@ -228,7 +234,7 @@ class StudentMenu(Menu):
             cls.student_makes_submission(logged_user, students_assignments)
             input('Enter to back to menu')
         elif choice == '4':
-            cls.student_makes_submission(logged_user, students_assignments)
+            cls.my_subbmisions(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -242,7 +248,7 @@ class StudentMenu(Menu):
         :return: assignments_list_to_print
         """
         Ui.clear()
-        Ui.print_text("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name))
+        Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
         title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
@@ -263,7 +269,6 @@ class StudentMenu(Menu):
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
 
-
         return assignments_list_to_print
 
     @staticmethod
@@ -272,12 +277,16 @@ class StudentMenu(Menu):
         Prints description of a chosen assignment
         :return:
         """
+
+        Ui.clear()
+        Ui.print_head("List of assigments", "header")
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
         for assignment in assignments_list:
             assignments_list_to_print.append([str(n), assignment.title, str(assignment.start_date),
                                               str(assignment.end_date)])
+            n += 1
         Ui.print_table(assignments_list_to_print, ['nr', 'title', 'start date', 'end date'])
         n = len(assignments_list)
         Ui.print_text("Choose number of assignment you want read, 0 for exit")
@@ -287,8 +296,8 @@ class StudentMenu(Menu):
         else:
             Ui.clear()
             description = assignments_list[user_choice - 1].assignment_description()
+        Ui.print_head("Description", "header")
         Ui.print_text(description)
-
 
     @classmethod
     def student_makes_submission(cls, logged_user, students_assignments):
@@ -298,6 +307,7 @@ class StudentMenu(Menu):
         :param students_assignments: assignment object
         :return:
         """
+        Ui.clear()
         list_to_submit = cls.get_assignment_list_with_grades(logged_user)
         n = len(list_to_submit)
         Ui.print_text("Choose number of assignment you want to submit")
@@ -309,12 +319,34 @@ class StudentMenu(Menu):
         else:
             Ui.print_text("You can't submit this assignment - it's already submitted")
 
+    @staticmethod
+    def my_subbmisions(logged_user):
+        """
+        Prints only submitted assignments with date of submission and link to repo.
+        :param logged_user: user object.
+        :return:
+        """
+        Ui.clear()
+        Ui.print_head("My submissions", "header")
+        logged_user_submission = Submission.pass_submission_for_student(logged_user)
+        logged_user_submission_to_print = []
+        for sub in logged_user_submission:
+            assignment = Common.get_by_id(sub.assignment_idx, 'csv/assignments.csv')
+            logged_user_submission_to_print.append([assignment[1], assignment[3], assignment[4],
+                                                   str(sub.date_of_submission), sub.link, sub.grade])
+        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
+                                                         'link to repo', 'grade'])
+
 
 class MentorMenu(Menu):
 
     @classmethod
     def print_menu(cls, user_object):
-
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Menu.logged_as(user_object)
@@ -448,6 +480,11 @@ class MentorMenu(Menu):
 class EmployeeMenu(Menu):
     @staticmethod
     def print_menu(user_object):
+        """
+        Display menu to user
+        :param user_object: object ( object contain logged user)
+        :return: None
+        """
         while True:
             Ui.clear()
             Ui.print_head('Logged as {} {}'.format(user_object.name, user_object.last_name, 'header'))
@@ -458,7 +495,11 @@ class EmployeeMenu(Menu):
 
     @staticmethod
     def choose_option(choice):
-
+        """
+        Check witch option was chosen by user and run assigned method
+        :param choice: string (user input)
+        :return: None
+        """
         if choice == '1':
             EmployeeMenu.print_user(Student.object_list)
         elif choice == '0':
