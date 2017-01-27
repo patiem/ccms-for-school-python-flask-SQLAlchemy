@@ -79,7 +79,7 @@ class Submission:
         """
         submission_for_student = []
         for submission in cls.submission_list:
-            if submission[0] == student.idx:
+            if submission.student_idx == student.idx:
                 submission_for_student.append(submission)
         return submission_for_student
 

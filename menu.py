@@ -197,9 +197,9 @@ class StudentMenu(Menu):
     @classmethod
     def print_menu(cls, user_object):
         """
-        Display menu to user
-        :param user_object: object ( object contain logged user)
-        :return: None
+        Prints menu with options for student.
+        :param user_object: object of one of user's subclass
+        :return:
         """
         while True:
             Ui.clear()
@@ -217,6 +217,12 @@ class StudentMenu(Menu):
 
     @classmethod
     def choose_option(cls, choice, logged_user):
+        """
+        Creates action for option, which was chosen.
+        :param choice: str - users choice
+        :param logged_user: user object
+        :return:
+        """
         students_assignments = Assignment.pass_assign_for_student()
         if choice == '1':
             cls.get_assignment_list_with_grades(logged_user)
@@ -228,7 +234,7 @@ class StudentMenu(Menu):
             cls.student_makes_submission(logged_user, students_assignments)
             input('Enter to back to menu')
         elif choice == '4':
-            cls.student_makes_submission(logged_user, students_assignments)
+            cls.my_subbmisions(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -262,8 +268,6 @@ class StudentMenu(Menu):
             assignments_list_to_print.append(new_line)
             n += 1
         Ui.print_table(assignments_list_to_print, title_list)
-
-
         return assignments_list_to_print
 
     @staticmethod
@@ -309,6 +313,21 @@ class StudentMenu(Menu):
         else:
             Ui.print_text("You can't submit this assignment - it's already submitted")
 
+    @staticmethod
+    def my_subbmisions(logged_user):
+        """
+        Prints only submitted assignments with date of submission and link to repo.
+        :param logged_user: user object.
+        :return:
+        """
+        logged_user_submission = Submission.pass_submission_for_student(logged_user)
+        logged_user_submission_to_print = []
+        for sub in logged_user_submission:
+            assignment = Common.get_by_id(sub.assignment_idx, 'csv/assignments.csv')
+            logged_user_submission_to_print.append([assignment[1], assignment[3], assignment[4],
+                                                   str(sub.date_of_submission), sub.link, sub.grade])
+        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
+                                                         'link to repo', 'grade'])
 
 class MentorMenu(Menu):
 
