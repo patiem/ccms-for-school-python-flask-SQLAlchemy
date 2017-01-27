@@ -365,7 +365,7 @@ class MentorMenu(Menu):
     @classmethod
     def choose_option(cls, choice, user_object):
         """
-        Check witch option was chosen by user and run assigned method
+        Checks which option was selected by user and run assigned method
         :param choice: string ( user input)
         :param user_object: User object (logged user)
         :return: None
