@@ -5,12 +5,21 @@ from test import Test
 
 class Assignment:
     """
-    Class
+    Class of assignments.
     """
 
     assigments_list = []
 
     def __init__(self, idx, title, author, start_date, end_date, file_name):
+        """
+        Creates object of Assignment class.
+        :param idx: str (unique randomly created id)
+        :param title: str (title of assignmnet)
+        :param author: str (Name and last name of autor)
+        :param start_date: datetime object (date of assignment"s start)
+        :param end_date: datetime object (date of assignment's end)
+        :param file_name: str (link to assignments txt file with description)
+        """
         self.idx = idx
         self.title = title
         self.author = author
@@ -55,6 +64,10 @@ class Assignment:
 
     @classmethod
     def create_list_to_save(cls):
+        """
+        Creates 2d list which can be use for saving process
+        :return: list_to_save - 2d list ready to be saved in csv file
+        """
         list_to_save = []
         for assigment in cls.assigments_list:
             list_to_save.append([assigment.idx, assigment.title, assigment.author,
@@ -63,10 +76,19 @@ class Assignment:
 
     @classmethod
     def pass_assign_for_mentor(cls):
+        """
+        Passes full list of assignments.
+        :return: Assignment.assigments_list (list)
+        """
         return cls.assigments_list
 
     @classmethod
     def pass_assign_for_student(cls):
+        """
+        Passes only past and present assignments, assignments which starts in future are not
+        visible for students.
+        :return: assignments_for_students (list)
+        """
         today = datetime.date.today()
         assignments_for_students = []
         for assignment in cls.assigments_list:
@@ -77,4 +99,20 @@ class Assignment:
         return assignments_for_students
 
     def __str__(self):
+        """
+        :return: String representation for object
+        """
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
+
+
+    def assignment_description(self):
+        """
+        Creates string from description file of assignment.
+        :return: text_to_print (str)
+        """
+        filename = 'csv/assignments_description/{}'.format(self.file_name)
+        with open(filename, 'r') as f:
+            text_to_print = f.read()
+        return text_to_print
+
+

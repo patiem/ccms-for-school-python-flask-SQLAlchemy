@@ -101,7 +101,7 @@ class Ui:
         print()
 
     @staticmethod
-    def print_head(message, type=''):
+    def print_head(message, type_of_header=''):
         """
         Displays header
 
@@ -116,11 +116,11 @@ class Ui:
 
         message = '| ' + message + ' |'
 
-        if type == 'header':
+        if type_of_header == 'header':
             print(Color.Header + '-' * len(message))  # separator
-        elif type == 'warning':
+        elif type_of_header == 'warning':
             print(Color.Warning + '-' * len(message))  # separator
-        elif type == 'error':
+        elif type_of_header == 'error':
             print(Color.Error + '-' * len(message))  # separator
         else:
             print(Color.White + '-' * len(message))  # separator
