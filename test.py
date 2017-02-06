@@ -80,9 +80,12 @@ class Test:
         :param name: string ( name to test)
         :return: name
         """
-        while not cls.is_name_correct(name):
-            Ui.print_text('\nWrong name')
-            name = Ui.get_inputs(['Name:'])[0]
+        while True:
+            if cls.is_name_correct(name):
+                break
+            else:
+                Ui.print_text('\nWrong name')
+                name = Ui.get_inputs(['Name:'])[0]
         return name
 
     @classmethod
@@ -121,7 +124,7 @@ class Test:
         Argument: email (str)
         Return: Bool
         """
-        if email:
+        if email and not email == '\t':
             pattern = r'^((\w+\.*)+)@\w+.\w+$'
             if re.search(pattern, email):
                 return True
@@ -134,7 +137,7 @@ class Test:
         Argument: phone (str)
         Return: Bool
         """
-        if phone:
+        if phone and not phone == '\t':
             pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
             if re.search(pattern, phone):
                 return True
@@ -147,7 +150,7 @@ class Test:
         Argument: name (str)
         Return: Bool
         """
-        if name:
+        if name and not name == '\t':
             pattern = r'^\s*([A-ZŚĆŻ][a-ząęśćńżó]+[ \-]?)*s*$'
             if re.search(pattern, name):
                 return True
@@ -160,7 +163,7 @@ class Test:
         Argument: date (str)
         Return: Bool
         """
-        if date:
+        if date and not date == '\t':
             pattern = r'^\d{4}[-\.](0\d|1[012])[-\.]([012]\d|3[01])$'
             if re.search(pattern, date):
                 return True
