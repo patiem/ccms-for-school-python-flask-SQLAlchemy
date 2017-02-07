@@ -55,6 +55,7 @@ class Test:
                 if mail in mail_list:
                     Ui.print_text('\n E-mail already exist')
                     mail = Ui.get_inputs(['Mail:'])[0]
+                else:
                     break
             else:
                 Ui.print_text('\nWrong mail format')
@@ -128,6 +129,7 @@ class Test:
             pattern = r'^((\w+\.*)+)@\w+.\w+$'
             if re.search(pattern, email):
                 return True
+            return True
         return False
 
     @staticmethod
@@ -137,7 +139,7 @@ class Test:
         Argument: phone (str)
         Return: Bool
         """
-        if phone and not phone == '\t':
+        if phone:
             pattern = r'^\s*(\+?48)*\s*((\d{3})[ \-]?){3}\s*$'
             if re.search(pattern, phone):
                 return True
