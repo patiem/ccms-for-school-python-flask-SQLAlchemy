@@ -122,7 +122,7 @@ class User:
         """
 
         query = "SELECT * FROM Users WHERE `E-mail` =? and `password`=?"
-        params = tuple([login, password])
+        params = list([login, password])
 
         user = sql.query(query, params)
 

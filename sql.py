@@ -6,6 +6,13 @@ def connect_db(DATABASE_NAME='CCMS.db'):
 
 
 def query(query, params=list()):
+    """
+    :param query: query with ?
+    :param params: list or tuple of params (replace ?)
+    :return: list of object or null
+    """
+    #query = "SELECT * FROM Users WHERE `E-mail` =? and `password`=?"
+    #params = list([login, password])
 
     query_result = list()
     conn = connect_db()
