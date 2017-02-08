@@ -5,14 +5,15 @@ def connect_db(DATABASE_NAME='CCMS.db'):
     return sqlite3.connect(DATABASE_NAME)
 
 
-def query(query):
+def query(query, params=list()):
 
     query_result = list()
     conn = connect_db()
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
-    for row in c.execute(query):
+    for row in c.execute(query, params):
+
         query_result.append(row)
 
     conn.commit()
