@@ -10,6 +10,7 @@ from submission import Submission
 from attandance import Attendance
 from datetime import date
 from test import Test
+import sql
 
 
 class Menu:
@@ -460,16 +461,22 @@ class MentorMenu(Menu):
         :return: None
         """
         Attendance.create_new_day()
-        for student in Attendance.attendance_list:
+        query = "SELECT * FROM `Attendence` WHERE `DATE` =?"
+        params = list([str(date.today())])
+        attendance_list = sql.query(query, params)
+        print(attendance_list)
+        print(type(attendance_list))
+        input()
+
+        for student in attendance_list:
             Ui.clear()
-            if student.date == str(date.today()):
-                student_data = Common.get_by_id(student.id_student)
-                Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
+            student_data = Common.get_by_id(student['ID'])
+            Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
 
-                text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
-                mentor_choice = Ui.get_menu(text, 1, 3)
+            text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
+            mentor_choice = Ui.get_menu(text, 1, 3)
 
-                Attendance.toggle_present(student, mentor_choice)
+            Attendance.toggle_present(student, mentor_choice)
 
 
 class EmployeeMenu(Menu):

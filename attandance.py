@@ -1,6 +1,7 @@
 from common import Common
 from student import Student
 import datetime
+import sql
 
 
 class Attendance:
@@ -57,8 +58,11 @@ class Attendance:
         :return: None
         """
         today = str(datetime.date.today())
-        for student in Student.object_list:
-            cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
+        query = "SELECT * FROM Users WHERE `Type`=?"
+        params = list(['Student'])
+        stundents_list = sql.query(query, params)
+        for student in stundents_list:
+            cls.attendance_list.append(Attendance(str(student['ID']), today, 'Absent'))
         cls.save_attendance_list()
 
     @classmethod
