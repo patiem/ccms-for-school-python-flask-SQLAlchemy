@@ -1,6 +1,7 @@
 from common import *
 import hashlib
 from ui import *
+import sql
 
 
 class User:
@@ -120,12 +121,14 @@ class User:
         :return:
         """
 
-        users_list = Common.aggregation_users()
+        query = "SELECT * FROM Users WHERE `E-mail` =? and `password`=?"
+        params = tuple([login, password])
 
-        for user in users_list:
+        user = sql.query(query, params)
 
-            if user[1] == login and user[2] == str(password):
-                return user
+        if user:
+            return user[0]
+
 
     @staticmethod
     def login():
