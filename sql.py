@@ -25,4 +25,3 @@ def query(query):
 
 def close_db(conn):
     conn.close()
-
