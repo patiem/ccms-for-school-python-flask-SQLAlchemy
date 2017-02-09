@@ -42,7 +42,7 @@ class Menu:
             print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
                        ['Id', 'Name', 'Last Name', 'E-mail', 'Telephone'])
-        Ui.get_inputs(['Enter anything to leave: '])
+        # Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
     def edit_user(class_name):
@@ -468,9 +468,10 @@ class MentorMenu(Menu):
                       '\t9: Checkpoints\n' \
                       '\t10: Show teams\n' \
                       '\t11: Create team\n' \
+                      '\t12: Add student to team\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 11)
+            user_choice = Ui.get_menu(options, 0, 12)
 
             cls.choose_option(user_choice, user_object)
 
@@ -484,6 +485,7 @@ class MentorMenu(Menu):
         """
         if choice == '1':
             cls.print_user(Student.object_list)
+            Ui.get_inputs([''])
 
         elif choice == '2':
             cls.add_assignment(user_object)
@@ -521,11 +523,37 @@ class MentorMenu(Menu):
             cls.add_new_team()
             Ui.get_inputs([''])
 
+        elif choice == '12':
+            cls.add_student_to_team()
+            Ui.get_inputs([''])
+
         elif choice == '0':
             exit()
 
     @classmethod
+    def add_student_to_team(cls):
+        cls.print_user(Student.object_list)
+        option = 'id student\'s which you want to add to team?'
+        student_id = Ui.get_input(option)
+        cls.show_teams()
+
+        option = 'id team\'s where you want to add student?'
+        team_id = Ui.get_input(option)
+
+        team = Team.get_team_by_id(team_id)
+
+        student = Student.return_by_id(int(student_id))
+
+        Team.student_to_team(team, student)
+
+        # user_choice = Ui.get_menu(options, 0, len(Student.object_list))
+
+    @classmethod
     def add_new_team(cls):
+        """
+        Adds new team
+        :return: None
+        """
         label_list = ['Name']
         user_data = Ui.get_inputs(label_list)
         name = user_data[0]
@@ -539,16 +567,15 @@ class MentorMenu(Menu):
         :return: None
         """
         for team in Team.teams_list:
-            titles = ['Team: ', team.name]
+            titles = ['ID: {}'.format(team.id_team), 'Team: {}'.format(team.name)]
             students = []
-            # titles.append(team.name)
+            student_nr = 1
             for student_id in team.students_id:
-                student_nr = 1
                 for student in Student.object_list:
                     if student.idx == student_id:
                         students.append([student_nr, student.name + ' ' + student.last_name])
+                        student_nr += 1
                         break
-                    student_nr += 1
             Ui.print_table(students, titles)
 
     @staticmethod

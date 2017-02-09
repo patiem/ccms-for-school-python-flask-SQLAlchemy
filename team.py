@@ -34,5 +34,33 @@ class Team:
     def new_team(cls, name):
         query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
         sql.query(query)
+        cls.clear_and_load_list()
+
+    @classmethod
+    def clear_and_load_list(cls):
         cls.teams_list = []
         cls.create_teams_list()
+
+    @classmethod
+    def student_to_team(cls, team, student):
+        """
+        Adds student to team
+        :param team: Team object
+        :param student: Student object
+        :return: None
+        """
+        id_t = team.id_team
+        id_s = student.idx
+        if student.id_team:
+            query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
+        else:
+            query = "INSERT INTO `Users_team`(`ID_TEAM`, `ID_USER`) VALUES ({}, {});".format(id_t, id_s)
+        student.id_team = id_t
+        sql.query(query)
+        cls.clear_and_load_list()
+
+    @classmethod
+    def get_team_by_id(cls, team_id):
+        for team in cls.teams_list:
+            if str(team.id_team) == str(team_id):
+                return team
