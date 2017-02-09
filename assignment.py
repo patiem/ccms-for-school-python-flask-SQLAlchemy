@@ -37,7 +37,6 @@ class Assignment:
         list_from_sql = sql.query(query)
         if list_from_sql:
             for item in list_from_sql:
-
                 idx = item['ID']
                 title = item['TITLE']
                 mentor_id = item['ID_MENTOR']
@@ -49,12 +48,6 @@ class Assignment:
                             file_name = item['LINK']
                             group = item['GROUP']
                             cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
-
-                            # if item['GROUP']:
-                            #     group = item['GROUP']
-                            #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
-                            # else:
-                            #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
 
     @classmethod
     def create_assignment_list(cls):
