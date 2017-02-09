@@ -81,6 +81,12 @@ class User(metaclass=ABCMeta):
         return idx
 
     @classmethod
+    def return_by_id(cls, idx):
+        for item in cls.object_list:
+            if item.idx == idx:
+                return item
+
+    @classmethod
     def create_object_list(cls):
         """
         Create list containing instance of class
