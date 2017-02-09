@@ -30,11 +30,13 @@ class Common:
         :param file: string (file path - 'csv/students.csv')
         :return: list (row from file)
         """
-        files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/manager.csv']
+
+        files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/managers.csv']
 
         if file:
             row = Common.get_row(index, file)
             if row:
+                print(row)
                 return row
 
         for item in files_list:
