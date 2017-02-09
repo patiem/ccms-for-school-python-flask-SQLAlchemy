@@ -16,19 +16,25 @@ class Team:
         """
         query = "SELECT * FROM `TEAMS`"
         teams = sql.query(query)
+        if teams:
+            for team in teams:
+                id_team = team['ID']
+                name = team['NAME']
+                students_id = []
+                query = "SELECT `ID_USER` FROM `Users_team` WHERE `ID_TEAM`='{}'".format(id_team)
+                students = sql.query(query)
+                if students:
+                    for student in students:
+                        students_id.append(student['ID_USER'])
+                    cls.teams_list.append(Team(id_team, name, students_id))
+                else:
+                    cls.teams_list.append(Team(id_team, name, []))
 
-        for team in teams:
-            id_team = team['ID']
-            name = team['NAME']
-            students_id = []
-            query = "SELECT `ID_USER` FROM `Users_team` WHERE `ID_TEAM`='{}'".format(id_team)
-            students = sql.query(query)
-            if students:
-                for student in students:
-                    students_id.append(student['ID_USER'])
-                cls.teams_list.append(Team(id_team, name, students_id))
-            else:
-                cls.teams_list.append(Team(id_team, name, []))
+    @classmethod
+    def get_by_id(cls, team_id):
+        for team in cls.teams_list:
+            if team.id_team == team_id:
+                return team
 
     @classmethod
     def new_team(cls):
