@@ -35,25 +35,26 @@ class Assignment:
     def list_from_sql(cls):
         query = "SELECT * FROM `Assigments`;"
         list_from_sql = sql.query(query)
-        for item in list_from_sql:
+        if list_from_sql:
+            for item in list_from_sql:
 
-            idx = item['ID']
-            title = item['TITLE']
-            mentor_id = item['ID_MENTOR']
-            if Test.is_date_correct(item['START_DATA']):
-                start_date = Common.make_corect_date(item['START_DATA'])
-                if Test.is_date_correct(item['END_DATA']):
-                    end_date = Common.make_corect_date(item['END_DATA'])
-                    if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
-                        file_name = item['LINK']
-                        group = item['GROUP']
-                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                idx = item['ID']
+                title = item['TITLE']
+                mentor_id = item['ID_MENTOR']
+                if Test.is_date_correct(item['START_DATA']):
+                    start_date = Common.make_corect_date(item['START_DATA'])
+                    if Test.is_date_correct(item['END_DATA']):
+                        end_date = Common.make_corect_date(item['END_DATA'])
+                        if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
+                            file_name = item['LINK']
+                            group = item['GROUP']
+                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
 
-                        # if item['GROUP']:
-                        #     group = item['GROUP']
-                        #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
-                        # else:
-                        #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
+                            # if item['GROUP']:
+                            #     group = item['GROUP']
+                            #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                            # else:
+                            #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
 
     @classmethod
     def create_assignment_list(cls):
@@ -96,7 +97,7 @@ class Assignment:
         if cls.assigments_list:
             cls.assigments_list.append(new_assignment)
         #Common.save_file('csv/assignments.csv', cls.create_list_to_save())
-
+    
     @classmethod
     def create_list_to_save(cls):
         """
