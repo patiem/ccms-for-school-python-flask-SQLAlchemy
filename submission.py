@@ -9,7 +9,7 @@ class Submission:
 
     submission_list = []
 
-    def __init__(self, student_idx, assignment_idx, date_of_submission, link, grade=None):
+    def __init__(self, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
         Creates object of Submission class.
         :param student_idx: str (idx of student who wants to make submission)
@@ -17,12 +17,14 @@ class Submission:
         :param date_of_submission: str (date when submission is made)
         :param link: str (link to repo)
         :param grade: None (if not graded)/ str (if graded)
+        :param mentor_id: None/int (id of mentor, who graded submission)
         """
         self.student_idx = student_idx
         self.assignment_idx = assignment_idx
         self.date_of_submission = date_of_submission
         self.link = link
         self.grade = grade
+        self.mentor_id = mentor_id
 
     @classmethod
     def create_submission_list(cls):

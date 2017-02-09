@@ -1,6 +1,7 @@
 from common import *
 import datetime
 from test import Test
+import sql
 
 
 class Assignment:
@@ -10,22 +11,45 @@ class Assignment:
 
     assigments_list = []
 
-    def __init__(self, idx, title, author, start_date, end_date, file_name):
+    def __init__(self, idx, title, author, start_date, end_date, file_name, group=False):
         """
         Creates object of Assignment class.
         :param idx: str (unique randomly created id)
         :param title: str (title of assignmnet)
-        :param author: str (Name and last name of autor)
+        :param mentor_id: int (id of author)
         :param start_date: datetime object (date of assignment"s start)
         :param end_date: datetime object (date of assignment's end)
         :param file_name: str (link to assignments txt file with description)
+        :param group: bool (if assignment is for group = True, else False)
+
         """
         self.idx = idx
         self.title = title
-        self.author = author
+        self.mentor_id = mentor_id
         self.start_date = start_date
         self.end_date = end_date
         self.file_name = file_name
+        self.group = group
+
+    @classmethod
+    def list_from_sql(cls):
+        query = "SELECT * FROM `Assigments`;"
+        list_from_sql = sql.query(query)
+        for item in list_from_sql:
+            idx = item['ID']
+            title = item['TITLE']
+            mentor_id = item['ID_MENTOR']
+            if Test.is_date_correct(item['START_DATA']):
+                start_date = Common.make_corect_date(item['START_DATA'])
+                if Test.is_date_correct(item['END_DATA']):
+                    end_date = Common.make_corect_date(item['END_DATA'])
+                    if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
+                        file_name = item['LINK']
+                        if item['GROUP']:
+                            group = item['GROUP']
+                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                        else:
+                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
 
     @classmethod
     def create_assignment_list(cls):
