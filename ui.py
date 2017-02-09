@@ -179,6 +179,27 @@ class Ui:
         return getpass.getpass(label)
 
     @staticmethod
+    def get_id_only_in_list(title, list):
+
+        while True:
+
+            try:
+                option = input(title)
+                if int(option) not in list:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
+    @staticmethod
+    def press_any_key_input():
+        """print any key to exit"""
+
+        input('Press ENTER to exit.....')
+
+    @staticmethod
     def get_menu(menu, menu_from, menu_to):
         """
         printing menu from menu, menu from option to option
@@ -192,7 +213,7 @@ class Ui:
             print(menu)
             try:
 
-                option = input("Select an option: ")
+                option = input("\nSelect an option: ")
                 if menu_from > int(option) or int(option) > menu_to:
                     raise NameError('None option')
                 else:
