@@ -58,6 +58,11 @@ class Attendance:
         :return: None
         """
         today = str(datetime.date.today())
+
+        print("Ilosc studentow")
+        print(len(Student.object_list))
+        input('bla bla bla')
+
         for student in Student.object_list:
             cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
 

@@ -10,6 +10,7 @@ from submission import Submission
 from attandance import Attendance
 from datetime import date
 from test import Test
+import sql
 
 
 class Menu:
@@ -463,8 +464,12 @@ class MentorMenu(Menu):
         for student in Attendance.attendance_list:
             Ui.clear()
             if student.date == str(date.today()):
-                student_data = Common.get_by_id(student.id_student)
-                Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
+
+                # student_data = Common.get_by_id(student.id_student)
+                student_data = sql.query('SELECT * FROM `Users` WHERE ID={}'.format(student.id_student))
+                print(student_data[0])
+                input('')
+                Ui.print_head(student_data[0][1] + ' ' + student_data[0][2], 'warning')
 
                 text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
                 mentor_choice = Ui.get_menu(text, 1, 3)

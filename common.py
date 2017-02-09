@@ -1,5 +1,6 @@
 import csv
 import datetime
+import sql
 
 
 class Common:
@@ -23,26 +24,29 @@ class Common:
         return users_list
 
     @staticmethod
-    def get_by_id(index, file=None):
+    def get_by_id(index, table_name='Users'):
         """
         Returns list
         :param index: string (user_id/attendance_id/...)
-        :param file: string (file path - 'csv/students.csv')
+        :param table_name: string with table name
         :return: list (row from file)
         """
 
-        files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/managers.csv']
+        # files_list = ['csv/students.csv', 'csv/mentors.csv', 'csv/employees.csv', 'csv/managers.csv']
 
-        if file:
-            row = Common.get_row(index, file)
-            if row:
-                print(row)
-                return row
-
-        for item in files_list:
-            row = Common.get_row(index, item)
-            if row:
-                return row
+        # if file:
+        #     row = Common.get_row(index, file)
+        #     if row:
+        #         print(row)
+        #         return row
+        query = "SELECT * FROM `{}` WHERE ID={}".format(table_name, index)
+        row = sql.query(query)
+        if row:
+            return row[:]
+        # for item in files_list:
+        #     row = Common.get_row(index, item)
+        #     if row:
+        #         return row
         raise IndexError("There is no such index")
 
     @staticmethod
