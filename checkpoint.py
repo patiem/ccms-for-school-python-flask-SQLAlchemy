@@ -1,4 +1,5 @@
 from ui import Ui
+from ui import Color
 from common import Common
 import sql
 import datetime
@@ -21,35 +22,35 @@ class Checkpoint:
         sql.query(query, [user_object.idx, title, start_date])
 
     @staticmethod
-    def select_checkpoint_id_from_list(user_object):
-
-        Ui.clear()
-        checkpoint_ids = Checkpoint.show_checkpoints(user_object)
-
-        return Ui.get_id_only_in_list('Select checkpoint (ID): ', checkpoint_ids)
-
-    @staticmethod
-    def select_mentor_id_from_list():
+    def select_mentor_id_from_list(user_object):
 
         Ui.clear()
         Ui.print_head('Select second mentor', 'header')
-        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor'"
+        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor' AND `ID` <> {} ".format(user_object.idx)
         mentors = []
         mentors_ids = []
-        for mentor in sql.query(query):
-            mentors.append([mentor['ID'], mentor['SURNAME'], mentor['NAME'], ])
-            mentors_ids.append(mentor['ID'])
+        sql_result = sql.query(query)
 
-        Ui.print_table(mentors, ['ID', 'Surname', 'Name'])
+        if isinstance(sql_result, list):
+            for mentor in sql_result:
+                mentors.append([mentor['ID'], mentor['SURNAME'], mentor['NAME'], ])
+                mentors_ids.append(mentor['ID'])
 
-        return Ui.get_id_only_in_list('Select second mentor (ID): ', mentors_ids)
+            Ui.print_table(mentors, ['ID', 'Surname', 'Name'])
+
+            return Ui.get_id_only_in_list('Select second mentor (ID): ', mentors_ids)
+        else:
+            Ui.print_text('\n There is no second mentor in school! \n')
+            Ui.press_any_key_input()
+            return None
 
     @staticmethod
     def select_student_id_from_list(checkpoint_id):
 
         Ui.clear()
         Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
-        query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
+        query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints " \
+                "WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
 
         students = []
         students_ids = []
@@ -103,11 +104,12 @@ class Checkpoint:
 
         first_mentor_id = user_object.idx
 
-        checkpoint_id = Checkpoint.select_checkpoint_id_from_list(user_object)
-        second_mentor_id = Checkpoint.select_mentor_id_from_list()
+        checkpoint_id = Checkpoint.show_checkpoints(user_object)
+        second_mentor_id = Checkpoint.select_mentor_id_from_list(user_object)
 
         while True:
-
+            if second_mentor_id == None:
+                break
             student = Checkpoint.select_student_id_from_list(checkpoint_id)
             if student == None:
                 break
@@ -116,6 +118,8 @@ class Checkpoint:
 
 
             grade = Checkpoint.grade(user_object, student)
+            if grade == 0:
+                break
 
             Ui.clear()
             Ui.print_head('Checkpoint', 'header')
@@ -130,20 +134,16 @@ class Checkpoint:
                 break
 
             if user_choice == '1':
-                query = "INSERT INTO Users_checkpoints (ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2) VALUES (?, ?, ?, ?, ?, ?)"
+                query = "INSERT INTO Users_checkpoints " \
+                        "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
+                        " VALUES (?, ?, ?, ?, ?, ?)"
                 params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
                 sql.query(query, params)
 
-
-
-
-
-
-
     @staticmethod
     def show_checkpoints(user_object):
-        Ui.clear()
 
+        Ui.clear()
         Ui.print_head('Created checkpoints', 'header')
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER == Users.ID"
         titles = ['ID', 'Subject', 'Created by', 'Start date']
@@ -152,13 +152,63 @@ class Checkpoint:
         ids = []
         if isinstance(sql_query_result, list):
             for checkpoint in sql_query_result:
-                checkpoints.append([checkpoint['ID'], checkpoint['TITLE'], checkpoint['NAME'] + checkpoint['SURNAME'], checkpoint['START_DATE']])
+                checkpoints.append([checkpoint['ID'], checkpoint['TITLE'], checkpoint['NAME'] + checkpoint['SURNAME'],
+                                    checkpoint['START_DATE']])
                 ids.append(checkpoint["ID"])
             Ui.print_table(checkpoints, titles)
+            checkpoint_id = Ui.get_id_only_in_list('Select checkpoint (ID): ', ids)
+
+
         else:
             Ui.print_text('\n Create checkpoints first! \n')
 
-        return ids
+        return checkpoint_id
 
+    @staticmethod
+    def show_checkpoint_results(checkpoint_id):
+
+        Ui.clear()
+        query = "SELECT  DATE, GRADE, TITLE, student.*, " \
+                "mentor.name as mentor_name, " \
+                "mentor.surname as mentor_surname, " \
+                "mentor2.name as mentor2_name, " \
+                "mentor2.surname as mentor2_surname " \
+                "" \
+                "FROM Users_checkpoints, Checkpoints,  Users as student, Users as mentor, Users as mentor2 " \
+                "WHERE Users_checkpoints.ID_STUDENT = student.ID " \
+                "and Users_checkpoints.ID_MENTOR_1 = mentor.ID " \
+                "and Users_checkpoints.ID_MENTOR_2 = mentor2.ID " \
+                "and Checkpoints.ID = {}".format(checkpoint_id)
+
+        table = []
+        titles = ['Student', 'First mentor ', 'Second mentor', 'Date', Color.Yellow +'Grade       ' + Color.End]
+        sql_query_result = sql.query(query)
+        if isinstance(sql_query_result, list):
+
+            for checkpoint in sql_query_result:
+                if checkpoint['grade'] == 'Yellow':
+                    color = Color.Yellow
+                elif  checkpoint['grade'] == 'Red':
+                    color = Color.Red
+                elif checkpoint['grade'] == 'Green':
+                    color = Color.Green
+                table.append([checkpoint['NAME'] + ' '+  checkpoint['SURNAME'],
+                              checkpoint['mentor_name'] + ' '+ checkpoint['mentor_surname'],
+                              checkpoint['mentor2_name'] + ' '+ checkpoint['mentor2_surname'],
+                              checkpoint['DATE'],
+                              color + checkpoint['grade'] + Color.End,
+
+                              ])
+
+            Ui.print_head('Checkpoint title: {} (Date: {})'.format(sql_query_result[0]['TITLE'], sql_query_result[0]['DATE']))
+            Ui.print_table(table, titles, 7)
+            Ui.press_any_key_input()
+
+        else:
+
+            Ui.print_text('\n No results for this checkpoint yet! \n')
+
+
+            Ui.press_any_key_input()
 
 
