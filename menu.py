@@ -253,7 +253,7 @@ class Menu:
                 logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
 
         if logged_user['Type'] == 'Student':
-            user = Student(*args)
+            user = Student.return_by_id(logged_user['ID'])
             StudentMenu.print_menu(user)
 
         if logged_user['Type'] == 'Mentor':
@@ -443,7 +443,6 @@ class StudentMenu(Menu):
         Ui.print_table(to_print, ['Status', 'amount'])
 
 
-
 class MentorMenu(Menu):
 
     @classmethod
@@ -471,7 +470,7 @@ class MentorMenu(Menu):
                       '\t11: Create team\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 10)
+            user_choice = Ui.get_menu(options, 0, 11)
 
             cls.choose_option(user_choice, user_object)
 
@@ -518,8 +517,20 @@ class MentorMenu(Menu):
             cls.show_teams()
             Ui.get_inputs([''])
 
+        elif choice == '11':
+            cls.add_new_team()
+            Ui.get_inputs([''])
+
         elif choice == '0':
             exit()
+
+    @classmethod
+    def add_new_team(cls):
+        label_list = ['Name']
+        user_data = Ui.get_inputs(label_list)
+        name = user_data[0]
+        Team.new_team(name)
+        Ui.print_head('You created a new team called: {}'.format(name), 'warning')
 
     @staticmethod
     def show_teams():
@@ -535,9 +546,9 @@ class MentorMenu(Menu):
                 student_nr = 1
                 for student in Student.object_list:
                     if student.idx == student_id:
-                        students.append([student_nr, student.name + '' + student.last_name])
+                        students.append([student_nr, student.name + ' ' + student.last_name])
                         break
-                student_nr += 1
+                    student_nr += 1
             Ui.print_table(students, titles)
 
     @staticmethod

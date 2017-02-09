@@ -31,6 +31,8 @@ class Team:
                 cls.teams_list.append(Team(id_team, name, []))
 
     @classmethod
-    def new_team(cls):
-
-        pass
+    def new_team(cls, name):
+        query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
+        sql.query(query)
+        cls.teams_list = []
+        cls.create_teams_list()
