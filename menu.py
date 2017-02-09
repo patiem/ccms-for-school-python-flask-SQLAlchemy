@@ -519,9 +519,10 @@ class ManagerMenu(Menu):
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
                       '\t6: Edit Mentor\n' \
+                      '\t7: Display AVG Grade' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 6)
+            user_choice = Ui.get_menu(options, 0, 7)
 
             ManagerMenu.choose_option(user_choice)
 
@@ -551,7 +552,9 @@ class ManagerMenu(Menu):
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
         elif choice == '7':
+            Ui.clear()
             title_list = ['Name', 'Surname', 'AVG GRADE']
             Ui.print_table(Student.avg_grade(), title_list)
+            Ui.get_inputs(['Enter anything to leave: '])
         else:
             exit()

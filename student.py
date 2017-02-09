@@ -68,7 +68,7 @@ class Student(User):
     @staticmethod
     def avg_grade():
         query = """
-                   SELECT S.ID, Name, Surname, AVG(GRADE)
+                   SELECT Name, Surname, AVG(GRADE)
                    FROM Users as U
                    LEFT Join Sumbissions as S
                    ON U.ID = S.ID_Student
@@ -77,6 +77,6 @@ class Student(User):
         sql_data = sql.query(query)
         table = []
         for row in sql_data:
-            table.append([row[Name], row[Surname], row[AVG]])
+            table.append([row[0], row[1], row[2]])
         return table
 
