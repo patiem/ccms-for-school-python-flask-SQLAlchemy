@@ -257,9 +257,10 @@ class StudentMenu(Menu):
                       '\t2: Show assignment description\n' \
                       '\t3: Submit assignment\n' \
                       '\t4: Show my submission list \n' \
+                      '\t5: Show my overall attendance \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 4)
+            user_choice = Ui.get_menu(options, 0, 5)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
@@ -284,6 +285,9 @@ class StudentMenu(Menu):
             input('Enter to back to menu')
         elif choice == '4':
             cls.my_subbmisions(logged_user)
+            input('Enter to back to menu')
+        elif choice == '5':
+            cls.my_attendance(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -388,6 +392,26 @@ class StudentMenu(Menu):
                                                    str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
         Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
                                                          'link to repo', 'grade', 'mentor_id'])
+    @staticmethod
+    def my_attendance(user):
+        user
+        query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
+        values = [user.idx]
+        back_values = sql.query(query, values)
+        to_print =[]
+        all_days = 0
+        average = 0
+        for row in back_values:
+            to_print.append([row[0], row[1]])
+            if row[0] == 'Present':
+                average += 1
+            elif row[0] == 'Late':
+                average += 0.75
+            all_days += row[1]
+
+        to_print.append(['overall %', average * 100 / all_days])
+        Ui.print_table(to_print, ['Status', 'amount'])
+
 
 
 class MentorMenu(Menu):

@@ -23,5 +23,5 @@ INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (4, 'Mana
 INSERT INTO Users (Name, Surname, "E-mail", Password, Type) VALUES ('Student', 'Codecool', 'ty', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (6, 'InnyStudent', 'Codecool', 'ja3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
 INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (1,'2016-10-01','Present');
-INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (5,'2016-10-01','Absent');
-INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (6,'2016-10-01','Late');
+INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (1,'2016-10-02','Absent');
+INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (1,'2016-10-03','Late');
