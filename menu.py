@@ -69,7 +69,7 @@ class Menu:
         while True:
             Ui.clear()
             Menu.logged_as(user_object)
-            Ui.print_head('Mentor menu: Checkpoints ', 'header')
+            Ui.print_head('Checkpoints ', 'header')
 
             options = '\t1: Show checkpoints\n' \
                       '\t2: Add new checkpoint\n' \
@@ -86,7 +86,8 @@ class Menu:
                 Checkpoint.add_checkpoint(user_object)
 
             if user_choice == '3':
-                break
+
+                Checkpoint.make_checkpoint(user_object)
 
             if user_choice == '0':
                 break

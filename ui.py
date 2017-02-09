@@ -178,6 +178,9 @@ class Ui:
 
         return getpass.getpass(label)
 
+    
+
+
     @staticmethod
     def get_menu(menu, menu_from, menu_to):
         """
