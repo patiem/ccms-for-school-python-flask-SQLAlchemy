@@ -41,3 +41,17 @@ class Manager(User):
                     VALUES (?, ?, ?, ?, ?, 'Manager')"""
         sql.query(query, data)
 
+    @staticmethod
+    def update_sql(edit_list):
+        """
+        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :return:
+        """
+
+        query = """
+                  UPDATE Users
+                  SET `{}` = ?
+                  WHERE `E-mail` = ?
+                  AND Type = 'Manager'""".format(edit_list[1])
+        sql.query(query, [edit_list[2], edit_list[0]])
+

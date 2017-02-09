@@ -25,7 +25,6 @@ class Menu:
         user_data = Ui.get_inputs(label_list)
         user_data = Test.test_add_arguments(label_list, user_data)
         Menu.where_to_add(class_name, user_data)
-        #Menu.what_save(class_name)
 
     @staticmethod
     def print_user(object_list):
@@ -43,21 +42,6 @@ class Menu:
         Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
-    def edit_user(class_name):
-        """
-        Edit user
-        :param class_name: string ( name of class where user should be edited)
-        :return: None
-        """
-        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (name,last name,e-mail,telephone,password): ',
-                                             'new value: '])
-        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
-        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
-        Menu.where_to_edit(class_name, edit_arguments_list)
-        Menu.what_save(class_name)
-
-    @staticmethod
     def remove_user(class_name):
         """
         Remove user from list
@@ -71,24 +55,37 @@ class Menu:
         else:
             Ui.print_text('No user of passed mail')
             Ui.get_inputs(['Enter to continue: '])
-        Menu.what_save(class_name)
+
+    @staticmethod
+    def edit_user(class_name):
+        """
+        Edit user
+        :param class_name: string ( name of class where user should be edited)
+        :return: None
+        """
+        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
+                                             'what to edit (Name,Surname,E-mail,Telephone,Password): ',
+                                             'new value: '])
+        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
+        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
+        Menu.where_to_edit(class_name, edit_arguments_list)
 
     @staticmethod
     def where_to_edit(class_name, edit_arguments_list):
         """
         Check which class should edit user
         :param class_name: string (name of class that method should be started)
-        :param edit_arguments_list: ( list of arguments to run run method)
+        :param edit_arguments_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None
         """
         if class_name == 'Student':
-            Student.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Student.edit_user(edit_arguments_list)
         elif class_name == 'Mentor':
-            Mentor.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Mentor.edit_user(edit_arguments_list)
         elif class_name == 'Manager':
-            Manager.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Manager.edit_user(edit_arguments_list)
         elif class_name == 'Employee':
-            Employee.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Employee.edit_user(edit_arguments_list)
 
     @staticmethod
     def where_to_remove(class_name, mail):
@@ -107,21 +104,23 @@ class Menu:
         elif class_name == 'Employee':
             return Employee.remove_object(mail)
 
-    @staticmethod
-    def what_save(class_name):
-        """
-        Check which class list should be saved
-        :param class_name: string ( name of class that list should be saved)
-        :return: None
-        """
-        if class_name == 'Student':
-            Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
-        elif class_name == 'Mentor':
-            Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
-        elif class_name == 'Manager':
-            Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
-        elif class_name == 'Employee':
-            Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
+
+
+    # @staticmethod
+    # def what_save(class_name):
+    #     """
+    #     Check which class list should be saved
+    #     :param class_name: string ( name of class that list should be saved)
+    #     :return: None
+    #     """
+    #     if class_name == 'Student':
+    #         Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
+    #     elif class_name == 'Mentor':
+    #         Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
+    #     elif class_name == 'Manager':
+    #         Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
+    #     elif class_name == 'Employee':
+    #         Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
 
     @staticmethod
     def where_to_add(class_name, user_data):

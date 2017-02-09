@@ -39,8 +39,8 @@ class Student(User):
             new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
             cls.object_list.append(new_object)
 
-    @classmethod
-    def save_sql(cls, data):
+    @staticmethod
+    def save_sql(data):
         """
         Save data to sql
         :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
@@ -50,4 +50,18 @@ class Student(User):
                 INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
                 VALUES (?, ?, ?, ?, ?, 'Student')"""
         sql.query(query, data)
+
+    @staticmethod
+    def update_sql(edit_list):
+        """
+        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :return:
+        """
+
+        query = """
+                  UPDATE Users
+                  SET `{}` = ?
+                  WHERE `E-mail` = ?
+                  AND Type = 'Student'""".format(edit_list[1])
+        sql.query(query, [edit_list[2], edit_list[0]])
 

@@ -32,29 +32,28 @@ class User(metaclass=ABCMeta):
         :param new_value: string (new value of attribute)
         :return: None
         """
-        if name_of_attribute == 'name':
+        if name_of_attribute == 'Name':
             self.name = new_value
-        elif name_of_attribute == 'last name':
+        elif name_of_attribute == 'Surname':
             self.last_name = new_value
-        elif name_of_attribute == 'mail':
+        elif name_of_attribute == 'E-mail':
             self.mail = new_value
-        elif name_of_attribute == 'telephone':
+        elif name_of_attribute == 'Telephone':
             self.telephone = new_value
-        elif name_of_attribute == 'password':
+        elif name_of_attribute == 'Password':
             self.password = User.encode(new_value)
 
     @classmethod
-    def edit_user(cls, mail, name_of_attribute, new_value):
+    def edit_user(cls, edit_list):
         """
         Edit user passed attribute
-        :param mail: string (e-mail of user to edit))
-        :param name_of_attribute: string (what attribute should be edit)
-        :param new_value: string (new value for attribute)
+        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None or True if attribute is changed
         """
+        cls.update_sql(edit_list)
         for person in cls.object_list:
-            if person.mail == mail:
-                person.change_value(name_of_attribute, new_value)
+            if person.mail == edit_list[0]:
+                person.change_value(edit_list[1], edit_list[2])
                 return True
 
     @classmethod
@@ -100,10 +99,18 @@ class User(metaclass=ABCMeta):
         :param mail: string ( mail of user to remove)
         :return: None or True if object removed
         """
+        User.remove_object(mail)
         for person in cls.object_list:
             if person.mail == mail:
                 cls.object_list.remove(person)
                 return True
+
+    @staticmethod
+    def remove_sql(mail):
+        query = """
+                DELETE FROM Users
+                WHERE `E-mail` = ?"""
+        sql.query(query, [mail])
 
     @staticmethod
     def create_list_to_save(object_list):
@@ -141,6 +148,9 @@ class User(metaclass=ABCMeta):
         if user:
             return user[0]
 
+    @staticmethod
+    def update_sql(edit_list):
+        raise NotImplementedError
 
     @staticmethod
     def login():
