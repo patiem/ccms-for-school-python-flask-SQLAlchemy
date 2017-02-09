@@ -394,6 +394,7 @@ class MentorMenu(Menu):
                       '\t8: Edit student\n' \
                       '\t9: Checkpoints\n' \
                       '\t10: Show teams\n' \
+                      '\t11: Create team\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 10)

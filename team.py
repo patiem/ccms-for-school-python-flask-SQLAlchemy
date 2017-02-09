@@ -29,3 +29,8 @@ class Team:
                 cls.teams_list.append(Team(id_team, name, students_id))
             else:
                 cls.teams_list.append(Team(id_team, name, []))
+
+    @classmethod
+    def new_team(cls):
+
+        pass
