@@ -158,24 +158,6 @@ class Menu:
         elif class_name == 'Employee':
             return Employee.remove_object(mail)
 
-
-
-    # @staticmethod
-    # def what_save(class_name):
-    #     """
-    #     Check which class list should be saved
-    #     :param class_name: string ( name of class that list should be saved)
-    #     :return: None
-    #     """
-    #     if class_name == 'Student':
-    #         Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
-    #     elif class_name == 'Mentor':
-    #         Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
-    #     elif class_name == 'Manager':
-    #         Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
-    #     elif class_name == 'Employee':
-    #         Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
-
     @staticmethod
     def where_to_add(class_name, user_data):
         """
@@ -399,11 +381,29 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        if not Submission.find_submission(logged_user, assignment_to_submit):
-            link = Ui.get_inputs(['Link to your repo:'])
-            Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
+        if assignment_to_submit == '0':
+            if not Submission.find_submission(logged_user, assignment_to_submit):
+                link = Ui.get_inputs(['Link to your repo:'])
+                Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
+            else:
+                Ui.print_text("You can't submit this assignment - it's already submitted")
         else:
-            Ui.print_text("You can't submit this assignment - it's already submitted")
+            cls.submission_for_group(logged_user, assignment_to_submit)
+
+    @staticmethod
+    def submission_for_group(logged_user, assignment_to_submit):
+        team_id = logged_user.id_team
+        if team_id:
+            link = Ui.get_inputs(['Link to your repo:'])
+            team = Team.get_by_id(team_id)
+            for student_id in team.students_id:
+                student = Student.return_by_id(student_id)
+                if not Submission.find_submission(student, assignment_to_submit):
+                    Submission.add_submission(student_id, assignment_to_submit.idx, date.today(), link[0])
+                else:
+                    Ui.print_text("You can't submit this assignment - it's already submitted")
+        else:
+            Ui.print_text("You can't submit this assignment - you are not in team")
 
     @staticmethod
     def my_subbmisions(logged_user):
@@ -608,7 +608,8 @@ class MentorMenu(Menu):
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade, mentor_user.idx, student.idx, assignment.idx)
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                         submission_to_grade.assignment_idx)
 
     @staticmethod
     def add_assignment(user_object):
@@ -619,8 +620,19 @@ class MentorMenu(Menu):
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
-        start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
-        end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+        while True:
+            try:
+                start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+        while True:
+            try:
+                end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+
         group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)

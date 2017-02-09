@@ -26,9 +26,10 @@ class Mentor(User):
                    FROM Users
                    WHERE Type = 'Mentor'"""
         data = sql.query(query)
-        for row in data:
-            new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
-            cls.object_list.append(new_object)
+        if data:
+            for row in data:
+                new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
+                cls.object_list.append(new_object)
 
     @staticmethod
     def save_sql(data):
@@ -39,7 +40,7 @@ class Mentor(User):
         """
         query = """
                     INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
-                    VALUES (?, ?, ?, ?, ?, 'Student')"""
+                    VALUES (?, ?, ?, ?, ?, 'Mentor')"""
         sql.query(query, data)
 
     @staticmethod

@@ -90,7 +90,7 @@ class Assignment:
         if cls.assigments_list:
             cls.assigments_list.append(new_assignment)
         #Common.save_file('csv/assignments.csv', cls.create_list_to_save())
-
+    
     @classmethod
     def create_list_to_save(cls):
         """
