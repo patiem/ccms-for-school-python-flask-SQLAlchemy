@@ -191,6 +191,32 @@ class Menu:
             Employee.add_user(user_data)
 
     @staticmethod
+    def student_statistic():
+        """
+        Display  statistics of students
+        :return: None
+        """
+        Ui.clear()
+        options = '\t1: AVG GRADE\n' \
+                  '\t2: Attendance\n' \
+                  '\t0: Back to menu'
+
+        user_choice = Ui.get_menu(options, 0, 2)
+        if user_choice == '1':
+            Ui.clear()
+            title_list = ['Name', 'Surname', 'AVG GRADE']
+            Ui.print_table(Student.avg_grade(), title_list)
+            Ui.get_inputs(['Enter anything to leave: '])
+        if user_choice == '2':
+            Ui.clear()
+            titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
+            Ui.print_table(Attendance.students_engagement(), titles)
+            Ui.get_inputs(['Enter anything to leave: '])
+        else:
+            pass
+
+
+    @staticmethod
     def logged_as(logged_user):
         """
         Prints logged user at the top of the window
@@ -578,7 +604,7 @@ class ManagerMenu(Menu):
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
                       '\t6: Edit Mentor\n' \
-                      '\t7: Display AVG Grade\n' \
+                      '\t7: Display Student statistic\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 7)
@@ -611,9 +637,6 @@ class ManagerMenu(Menu):
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
         elif choice == '7':
-            Ui.clear()
-            title_list = ['Name', 'Surname', 'AVG GRADE']
-            Ui.print_table(Student.avg_grade(), title_list)
-            Ui.get_inputs(['Enter anything to leave: '])
+            ManagerMenu.student_statistic()
         else:
             exit()

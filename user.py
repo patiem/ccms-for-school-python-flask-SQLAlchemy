@@ -1,4 +1,3 @@
-from common import *
 import hashlib
 from ui import *
 import sql
@@ -92,10 +91,6 @@ class User(metaclass=ABCMeta):
         Create list containing instance of class
         :return: None
         """
-        # file = cls.file
-        # list_from_csv = Common.read_file(file)
-        # for person in list_from_csv:
-        #     cls.object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
         raise NotImplementedError
 
     @classmethod

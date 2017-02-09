@@ -1,6 +1,7 @@
 from user import *
 import sql
 
+
 class Student(User):
     """
     Class represent student
@@ -8,7 +9,7 @@ class Student(User):
     object_list = []
     file = 'csv/students.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone, password, id_team = None):
+    def __init__(self, idx, name, last_name, mail, telephone, password, id_team=None):
         """
         Create Student object
         :param idx: string (id of student)
@@ -22,6 +23,10 @@ class Student(User):
 
     @classmethod
     def create_object_list(cls):
+        """
+        Crete objects of class student from sql
+        :return: None
+        """
         query = """
                 SELECT ID, Name, Surname, `E-mail`, Telephone, Password
                 FROM Users
@@ -67,6 +72,10 @@ class Student(User):
 
     @staticmethod
     def avg_grade():
+        """
+        Count avg grade of students
+        :return: Table (FORMAT: NAME, SURNAME, AVG GRADE)
+        """
         query = """
                    SELECT Name, Surname, AVG(GRADE)
                    FROM Users as U
@@ -79,5 +88,3 @@ class Student(User):
         for row in sql_data:
             table.append([row[0], row[1], row[2]])
         return table
-
-

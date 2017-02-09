@@ -1,6 +1,6 @@
 from user import *
-from common import *
 import sql
+
 
 class Employee(User):
     object_list = []
@@ -18,6 +18,10 @@ class Employee(User):
 
     @classmethod
     def create_object_list(cls):
+        """
+        Create objects of class Employee
+        :return: None
+        """
         query = """
                   SELECT ID, Name, Surname, `E-mail`, Telephone, Password
                   FROM Users
