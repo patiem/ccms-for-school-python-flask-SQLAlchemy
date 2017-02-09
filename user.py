@@ -2,9 +2,11 @@ from common import *
 import hashlib
 from ui import *
 import sql
+from abc import ABCMeta
 
 
-class User:
+class User(metaclass=ABCMeta):
+    object_list = None
 
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
@@ -30,45 +32,59 @@ class User:
         :param new_value: string (new value of attribute)
         :return: None
         """
-        if name_of_attribute == 'name':
+        if name_of_attribute == 'Name':
             self.name = new_value
-        elif name_of_attribute == 'last name':
+        elif name_of_attribute == 'Surname':
             self.last_name = new_value
-        elif name_of_attribute == 'mail':
+        elif name_of_attribute == 'E-mail':
             self.mail = new_value
-        elif name_of_attribute == 'telephone':
+        elif name_of_attribute == 'Telephone':
             self.telephone = new_value
-        elif name_of_attribute == 'password':
+        elif name_of_attribute == 'Password':
             self.password = User.encode(new_value)
 
     @classmethod
-    def edit_user(cls, mail, name_of_attribute, new_value):
+    def edit_user(cls, edit_list):
         """
         Edit user passed attribute
-        :param mail: string (e-mail of user to edit))
-        :param name_of_attribute: string (what attribute should be edit)
-        :param new_value: string (new value for attribute)
+        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None or True if attribute is changed
         """
         for person in cls.object_list:
-            if person.mail == mail:
-                person.change_value(name_of_attribute, new_value)
+            if person.mail == edit_list[0]:
+                person.change_value(edit_list[1], edit_list[2])
+                cls.update_sql(edit_list)
                 return True
 
     @classmethod
-    def add_user(cls, name, last_name, mail, telephone):
+    def add_user(cls, data):
         """
-        Add new user object to list
-        :param name: string (name of student)
-        :param last_name: string (last name)
-        :param mail: string (mail of student)
-        :param telephone: string (telephone to student)
-        :return: None
+
+        :param data: LIST (FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
+        :return:
         """
-        new_id = Common.generate_id()
-        password = User.encode('1')
-        new_student = cls(new_id, name, last_name, mail, telephone, password)
-        cls.object_list.append(new_student)
+        data.append(User.encode('1'))
+        cls.save_sql(data)
+        idx = cls.get_id(data[2])
+        new_object = cls(idx, data[0], data[1], data[2], data[3], data[4])
+        cls.object_list.append(new_object)
+
+
+    @classmethod
+    def get_id(cls, mail):
+        query = """
+                SELECT ID
+                FROM Users
+                WHERE `E-mail` = ?"""
+        idx = sql.query(query, [mail])
+        idx = idx[0]['ID']
+        return idx
+
+    @classmethod
+    def return_by_id(cls, idx):
+        for item in cls.object_list:
+            if item.idx == idx:
+                return item
 
     @classmethod
     def create_object_list(cls):
@@ -76,10 +92,11 @@ class User:
         Create list containing instance of class
         :return: None
         """
-        file = cls.file
-        list_from_csv = Common.read_file(file)
-        for person in list_from_csv:
-            cls.object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
+        # file = cls.file
+        # list_from_csv = Common.read_file(file)
+        # for person in list_from_csv:
+        #     cls.object_list.append(cls(person[0], person[1], person[2], person[3], person[4], person[5]))
+        raise NotImplementedError
 
     @classmethod
     def remove_object(cls, mail):
@@ -91,7 +108,15 @@ class User:
         for person in cls.object_list:
             if person.mail == mail:
                 cls.object_list.remove(person)
+                cls.remove_object(mail)
                 return True
+
+    @staticmethod
+    def remove_sql(mail):
+        query = """
+                DELETE FROM Users
+                WHERE `E-mail` = ?"""
+        sql.query(query, [mail])
 
     @staticmethod
     def create_list_to_save(object_list):
@@ -129,6 +154,9 @@ class User:
         if user:
             return user[0]
 
+    @staticmethod
+    def update_sql(edit_list):
+        raise NotImplementedError
 
     @staticmethod
     def login():

@@ -10,6 +10,8 @@ from submission import Submission
 from attandance import Attendance
 from datetime import date
 from test import Test
+from checkpoint import Checkpoint
+import sql
 
 
 class Menu:
@@ -25,7 +27,6 @@ class Menu:
         user_data = Ui.get_inputs(label_list)
         user_data = Test.test_add_arguments(label_list, user_data)
         Menu.where_to_add(class_name, user_data)
-        Menu.what_save(class_name)
 
     @staticmethod
     def print_user(object_list):
@@ -44,7 +45,7 @@ class Menu:
 
     @staticmethod
     def edit_user(class_name):
-        """
+        """My submissions
         Edit user
         :param class_name: string ( name of class where user should be edited)
         :return: None
@@ -56,6 +57,40 @@ class Menu:
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
+
+    @staticmethod
+    def checkpoint(user_object):
+        """
+        Checkpoint:
+        :param None
+        :return: None
+        """
+
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Mentor menu: Checkpoints ', 'header')
+
+            options = '\t1: Show checkpoints\n' \
+                      '\t2: Add new checkpoint\n' \
+                      '\t3: Make checkpoint\n' \
+                      '\t0: Previous Menu'
+
+            user_choice = Ui.get_menu(options, 0, 3)
+
+            if user_choice == '1':
+                Checkpoint.show_checkpoints(user_object)
+
+            if user_choice == '2':
+
+                Checkpoint.add_checkpoint(user_object)
+
+            if user_choice == '3':
+                break
+
+            if user_choice == '0':
+                break
+
 
     @staticmethod
     def remove_user(class_name):
@@ -71,24 +106,37 @@ class Menu:
         else:
             Ui.print_text('No user of passed mail')
             Ui.get_inputs(['Enter to continue: '])
-        Menu.what_save(class_name)
+
+    @staticmethod
+    def edit_user(class_name):
+        """
+        Edit user
+        :param class_name: string ( name of class where user should be edited)
+        :return: None
+        """
+        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
+                                             'what to edit (Name,Surname,E-mail,Telephone,Password): ',
+                                             'new value: '])
+        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
+        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
+        Menu.where_to_edit(class_name, edit_arguments_list)
 
     @staticmethod
     def where_to_edit(class_name, edit_arguments_list):
         """
         Check which class should edit user
         :param class_name: string (name of class that method should be started)
-        :param edit_arguments_list: ( list of arguments to run run method)
+        :param edit_arguments_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None
         """
         if class_name == 'Student':
-            Student.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Student.edit_user(edit_arguments_list)
         elif class_name == 'Mentor':
-            Mentor.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Mentor.edit_user(edit_arguments_list)
         elif class_name == 'Manager':
-            Manager.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Manager.edit_user(edit_arguments_list)
         elif class_name == 'Employee':
-            Employee.edit_user(edit_arguments_list[0], edit_arguments_list[1], edit_arguments_list[2])
+            Employee.edit_user(edit_arguments_list)
 
     @staticmethod
     def where_to_remove(class_name, mail):
@@ -107,38 +155,40 @@ class Menu:
         elif class_name == 'Employee':
             return Employee.remove_object(mail)
 
-    @staticmethod
-    def what_save(class_name):
-        """
-        Check which class list should be saved
-        :param class_name: string ( name of class that list should be saved)
-        :return: None
-        """
-        if class_name == 'Student':
-            Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
-        elif class_name == 'Mentor':
-            Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
-        elif class_name == 'Manager':
-            Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
-        elif class_name == 'Employee':
-            Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
+
+
+    # @staticmethod
+    # def what_save(class_name):
+    #     """
+    #     Check which class list should be saved
+    #     :param class_name: string ( name of class that list should be saved)
+    #     :return: None
+    #     """
+    #     if class_name == 'Student':
+    #         Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
+    #     elif class_name == 'Mentor':
+    #         Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
+    #     elif class_name == 'Manager':
+    #         Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
+    #     elif class_name == 'Employee':
+    #         Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
 
     @staticmethod
     def where_to_add(class_name, user_data):
         """
         Check witch class should add user
         :param class_name: string ( name of class that user should be add)
-        :param user_data: list ( list of attributes to create user)
+        :param user_data: list ( FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
         :return: None
         """
         if class_name == 'Student':
-            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Student.add_user(user_data)
         elif class_name == 'Mentor':
-            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Mentor.add_user(user_data)
         elif class_name == 'Manager':
-            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Manager.add_user(user_data)
         elif class_name == 'Employee':
-            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Employee.add_user(user_data)
 
     @staticmethod
     def logged_as(logged_user):
@@ -362,9 +412,11 @@ class MentorMenu(Menu):
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
+                      '\t9: Checkpoints \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 8)
+
+            user_choice = Ui.get_menu(options, 0, 9)
 
             cls.choose_option(user_choice, user_object)
 
@@ -394,7 +446,6 @@ class MentorMenu(Menu):
 
         elif choice == '5':
             cls.switch_attendance()
-            Ui.get_inputs([''])
 
         elif choice == '6':
             cls.add_user('Student')
@@ -404,6 +455,9 @@ class MentorMenu(Menu):
 
         elif choice == '8':
             cls.edit_user('Student')
+
+        elif choice == '9':
+            cls.checkpoint(user_object)
 
         elif choice == '0':
             exit()
@@ -474,13 +528,17 @@ class MentorMenu(Menu):
         for student in Attendance.attendance_list:
             Ui.clear()
             if student.date == str(date.today()):
-                student_data = Common.get_by_id(student.id_student)
-                Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
 
+                student_data = sql.query('SELECT * FROM `Users` WHERE ID={}'.format(student.id_student))
+                Ui.print_head(student_data[0]['Name'] + ' ' + student_data[0]['Surname'], 'warning')
                 text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
                 mentor_choice = Ui.get_menu(text, 1, 3)
 
                 Attendance.toggle_present(student, mentor_choice)
+                query = "UPDATE `Attendance` SET `STATUS` = '{}' WHERE `ID_STUDENT` = {} AND `DATE` = '{}';"\
+                        .format(student.present, student.id_student, student.date)
+
+                sql.query(query)
 
 
 class EmployeeMenu(Menu):
@@ -531,9 +589,10 @@ class ManagerMenu(Menu):
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
                       '\t6: Edit Mentor\n' \
+                      '\t7: Display AVG Grade\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 6)
+            user_choice = Ui.get_menu(options, 0, 7)
 
             ManagerMenu.choose_option(user_choice)
 
@@ -562,5 +621,10 @@ class ManagerMenu(Menu):
         elif choice == '6':
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
+        elif choice == '7':
+            Ui.clear()
+            title_list = ['Name', 'Surname', 'AVG GRADE']
+            Ui.print_table(Student.avg_grade(), title_list)
+            Ui.get_inputs(['Enter anything to leave: '])
         else:
             exit()
