@@ -163,7 +163,7 @@ class Menu:
         Mentor.create_object_list()
         Employee.create_object_list()
         Manager.create_object_list()
-        Assignment.create_assignment_list()
+        #Assignment.create_assignment_list()
         Submission.create_submission_list()
         Attendance.create_attendance_list()
 
@@ -220,6 +220,8 @@ class StudentMenu(Menu):
         """
         students_assignments = Assignment.pass_assign_for_student()
         if choice == '1':
+            if not Assignment.assigments_list:
+                Assignment.list_from_sql()
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
         elif choice == '2':
@@ -244,12 +246,15 @@ class StudentMenu(Menu):
         """
         Ui.clear()
         Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
-        title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
+        title_list = ['nr', 'title', 'mentor_id', 'start date', 'end date', 'type of assignment', 'submitted', 'grade']
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
         for assignment in assignments_list:
-            new_line = [str(n), assignment.title, assignment.author, assignment.start_date, assignment.end_date]
+            type_of_assignment = 'Individual'
+            if assignment.group == '1':
+                type_of_assignment = 'Group'
+            new_line = [str(n), assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date, type_of_assignment]
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
                 new_line.append('submitted')
@@ -274,7 +279,7 @@ class StudentMenu(Menu):
         """
 
         Ui.clear()
-        Ui.print_head("List of assigments", "header")
+        Ui.print_head("List of assignments", "header")
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
@@ -440,18 +445,22 @@ class MentorMenu(Menu):
         :param user_object: User object (The currently logged in user)
         :return: None
         """
-        author = user_object.name + ' ' + user_object.last_name
+        mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
         start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
         end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
-
+        group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
+        filename_short = '{}.txt'.format(filename_from_title)
+
 
         with open(filename, 'w'):
             Ui.print_text('File is created')
-
-        Assignment.add_assignment(title, author, start_date, end_date, filename)
+        if group == '1':
+            Assignment.add_assignment(title, mentor_id, start_date, end_date, filename_short, '1')
+        else:
+            Assignment.add_assignment(title, mentor_id, start_date, end_date, filename_short)
 
     @staticmethod
     def switch_attendance():

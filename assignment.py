@@ -11,7 +11,7 @@ class Assignment:
 
     assigments_list = []
 
-    def __init__(self, idx, title, author, start_date, end_date, file_name, group=False):
+    def __init__(self, idx, title, mentor_id, start_date, end_date, file_name, group='0'):
         """
         Creates object of Assignment class.
         :param idx: str (unique randomly created id)
@@ -20,7 +20,7 @@ class Assignment:
         :param start_date: datetime object (date of assignment"s start)
         :param end_date: datetime object (date of assignment's end)
         :param file_name: str (link to assignments txt file with description)
-        :param group: bool (if assignment is for group = True, else False)
+        :param group: int (if assignment is for group = 1, else 0)
 
         """
         self.idx = idx
@@ -36,6 +36,7 @@ class Assignment:
         query = "SELECT * FROM `Assigments`;"
         list_from_sql = sql.query(query)
         for item in list_from_sql:
+
             idx = item['ID']
             title = item['TITLE']
             mentor_id = item['ID_MENTOR']
@@ -45,11 +46,14 @@ class Assignment:
                     end_date = Common.make_corect_date(item['END_DATA'])
                     if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
                         file_name = item['LINK']
-                        if item['GROUP']:
-                            group = item['GROUP']
-                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
-                        else:
-                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
+                        group = item['GROUP']
+                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+
+                        # if item['GROUP']:
+                        #     group = item['GROUP']
+                        #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                        # else:
+                        #     cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
 
     @classmethod
     def create_assignment_list(cls):
@@ -61,30 +65,37 @@ class Assignment:
         for item in list_from_csv:
             idx = item[0]
             title = item[1]
-            author = item[2]
+            mentor_id = item[2]
             if Test.is_date_correct(item[3]):
                 start_date = Common.make_corect_date(item[3])
                 if Test.is_date_correct(item[4]):
                     end_date = Common.make_corect_date(item[4])
                     if Test.does_file_exist('csv/assignments_description/' + item[5]):
                         file_name = item[5]
-                        cls.assigments_list.append(cls(idx, title, author, start_date, end_date, file_name))
+                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
 
     @classmethod
-    def add_assignment(cls, title, author, start_date, end_date, file_name):
+    def add_assignment(cls, title, mentor_id, start_date, end_date, file_name, group='0'):
         """
         Add new student object to list
         :param title: string (assignment name)
-        :param author: string (name of mentor)
+        :param mentor_id: int (name of mentor)
         :param start_date: datetime object (date of start)
         :param end_date: datetime object (date of end )
         :param file_name: string (file path)
+        :param group: bool (group/ind)
         :return: None
         """
-        new_id = Common.generate_id()
-        new_assignment = cls(new_id, title, author, start_date, end_date, file_name)
-        cls.assigments_list.append(new_assignment)
-        Common.save_file('csv/assignments.csv', cls.create_list_to_save())
+        #new_id = Common.generate_id()
+        query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`) VALUES (?, ?, ?, ?, ?, ?);"
+        values_list = [title, mentor_id, start_date, end_date, file_name, group]
+        sql.query(query, values_list)
+        query_2 = "SELECT MAX(`ID`) FROM `Assigments`;"
+        new_id = sql.query(query_2)[0]
+        new_assignment = cls(new_id, title, mentor_id, start_date, end_date, file_name, group)
+        if cls.assigments_list:
+            cls.assigments_list.append(new_assignment)
+        #Common.save_file('csv/assignments.csv', cls.create_list_to_save())
 
     @classmethod
     def create_list_to_save(cls):
@@ -94,7 +105,7 @@ class Assignment:
         """
         list_to_save = []
         for assigment in cls.assigments_list:
-            list_to_save.append([assigment.idx, assigment.title, assigment.author,
+            list_to_save.append([assigment.idx, assigment.title, assigment.mentor_id,
                                 assigment.start_date, assigment.end_date, assigment.file_name])
         return list_to_save
 
