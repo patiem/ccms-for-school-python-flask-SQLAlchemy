@@ -158,24 +158,6 @@ class Menu:
         elif class_name == 'Employee':
             return Employee.remove_object(mail)
 
-
-
-    # @staticmethod
-    # def what_save(class_name):
-    #     """
-    #     Check which class list should be saved
-    #     :param class_name: string ( name of class that list should be saved)
-    #     :return: None
-    #     """
-    #     if class_name == 'Student':
-    #         Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
-    #     elif class_name == 'Mentor':
-    #         Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
-    #     elif class_name == 'Manager':
-    #         Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
-    #     elif class_name == 'Employee':
-    #         Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
-
     @staticmethod
     def where_to_add(class_name, user_data):
         """
@@ -601,8 +583,19 @@ class MentorMenu(Menu):
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
-        start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
-        end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+        while True:
+            try:
+                start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+        while True:
+            try:
+                end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+
         group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
