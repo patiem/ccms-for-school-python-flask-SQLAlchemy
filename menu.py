@@ -79,7 +79,9 @@ class Menu:
             user_choice = Ui.get_menu(options, 0, 3)
 
             if user_choice == '1':
+
                 Checkpoint.show_checkpoints(user_object)
+                Ui.press_any_key_input()
 
             if user_choice == '2':
 

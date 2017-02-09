@@ -193,6 +193,11 @@ class Ui:
                 print('Wrong select!')
 
         return option
+    @staticmethod
+    def press_any_key_input():
+        """print any key to exit"""
+
+        input('Press ENTER to exit.....')
 
     @staticmethod
     def get_menu(menu, menu_from, menu_to):
@@ -208,7 +213,7 @@ class Ui:
             print(menu)
             try:
 
-                option = input("Select an option: ")
+                option = input("\nSelect an option: ")
                 if menu_from > int(option) or int(option) > menu_to:
                     raise NameError('None option')
                 else:
