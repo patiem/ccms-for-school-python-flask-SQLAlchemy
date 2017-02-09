@@ -45,25 +45,37 @@ class Checkpoint:
         return Ui.get_id_only_in_list('Select second mentor (ID): ', mentors_ids)
 
     @staticmethod
-    def select_student_id_from_list():
+    def select_student_id_from_list(checkpoint_id):
 
         Ui.clear()
-        Ui.print_head('Select student to checkpoint', '')
-        query = "SELECT * FROM Users WHERE `TYPE` = 'Student'"
+        Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
+        query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
+
         students = []
         students_ids = []
-        for student in sql.query(query):
-            students.append([student['ID'], student['SURNAME'], student['NAME'], ])
-            students_ids.append(student['ID'])
 
-        Ui.print_table(students, ['ID', 'Surname', 'Name'])
+        query_result = sql.query(query)
 
-        return Ui.get_id_only_in_list('Select student (ID): ', students_ids)
+        if isinstance(query_result, list):
+            for student in query_result:
+                students.append([student['ID'], student['SURNAME'], student['NAME'], ])
+                students_ids.append(student['ID'])
+
+            Ui.print_table(students, ['ID', 'Surname', 'Name'])
+            return Ui.get_id_only_in_list('Select student (ID): ', students_ids)
+
+        else:
+            Ui.print_text('\n All students are graded in this checkpoint! \n')
+            Ui.press_any_key_input()
+            return None
+
 
     @staticmethod
-    def grade():
+    def grade(user_object, student):
+
         Ui.clear()
         Ui.print_head('Grade', 'header')
+        Ui.print_head('{} You are grading {} {}'.format('Mentor! ', student.name, student.last_name))
         options = 'Your grade for this student:\n\n' \
                   '\t1: Green card\n' \
                   '\t2: Yellow card\n' \
@@ -72,13 +84,13 @@ class Checkpoint:
 
         user_choice = Ui.get_menu(options, 0, 3)
 
-        if user_choice == 1:
+        if user_choice == '1':
             return 'Green'
-        elif user_choice == 2:
+        elif user_choice == '2':
             return 'Yellow'
-        elif user_choice == 3:
+        elif user_choice == '3':
             return 'Red'
-        elif user_choice == 0:
+        elif user_choice == '0':
             return 0
 
     @staticmethod
@@ -88,6 +100,7 @@ class Checkpoint:
         Ui.print_head('Make checkpoint', 'header')
 
         today = datetime.date.today()
+
         first_mentor_id = user_object.idx
 
         checkpoint_id = Checkpoint.select_checkpoint_id_from_list(user_object)
@@ -95,14 +108,36 @@ class Checkpoint:
 
         while True:
 
-            student = Checkpoint.select_student_id_from_list()
-            grade = Checkpoint.grade()
+            student = Checkpoint.select_student_id_from_list(checkpoint_id)
+            if student == None:
+                break
 
-            if grade != 0:
+            student = Student.return_by_id(int(student))
+
+
+            grade = Checkpoint.grade(user_object, student)
+
+            Ui.clear()
+            Ui.print_head('Checkpoint', 'header')
+
+            options = 'Select:\n\n' \
+                      '\t1: Grade next student\n' \
+                      '\t0: Exit Checkpoint '
+
+            user_choice = Ui.get_menu(options, 0, 1)
+
+            if user_choice == '0':
+                break
+
+            if user_choice == '1':
+                query = "INSERT INTO Users_checkpoints (ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2) VALUES (?, ?, ?, ?, ?, ?)"
+                params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
+                sql.query(query, params)
 
 
 
-            Ui.press_any_key_input()
+
+
 
 
     @staticmethod
