@@ -10,6 +10,8 @@ from submission import Submission
 from attandance import Attendance
 from datetime import date
 from test import Test
+from checkpoint import Checkpoint
+import sql
 
 
 class Menu:
@@ -40,6 +42,55 @@ class Menu:
         Ui.print_table(print_list,
                        ['Id', 'Name', 'Last Name', 'E-mail', 'Telephone'])
         Ui.get_inputs(['Enter anything to leave: '])
+
+    @staticmethod
+    def edit_user(class_name):
+        """My submissions
+        Edit user
+        :param class_name: string ( name of class where user should be edited)
+        :return: None
+        """
+        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
+                                             'what to edit (name,last name,e-mail,telephone,password): ',
+                                             'new value: '])
+        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
+        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
+        Menu.where_to_edit(class_name, edit_arguments_list)
+        Menu.what_save(class_name)
+
+    @staticmethod
+    def checkpoint(user_object):
+        """
+        Checkpoint:
+        :param None
+        :return: None
+        """
+
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Mentor menu: Checkpoints ', 'header')
+
+            options = '\t1: Show checkpoints\n' \
+                      '\t2: Add new checkpoint\n' \
+                      '\t3: Make checkpoint\n' \
+                      '\t0: Previous Menu'
+
+            user_choice = Ui.get_menu(options, 0, 3)
+
+            if user_choice == '1':
+                Checkpoint.show_checkpoints(user_object)
+
+            if user_choice == '2':
+
+                Checkpoint.add_checkpoint(user_object)
+
+            if user_choice == '3':
+                break
+
+            if user_choice == '0':
+                break
+
 
     @staticmethod
     def remove_user(class_name):
@@ -354,9 +405,11 @@ class MentorMenu(Menu):
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
+                      '\t9: Checkpoints \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 8)
+
+            user_choice = Ui.get_menu(options, 0, 9)
 
             cls.choose_option(user_choice, user_object)
 
@@ -386,7 +439,6 @@ class MentorMenu(Menu):
 
         elif choice == '5':
             cls.switch_attendance()
-            Ui.get_inputs([''])
 
         elif choice == '6':
             cls.add_user('Student')
@@ -396,6 +448,9 @@ class MentorMenu(Menu):
 
         elif choice == '8':
             cls.edit_user('Student')
+
+        elif choice == '9':
+            cls.checkpoint(user_object)
 
         elif choice == '0':
             exit()
@@ -462,13 +517,17 @@ class MentorMenu(Menu):
         for student in Attendance.attendance_list:
             Ui.clear()
             if student.date == str(date.today()):
-                student_data = Common.get_by_id(student.id_student)
-                Ui.print_head(student_data[1] + ' ' + student_data[2], 'warning')
 
+                student_data = sql.query('SELECT * FROM `Users` WHERE ID={}'.format(student.id_student))
+                Ui.print_head(student_data[0]['Name'] + ' ' + student_data[0]['Surname'], 'warning')
                 text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
                 mentor_choice = Ui.get_menu(text, 1, 3)
 
                 Attendance.toggle_present(student, mentor_choice)
+                query = "UPDATE `Attendance` SET `STATUS` = '{}' WHERE `ID_STUDENT` = {} AND `DATE` = '{}';"\
+                        .format(student.present, student.id_student, student.date)
+
+                sql.query(query)
 
 
 class EmployeeMenu(Menu):
@@ -519,7 +578,7 @@ class ManagerMenu(Menu):
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
                       '\t6: Edit Mentor\n' \
-                      '\t7: Display AVG Grade' \
+                      '\t7: Display AVG Grade\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 7)
