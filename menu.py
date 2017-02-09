@@ -10,6 +10,7 @@ from submission import Submission
 from attandance import Attendance
 from datetime import date
 from test import Test
+from checkpoint import Checkpoint
 
 
 class Menu:
@@ -44,7 +45,7 @@ class Menu:
 
     @staticmethod
     def edit_user(class_name):
-        """
+        """My submissions
         Edit user
         :param class_name: string ( name of class where user should be edited)
         :return: None
@@ -56,6 +57,40 @@ class Menu:
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
         Menu.what_save(class_name)
+
+    @staticmethod
+    def checkpoint(user_object):
+        """
+        Checkpoint:
+        :param None
+        :return: None
+        """
+
+        while True:
+            Ui.clear()
+            Menu.logged_as(user_object)
+            Ui.print_head('Mentor menu: Checkpoints ', 'header')
+
+            options = '\t1: Show checkpoints\n' \
+                      '\t2: Add new checkpoint\n' \
+                      '\t3: Make checkpoint\n' \
+                      '\t0: Previous Menu'
+
+            user_choice = Ui.get_menu(options, 0, 3)
+
+            if user_choice == '1':
+                Checkpoint.show_checkpoints(user_object)
+
+            if user_choice == '2':
+
+                Checkpoint.add_checkpoint(user_object)
+
+            if user_choice == '3':
+                break
+
+            if user_choice == '0':
+                break
+
 
     @staticmethod
     def remove_user(class_name):
@@ -355,9 +390,10 @@ class MentorMenu(Menu):
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
+                      '\t9: Checkpoints\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 8)
+            user_choice = Ui.get_menu(options, 0, 9)
 
             cls.choose_option(user_choice, user_object)
 
@@ -397,6 +433,9 @@ class MentorMenu(Menu):
 
         elif choice == '8':
             cls.edit_user('Student')
+
+        elif choice == '9':
+            cls.checkpoint(user_object)
 
         elif choice == '0':
             exit()
