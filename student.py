@@ -41,7 +41,9 @@ class Student(User):
                                 SELECT ID_TEAM
                                 FROM Users_team
                                 WHERE ID_USER = ?"""
-                line.append(sql.query(get_team_id, [line[0]]))
+                for row in sql.query(get_team_id, [line[0]]):
+                    team_id = row[0]
+                line.append(team_id)
                 new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
                 cls.object_list.append(new_object)
 

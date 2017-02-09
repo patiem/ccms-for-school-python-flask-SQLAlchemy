@@ -40,7 +40,7 @@ class Mentor(User):
         """
         query = """
                     INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
-                    VALUES (?, ?, ?, ?, ?, 'Student')"""
+                    VALUES (?, ?, ?, ?, ?, 'Mentor')"""
         sql.query(query, data)
 
     @staticmethod
