@@ -167,29 +167,24 @@ class Menu:
         Submission.create_submission_list()
         Attendance.create_attendance_list()
 
-        if logged_user[3] == 'student':
-            for student in Student.object_list:
-                if student.idx == logged_user[0]:
-                    user = student
-                    StudentMenu.print_menu(user)
+        args = [logged_user['ID'], logged_user['Name'], logged_user['Surname'],
+                logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
 
-        if logged_user[3] == 'mentor':
+        if logged_user['Type'] == 'Student':
+            user = Student(*args)
+            StudentMenu.print_menu(user)
 
-            for mentor in Mentor.object_list:
-                if mentor.idx == logged_user[0]:
-                    user = mentor
-                    MentorMenu.print_menu(user)
+        if logged_user['Type'] == 'Mentor':
+            user = Mentor(*args)
+            MentorMenu.print_menu(user)
 
-        if logged_user[3] == 'manager':
-            for manager in Manager.object_list:
-                if manager.idx == logged_user[0]:
-                    user = manager
-                    ManagerMenu.print_menu(user)
-        if logged_user[3] == 'employee':
-            for employee in Employee.object_list:
-                if employee.idx == logged_user[0]:
-                    user = employee
-                    EmployeeMenu.print_menu(user)
+        if logged_user['Type'] == 'Manager':
+            user = Manager(*args)
+            ManagerMenu.print_menu(user)
+
+        if logged_user['Type'] == 'Employee':
+            user = Employee(*args)
+            EmployeeMenu.print_menu(user)
 
 
 class StudentMenu(Menu):
