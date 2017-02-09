@@ -253,7 +253,8 @@ class Menu:
                 logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
 
         if logged_user['Type'] == 'Student':
-            user = Student(*args)
+            user = Student.return_by_id(logged_user['ID'])
+
             StudentMenu.print_menu(user)
 
         if logged_user['Type'] == 'Mentor':
@@ -411,7 +412,17 @@ class StudentMenu(Menu):
     @staticmethod
     def submission_for_group(logged_user, assignment_to_submit):
         team_id = logged_user.id_team
-        pass
+        if team_id:
+            link = Ui.get_inputs(['Link to your repo:'])
+            team = Team.get_by_id(team_id)
+            for student_id in team.students_id:
+                student = Student.return_by_id(student_id)
+                if not Submission.find_submission(student, assignment_to_submit):
+                    Submission.add_submission(student_id, assignment_to_submit.idx, date.today(), link[0])
+                else:
+                    Ui.print_text("You can't submit this assignment - it's already submitted")
+        else:
+            Ui.print_text("You can't submit this assignment - you are not in team")
 
     @staticmethod
     def my_subbmisions(logged_user):
@@ -543,9 +554,9 @@ class MentorMenu(Menu):
                 student_nr = 1
                 for student in Student.object_list:
                     if student.idx == student_id:
-                        students.append([student_nr, student.name + '' + student.last_name])
+                        students.append([student_nr, student.name + ' ' + student.last_name])
                         break
-                student_nr += 1
+                    student_nr += 1
             Ui.print_table(students, titles)
 
     @staticmethod
@@ -578,7 +589,8 @@ class MentorMenu(Menu):
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade, mentor_user.idx, student.idx, assignment.idx)
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                         submission_to_grade.assignment_idx)
 
     @staticmethod
     def add_assignment(user_object):
