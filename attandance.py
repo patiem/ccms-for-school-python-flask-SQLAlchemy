@@ -1,6 +1,7 @@
 from common import Common
 from student import Student
 import datetime
+import sql
 
 
 class Attendance:
@@ -35,8 +36,6 @@ class Attendance:
         elif choice == '3':
             student.present = 'Absent'
 
-        cls.save_attendance_list()
-
     @classmethod
     def save_attendance_list(cls):
         """
@@ -57,9 +56,14 @@ class Attendance:
         :return: None
         """
         today = str(datetime.date.today())
+
         for student in Student.object_list:
             cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
-        cls.save_attendance_list()
+
+            query = 'INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (?,?,?)'
+            params = list([student.idx, today, 'Absent'])
+
+            sql.query(query, params)
 
     @classmethod
     def get_attendance_by_date(cls, date):
@@ -73,7 +77,7 @@ class Attendance:
             if attendance.date == date:
                 for student in Student.object_list:
                     if student.id == attendance.id_student:
-                        output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' +\
+                        output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' + \
                                          attendance.present + '\n'
         return output_string[:-1]
 
@@ -99,9 +103,11 @@ class Attendance:
         """
         Creates attendance_list with Attendance objects
         """
-        student_list = Common.read_file(cls.file)
+        query = "SELECT * FROM `Attendance`"
+
+        student_list = sql.query(query)
         for student in student_list:
-            cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
+            cls.attendance_list.append(Attendance(student['ID_STUDENT'], student['DATE'], student['STATUS']))
 
     @classmethod
     def students_engagement(cls):
