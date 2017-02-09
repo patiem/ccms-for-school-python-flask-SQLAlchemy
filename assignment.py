@@ -150,4 +150,10 @@ class Assignment:
             text_to_print = f.read()
         return text_to_print
 
+    @classmethod
+    def get_by_id(cls, assignment_idx):
+        for assignment in cls.assigments_list:
+            if assignment.idx == assignment_idx:
+                return assignment
+
 

@@ -1,5 +1,6 @@
 from common import *
 from test import Test
+import sql
 
 
 class Submission:
@@ -25,6 +26,26 @@ class Submission:
         self.link = link
         self.grade = grade
         self.mentor_id = mentor_id
+
+    @classmethod
+    def list_from_sql(cls):
+        query = "SELECT * FROM `Sumbissions`;"
+        list_from_sql = sql.query(query)
+        if list_from_sql:
+            for item in list_from_sql:
+
+                student_idx = item['ID_STUDENT']
+                assignment_idx = item['ID_ASSIGMENT']
+                mentor_id = item['ID_MENTOR']
+                grade = item['GRADE']
+                date = item['DATE']
+                link = item['LINK']
+                if Test.is_date_correct(date):
+                    date_of_submission = Common.make_corect_date(date)
+                    if grade != 0:
+                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
+                    else:
+                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
 
     @classmethod
     def create_submission_list(cls):
@@ -56,8 +77,12 @@ class Submission:
         :return: None
         """
         new_submission = cls(student_idx, assignment_idx, date_of_submission, link)
-        cls.submission_list.append(new_submission)
-        Common.save_file('csv/submission.csv', cls.create_list_to_save())
+        if cls.submission_list:
+            cls.submission_list.append(new_submission)
+        query = "INSERT INTO `Sumbissions` (ID_STUDENT, ID_ASSIGMENT, GRADE, DATE, LINK, ID_MENTOR) VALUES (?, ?, ?, ?, ?, ?);"
+        values_list = [student_idx, assignment_idx, 0, date_of_submission, link, 0]
+        sql.query(query, values_list)
+        #Common.save_file('csv/submission.csv', cls.create_list_to_save())
 
     @classmethod
     def create_list_to_save(cls):

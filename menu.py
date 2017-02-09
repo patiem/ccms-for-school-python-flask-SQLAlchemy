@@ -164,8 +164,10 @@ class Menu:
         Employee.create_object_list()
         Manager.create_object_list()
         #Assignment.create_assignment_list()
-        Submission.create_submission_list()
+        #Submission.create_submission_list()
         Attendance.create_attendance_list()
+        Submission.list_from_sql()
+        Assignment.list_from_sql()
 
         args = [logged_user['ID'], logged_user['Name'], logged_user['Surname'],
                 logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
@@ -218,10 +220,15 @@ class StudentMenu(Menu):
         :param logged_user: user object
         :return:
         """
+        # if not Assignment.assigments_list:
+        #     Assignment.list_from_sql()
+        # print(Submission.submission_list)
+        # if not Submission.submission_list:
+        #     Submission.list_from_sql()
+
         students_assignments = Assignment.pass_assign_for_student()
+
         if choice == '1':
-            if not Assignment.assigments_list:
-                Assignment.list_from_sql()
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
         elif choice == '2':
@@ -331,11 +338,11 @@ class StudentMenu(Menu):
         logged_user_submission = Submission.pass_submission_for_student(logged_user)
         logged_user_submission_to_print = []
         for sub in logged_user_submission:
-            assignment = Common.get_by_id(sub.assignment_idx, 'csv/assignments.csv')
-            logged_user_submission_to_print.append([assignment[1], assignment[3], assignment[4],
-                                                   str(sub.date_of_submission), sub.link, sub.grade])
+            assignment = Assignment.get_by_id(sub.assignment_idx)
+            logged_user_submission_to_print.append([assignment.title, assignment.start_date, assignment.end_date,
+                                                   str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
         Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
-                                                         'link to repo', 'grade'])
+                                                         'link to repo', 'grade', 'mentor_id'])
 
 
 class MentorMenu(Menu):
