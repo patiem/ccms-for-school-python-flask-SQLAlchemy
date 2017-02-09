@@ -33,16 +33,17 @@ class Student(User):
                 WHERE Type = 'Student'"""
         data = sql.query(query)
         table = []
-        for row in data:
-            table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
-        for line in table:
-            get_team_id = """
-                            SELECT ID_TEAM
-                            FROM Users_team
-                            WHERE ID_USER = ?"""
-            line.append(sql.query(get_team_id, [line[0]]))
-            new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
-            cls.object_list.append(new_object)
+        if data:
+            for row in data:
+                table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
+            for line in table:
+                get_team_id = """
+                                SELECT ID_TEAM
+                                FROM Users_team
+                                WHERE ID_USER = ?"""
+                line.append(sql.query(get_team_id, [line[0]]))
+                new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+                cls.object_list.append(new_object)
 
     @staticmethod
     def save_sql(data):
