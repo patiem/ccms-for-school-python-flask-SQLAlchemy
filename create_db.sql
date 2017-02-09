@@ -4,7 +4,7 @@ DROP TABLE `Attendance`;
 DROP TABLE `Chekpoints`;
 DROP TABLE `Checkpoints`;
 DROP TABLE `Sumbissions`;
-DROP TABLE `TEAM`;
+DROP TABLE `TEAMS`;
 DROP TABLE `USERS_CHECKPOINT`;
 DROP TABLE `Users`;
 DROP TABLE `Users_team`;
