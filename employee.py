@@ -1,6 +1,6 @@
 from user import *
 from common import *
-
+import sql
 
 class Employee(User):
     object_list = []
@@ -15,3 +15,14 @@ class Employee(User):
         :param mail: string  (mail of student)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
+
+    @classmethod
+    def create_object_list(cls):
+        query = """
+                  SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+                  FROM Users
+                  WHERE Type = 'Employee'"""
+        data = sql.query(query)
+        for row in data:
+            new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
+            cls.object_list.append(new_object)
