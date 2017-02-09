@@ -25,7 +25,7 @@ class Menu:
         user_data = Ui.get_inputs(label_list)
         user_data = Test.test_add_arguments(label_list, user_data)
         Menu.where_to_add(class_name, user_data)
-        Menu.what_save(class_name)
+        #Menu.what_save(class_name)
 
     @staticmethod
     def print_user(object_list):
@@ -128,17 +128,17 @@ class Menu:
         """
         Check witch class should add user
         :param class_name: string ( name of class that user should be add)
-        :param user_data: list ( list of attributes to create user)
+        :param user_data: list ( FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
         :return: None
         """
         if class_name == 'Student':
-            Student.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Student.add_user(user_data)
         elif class_name == 'Mentor':
-            Mentor.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Mentor.add_user(user_data)
         elif class_name == 'Manager':
-            Manager.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Manager.add_user(user_data)
         elif class_name == 'Employee':
-            Employee.add_user(user_data[0], user_data[1], user_data[2], user_data[3])
+            Employee.add_user(user_data)
 
     @staticmethod
     def logged_as(logged_user):

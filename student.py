@@ -38,3 +38,16 @@ class Student(User):
             line.append(sql.query(get_team_id, [line[0]]))
             new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
             cls.object_list.append(new_object)
+
+    @classmethod
+    def save_sql(cls, data):
+        """
+        Save data to sql
+        :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
+        :return:
+        """
+        query = """
+                INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
+                VALUES (?, ?, ?, ?, ?, 'Student')"""
+        sql.query(query, data)
+

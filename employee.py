@@ -26,3 +26,15 @@ class Employee(User):
         for row in data:
             new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
             cls.object_list.append(new_object)
+
+    @classmethod
+    def save_sql(cls, data):
+        """
+        Save data to sql
+        :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
+        :return:
+        """
+        query = """
+                    INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
+                    VALUES (?, ?, ?, ?, ?, 'Employee')"""
+        sql.query(query, data)

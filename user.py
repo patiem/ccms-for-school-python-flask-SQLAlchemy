@@ -2,9 +2,11 @@ from common import *
 import hashlib
 from ui import *
 import sql
+from abc import ABCMeta
 
 
-class User:
+class User(metaclass=ABCMeta):
+    object_list = None
 
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
@@ -56,19 +58,28 @@ class User:
                 return True
 
     @classmethod
-    def add_user(cls, name, last_name, mail, telephone):
+    def add_user(cls, data):
         """
-        Add new user object to list
-        :param name: string (name of student)
-        :param last_name: string (last name)
-        :param mail: string (mail of student)
-        :param telephone: string (telephone to student)
-        :return: None
+
+        :param data: LIST (FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
+        :return:
         """
-        new_id = Common.generate_id()
-        password = User.encode('1')
-        new_student = cls(new_id, name, last_name, mail, telephone, password)
-        cls.object_list.append(new_student)
+        data.append(User.encode('1'))
+        cls.save_sql(data)
+        idx = cls.get_id(data[2])
+        new_object = cls(idx, data[0], data[1], data[2], data[3], data[4])
+        cls.object_list.append(new_object)
+
+
+    @classmethod
+    def get_id(cls, mail):
+        query = """
+                SELECT ID
+                FROM Users
+                WHERE `E-mail` = ?"""
+        idx = sql.query(query, [mail])
+        idx = idx[0]['ID']
+        return idx
 
     @classmethod
     def create_object_list(cls):
