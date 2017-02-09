@@ -11,6 +11,7 @@ from attandance import Attendance
 from datetime import date
 from test import Test
 from checkpoint import Checkpoint
+from team import Team
 import sql
 
 
@@ -93,7 +94,6 @@ class Menu:
             if user_choice == '0':
                 break
 
-
     @staticmethod
     def remove_user(class_name):
         """
@@ -157,24 +157,6 @@ class Menu:
         elif class_name == 'Employee':
             return Employee.remove_object(mail)
 
-
-
-    # @staticmethod
-    # def what_save(class_name):
-    #     """
-    #     Check which class list should be saved
-    #     :param class_name: string ( name of class that list should be saved)
-    #     :return: None
-    #     """
-    #     if class_name == 'Student':
-    #         Common.save_file(Student.file, Student.create_list_to_save(Student.object_list))
-    #     elif class_name == 'Mentor':
-    #         Common.save_file(Mentor.file, Mentor.create_list_to_save(Mentor.object_list))
-    #     elif class_name == 'Manager':
-    #         Common.save_file(Manager.file, Manager.create_list_to_save(Manager.object_list))
-    #     elif class_name == 'Employee':
-    #         Common.save_file(Employee.file, Employee.create_list_to_save(Employee.object_list))
-
     @staticmethod
     def where_to_add(class_name, user_data):
         """
@@ -237,6 +219,7 @@ class Menu:
 
         logged_user = User.login()
 
+        Team.create_teams_list()
         Student.create_object_list()
         Mentor.create_object_list()
         Employee.create_object_list()
@@ -251,7 +234,8 @@ class Menu:
                 logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
 
         if logged_user['Type'] == 'Student':
-            user = Student(*args)
+            user = Student.return_by_id(logged_user['ID'])
+
             StudentMenu.print_menu(user)
 
         if logged_user['Type'] == 'Mentor':
@@ -285,9 +269,10 @@ class StudentMenu(Menu):
                       '\t2: Show assignment description\n' \
                       '\t3: Submit assignment\n' \
                       '\t4: Show my submission list \n' \
+                      '\t5: Show my overall attendance \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 4)
+            user_choice = Ui.get_menu(options, 0, 5)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
@@ -312,6 +297,9 @@ class StudentMenu(Menu):
             input('Enter to back to menu')
         elif choice == '4':
             cls.my_subbmisions(logged_user)
+            input('Enter to back to menu')
+        elif choice == '5':
+            cls.my_attendance(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -393,11 +381,29 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        if not Submission.find_submission(logged_user, assignment_to_submit):
-            link = Ui.get_inputs(['Link to your repo:'])
-            Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
+        if assignment_to_submit == '0':
+            if not Submission.find_submission(logged_user, assignment_to_submit):
+                link = Ui.get_inputs(['Link to your repo:'])
+                Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
+            else:
+                Ui.print_text("You can't submit this assignment - it's already submitted")
         else:
-            Ui.print_text("You can't submit this assignment - it's already submitted")
+            cls.submission_for_group(logged_user, assignment_to_submit)
+
+    @staticmethod
+    def submission_for_group(logged_user, assignment_to_submit):
+        team_id = logged_user.id_team
+        if team_id:
+            link = Ui.get_inputs(['Link to your repo:'])
+            team = Team.get_by_id(team_id)
+            for student_id in team.students_id:
+                student = Student.return_by_id(student_id)
+                if not Submission.find_submission(student, assignment_to_submit):
+                    Submission.add_submission(student_id, assignment_to_submit.idx, date.today(), link[0])
+                else:
+                    Ui.print_text("You can't submit this assignment - it's already submitted")
+        else:
+            Ui.print_text("You can't submit this assignment - you are not in team")
 
     @staticmethod
     def my_subbmisions(logged_user):
@@ -416,6 +422,26 @@ class StudentMenu(Menu):
                                                    str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
         Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
                                                          'link to repo', 'grade', 'mentor_id'])
+    @staticmethod
+    def my_attendance(user):
+        user
+        query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
+        values = [user.idx]
+        back_values = sql.query(query, values)
+        to_print =[]
+        all_days = 0
+        average = 0
+        for row in back_values:
+            to_print.append([row[0], row[1]])
+            if row[0] == 'Present':
+                average += 1
+            elif row[0] == 'Late':
+                average += 0.75
+            all_days += row[1]
+
+        to_print.append(['overall %', average * 100 / all_days])
+        Ui.print_table(to_print, ['Status', 'amount'])
+
 
 
 class MentorMenu(Menu):
@@ -440,11 +466,12 @@ class MentorMenu(Menu):
                       '\t6: Add student\n' \
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
-                      '\t9: Checkpoints \n' \
+                      '\t9: Checkpoints\n' \
+                      '\t10: Show teams\n' \
+                      '\t11: Create team\n' \
                       '\t0: Exit program'
 
-
-            user_choice = Ui.get_menu(options, 0, 9)
+            user_choice = Ui.get_menu(options, 0, 10)
 
             cls.choose_option(user_choice, user_object)
 
@@ -487,8 +514,31 @@ class MentorMenu(Menu):
         elif choice == '9':
             cls.checkpoint(user_object)
 
+        elif choice == '10':
+            cls.show_teams()
+            Ui.get_inputs([''])
+
         elif choice == '0':
             exit()
+
+    @staticmethod
+    def show_teams():
+        """
+        Prints all teams with students
+        :return: None
+        """
+        for team in Team.teams_list:
+            titles = ['Team: ', team.name]
+            students = []
+            # titles.append(team.name)
+            for student_id in team.students_id:
+                student_nr = 1
+                for student in Student.object_list:
+                    if student.idx == student_id:
+                        students.append([student_nr, student.name + ' ' + student.last_name])
+                        break
+                    student_nr += 1
+            Ui.print_table(students, titles)
 
     @staticmethod
     def show_attendance_of_students():
@@ -520,7 +570,8 @@ class MentorMenu(Menu):
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade, mentor_user.idx, student.idx, assignment.idx)
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                         submission_to_grade.assignment_idx)
 
     @staticmethod
     def add_assignment(user_object):
@@ -531,13 +582,23 @@ class MentorMenu(Menu):
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
-        start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
-        end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+        while True:
+            try:
+                start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+        while True:
+            try:
+                end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
+
         group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
         filename_short = '{}.txt'.format(filename_from_title)
-
 
         with open(filename, 'w'):
             Ui.print_text('File is created')

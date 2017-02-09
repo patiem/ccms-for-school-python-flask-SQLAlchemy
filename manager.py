@@ -24,9 +24,10 @@ class Manager(User):
                    FROM Users
                    WHERE Type = 'Manager'"""
         data = sql.query(query)
-        for row in data:
-            new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
-            cls.object_list.append(new_object)
+        if data:
+            for row in data:
+                new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
+                cls.object_list.append(new_object)
 
     @classmethod
     def save_sql(cls, data):

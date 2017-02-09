@@ -68,9 +68,13 @@ class User(metaclass=ABCMeta):
         new_object = cls(idx, data[0], data[1], data[2], data[3], data[4])
         cls.object_list.append(new_object)
 
-
     @classmethod
     def get_id(cls, mail):
+        """
+        find student id by mail
+        :param mail: mail of student to find
+        :return: idx ( student id)
+        """
         query = """
                 SELECT ID
                 FROM Users
@@ -81,6 +85,11 @@ class User(metaclass=ABCMeta):
 
     @classmethod
     def return_by_id(cls, idx):
+        """
+        Return object of passed id
+        :param idx: int (id of object)
+        :return: object
+        """
         for item in cls.object_list:
             if item.idx == idx:
                 return item
@@ -103,7 +112,7 @@ class User(metaclass=ABCMeta):
         for person in cls.object_list:
             if person.mail == mail:
                 cls.object_list.remove(person)
-                cls.remove_object(mail)
+                cls.remove_sql(mail)
                 return True
 
     @staticmethod
