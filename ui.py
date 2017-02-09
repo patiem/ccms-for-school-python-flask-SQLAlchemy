@@ -178,8 +178,21 @@ class Ui:
 
         return getpass.getpass(label)
 
-    
+    @staticmethod
+    def get_id_only_in_list(title, list):
 
+        while True:
+
+            try:
+                option = input(title)
+                if int(option) not in list:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
 
     @staticmethod
     def get_menu(menu, menu_from, menu_to):
