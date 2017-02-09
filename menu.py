@@ -388,7 +388,6 @@ class MentorMenu(Menu):
 
         elif choice == '5':
             cls.switch_attendance()
-            Ui.get_inputs([''])
 
         elif choice == '6':
             cls.add_user('Student')
@@ -465,16 +464,16 @@ class MentorMenu(Menu):
             Ui.clear()
             if student.date == str(date.today()):
 
-                # student_data = Common.get_by_id(student.id_student)
                 student_data = sql.query('SELECT * FROM `Users` WHERE ID={}'.format(student.id_student))
-                print(student_data[0])
-                input('')
-                Ui.print_head(student_data[0][1] + ' ' + student_data[0][2], 'warning')
-
+                Ui.print_head(student_data[0]['Name'] + ' ' + student_data[0]['Surname'], 'warning')
                 text = 'Is this student present today?\n(1: Present, 2: Late, 3: Absent):  '
                 mentor_choice = Ui.get_menu(text, 1, 3)
 
                 Attendance.toggle_present(student, mentor_choice)
+                query = "UPDATE `Attendance` SET `STATUS` = '{}' WHERE `ID_STUDENT` = {} AND `DATE` = '{}';"\
+                        .format(student.present, student.id_student, student.date)
+
+                sql.query(query)
 
 
 class EmployeeMenu(Menu):

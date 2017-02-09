@@ -36,8 +36,6 @@ class Attendance:
         elif choice == '3':
             student.present = 'Absent'
 
-        cls.save_attendance_list()
-
     @classmethod
     def save_attendance_list(cls):
         """
@@ -59,10 +57,6 @@ class Attendance:
         """
         today = str(datetime.date.today())
 
-        print("Ilosc studentow")
-        print(len(Student.object_list))
-        input('bla bla bla')
-
         for student in Student.object_list:
             cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
 
@@ -70,8 +64,6 @@ class Attendance:
             params = list([student.idx, today, 'Absent'])
 
             sql.query(query, params)
-
-        # cls.save_attendance_list()
 
     @classmethod
     def get_attendance_by_date(cls, date):
@@ -112,8 +104,6 @@ class Attendance:
         Creates attendance_list with Attendance objects
         """
         query = "SELECT * FROM `Attendance`"
-
-        # student_list = Common.read_file(cls.file)
 
         student_list = sql.query(query)
         for student in student_list:
