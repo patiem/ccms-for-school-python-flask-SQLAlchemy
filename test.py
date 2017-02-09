@@ -108,7 +108,7 @@ class Test:
         :param attribute_name:
         :return:
         """
-        attribute_list = ['name', 'last name', 'mail', 'telephone', 'password']
+        attribute_list = ['Name', 'Surname', 'E-mail', 'Telephone', 'Password']
 
         while True:
             if attribute_name in attribute_list:

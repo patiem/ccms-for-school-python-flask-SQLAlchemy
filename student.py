@@ -38,3 +38,46 @@ class Student(User):
             line.append(sql.query(get_team_id, [line[0]]))
             new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
             cls.object_list.append(new_object)
+
+    @staticmethod
+    def save_sql(data):
+        """
+        Save data to sql
+        :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
+        :return:
+        """
+        query = """
+                INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
+                VALUES (?, ?, ?, ?, ?, 'Student')"""
+        sql.query(query, data)
+
+    @staticmethod
+    def update_sql(edit_list):
+        """
+        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :return:
+        """
+
+        query = """
+                  UPDATE Users
+                  SET `{}` = ?
+                  WHERE `E-mail` = ?
+                  AND Type = 'Student'""".format(edit_list[1])
+        sql.query(query, [edit_list[2], edit_list[0]])
+
+    @staticmethod
+    def avg_grade():
+        query = """
+                   SELECT Name, Surname, AVG(GRADE)
+                   FROM Users as U
+                   LEFT Join Sumbissions as S
+                   ON U.ID = S.ID_Student
+                   where Type = 'Student'
+                   GROUP BY Name;"""
+        sql_data = sql.query(query)
+        table = []
+        for row in sql_data:
+            table.append([row[0], row[1], row[2]])
+        return table
+
+
