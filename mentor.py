@@ -1,10 +1,9 @@
 from user import *
-from common import *
 import sql
+
 
 class Mentor(User):
     object_list = []
-    file = 'csv/mentors.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
@@ -18,6 +17,10 @@ class Mentor(User):
 
     @classmethod
     def create_object_list(cls):
+        """
+        Create objects to list in class Mentor
+        :return: None
+        """
         query = """
                    SELECT ID, Name, Surname, `E-mail`, Telephone, Password
                    FROM Users

@@ -1,6 +1,6 @@
 from user import *
-from common import *
 import sql
+
 
 class Manager(User):
     object_list = []
@@ -16,7 +16,6 @@ class Manager(User):
         :param telephone: string (telephone number)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
-
 
     @classmethod
     def create_object_list(cls):
@@ -54,4 +53,3 @@ class Manager(User):
                   WHERE `E-mail` = ?
                   AND Type = 'Manager'""".format(edit_list[1])
         sql.query(query, [edit_list[2], edit_list[0]])
-

@@ -194,6 +194,32 @@ class Menu:
             Employee.add_user(user_data)
 
     @staticmethod
+    def student_statistic():
+        """
+        Display  statistics of students
+        :return: None
+        """
+        Ui.clear()
+        options = '\t1: AVG GRADE\n' \
+                  '\t2: Attendance\n' \
+                  '\t0: Back to menu'
+
+        user_choice = Ui.get_menu(options, 0, 2)
+        if user_choice == '1':
+            Ui.clear()
+            title_list = ['Name', 'Surname', 'AVG GRADE']
+            Ui.print_table(Student.avg_grade(), title_list)
+            Ui.get_inputs(['Enter anything to leave: '])
+        if user_choice == '2':
+            Ui.clear()
+            titles = ['Name', 'Last name', 'Present', 'Late', 'Absent']
+            Ui.print_table(Attendance.students_engagement(), titles)
+            Ui.get_inputs(['Enter anything to leave: '])
+        else:
+            pass
+
+
+    @staticmethod
     def logged_as(logged_user):
         """
         Prints logged user at the top of the window
@@ -216,9 +242,11 @@ class Menu:
         Mentor.create_object_list()
         Employee.create_object_list()
         Manager.create_object_list()
-        Assignment.create_assignment_list()
-        Submission.create_submission_list()
+        #Assignment.create_assignment_list()
+        #Submission.create_submission_list()
         Attendance.create_attendance_list()
+        Submission.list_from_sql()
+        Assignment.list_from_sql()
 
         args = [logged_user['ID'], logged_user['Name'], logged_user['Surname'],
                 logged_user['E-mail'], logged_user['Telephone'], logged_user['Password']]
@@ -271,7 +299,9 @@ class StudentMenu(Menu):
         :param logged_user: user object
         :return:
         """
+
         students_assignments = Assignment.pass_assign_for_student()
+
         if choice == '1':
             cls.get_assignment_list_with_grades(logged_user)
             input('Enter to back to menu')
@@ -297,12 +327,15 @@ class StudentMenu(Menu):
         """
         Ui.clear()
         Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
-        title_list = ['nr', 'title', 'author', 'start date', 'end date', 'submitted', 'grade']
+        title_list = ['nr', 'title', 'mentor_id', 'start date', 'end date', 'type of assignment', 'submitted', 'grade']
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
         for assignment in assignments_list:
-            new_line = [str(n), assignment.title, assignment.author, assignment.start_date, assignment.end_date]
+            type_of_assignment = 'Individual'
+            if assignment.group == '1':
+                type_of_assignment = 'Group'
+            new_line = [str(n), assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date, type_of_assignment]
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
                 new_line.append('submitted')
@@ -327,7 +360,7 @@ class StudentMenu(Menu):
         """
 
         Ui.clear()
-        Ui.print_head("List of assigments", "header")
+        Ui.print_head("List of assignments", "header")
         assignments_list = Assignment.pass_assign_for_student()
         assignments_list_to_print = []
         n = 1
@@ -379,11 +412,11 @@ class StudentMenu(Menu):
         logged_user_submission = Submission.pass_submission_for_student(logged_user)
         logged_user_submission_to_print = []
         for sub in logged_user_submission:
-            assignment = Common.get_by_id(sub.assignment_idx, 'csv/assignments.csv')
-            logged_user_submission_to_print.append([assignment[1], assignment[3], assignment[4],
-                                                   str(sub.date_of_submission), sub.link, sub.grade])
+            assignment = Assignment.get_by_id(sub.assignment_idx)
+            logged_user_submission_to_print.append([assignment.title, assignment.start_date, assignment.end_date,
+                                                   str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
         Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
-                                                         'link to repo', 'grade'])
+                                                         'link to repo', 'grade', 'mentor_id'])
 
 
 class MentorMenu(Menu):
@@ -433,7 +466,7 @@ class MentorMenu(Menu):
 
         elif choice == '3':
             Ui.clear()
-            cls.grade_submission()
+            cls.grade_submission(user_object)
 
         elif choice == '4':
             Ui.clear()
@@ -469,26 +502,26 @@ class MentorMenu(Menu):
         Ui.print_table(engagement_list, titles)
 
     @staticmethod
-    def grade_submission():
+    def grade_submission(mentor_user):
         """
         It enables assessment tasks
         :return:None
         """
-        titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade']
+        titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade', 'Mentor_id']
         grades_list = []
         n = 1
         for submission in Submission.submission_list:
-            student = Common.get_by_id(submission.student_idx, Student.file)
-            assignment = Common.get_by_id(submission.assignment_idx, 'csv/assignments.csv')
-            grades_list.append([str(n), student[3], assignment[1], str(submission.date_of_submission),
-                                str(submission.grade)])
+            student = Student.return_by_id(submission.student_idx)
+            assignment = Assignment.get_by_id(submission.assignment_idx)
+            grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
+                                str(submission.grade), submission.mentor_id])
             n += 1
         Ui.print_table(grades_list, titles)
         options = 'Choose number of submission to grade'
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade)
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, student.idx, assignment.idx)
 
     @staticmethod
     def add_assignment(user_object):
@@ -497,18 +530,22 @@ class MentorMenu(Menu):
         :param user_object: User object (The currently logged in user)
         :return: None
         """
-        author = user_object.name + ' ' + user_object.last_name
+        mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = Ui.get_input('title')
         start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
         end_date = Common.make_corect_date(Ui.get_input('end date(YYYY-MM-DD)'))
-
+        group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
+        filename_short = '{}.txt'.format(filename_from_title)
+
 
         with open(filename, 'w'):
             Ui.print_text('File is created')
-
-        Assignment.add_assignment(title, author, start_date, end_date, filename)
+        if group == '1':
+            Assignment.add_assignment(title, mentor_id, start_date, end_date, filename_short, '1')
+        else:
+            Assignment.add_assignment(title, mentor_id, start_date, end_date, filename_short)
 
     @staticmethod
     def switch_attendance():
@@ -581,7 +618,7 @@ class ManagerMenu(Menu):
                       '\t4: Add student\n' \
                       '\t5: Show student\n' \
                       '\t6: Edit Mentor\n' \
-                      '\t7: Display AVG Grade\n' \
+                      '\t7: Display Student statistic\n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 7)
@@ -614,9 +651,6 @@ class ManagerMenu(Menu):
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
         elif choice == '7':
-            Ui.clear()
-            title_list = ['Name', 'Surname', 'AVG GRADE']
-            Ui.print_table(Student.avg_grade(), title_list)
-            Ui.get_inputs(['Enter anything to leave: '])
+            ManagerMenu.student_statistic()
         else:
             exit()
