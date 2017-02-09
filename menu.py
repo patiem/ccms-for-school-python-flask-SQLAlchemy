@@ -550,5 +550,8 @@ class ManagerMenu(Menu):
         elif choice == '6':
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
+        elif choice == '7':
+            title_list = ['Name', 'Surname', 'AVG GRADE']
+            Ui.print_table(Student.avg_grade(), title_list)
         else:
             exit()

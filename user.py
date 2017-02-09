@@ -50,10 +50,10 @@ class User(metaclass=ABCMeta):
         :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None or True if attribute is changed
         """
-        cls.update_sql(edit_list)
         for person in cls.object_list:
             if person.mail == edit_list[0]:
                 person.change_value(edit_list[1], edit_list[2])
+                cls.update_sql(edit_list)
                 return True
 
     @classmethod
@@ -99,10 +99,10 @@ class User(metaclass=ABCMeta):
         :param mail: string ( mail of user to remove)
         :return: None or True if object removed
         """
-        User.remove_object(mail)
         for person in cls.object_list:
             if person.mail == mail:
                 cls.object_list.remove(person)
+                cls.remove_object(mail)
                 return True
 
     @staticmethod

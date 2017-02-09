@@ -65,3 +65,18 @@ class Student(User):
                   AND Type = 'Student'""".format(edit_list[1])
         sql.query(query, [edit_list[2], edit_list[0]])
 
+    @staticmethod
+    def avg_grade():
+        query = """
+                   SELECT S.ID, Name, Surname, AVG(GRADE)
+                   FROM Users as U
+                   LEFT Join Sumbissions as S
+                   ON U.ID = S.ID_Student
+                   where Type = 'Student'
+                   GROUP BY Name;"""
+        sql_data = sql.query(query)
+        table = []
+        for row in sql_data:
+            table.append([row[Name], row[Surname], row[AVG]])
+        return table
+
