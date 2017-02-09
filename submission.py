@@ -123,11 +123,15 @@ class Submission:
                     return submission
         return False
 
-    def change_grade(self, grade):
+    def change_grade(self, grade, mentor_id, student_id, assignment_id):
         """
         Changes grade of submission. Then saves to file.
         :param grade: int
         :return: None
         """
         self.grade = grade
-        Common.save_file('csv/submission.csv', Submission.create_list_to_save())
+        self.mentor_id = mentor_id
+        #Common.save_file('csv/submission.csv', Submission.create_list_to_save())
+        query = "UPDATE `Sumbissions` SET GRADE=?, ID_MENTOR=? WHERE ID_ASSIGMENT=? AND ID_STUDENT=?;"
+        values_list = [int(grade), mentor_id, assignment_id, student_id]
+        sql.query(query, values_list)

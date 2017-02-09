@@ -437,7 +437,7 @@ class MentorMenu(Menu):
 
         elif choice == '3':
             Ui.clear()
-            cls.grade_submission()
+            cls.grade_submission(user_object)
 
         elif choice == '4':
             Ui.clear()
@@ -473,26 +473,26 @@ class MentorMenu(Menu):
         Ui.print_table(engagement_list, titles)
 
     @staticmethod
-    def grade_submission():
+    def grade_submission(mentor_user):
         """
         It enables assessment tasks
         :return:None
         """
-        titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade']
+        titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade', 'Mentor_id']
         grades_list = []
         n = 1
         for submission in Submission.submission_list:
-            student = Common.get_by_id(submission.student_idx, Student.file)
-            assignment = Common.get_by_id(submission.assignment_idx, 'csv/assignments.csv')
-            grades_list.append([str(n), student[3], assignment[1], str(submission.date_of_submission),
-                                str(submission.grade)])
+            student = Student.return_by_id(submission.student_idx)
+            assignment = Assignment.get_by_id(submission.assignment_idx)
+            grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
+                                str(submission.grade), submission.mentor_id])
             n += 1
         Ui.print_table(grades_list, titles)
         options = 'Choose number of submission to grade'
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade)
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, student.idx, assignment.idx)
 
     @staticmethod
     def add_assignment(user_object):
