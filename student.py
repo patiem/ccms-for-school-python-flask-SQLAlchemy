@@ -9,7 +9,7 @@ class Student(User):
     object_list = []
     file = 'csv/students.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone, password, id_team=None):
+    def __init__(self, idx, name, last_name, mail, telephone, password, id_team=''):
         """
         Create Student object
         :param idx: string (id of student)
@@ -44,8 +44,10 @@ class Student(User):
                 for row in sql.query(get_team_id, [line[0]]):
                     team_id = row[0]
                 line.append(team_id)
+                print(line)
                 new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
                 cls.object_list.append(new_object)
+
 
     @staticmethod
     def save_sql(data):
