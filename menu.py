@@ -11,6 +11,7 @@ from attandance import Attendance
 from datetime import date
 from test import Test
 from checkpoint import Checkpoint
+from team import Team
 import sql
 
 
@@ -91,7 +92,6 @@ class Menu:
 
             if user_choice == '0':
                 break
-
 
     @staticmethod
     def remove_user(class_name):
@@ -195,6 +195,7 @@ class Menu:
 
         logged_user = User.login()
 
+        Team.create_teams_list()
         Student.create_object_list()
         Mentor.create_object_list()
         Employee.create_object_list()
@@ -392,9 +393,10 @@ class MentorMenu(Menu):
                       '\t7: Remove student\n' \
                       '\t8: Edit student\n' \
                       '\t9: Checkpoints\n' \
+                      '\t10: Show teams\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 9)
+            user_choice = Ui.get_menu(options, 0, 10)
 
             cls.choose_option(user_choice, user_object)
 
@@ -437,8 +439,31 @@ class MentorMenu(Menu):
         elif choice == '9':
             cls.checkpoint(user_object)
 
+        elif choice == '10':
+            cls.show_teams()
+            Ui.get_inputs([''])
+
         elif choice == '0':
             exit()
+
+    @staticmethod
+    def show_teams():
+        """
+        Prints all teams with students
+        :return: None
+        """
+        for team in Team.teams_list:
+            titles = ['Team: ', team.name]
+            students = []
+            # titles.append(team.name)
+            for student_id in team.students_id:
+                student_nr = 1
+                for student in Student.object_list:
+                    if student.idx == student_id:
+                        students.append([student_nr, student.name + '' + student.last_name])
+                        break
+                student_nr += 1
+            Ui.print_table(students, titles)
 
     @staticmethod
     def show_attendance_of_students():
