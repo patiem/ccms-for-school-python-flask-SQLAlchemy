@@ -220,11 +220,6 @@ class StudentMenu(Menu):
         :param logged_user: user object
         :return:
         """
-        # if not Assignment.assigments_list:
-        #     Assignment.list_from_sql()
-        # print(Submission.submission_list)
-        # if not Submission.submission_list:
-        #     Submission.list_from_sql()
 
         students_assignments = Assignment.pass_assign_for_student()
 
