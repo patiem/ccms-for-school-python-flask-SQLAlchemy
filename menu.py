@@ -623,13 +623,18 @@ class MentorMenu(Menu):
         grades_list = []
         assignment_list = []  # need to check if submission is group
         n = 1
+
         for submission in Submission.submission_list:
             student = Student.return_by_id(submission.student_idx)
-            assignment = Assignment.get_by_id(submission.assignment_idx)
-            grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
-                                str(submission.grade), submission.mentor_id])
-            assignment_list.append(assignment)
-            n += 1
+
+            if student:
+                assignment = Assignment.get_by_id(submission.assignment_idx)
+                grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
+                                    str(submission.grade), submission.mentor_id])
+                assignment_list.append(assignment)
+                print(n)
+                n += 1
+
         Ui.print_table(grades_list, titles)
         options = 'Choose number of submission to grade'
         user_choice = int(Ui.get_menu(options, 1, n))
