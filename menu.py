@@ -52,12 +52,17 @@ class Menu:
         :return: None
         """
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (name,last name,e-mail,telephone,password): ',
+                                             'What to edit (Name,Surname,E-mail,Telephone,Password): ',
                                              'new value: '])
+        while True:
+            if Test.is_email_correct(edit_arguments_list[0]):
+                break
+            else:
+                edit_arguments_list[0] = Ui.get_input('Wrong mail format')
         edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
-        Menu.what_save(class_name)
+        Ui.get_input("key to continue")
 
     @staticmethod
     def checkpoint(user_object):
@@ -110,20 +115,6 @@ class Menu:
             Ui.get_inputs(['Enter to continue: '])
 
     @staticmethod
-    def edit_user(class_name):
-        """
-        Edit user
-        :param class_name: string ( name of class where user should be edited)
-        :return: None
-        """
-        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (Name,Surname,E-mail,Telephone,Password): ',
-                                             'new value: '])
-        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
-        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
-        Menu.where_to_edit(class_name, edit_arguments_list)
-
-    @staticmethod
     def where_to_edit(class_name, edit_arguments_list):
         """
         Check which class should edit user
@@ -132,13 +123,25 @@ class Menu:
         :return: None
         """
         if class_name == 'Student':
-            Student.edit_user(edit_arguments_list)
+            if Student.edit_user(edit_arguments_list):
+                Ui.print_text('Student edited')
+            else:
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Mentor':
-            Mentor.edit_user(edit_arguments_list)
+            if Mentor.edit_user(edit_arguments_list):
+                Ui.print_text('Mentor edited')
+            else:
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Manager':
-            Manager.edit_user(edit_arguments_list)
+            if Manager.edit_user(edit_arguments_list):
+                Ui.print_text('Manager edited')
+            else:
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Employee':
-            Employee.edit_user(edit_arguments_list)
+            if Employee.edit_user(edit_arguments_list):
+                Ui.print_text('Student edited')
+            else:
+                Ui.print_text('No user of passed E-mail')
 
     @staticmethod
     def where_to_remove(class_name, mail):
@@ -379,7 +382,7 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        if assignment_to_submit == '0':
+        if assignment_to_submit.group == '0':
             if not Submission.find_submission(logged_user, assignment_to_submit):
                 link = Ui.get_inputs(['Link to your repo:'])
                 Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
@@ -603,28 +606,47 @@ class MentorMenu(Menu):
         engagement_list = Attendance.students_engagement()
         Ui.print_table(engagement_list, titles)
 
-    @staticmethod
-    def grade_submission(mentor_user):
+    @classmethod
+    def grade_submission(cls, mentor_user):
         """
         It enables assessment tasks
         :return:None
         """
         titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade', 'Mentor_id']
         grades_list = []
+        assignment_list = []  # need to check if submission is group
         n = 1
         for submission in Submission.submission_list:
             student = Student.return_by_id(submission.student_idx)
             assignment = Assignment.get_by_id(submission.assignment_idx)
             grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
                                 str(submission.grade), submission.mentor_id])
+            assignment_list.append(assignment)
             n += 1
         Ui.print_table(grades_list, titles)
         options = 'Choose number of submission to grade'
         user_choice = int(Ui.get_menu(options, 1, n))
         submission_to_grade = Submission.submission_list[user_choice - 1]
         new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
-                                         submission_to_grade.assignment_idx)
+        assignment = assignment_list[user_choice - 1]
+        if assignment_list[user_choice - 1].group == "1":
+            cls.grade_group_submission(mentor_user, submission_to_grade, new_grade, assignment)
+        else:
+            submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                            submission_to_grade.assignment_idx)
+
+    @staticmethod
+    def grade_group_submission(mentor_user, submission_to_grade, grade, assignment):
+        student = Student.return_by_id(submission_to_grade.student_idx)
+        team_id = student.id_team
+        team = Team.get_by_id(team_id)
+        assignment_idx = submission_to_grade.assignment_idx
+        for student_id in team.students_id:
+            student_from_team = Student.return_by_id(student_id)
+            sub_to_grade = Submission.find_submission(student_from_team, assignment)
+            #if Submission.find_submission(student_from_team, assignment_idx):
+            sub_to_grade.change_grade(grade, mentor_user.idx, student_id, assignment_idx)
+
 
     @staticmethod
     def add_assignment(user_object):
@@ -635,7 +657,7 @@ class MentorMenu(Menu):
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = ''
-        while not title:
+        while not title or '\t' in title or title == ' ':
             title = Ui.get_input('title (cannot be empty)')
         while True:
             try:
@@ -650,7 +672,7 @@ class MentorMenu(Menu):
             except (IndexError, ValueError, UnboundLocalError):
                 print('Wrong date format, try one more time.')
 
-        group = Ui.get_input('1, if assignment is for group, else enter')
+        group = Ui.get_input('If assignment is for group type 1, else enter: ')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
         filename_short = '{}.txt'.format(filename_from_title)
@@ -752,7 +774,6 @@ class ManagerMenu(Menu):
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
-            input('')
             Ui.clear()
         elif choice == '3':
             Ui.clear()
