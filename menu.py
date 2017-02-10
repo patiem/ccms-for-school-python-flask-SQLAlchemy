@@ -42,7 +42,7 @@ class Menu:
             print_list.append([user[0], user[1], user[2], user[3], user[4]])
         Ui.print_table(print_list,
                        ['Id', 'Name', 'Last Name', 'E-mail', 'Telephone'])
-        Ui.get_inputs(['Enter anything to leave: '])
+        # Ui.get_inputs(['Enter anything to leave: '])
 
     @staticmethod
     def edit_user(class_name):
@@ -81,7 +81,8 @@ class Menu:
 
             if user_choice == '1':
 
-                Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints())
+                Checkpoint.show_checkpoints(user_object)
+                Ui.press_any_key_input()
 
             if user_choice == '2':
 
@@ -199,7 +200,6 @@ class Menu:
         else:
             pass
 
-
     @staticmethod
     def logged_as(logged_user):
         """
@@ -235,7 +235,6 @@ class Menu:
 
         if logged_user['Type'] == 'Student':
             user = Student.return_by_id(logged_user['ID'])
-
             StudentMenu.print_menu(user)
 
         if logged_user['Type'] == 'Mentor':
@@ -268,9 +267,8 @@ class StudentMenu(Menu):
             options = '\t1: Show assignment list with grades\n' \
                       '\t2: Show assignment description\n' \
                       '\t3: Submit assignment\n' \
-                      '\t4: My submission list \n' \
-                      '\t5: My overall attendance \n' \
-                      '\t6: My checkpoints \n' \
+                      '\t4: Show my submission list \n' \
+                      '\t5: Show my overall attendance \n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 5)
@@ -301,9 +299,6 @@ class StudentMenu(Menu):
             input('Enter to back to menu')
         elif choice == '5':
             cls.my_attendance(logged_user)
-            input('Enter to back to menu')
-        elif choice == '6':
-            cls.my_checkpoints(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -385,7 +380,7 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        if assignment_to_submit.group == '0':
+        if assignment_to_submit == '0':
             if not Submission.find_submission(logged_user, assignment_to_submit):
                 link = Ui.get_inputs(['Link to your repo:'])
                 Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
@@ -424,10 +419,11 @@ class StudentMenu(Menu):
             assignment = Assignment.get_by_id(sub.assignment_idx)
             logged_user_submission_to_print.append([assignment.title, assignment.start_date, assignment.end_date,
                                                    str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
-        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
-                                                         'link to repo', 'grade', 'mentor_id'])
+        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',                                                 'link to repo', 'grade', 'mentor_id'])
+
     @staticmethod
     def my_attendance(user):
+        user
         query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
         values = [user.idx]
         back_values = sql.query(query, values)
@@ -444,10 +440,6 @@ class StudentMenu(Menu):
 
         to_print.append(['overall %', average * 100 / all_days])
         Ui.print_table(to_print, ['Status', 'amount'])
-
-    @staticmethod
-    def my_checkpoints(user):
-        pass
 
 
 class MentorMenu(Menu):
@@ -475,9 +467,10 @@ class MentorMenu(Menu):
                       '\t9: Checkpoints\n' \
                       '\t10: Show teams\n' \
                       '\t11: Create team\n' \
+                      '\t12: Add student to team\n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 10)
+            user_choice = Ui.get_menu(options, 0, 12)
 
             cls.choose_option(user_choice, user_object)
 
@@ -491,6 +484,7 @@ class MentorMenu(Menu):
         """
         if choice == '1':
             cls.print_user(Student.object_list)
+            Ui.get_inputs([''])
 
         elif choice == '2':
             cls.add_assignment(user_object)
@@ -522,10 +516,57 @@ class MentorMenu(Menu):
 
         elif choice == '10':
             cls.show_teams()
-            Ui.get_inputs([''])
+            Ui.get_input('Press ENTER')
+
+        elif choice == '11':
+            cls.add_new_team()
+            Ui.get_input('Press ENTER')
+
+        elif choice == '12':
+            cls.add_student_to_team()
 
         elif choice == '0':
             exit()
+
+    @classmethod
+    def add_student_to_team(cls):
+        """
+        Lets user to move student between teams
+        :return: None
+        """
+        cls.print_user(Student.object_list)
+        option = 'id student\'s which you want to add to team?'
+        student_id = Ui.get_input(option)
+        student = Student.return_by_id(int(student_id))
+
+        if student:
+            cls.show_teams()
+            option = 'id team\'s where you want to add student?'
+            team_id = Ui.get_input(option)
+            team = Team.get_team_by_id(team_id)
+            if team:
+                Team.student_to_team(team, student)
+                student_fullname = student.name + ' ' + student.last_name
+                Ui.print_text('\n---::: You added {} to team {} :::---'.format(student_fullname, team.name))
+                Ui.get_input('Press ENTER')
+            else:
+                Ui.print_text('There is no team with this ID')
+                Ui.get_input('Press ENTER')
+        else:
+            Ui.print_text('There is no student of this ID')
+            Ui.get_input('Press ENTER')
+
+    @classmethod
+    def add_new_team(cls):
+        """
+        Adds new team
+        :return: None
+        """
+        label_list = ['Name']
+        user_data = Ui.get_inputs(label_list)
+        name = user_data[0]
+        Team.new_team(name)
+        Ui.print_head('You created a new team called: {}'.format(name), 'warning')
 
     @staticmethod
     def show_teams():
@@ -534,16 +575,15 @@ class MentorMenu(Menu):
         :return: None
         """
         for team in Team.teams_list:
-            titles = ['Team: ', team.name]
+            titles = ['ID: {}'.format(team.id_team), 'Team: {}'.format(team.name)]
             students = []
-            # titles.append(team.name)
+            student_nr = 1
             for student_id in team.students_id:
-                student_nr = 1
                 for student in Student.object_list:
                     if student.idx == student_id:
                         students.append([student_nr, student.name + ' ' + student.last_name])
+                        student_nr += 1
                         break
-                    student_nr += 1
             Ui.print_table(students, titles)
 
     @staticmethod
@@ -556,52 +596,28 @@ class MentorMenu(Menu):
         engagement_list = Attendance.students_engagement()
         Ui.print_table(engagement_list, titles)
 
-    @classmethod
-    def grade_submission(cls, mentor_user):
+    @staticmethod
+    def grade_submission(mentor_user):
         """
         It enables assessment tasks
         :return:None
         """
         titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade', 'Mentor_id']
         grades_list = []
-        assignments = []  # need to check if submission is group
         n = 1
-        if Submission.submission_list:
-            for submission in Submission.submission_list:
-                student = Student.return_by_id(submission.student_idx)
-                assignment = Assignment.get_by_id(submission.assignment_idx)
-                grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
-                                    str(submission.grade), submission.mentor_id])
-                assignments.append(assignment)
-                print(assignment.title)
-                n += 1
-            Ui.print_table(grades_list, titles)
-            options = 'Choose number of submission to grade'
-            user_choice = int(Ui.get_menu(options, 1, n))
-            submission_to_grade = Submission.submission_list[user_choice - 1]
-            new_grade = Ui.get_inputs(['New grade:'])[0]
-            print(assignments[user_choice - 1].title)
-            if assignments[user_choice - 1].group == "1":
-                cls.grade_group_submission(mentor_user, submission_to_grade, new_grade, assignments[user_choice - 1])
-            else:
-                submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
-                                                 submission_to_grade.assignment_idx)
-        else:
-            Ui.print_text("Nothing to grade")
-            Ui.get_input('')
-
-    @staticmethod
-    def grade_group_submission(mentor_user, submission_to_grade, grade, assignment):
-        student = Student.return_by_id(submission_to_grade.student_idx)
-        team_id = student.id_team
-        team = Team.get_by_id(team_id)
-        assignment_idx = submission_to_grade.assignment_idx
-        for student_id in team.students_id:
-            student_from_team = Student.return_by_id(student_id)
-            sub_to_grade = Submission.find_submission(student_from_team, assignment)
-            #if Submission.find_submission(student_from_team, assignment_idx):
-            sub_to_grade.change_grade(grade, mentor_user.idx, student_id, assignment_idx)
-
+        for submission in Submission.submission_list:
+            student = Student.return_by_id(submission.student_idx)
+            assignment = Assignment.get_by_id(submission.assignment_idx)
+            grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
+                                str(submission.grade), submission.mentor_id])
+            n += 1
+        Ui.print_table(grades_list, titles)
+        options = 'Choose number of submission to grade'
+        user_choice = int(Ui.get_menu(options, 1, n))
+        submission_to_grade = Submission.submission_list[user_choice - 1]
+        new_grade = Ui.get_inputs(['New grade:'])[0]
+        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                         submission_to_grade.assignment_idx)
 
     @staticmethod
     def add_assignment(user_object):
@@ -727,6 +743,7 @@ class ManagerMenu(Menu):
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
+            input('')
             Ui.clear()
         elif choice == '3':
             Ui.clear()
