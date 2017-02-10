@@ -211,4 +211,19 @@ class Checkpoint:
 
             Ui.press_any_key_input()
 
+    @staticmethod
+    def student_checkpoint(user_object):
+        query = "SELECT * FROM USERS_CHECKPOINT WHERE ID_STUDENT=?"
+        titles = ['Title', 'Grade', 'Date', 'Mentor_1', 'Mentor_2']
+        values = [user_object.idx]
+        user_checkpoints = []
+        query_results = sql.query(query, values)
+        if query_results:
+            for line in query_results:
+                query = "SELECT title FROM Checkpoints WHERE ID=?"
+                value = [line['ID_CHECKPOINT']]
+                title = sql.query(query, value)[0][0]
+                user_checkpoints.append([title, line['GRADE'], line['DATE'], line['ID_MENTOR_1'],
+                                        line['ID_MENTOR_2']])
+        Ui.print_table(user_checkpoints, titles)
 
