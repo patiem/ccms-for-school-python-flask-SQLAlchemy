@@ -134,12 +134,6 @@ class Checkpoint:
                 params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
                 sql.query(query, params)
 
-
-
-
-
-
-
     @staticmethod
     def show_checkpoints(user_object):
         Ui.clear()
@@ -148,7 +142,7 @@ class Checkpoint:
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER == Users.ID"
         titles = ['ID', 'Subject', 'Created by', 'Start date']
         checkpoints = []
-        sql_query_result =  sql.query(query)
+        sql_query_result = sql.query(query)
         ids = []
         if isinstance(sql_query_result, list):
             for checkpoint in sql_query_result:
