@@ -82,6 +82,7 @@ class Menu:
             if user_choice == '1':
 
                 Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints())
+                Checkpoint.show_statistics_for_mentor(user_object.idx)
 
             if user_choice == '2':
 

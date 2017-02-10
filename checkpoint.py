@@ -146,7 +146,7 @@ class Checkpoint:
 
         Ui.clear()
         Ui.print_head('Created checkpoints', 'header')
-        query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER == Users.ID"
+        query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
         titles = ['ID', 'Subject', 'Created by', 'Start date']
         checkpoints = []
         sql_query_result = sql.query(query)
@@ -211,4 +211,43 @@ class Checkpoint:
 
             Ui.press_any_key_input()
 
+    @staticmethod
+    def show_statistics_for_mentor_cards(id_mentor):
 
+        query = "SELECT *, COUNT(GRADE) as cards FROM Users_checkpoints WHERE ID_MENTOR_1 = {} OR ID_MENTOR_2 = {} GROUP BY grade".format(
+            id_mentor, id_mentor)
+
+        sql_query_result = sql.query(query)
+
+        table = list()
+        title = ['Grades', 'Amount']
+
+        for row in sql_query_result:
+            table.append([row['GRADE'], row['cards']])
+
+        Ui.print_table(table, title)
+
+    @staticmethod
+    def show_statistics_for_mentor_checkpoints(id_mentor):
+
+        query = "SELECT *FROM Checkpoints WHERE ID_USER = {} ORDER BY START_DATE ASC".format(
+            id_mentor, id_mentor)
+
+        sql_query_result = sql.query(query)
+
+        table = list()
+        title = ['My checkpoints', 'Date of creation']
+
+        for row in sql_query_result:
+            table.append([row['TITLE'], row['START_DATE']])
+
+        Ui.print_table([str(len(sql_query_result))], ['No of created checkpoints'])
+        Ui.print_table(table, title)
+
+    @staticmethod
+    def show_statistics_for_mentor(id_mentor):
+
+        Checkpoint.show_statistics_for_mentor_cards(id_mentor)
+        Checkpoint.show_statistics_for_mentor_checkpoints(id_mentor)
+
+        Ui.press_any_key_input()
