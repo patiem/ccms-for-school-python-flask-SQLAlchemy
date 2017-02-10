@@ -15,8 +15,12 @@ class Checkpoint:
         Ui.print_head('Add new checkpoint', 'header')
 
         title = Ui.get_input('Subject of checkpoint')
-        start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
-        today = datetime.date.today()
+        while True:
+            try:
+                start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
+                break
+            except (IndexError, ValueError, UnboundLocalError):
+                print('Wrong date format, try one more time.')
 
         query = "INSERT INTO Checkpoints ('ID_USER', 'TITLE', 'START_DATE') VALUES (?, ?, ?)"
         sql.query(query, [user_object.idx, title, start_date])
@@ -72,7 +76,7 @@ class Checkpoint:
 
 
     @staticmethod
-    def grade(user_object, student):
+    def grade(student):
 
         Ui.clear()
         Ui.print_head('Grade', 'header')
@@ -102,9 +106,7 @@ class Checkpoint:
 
         today = datetime.date.today()
 
-        first_mentor_id = user_object.idx
-
-        checkpoint_id = Checkpoint.show_checkpoints(user_object)
+        checkpoint_id = Checkpoint.show_checkpoints()
         second_mentor_id = Checkpoint.select_mentor_id_from_list(user_object)
 
         while True:
@@ -116,8 +118,7 @@ class Checkpoint:
 
             student = Student.return_by_id(int(student))
 
-
-            grade = Checkpoint.grade(user_object, student)
+            grade = Checkpoint.grade(student)
             if grade == 0:
                 break
 
@@ -141,7 +142,7 @@ class Checkpoint:
                 sql.query(query, params)
 
     @staticmethod
-    def show_checkpoints(user_object):
+    def show_checkpoints():
 
         Ui.clear()
         Ui.print_head('Created checkpoints', 'header')
@@ -207,7 +208,6 @@ class Checkpoint:
         else:
 
             Ui.print_text('\n No results for this checkpoint yet! \n')
-
 
             Ui.press_any_key_input()
 

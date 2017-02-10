@@ -81,7 +81,7 @@ class Menu:
 
             if user_choice == '1':
 
-                Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints(user_object))
+                Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints())
 
             if user_choice == '2':
 
