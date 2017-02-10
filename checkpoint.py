@@ -173,19 +173,15 @@ class Checkpoint:
     def show_checkpoint_results(checkpoint_id):
         if checkpoint_id != 0:
             Ui.clear()
-            query = "SELECT  DATE, GRADE, TITLE, " \
-                    "student.name as student_name," \
-                    "student.surname as student_surname," \
-                    "mentor.name as mentor_name, " \
-                    "mentor.surname as mentor_surname, " \
-                    "mentor2.name as mentor2_name, " \
-                    "mentor2.surname as mentor2_surname " \
-                    "" \
-                    "FROM Users_checkpoints, Checkpoints,  Users as student, Users as mentor, Users as mentor2 " \
-                    "WHERE Users_checkpoints.ID_STUDENT = student.ID " \
-                    "and Users_checkpoints.ID_MENTOR_1 = mentor.ID " \
-                    "and Users_checkpoints.ID_MENTOR_2 = mentor2.ID " \
-                    "and Checkpoints.ID = {}".format(checkpoint_id)
+            query = "SELECT TITLE, ID_CHECKPOINT, DATE, GRADE, student.Name as student_name,  " \
+                    "student.Surname as student_surname , mentor.Name as mentor_name,  " \
+                    "mentor.Surname as mentor_surname , mentor2.Name as mentor2_name,  " \
+                    "mentor2.Surname as mentor2_surname " \
+                    "FROM Users_checkpoints LEFT JOIN Users  student ON Users_checkpoints.ID_STUDENT = student.ID " \
+                    "LEFT JOIN Users  mentor ON Users_checkpoints.ID_MENTOR_1 = mentor.ID " \
+                    "LEFT JOIN Users  mentor2 ON Users_checkpoints.ID_MENTOR_2 = mentor2.ID " \
+                    "LEFT JOIN Checkpoints ON Users_checkpoints.ID_CHECKPOINT = Checkpoints.ID " \
+                    "WHERE ID_CHECKPOINT  = {}".format(checkpoint_id)
 
             table = []
             titles = ['Student', 'First mentor ', 'Second mentor', 'Date', Color.Yellow +'Grade       ' + Color.End]
