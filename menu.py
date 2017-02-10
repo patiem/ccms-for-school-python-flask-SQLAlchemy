@@ -83,9 +83,6 @@ class Menu:
 
                 Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints())
 
-                Ui.press_any_key_input()
-
-
             if user_choice == '2':
 
                 Checkpoint.add_checkpoint(user_object)
