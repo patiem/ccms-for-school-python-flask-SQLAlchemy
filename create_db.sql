@@ -18,18 +18,18 @@ CREATE TABLE `Users` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `Name` TEXT NOT N
 CREATE TABLE `Users_team` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `ID_TEAM` INTEGER NOT NULL, `ID_USER` INTEGER NOT NULL );
 
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (1, 'Student', 'Codecool', 'ja', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
-INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (11, 'Kamil', 'Mika', 'ja1', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
+INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (11, 'Kamil', 'Mika', 'ja1', 'b1''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (12, 'Patrycja', 'Mikulska', 'ja2', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
-INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (13, 'Michał', 'Osak', 'ja3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
-INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (14, 'Mateusz', 'Siga', 'ja3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
+INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (13, 'Michał', 'Osak', 'ja213', 'b3''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
+INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (14, 'Mateusz', 'Siga', 'ja21c3', 'b4''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (2, 'Przemysław', 'Ciąćka', 'prosty', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Mentor');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (21, 'Mateusz', 'Ostafil', 'prosty2', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Mentor');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (22, 'Rafał', 'Stępień', 'prosty3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Mentor');
-INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (23, 'Marcin', 'Izworski', 'prosty3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Mentor');
+INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (23, 'Marcin', 'Izworski', 'prosty4', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Mentor');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (34, 'Employee', 'Codecool', 'nw', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Employee');
 INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (44, 'Manager', 'Codecool', 'jurek', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Manager');
-INSERT INTO Users (Name, Surname, "E-mail", Password, Type) VALUES ('Student', 'Codecool', 'ty', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
-INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (6, 'InnyStudent', 'Codecool', 'ja3', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
+INSERT INTO Users (Name, Surname, "E-mail", Password, Type) VALUES ('Student', 'Codecool', 'tfasffscz', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
+INSERT INTO Users (ID, Name, Surname, "E-mail", Password, Type) VALUES (6, 'InnyStudent', 'Codecool', 'ja2312ad', 'b''\xb2\xf7=\xf0\xc9\xdat\xe1\xa3\xcf\xb7\xe6\x80ee\xff@\r\xf6\x13f\x10|\x18N\xa3\xcbb\x83\xa7r\x85''', 'Student');
 
 INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (1,'2016-10-01','Present');
 INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (1,'2016-10-02','Absent');
