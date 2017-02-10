@@ -1,6 +1,6 @@
 import re
 from ui import Ui
-from common import Common
+import sql
 
 
 class Test:
@@ -47,9 +47,12 @@ class Test:
         :return: mail
         """
         mail_list = []
-        users_list = Common.aggregation_users()
-        for item in users_list:
-            mail_list.append(item[1])
+        query = """
+                SELECT `E-mail`
+                FROM Users"""
+        mail_sql = sql.query(query)
+        for item in mail_sql:
+            mail_list.append(item[0])
         while True:
             if cls.is_email_correct(mail):
                 if mail in mail_list:
@@ -115,7 +118,7 @@ class Test:
                 break
             else:
                 Ui.print_text('\nWrong attribute to edit')
-                attribute_name = Ui.get_inputs(['Attribute to edit (name,last name,mail,telephone,password): '])[0]
+                attribute_name = Ui.get_inputs(['What to edit (name,last name,e-mail,telephone,password): '])[0]
         return attribute_name
 
     @staticmethod
@@ -129,7 +132,6 @@ class Test:
             pattern = r'^((\w+\.*)+)@\w+.\w+$'
             if re.search(pattern, email):
                 return True
-            return True
         return False
 
     @staticmethod

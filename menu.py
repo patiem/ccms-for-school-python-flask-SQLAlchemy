@@ -208,7 +208,7 @@ class Menu:
         :param logged_user:
         :return: None
         """
-        Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.id_team, 'header'))
+        Ui.print_head('Logged as {} {}'.format(logged_user.name, logged_user.last_name, 'header'))
 
     @staticmethod
     def run():
