@@ -269,8 +269,9 @@ class StudentMenu(Menu):
             options = '\t1: Show assignment list with grades\n' \
                       '\t2: Show assignment description\n' \
                       '\t3: Submit assignment\n' \
-                      '\t4: Show my submission list \n' \
-                      '\t5: Show my overall attendance \n' \
+                      '\t4: My submission list \n' \
+                      '\t5: My overall attendance \n' \
+                      '\t6: My checkpoints \n' \
                       '\t0: Exit program'
 
             user_choice = Ui.get_menu(options, 0, 5)
@@ -301,6 +302,9 @@ class StudentMenu(Menu):
             input('Enter to back to menu')
         elif choice == '5':
             cls.my_attendance(logged_user)
+            input('Enter to back to menu')
+        elif choice == '6':
+            cls.my_checkpoints(logged_user)
             input('Enter to back to menu')
         elif choice == '0':
             exit()
@@ -382,7 +386,7 @@ class StudentMenu(Menu):
         Ui.print_text("Choose number of assignment you want to submit")
         user_choice = int(Ui.get_menu('', 0, n))
         assignment_to_submit = students_assignments[user_choice - 1]
-        if assignment_to_submit == '0':
+        if assignment_to_submit.group == '0':
             if not Submission.find_submission(logged_user, assignment_to_submit):
                 link = Ui.get_inputs(['Link to your repo:'])
                 Submission.add_submission(logged_user.idx, assignment_to_submit.idx, date.today(), link[0])
@@ -425,7 +429,6 @@ class StudentMenu(Menu):
                                                          'link to repo', 'grade', 'mentor_id'])
     @staticmethod
     def my_attendance(user):
-        user
         query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
         values = [user.idx]
         back_values = sql.query(query, values)
@@ -443,6 +446,9 @@ class StudentMenu(Menu):
         to_print.append(['overall %', average * 100 / all_days])
         Ui.print_table(to_print, ['Status', 'amount'])
 
+    @staticmethod
+    def my_checkpoints(user):
+        pass
 
 
 class MentorMenu(Menu):
@@ -551,28 +557,51 @@ class MentorMenu(Menu):
         engagement_list = Attendance.students_engagement()
         Ui.print_table(engagement_list, titles)
 
-    @staticmethod
-    def grade_submission(mentor_user):
+    @classmethod
+    def grade_submission(cls, mentor_user):
         """
         It enables assessment tasks
         :return:None
         """
         titles = ['Nr', 'Student\'s e-mail', 'Assignment title', 'Date of submission', 'Grade', 'Mentor_id']
         grades_list = []
+        assignments = []  # need to check if submission is group
         n = 1
-        for submission in Submission.submission_list:
-            student = Student.return_by_id(submission.student_idx)
-            assignment = Assignment.get_by_id(submission.assignment_idx)
-            grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
-                                str(submission.grade), submission.mentor_id])
-            n += 1
-        Ui.print_table(grades_list, titles)
-        options = 'Choose number of submission to grade'
-        user_choice = int(Ui.get_menu(options, 1, n))
-        submission_to_grade = Submission.submission_list[user_choice - 1]
-        new_grade = Ui.get_inputs(['New grade:'])[0]
-        submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
-                                         submission_to_grade.assignment_idx)
+        if Submission.submission_list:
+            for submission in Submission.submission_list:
+                student = Student.return_by_id(submission.student_idx)
+                assignment = Assignment.get_by_id(submission.assignment_idx)
+                grades_list.append([str(n), student.mail, assignment.title, str(submission.date_of_submission),
+                                    str(submission.grade), submission.mentor_id])
+                assignments.append(assignment)
+                print(assignment.title)
+                n += 1
+            Ui.print_table(grades_list, titles)
+            options = 'Choose number of submission to grade'
+            user_choice = int(Ui.get_menu(options, 1, n))
+            submission_to_grade = Submission.submission_list[user_choice - 1]
+            new_grade = Ui.get_inputs(['New grade:'])[0]
+            print(assignments[user_choice - 1].title)
+            if assignments[user_choice - 1].group == "1":
+                cls.grade_group_submission(mentor_user, submission_to_grade, new_grade, assignments[user_choice - 1])
+            else:
+                submission_to_grade.change_grade(new_grade, mentor_user.idx, submission_to_grade.student_idx,
+                                                 submission_to_grade.assignment_idx)
+        else:
+            Ui.print_text("Nothing to grade")
+
+    @staticmethod
+    def grade_group_submission(mentor_user, submission_to_grade, grade, assignment):
+        student = Student.return_by_id(submission_to_grade.student_idx)
+        team_id = student.id_team
+        team = Team.get_by_id(team_id)
+        assignment_idx = submission_to_grade.assignment_idx
+        for student_id in team.students_id:
+            student_from_team = Student.return_by_id(student_id)
+            sub_to_grade = Submission.find_submission(student_from_team, assignment)
+            #if Submission.find_submission(student_from_team, assignment_idx):
+            sub_to_grade.change_grade(grade, mentor_user.idx, student_id, assignment_idx)
+
 
     @staticmethod
     def add_assignment(user_object):
