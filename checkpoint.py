@@ -5,6 +5,7 @@ import sql
 import datetime
 from student import Student
 
+
 class Checkpoint:
 
     @staticmethod
@@ -73,7 +74,6 @@ class Checkpoint:
             Ui.print_text('\n All students are graded in this checkpoint! \n')
             Ui.press_any_key_input()
             return None
-
 
     @staticmethod
     def grade(student):
@@ -158,12 +158,11 @@ class Checkpoint:
                 ids.append(checkpoint["ID"])
             Ui.print_table(checkpoints, titles)
             checkpoint_id = Ui.get_id_only_in_list('Select checkpoint (ID): ', ids)
-
+            return checkpoint_id
 
         else:
             Ui.print_text('\n Create checkpoints first! \n')
-
-        return checkpoint_id
+        return 0
 
     @staticmethod
     def show_checkpoint_results(checkpoint_id):

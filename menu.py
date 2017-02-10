@@ -62,7 +62,7 @@ class Menu:
         edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
-        Ui.get_input("key to continue")
+        Ui.get_input('ENTER')
 
     @staticmethod
     def checkpoint(user_object):
@@ -86,7 +86,7 @@ class Menu:
 
             if user_choice == '1':
 
-                Checkpoint.show_checkpoints(user_object)
+                Checkpoint.show_checkpoints()
                 Ui.press_any_key_input()
 
             if user_choice == '2':
@@ -489,11 +489,11 @@ class MentorMenu(Menu):
         """
         if choice == '1':
             cls.print_user(Student.object_list)
-            Ui.get_inputs([''])
+            Ui.get_input('ENTER')
 
         elif choice == '2':
             cls.add_assignment(user_object)
-            Ui.get_inputs([''])
+            Ui.get_input('ENTER')
 
         elif choice == '3':
             Ui.clear()
@@ -502,7 +502,7 @@ class MentorMenu(Menu):
         elif choice == '4':
             Ui.clear()
             cls.show_attendance_of_students()
-            Ui.get_inputs([''])
+            Ui.get_input('ENTER')
 
         elif choice == '5':
             cls.switch_attendance()
@@ -521,11 +521,11 @@ class MentorMenu(Menu):
 
         elif choice == '10':
             cls.show_teams()
-            Ui.get_input('Press ENTER')
+            Ui.get_input('ENTER')
 
         elif choice == '11':
             cls.add_new_team()
-            Ui.get_input('Press ENTER')
+            Ui.get_input('ENTER')
 
         elif choice == '12':
             cls.add_student_to_team()
@@ -553,13 +553,13 @@ class MentorMenu(Menu):
                 Team.student_to_team(team, student)
                 student_fullname = student.name + ' ' + student.last_name
                 Ui.print_text('\n---::: You added {} to team {} :::---'.format(student_fullname, team.name))
-                Ui.get_input('Press ENTER')
+                Ui.get_input('ENTER')
             else:
                 Ui.print_text('There is no team with this ID')
-                Ui.get_input('Press ENTER')
+                Ui.get_input('ENTER')
         else:
             Ui.print_text('There is no student of this ID')
-            Ui.get_input('Press ENTER')
+            Ui.get_input('ENTER')
 
     @classmethod
     def add_new_team(cls):
@@ -708,6 +708,8 @@ class EmployeeMenu(Menu):
         """
         if choice == '1':
             EmployeeMenu.print_user(Student.object_list)
+            Ui.get_input('ENTER')
+
         elif choice == '0':
             exit()
 
@@ -750,7 +752,7 @@ class ManagerMenu(Menu):
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
-            input('')
+            Ui.get_input('ENTER')
             Ui.clear()
         elif choice == '3':
             Ui.clear()
@@ -761,6 +763,8 @@ class ManagerMenu(Menu):
         elif choice == '5':
             Ui.clear()
             ManagerMenu.print_user(Student.object_list)
+            Ui.get_input('ENTER')
+
         elif choice == '6':
             Ui.clear()
             ManagerMenu.edit_user('Mentor')
