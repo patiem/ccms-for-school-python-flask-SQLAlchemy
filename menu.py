@@ -633,7 +633,7 @@ class MentorMenu(Menu):
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
         title = ''
-        while not title:
+        while not title or '\t' in title:
             title = Ui.get_input('title (cannot be empty)')
         while True:
             try:
