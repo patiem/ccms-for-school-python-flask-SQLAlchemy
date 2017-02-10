@@ -612,7 +612,9 @@ class MentorMenu(Menu):
         :return: None
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
-        title = Ui.get_input('title')
+        title = ''
+        while not title:
+            title = Ui.get_input('title (cannot be empty)')
         while True:
             try:
                 start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
@@ -626,7 +628,7 @@ class MentorMenu(Menu):
             except (IndexError, ValueError, UnboundLocalError):
                 print('Wrong date format, try one more time.')
 
-        group = Ui.get_input('If assignment is for group type 1, else enter: ')
+        group = Ui.get_input('1, if assignment is for group, else enter')
         filename_from_title = '_'.join(title.split(' '))
         filename = 'csv/assignments_description/{}.txt'.format(filename_from_title)
         filename_short = '{}.txt'.format(filename_from_title)

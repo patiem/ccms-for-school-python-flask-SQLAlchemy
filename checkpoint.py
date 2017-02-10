@@ -155,4 +155,14 @@ class Checkpoint:
         return ids
 
 
+    @staticmethod
+    def students_checkpoint(user_object):
+        query = "SELECT * FROM USERS_CHECKPOINT WHERE Checkpoints.ID_USER == ?"
+        values = user_object.idx
+        user_checkpoints = []
+        query_results = sql.query(query, values)
+        if query_results:
+            for line in query_results:
+                user_checkpoints.append(line['TITLE'], line['GRADE'], line['DATE'], line['ID_MENTOR_1'],
+                                        line['ID_MENTOR_2'])
 

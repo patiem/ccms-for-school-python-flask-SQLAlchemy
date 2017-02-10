@@ -129,7 +129,6 @@ class Test:
             pattern = r'^((\w+\.*)+)@\w+.\w+$'
             if re.search(pattern, email):
                 return True
-            return True
         return False
 
     @staticmethod
