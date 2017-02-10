@@ -200,7 +200,6 @@ class Menu:
         else:
             pass
 
-
     @staticmethod
     def logged_as(logged_user):
         """
@@ -420,8 +419,8 @@ class StudentMenu(Menu):
             assignment = Assignment.get_by_id(sub.assignment_idx)
             logged_user_submission_to_print.append([assignment.title, assignment.start_date, assignment.end_date,
                                                    str(sub.date_of_submission), sub.link, sub.grade, sub.mentor_id])
-        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',
-                                                         'link to repo', 'grade', 'mentor_id'])
+        Ui.print_table(logged_user_submission_to_print, ['title', 'start date', 'end date', 'submission date',                                                 'link to repo', 'grade', 'mentor_id'])
+
     @staticmethod
     def my_attendance(user):
         user
@@ -517,36 +516,45 @@ class MentorMenu(Menu):
 
         elif choice == '10':
             cls.show_teams()
-            Ui.get_inputs([''])
+            Ui.get_input('Press ENTER')
 
         elif choice == '11':
             cls.add_new_team()
-            Ui.get_inputs([''])
+            Ui.get_input('Press ENTER')
 
         elif choice == '12':
             cls.add_student_to_team()
-            Ui.get_inputs([''])
 
         elif choice == '0':
             exit()
 
     @classmethod
     def add_student_to_team(cls):
+        """
+        Lets user to move student between teams
+        :return: None
+        """
         cls.print_user(Student.object_list)
         option = 'id student\'s which you want to add to team?'
         student_id = Ui.get_input(option)
-        cls.show_teams()
-
-        option = 'id team\'s where you want to add student?'
-        team_id = Ui.get_input(option)
-
-        team = Team.get_team_by_id(team_id)
-
         student = Student.return_by_id(int(student_id))
 
-        Team.student_to_team(team, student)
-
-        # user_choice = Ui.get_menu(options, 0, len(Student.object_list))
+        if student:
+            cls.show_teams()
+            option = 'id team\'s where you want to add student?'
+            team_id = Ui.get_input(option)
+            team = Team.get_team_by_id(team_id)
+            if team:
+                Team.student_to_team(team, student)
+                student_fullname = student.name + ' ' + student.last_name
+                Ui.print_text('\n---::: You added {} to team {} :::---'.format(student_fullname, team.name))
+                Ui.get_input('Press ENTER')
+            else:
+                Ui.print_text('There is no team with this ID')
+                Ui.get_input('Press ENTER')
+        else:
+            Ui.print_text('There is no student of this ID')
+            Ui.get_input('Press ENTER')
 
     @classmethod
     def add_new_team(cls):
@@ -735,6 +743,7 @@ class ManagerMenu(Menu):
             ManagerMenu.add_user('Mentor')
         elif choice == '2':
             ManagerMenu.print_user(Mentor.object_list)
+            input('')
             Ui.clear()
         elif choice == '3':
             Ui.clear()
