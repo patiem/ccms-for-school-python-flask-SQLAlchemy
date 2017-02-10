@@ -447,6 +447,7 @@ class StudentMenu(Menu):
     def my_checkpoints(user):
         Checkpoint.student_checkpoint(user)
 
+
 class MentorMenu(Menu):
 
     @classmethod
@@ -570,6 +571,12 @@ class MentorMenu(Menu):
         label_list = ['Name']
         user_data = Ui.get_inputs(label_list)
         name = user_data[0]
+        if name == '' or '\t' in name or len(name) < 3 or name[0] == ' ' or '  ' in name:
+
+            Ui.print_text('Wrong name format')
+
+            return
+
         Team.new_team(name)
         Ui.print_head('You created a new team called: {}'.format(name), 'warning')
 
