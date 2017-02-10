@@ -121,8 +121,15 @@ class Checkpoint:
                 student = Student.return_by_id(int(student))
 
                 grade = Checkpoint.grade(student)
+
                 if grade == 0:
                     break
+
+                query = "INSERT INTO Users_checkpoints " \
+                        "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
+                        " VALUES (?, ?, ?, ?, ?, ?)"
+                params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
+                sql.query(query, params)
 
                 Ui.clear()
                 Ui.print_head('Checkpoint', 'header')
@@ -137,11 +144,7 @@ class Checkpoint:
                     break
 
                 if user_choice == '1':
-                    query = "INSERT INTO Users_checkpoints " \
-                            "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
-                            " VALUES (?, ?, ?, ?, ?, ?)"
-                    params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
-                    sql.query(query, params)
+                    pass
 
     @staticmethod
     def show_checkpoints():
@@ -214,7 +217,6 @@ class Checkpoint:
                 Ui.print_text('\n No results for this checkpoint yet! \n')
 
                 Ui.press_any_key_input()
-
 
     @staticmethod
 
