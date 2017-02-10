@@ -86,12 +86,8 @@ class Menu:
 
             if user_choice == '1':
 
-<<<<<<< HEAD
                 Checkpoint.show_checkpoints()
                 Ui.press_any_key_input()
-=======
-                Checkpoint.show_checkpoint_results(Checkpoint.show_checkpoints())
->>>>>>> 34a5c2fa7424ae2f8ef15e6c90a8c59f0d1de70c
 
             if user_choice == '2':
 
