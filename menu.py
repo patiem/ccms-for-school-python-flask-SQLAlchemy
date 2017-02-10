@@ -651,7 +651,9 @@ class MentorMenu(Menu):
         :return: None
         """
         mentor_id = user_object.idx #user_object.name + ' ' + user_object.last_name
-        title = Ui.get_input('title')
+        title = ''
+        while not title or '\t' in title or title == ' ':
+            title = Ui.get_input('title (cannot be empty)')
         while True:
             try:
                 start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
