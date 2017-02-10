@@ -274,7 +274,7 @@ class StudentMenu(Menu):
                       '\t6: My checkpoints \n' \
                       '\t0: Exit program'
 
-            user_choice = Ui.get_menu(options, 0, 5)
+            user_choice = Ui.get_menu(options, 0, 6)
             cls.choose_option(user_choice, user_object)
 
     @classmethod
@@ -448,7 +448,7 @@ class StudentMenu(Menu):
 
     @staticmethod
     def my_checkpoints(user):
-        pass
+        Checkpoint.student_checkpoint(user)
 
 
 class MentorMenu(Menu):
