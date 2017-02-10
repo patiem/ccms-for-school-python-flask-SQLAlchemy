@@ -54,6 +54,11 @@ class Menu:
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
                                              'what to edit (name,last name,e-mail,telephone,password): ',
                                              'new value: '])
+        while True:
+            if Test.is_email_correct(edit_arguments_list[0]):
+                break
+            else:
+                edit_arguments_list[0] = Ui.get_input('Wrong mail format')
         edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
@@ -110,20 +115,6 @@ class Menu:
             Ui.get_inputs(['Enter to continue: '])
 
     @staticmethod
-    def edit_user(class_name):
-        """
-        Edit user
-        :param class_name: string ( name of class where user should be edited)
-        :return: None
-        """
-        edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (Name,Surname,E-mail,Telephone,Password): ',
-                                             'new value: '])
-        edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
-        edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
-        Menu.where_to_edit(class_name, edit_arguments_list)
-
-    @staticmethod
     def where_to_edit(class_name, edit_arguments_list):
         """
         Check which class should edit user
@@ -132,13 +123,25 @@ class Menu:
         :return: None
         """
         if class_name == 'Student':
-            Student.edit_user(edit_arguments_list)
+            if Student.edit_user(edit_arguments_list):
+                Ui.print_text('Student edited')
+            else:
+                Ui.print_text('Wrong e-mail')
         elif class_name == 'Mentor':
-            Mentor.edit_user(edit_arguments_list)
+            if Mentor.edit_user(edit_arguments_list):
+                Ui.print_text('Mentor edited')
+            else:
+                Ui.print_text('Wrong e-mail')
         elif class_name == 'Manager':
-            Manager.edit_user(edit_arguments_list)
+            if Manager.edit_user(edit_arguments_list):
+                Ui.print_text('Manager edited')
+            else:
+                Ui.print_text('Wrong e-mail')
         elif class_name == 'Employee':
-            Employee.edit_user(edit_arguments_list)
+            if Employee.edit_user(edit_arguments_list):
+                Ui.print_text('Student edited')
+            else:
+                Ui.print_text('Wrong e-mail')
 
     @staticmethod
     def where_to_remove(class_name, mail):
