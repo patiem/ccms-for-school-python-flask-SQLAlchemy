@@ -212,6 +212,7 @@ class Checkpoint:
             Ui.press_any_key_input()
 
     @staticmethod
+
     def show_statistics_for_mentor_cards(id_mentor):
 
         query = "SELECT *, COUNT(GRADE) as cards FROM Users_checkpoints WHERE ID_MENTOR_1 = {} OR ID_MENTOR_2 = {} GROUP BY grade".format(
@@ -247,7 +248,25 @@ class Checkpoint:
     @staticmethod
     def show_statistics_for_mentor(id_mentor):
 
+        Ui.print_head('Statistics of mentor', 'header')
         Checkpoint.show_statistics_for_mentor_cards(id_mentor)
         Checkpoint.show_statistics_for_mentor_checkpoints(id_mentor)
-
         Ui.press_any_key_input()
+
+    def student_checkpoint(user_object):
+        query = "SELECT * FROM USERS_CHECKPOINT WHERE ID_STUDENT=?"
+        titles = ['Title', 'Grade', 'Date', 'Mentor_1', 'Mentor_2']
+        values = [user_object.idx]
+        user_checkpoints = []
+        query_results = sql.query(query, values)
+        if query_results:
+            for line in query_results:
+                query = "SELECT title FROM Checkpoints WHERE ID=?"
+                value = [line['ID_CHECKPOINT']]
+                title = sql.query(query, value)[0][0]
+                user_checkpoints.append([title, line['GRADE'], line['DATE'], line['ID_MENTOR_1'],
+                                        line['ID_MENTOR_2']])
+        Ui.print_table(user_checkpoints, titles)
+
+
+
