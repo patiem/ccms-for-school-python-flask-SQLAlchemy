@@ -149,7 +149,7 @@ class Checkpoint:
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER == Users.ID"
         titles = ['ID', 'Subject', 'Created by', 'Start date']
         checkpoints = []
-        sql_query_result =  sql.query(query)
+        sql_query_result = sql.query(query)
         ids = []
         if isinstance(sql_query_result, list):
             for checkpoint in sql_query_result:
