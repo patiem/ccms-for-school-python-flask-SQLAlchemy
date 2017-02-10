@@ -52,7 +52,7 @@ class Menu:
         :return: None
         """
         edit_arguments_list = Ui.get_inputs(['Mail of user to edit: ',
-                                             'what to edit (name,last name,e-mail,telephone,password): ',
+                                             'What to edit (Name,Surname,E-mail,Telephone,Password): ',
                                              'new value: '])
         while True:
             if Test.is_email_correct(edit_arguments_list[0]):
@@ -62,7 +62,7 @@ class Menu:
         edit_arguments_list[1] = Test.test_edit_user(edit_arguments_list[1])
         edit_arguments_list[2] = Test.check_argument(edit_arguments_list[1], edit_arguments_list[2])
         Menu.where_to_edit(class_name, edit_arguments_list)
-        Menu.what_save(class_name)
+        Ui.get_input("key to continue")
 
     @staticmethod
     def checkpoint(user_object):
@@ -127,22 +127,22 @@ class Menu:
             if Student.edit_user(edit_arguments_list):
                 Ui.print_text('Student edited')
             else:
-                Ui.print_text('Wrong e-mail')
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Mentor':
             if Mentor.edit_user(edit_arguments_list):
                 Ui.print_text('Mentor edited')
             else:
-                Ui.print_text('Wrong e-mail')
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Manager':
             if Manager.edit_user(edit_arguments_list):
                 Ui.print_text('Manager edited')
             else:
-                Ui.print_text('Wrong e-mail')
+                Ui.print_text('No user of passed E-mail')
         elif class_name == 'Employee':
             if Employee.edit_user(edit_arguments_list):
                 Ui.print_text('Student edited')
             else:
-                Ui.print_text('Wrong e-mail')
+                Ui.print_text('No user of passed E-mail')
 
     @staticmethod
     def where_to_remove(class_name, mail):

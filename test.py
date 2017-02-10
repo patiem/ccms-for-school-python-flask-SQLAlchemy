@@ -118,7 +118,7 @@ class Test:
                 break
             else:
                 Ui.print_text('\nWrong attribute to edit')
-                attribute_name = Ui.get_inputs(['What to edit (name,last name,e-mail,telephone,password): '])[0]
+                attribute_name = Ui.get_inputs(['What to edit (Name,Surname,E-mail,Telephone,Password): '])[0]
         return attribute_name
 
     @staticmethod
