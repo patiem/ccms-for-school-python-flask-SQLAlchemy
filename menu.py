@@ -589,6 +589,7 @@ class MentorMenu(Menu):
                                                  submission_to_grade.assignment_idx)
         else:
             Ui.print_text("Nothing to grade")
+            Ui.get_input('')
 
     @staticmethod
     def grade_group_submission(mentor_user, submission_to_grade, grade, assignment):
