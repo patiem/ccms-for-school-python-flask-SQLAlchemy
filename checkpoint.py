@@ -185,7 +185,7 @@ class Checkpoint:
                     "and Users_checkpoints.ID_MENTOR_1 = mentor.ID " \
                     "and Users_checkpoints.ID_MENTOR_2 = mentor2.ID " \
                     "and Checkpoints.ID = {}".format(checkpoint_id)
-            print(query)
+
             table = []
             titles = ['Student', 'First mentor ', 'Second mentor', 'Date', Color.Yellow +'Grade       ' + Color.End]
             sql_query_result = sql.query(query)
