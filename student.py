@@ -38,15 +38,28 @@ class Student(User):
             for row in data:
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
             for line in table:
+                team_id = []
                 get_team_id = """
                                 SELECT ID_TEAM
                                 FROM Users_team
                                 WHERE ID_USER = ?"""
-                for row in sql.query(get_team_id, [line[0]]):
-                    team_id = row[0]
-                line.append(team_id)
-                print(line)
-                new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+
+                # for row in sql.query(get_team_id, [line[0]]):
+                #     team_id = row[0]
+                # line.append(team_id)
+                # print(line)
+                # new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+
+                if sql.query(get_team_id, [line[0]]):
+                    for row in sql.query(get_team_id, [line[0]]):
+                        team_id = row[0]
+
+                if team_id:
+                    line.append(team_id)
+                    new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+                else:
+                    new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5])
+
                 cls.object_list.append(new_object)
 
 
