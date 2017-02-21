@@ -10,6 +10,7 @@ aside{
     position: fixed;
     background-color: cornflowerblue;
     border: white dashed;
+    box-sizing: border-box;
 }
 
 footer {
@@ -20,4 +21,11 @@ footer {
     font-size: 0.8em;
     position: fixed;
     bottom: 1px;
+}
+
+.content{
+    float: right;
+    width: 80%;
+    box-sizing: border-box;
+    padding: 25px 25px;
 }
