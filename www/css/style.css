@@ -21,8 +21,6 @@ aside{
     left: 50%;
     padding: 5px;
     text-align: left;
-    /*font-size: 1.2em;*/
-
 }
 
 footer {
@@ -35,6 +33,7 @@ footer {
     position: fixed;
     bottom: 1px;
 }
+
 .content {
     float: right;
     width: 80%;
@@ -43,7 +42,7 @@ footer {
 }
 #user_photo{
     float: left;
-    margin-top: 3px;
+    margin-top: 10px;
     width: 90px;
     height: 90px;
     border: groove;
@@ -51,12 +50,14 @@ footer {
     background-size: 90px 90px;
     display: inline-block;
 }
+
 #user{
     height: 90px;
     margin: auto;
     padding: 10px;
     text-align: center;
 }
+
 h1{
     font-size: 30px;
 }
@@ -67,4 +68,15 @@ h2{
 
 h3 {
     font-size: 24px;
+}
+
+.menus a{
+    color: #333333;
+    text-decoration: none;
+}
+
+.menus a:hover h3{
+    color: #f47a20;
+    text-decoration: none;
+    font-size: 2em;
 }
