@@ -1,0 +1,92 @@
+body {
+    
+background: url('http://hdwpro.com/wp-content/uploads/2015/12/Blue-Background.jpeg');
+    
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Roboto;
+    font-weight: 700;
+    
+    
+}
+
+section.login  {
+    
+    
+    width: 100%;
+    
+    margin-top: 10%;
+}
+section.login div {
+     -moz-border-radius:15px; /* Firefox */
+    -webkit-border-radius: 15px; /* Safari, Chrome */
+    -khtml-border-radius: 15px; /* KHTML */
+    padding: 50px;
+    
+    background-color: rgba(255, 255, 255,  0.2) ;
+    
+}
+section.login h1 {
+    font-size: 40px;
+    text-shadow: 2px 2px 2px black;
+    color: white;
+    margin: 0 auto;
+    
+    margin-bottom: 0px;
+}
+section.login h1 img {
+    width: 275px;
+    
+}
+
+section.login div span {
+    color: white;
+    font-family: Roboto;
+    text-shadow: 2px 2px 1px black;
+    display:  block;
+    margin-bottom: 35px;
+}
+section.login div {width: 300px; margin: 0 auto;}
+section.login input {
+
+    
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 250px;
+    
+    -moz-border-radius:5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari, Chrome */
+    -khtml-border-radius: 5px; /* KHTML */
+    border-radius: 8px; /* CSS3 */
+    
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    border-color: white;
+
+    
+}
+*::-webkit-input-placeholder {
+    color: white; 
+    text-shadow: 1px 1px 1px black;
+}
+*:-moz-placeholder {
+    /* FF 4-18 */
+    color: red;
+}
+*::-moz-placeholder {
+    /* FF 19+ */
+    color: red;
+}
+*:-ms-input-placeholder {
+    /* IE 10+ */
+    
+}
+
+section.login #submit {
+    width: 270px;
+    height: 50px;
+    margin-top: 20px;
+    }
