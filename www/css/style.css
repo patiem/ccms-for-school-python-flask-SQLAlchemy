@@ -1,6 +1,6 @@
 body{
     font-family: Ubuntu, serif;
-    font-size: 20px;
+    font-size: 16px;
     /*font-size: 1.1em;*/
 }
 
@@ -34,7 +34,12 @@ footer {
     position: fixed;
     bottom: 1px;
 }
-
+.content {
+    float: right;
+    width: 80%;
+    box-sizing: border-box;
+    padding: 25px 25px;
+}
 #user_photo{
     float: left;
     margin-top: 3px;
@@ -45,22 +50,19 @@ footer {
     background-size: 90px 90px;
     display: inline-block;
 }
-
 #user{
     height: 90px;
     margin: auto;
     padding: 10px;
     text-align: center;
 }
-
 h1{
-    font-size: 22px;
+    font-size: 30px;
 }
 
 h2{
-    font-size: 18px;
+    font-size: 26px;
 }
 
 h3{
-    font-size: 16px;
-}
+    font-size: 24px;

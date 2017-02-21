@@ -47,7 +47,5 @@ table a:hover {
     font-weight: 900;
 }
 
-#table {
-    display: flex;
-    align-content: center;
+#table {   
 }
