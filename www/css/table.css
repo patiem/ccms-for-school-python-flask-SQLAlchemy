@@ -108,3 +108,35 @@ table a:hover {
 .gray_button{
     background-color: #333333;
 }
+
+.assignment{
+    padding: 5px;
+    text-align: left;
+    width: 100%;
+
+}
+
+.assignment table{
+    box-shadow: 0 0 0;
+}
+
+.assignment th {
+    background-color: transparent;
+    padding: 10px 10px;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.assignment tr {
+    padding: 5px;
+    border: 0;
+    border-bottom: 0;
+
+}
+
+.assignment td {
+    padding: 10px 10px;
+    margin: 2px;
+    border-bottom: 0;
+
+}
