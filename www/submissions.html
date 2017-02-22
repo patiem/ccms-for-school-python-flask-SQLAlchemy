@@ -89,7 +89,7 @@
 <div class="content">
     <div id="top">
     <h2 class="assign_title">Nazwa asignmentu</h2>
-    <a href=""><div class="fixed_table_button gray_button"> Submit assignment </div></a>
+    <a href="#popup"><div class="fixed_table_button gray_button"> Submit assignment </div></a>
     </div>
     <br>
     <hr>
@@ -135,6 +135,28 @@
         </div>
     </section>
 
+    <div id="popup" class="overlay">
+            <h2>Add submission</h2>
+            <a class="close" href="#">&times;</a>
+
+            <form name="add_submission">
+                <div class="form-block">
+                    <label for="link">Link to assignment:</label>
+                    <input type="text" name="link" id="link">
+                </div>
+                <div class="form-block">
+                    <label for="file">Upload file with assignment:</label>
+                    <input class="load_file" type="file" name="file" id="file">
+                </div>
+                <div class="form-block">
+                    <label for="comment">Comment:</label>
+                    <textarea maxlength="500" name ="comment" id="comment" rows="4" cols="50"
+                              placeholder="Your comments about assignment, max 500"></textarea>
+                </div>
+
+                <input type="submit" value="Submit" id="submit" class="button orange">
+            </form>
+    </div>
 
 </div>
 
