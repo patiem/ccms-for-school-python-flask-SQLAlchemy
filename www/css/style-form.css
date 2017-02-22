@@ -2,17 +2,16 @@ body{
     background-color: #f5f5dc;
     font-size: 12px;
 }
-
 form {
     width: 70em;
-    margin: 15em auto 0 auto;
+    margin: 1em auto 0 auto;
     border: 0.09em solid #000;
     border-radius: 1.7em;
     box-shadow: 0.9em 0.9em 0.9em #888888;
+    background-color: rgba(245,245,220,0.7);
 }
-
 .form-block{
-    margin: 3em 1.2em;
+    margin: 1em 1.2em;
     padding: 0.9em;
     font-size: 2.1em;
 }

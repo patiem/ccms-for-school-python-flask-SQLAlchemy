@@ -7,14 +7,75 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/table.css">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css">
     <link rel="stylesheet" type="text/css" href="css/style-list.css">
 </head>
 
 <body>
 <header>
     <aside>
+
         <nav>
-            <h1>Templatka</h1>
+            <section id="logged_user">
+                <p>You are logged in as:</p>
+                <div id="user_photo"></div>
+                <div id="user">
+                    <h3>Przemysław Ciąćka</h3>
+                    <br>
+                    <p>Average grade: 78%</p>
+                    <p>Average attendance: 89%</p>
+                    <br>
+                    <a href="login.html">Logout</a>
+                </div>
+                <br>
+
+            </section>
+
+            <section id="ManagerMenu" class="menus">
+                <h2>Manager Menu</h2>
+                <ul>
+                    <li><a href=""><h3>Mentors</h3></a></li>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                    <li><a href=""><h3>Student statistics</h3></a></li>
+                </ul>
+                <br>
+            </section>
+
+            <section id="MentorMenu" class="menus">
+                <h2>Mentor Menu</h2>
+
+                <ul>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
+                    <li><a href=""><h3>Submissions</h3></a></li>
+                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
+                    <li><a href=""><h3>Checkpoint</h3></a></li>
+                    <li><a href="teams.html"><h3>Teams</h3></a></li>
+                    <li><a href=""><h3>Student statistics</h3></a></li>
+                </ul>
+                <br>
+
+            </section>
+
+            <section id="Employee" class="menus">
+                <h2>Employee Menu</h2>
+                <ul>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                </ul>
+                <br>
+            </section>
+
+            <section id="StudentMenu" class="menus">
+
+                <h2>Student Menu</h2>
+                <ul>
+                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
+                    <li><a href=""><h3>Submissions</h3></a></li>
+                </ul>
+                <br>
+
+            </section>
+
         </nav>
         <footer>
             <p>© Puke Rainbow Unicorns 2017</p>
@@ -37,30 +98,57 @@
             <td>Prosty</td>
             <td>prosty@prosty.pl</td>
             <td>123456789</td>
-            <td><a href="add_student.html">Add</a><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>3</td>
             <td>Manager</td>
             <td>man@man.pl</td>
             <td>456789845</td>
-            <td><a href="add_student.html">Add</a><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>4</td>
             <td>Employee</td>
             <td>em@em.com</td>
             <td>456789456</td>
-            <td><a href="add_student.html">Add</a><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>5</td>
             <td>Saturn</td>
             <td>Paw@kolo.pl</td>
             <td>546897456</td>
-            <td><a href="add_student.html">Add</a><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
         </tr>
     </table>
+    <a href="#popup"><div class="fixed_bottom_button">Add Mentor</div></a>
+    <div id="popup" class="overlay">
+        <div class="popup">
+            <h2>Add Mentor</h2>
+            <a class="close" href="#">&times;</a>
+
+            <form name="add_student">
+                <div class="form-block">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="form-block">
+                    <label for="surname">Surname:</label>
+                    <input type="text" name="surname" id="surname">
+                </div>
+                <div class="form-block">
+                    <label for="email">E-mail: </label>
+                    <input type="email" name="email" id="email">
+                </div>
+                <div class="form-block">
+                    <label for="telephone">Phone Number: </label>
+                    <input type="number" name="telephone" id="telephone">
+                </div>
+                <input type="submit" value="Submit" id="submit" class="button orange">
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 
