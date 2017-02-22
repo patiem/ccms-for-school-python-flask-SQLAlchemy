@@ -25,6 +25,7 @@ td {
     border-bottom: 5px inset lightgrey;
     padding: 20px 25px;
     margin: 2px;
+
 }
 
 .left {
@@ -43,4 +44,67 @@ table a:hover {
     top: 2px;
     left: 2px;
 
+}
+
+.fixed_table_button{
+    margin-bottom: 6px;
+    font-family: 'Aladin', cursive;
+    font-size: 1.3em;
+    float: right;
+    padding: 20px;
+    text-align: center;
+    -moz-border-radius: 0 0 50% 50%; /* Firefox */
+    -webkit-border-radius: 0 0 50% 50%; /* Safari, Chrome */
+    border-radius: 0 0 50% 50%; /* CSS3 */
+    background-color: #f47a20;
+    color: #eeeeee;
+    box-shadow: 5px 5px 10px #8d8a8a;
+}
+
+.fixed_table_button:hover{
+    box-shadow: 5px 5px 10px #00f;
+}
+
+.fixed_bottom_button{
+    bottom: 0;
+    left: 58%;
+    font-family: 'Aladin', cursive;
+    font-size: 1.3em;
+    width: 100px;
+    padding: 15px 20px;
+    text-align: center;
+    -moz-border-radius: 50% 50% 0 0; /* Firefox */
+    -webkit-border-radius: 50% 50%  0 0; /* Safari, Chrome */
+    border-radius: 50% 50% 0 0 ; /* CSS3 */
+    background-color: #f00;
+    color: #eeeeee;
+    box-shadow: 5px 5px 10px #8d8a8a;
+    position: fixed;
+}
+
+.fixed_bottom_button:hover{
+    height: 80px;
+}
+
+
+.remove_button{
+    border: 2px red dotted;
+    width: 70px;
+    background-color: #f00;
+    background-size: contain;
+    margin: auto;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari, Chrome */
+    border-radius: 5px; /* CSS3 */
+    padding: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.remove_button:hover{
+    box-shadow: 0 0 50px #f00;
+}
+
+.gray_button{
+    background-color: #333333;
 }
