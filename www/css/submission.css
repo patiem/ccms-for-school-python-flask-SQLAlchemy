@@ -1,0 +1,16 @@
+.assign_title {
+    float: left;
+    color: #333333;
+}
+
+#top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+}
+/*#top:after {
+    content: '';
+    display: block;
+    clear: both;*/
+}
