@@ -115,8 +115,8 @@ table a:hover {
 
 }
 
-.assignment table{
-    box-shadow: 0 0 0;
+table.assignment  {
+    box-shadow: 0 0 0 black;
 }
 
 .assignment th {

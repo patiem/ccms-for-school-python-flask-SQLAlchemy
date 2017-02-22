@@ -87,7 +87,7 @@ h3 {
     font-size: 1.5em;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1360px) {
     #logged_user a {
         font-size: 0.8em;
     }
