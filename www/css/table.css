@@ -36,6 +36,7 @@ table a {
     color: #8d7882;
     text-decoration: none;
     font-weight: 300;
+    padding-right: 15px;
 }
 
 table a:hover {

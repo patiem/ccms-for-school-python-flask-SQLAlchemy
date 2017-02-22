@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <title>Puke Rainbow Unicorns CcMS</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/table.css">
-    <link rel="stylesheet" type="text/css" href="css/buttons.css">
-    <link rel="stylesheet" type="text/css" href="css/style-list.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/style-list.css">-->
+    <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
 </head>
 
 <body>
@@ -98,56 +99,74 @@
             <td>Prosty</td>
             <td>prosty@prosty.pl</td>
             <td>123456789</td>
-            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="#edit">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>3</td>
             <td>Manager</td>
             <td>man@man.pl</td>
             <td>456789845</td>
-            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="#edit">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>4</td>
             <td>Employee</td>
             <td>em@em.com</td>
             <td>456789456</td>
-            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="#edit">Edit</a><a href="#">Remove</a> </td>
         </tr>
         <tr>
             <td>5</td>
             <td>Saturn</td>
             <td>Paw@kolo.pl</td>
             <td>546897456</td>
-            <td><a href="edit_student.html">Edit</a><a href="#">Remove</a> </td>
+            <td><a href="#edit">Edit</a><a href="#">Remove</a> </td>
         </tr>
     </table>
-    <a href="#popup"><div class="fixed_bottom_button">Add Mentor</div></a>
-    <div id="popup" class="overlay">
-        <div class="popup">
-            <h2>Add Mentor</h2>
+    <a href="#add"><div class="fixed_bottom_button">Add Student</div></a>
+    <div id="add" class="overlay">
+        <form name="add_student" class="edit_user">
             <a class="close" href="#">&times;</a>
-
-            <form name="add_student">
-                <div class="form-block">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name">
-                </div>
-                <div class="form-block">
-                    <label for="surname">Surname:</label>
-                    <input type="text" name="surname" id="surname">
-                </div>
-                <div class="form-block">
-                    <label for="email">E-mail: </label>
-                    <input type="email" name="email" id="email">
-                </div>
-                <div class="form-block">
-                    <label for="telephone">Phone Number: </label>
-                    <input type="number" name="telephone" id="telephone">
-                </div>
-                <input type="submit" value="Submit" id="submit" class="button orange">
-            </form>
-        </div>
+            <div class="form-block">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="add_name">
+            </div>
+            <div class="form-block">
+                <label for="surname">Surname:</label>
+                <input type="text" name="surname" id="add_surname">
+            </div>
+            <div class="form-block">
+                <label for="email">E-mail: </label>
+                <input type="email" name="email" id="add_email">
+            </div>
+            <div class="form-block">
+                <label for="telephone">Phone Number: </label>
+                <input type="number" name="telephone" id="add_telephone">
+            </div>
+            <input type="submit" value="Submit" id="add_submit" class="add_submit button orange">
+        </form>
+    </div>
+    <div id="edit" class="overlay">
+        <form name="add_student" class="edit_user">
+            <a class="close" href="#">&times;</a>
+            <div class="form-block">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="Kamil">
+            </div>
+            <div class="form-block">
+                <label for="surname">Surname:</label>
+                <input type="text" name="surname" id="surname" value="Mika">
+            </div>
+            <div class="form-block">
+                <label for="email">E-mail: </label>
+                <input type="email" name="email" id="email" value="ka@ka.pl">
+            </div>
+            <div class="form-block">
+                <label for="telephone">Phone Number: </label>
+                <input type="number" name="telephone" id="telephone" value="123456789">
+            </div>
+            <input type="submit" value="Submit" id="submit" class="button orange">
+        </form>
     </div>
 </div>
 </body>

@@ -68,6 +68,17 @@ form {
     box-shadow: 0.5em 0.5em 0.5em #888888;
 
 }
+.button .orange{
+    float: right;
+    display: block;
+    margin: 3em auto;
+    height: 3em;
+    width: 12em;
+    border-radius: 1.5em;
+    font-weight: 700;
+    font-size: 1.5em;
+    box-shadow: 0.5em 0.5em 0.5em #888888;
+}
 .popup .close {
     position: absolute;
     top: 20px;
