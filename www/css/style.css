@@ -95,19 +95,24 @@ h3 {
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
+
 }
 .overlay:target {
     visibility: visible;
     opacity: 1;
+
 }
 .popup {
     margin: 1em auto;
     padding: 1em;
     background: #fff;
     border-radius: 5px;
+    height: 50vh;
     width: 70em;
+
     position: relative;
     transition: all 2s ease-in-out;
+
 }
 
 .close {
@@ -133,6 +138,7 @@ h3 {
     margin: 1em 1.2em;
     padding: 0.9em;
     font-size: 2.1em;
+
 }
 .form-block input{
     height: 3em;
@@ -155,8 +161,17 @@ h3 {
     float: right;
 }
 .load_file {
-    position: relative;
+    height: 3em;
+    width: 35em;
     float: right;
+
+    top: -0.3em;
+    border: 0px;
+    padding: 1.3em;
+    box-shadow: 0 0 0.9em #888888;
+    box-sizing: border-box;
+    background-color: 0;
+    position: relative;
 }
 
 #submit,#add_submit{
