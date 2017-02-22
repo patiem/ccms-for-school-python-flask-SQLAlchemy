@@ -1,0 +1,52 @@
+table {
+    background-color: #eeeeee;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 5px 5px 10px #8d8a8a;
+    width: 100%;
+}
+
+tr {
+    border: 1px solid #eee;
+    padding: 5px;
+
+}
+
+td {
+    border-bottom: 5px inset lightgrey;
+    padding: 20px 25px;
+    margin: 2px;
+}
+
+button[type=submit]{
+    outline: none;
+    border: none;
+    margin-bottom: 6px;
+    font-family: 'Aladin', cursive;
+    font-size: 1.3em;
+    float: right;
+    padding: 20px;
+    text-align: center;
+    -moz-border-radius: 0 0 50% 50%; /* Firefox */
+    -webkit-border-radius: 0 0 50% 50%; /* Safari, Chrome */
+    border-radius: 0 0 50% 50%; /* CSS3 */
+    background-color: #f47a20;
+    color: #eeeeee;
+    box-shadow: 5px 5px 10px #8d8a8a;
+}
+
+button[type=submit]:hover{
+    height: 100px;
+}
+
+
+/*.submit_attendance:focus{*/
+    /*border: red;*/
+/*}*/
+
+/*.submit_attendance:checked{*/
+    /*border: red;*/
+/*}*/
+/*.submit_attendance:{*/
+    /*border: red;*/
+/*}*/

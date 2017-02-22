@@ -6,6 +6,7 @@
     <title>Puke Rainbow Unicorns CcMS</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/attendance.css">
 </head>
 
 <body>
@@ -82,7 +83,36 @@
 </header>
 
 <div class="content">
-
+    <form>
+        <>
+        <table>
+        <tr>
+            <td>Person 1</td>
+            <td><label>Present <input type="radio" name="person1" value="present"/></label></td>
+            <td><label>Late <input type="radio" name="person1" value="late"/></label></td>
+            <td><label>Absent <input type="radio" name="person1" value="absent"/></label></td>
+        </tr>
+        <tr>
+            <td>Person 2</td>
+            <td><label>Present<input type="radio" name="person2" value="present"/></label></td>
+            <td><label>Late<input type="radio" name="person2" value="late"/></label></td>
+            <td><label>Absent<input type="radio" name="person2" value="absent"/></label></td>
+        </tr>
+        <tr>
+            <td>Person 3</td>
+            <td><label>Present<input type="radio" name="person3" value="present"/></label></td>
+            <td><label>Late<input type="radio" name="person3" value="late"/></label></td>
+            <td><label>Absent<input type="radio" name="person3" value="absent"/></label></td>
+        </tr>
+        <tr>
+            <td>Person 4</td>
+            <td><label>Present<input type="radio" name="person4" value="present"/></label></td>
+            <td><label>Late<input type="radio" name="person4" value="late"/></label></td>
+            <td><label>Absent<input type="radio" name="person4" value="absent"/></label></td>
+        </tr>
+        </table>
+        <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>
+    </form>
 </div>
 
 </body>
