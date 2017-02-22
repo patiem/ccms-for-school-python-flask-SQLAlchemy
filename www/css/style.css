@@ -22,6 +22,7 @@ aside{
     left: 50%;
     padding: 5px;
     text-align: left;
+    font-size: 0.7em;
 }
 
 footer {
@@ -81,3 +82,36 @@ h3 {
     text-decoration: none;
     /*font-size: 2em;*/
 }
+
+#logged_user a {
+    font-size: 1.5em;
+}
+
+@media screen and (max-width: 1200px) {
+    #logged_user a {
+        font-size: 0.8em;
+    }
+
+    #logged_user p {
+        font-size: 0.8em;
+    }
+    h1{
+        font-size: 1.2em;
+    }
+
+    h2{
+        font-size: 1.1em;
+    }
+
+    h3 {
+        font-size: 1em;
+    }
+
+    #user_photo{
+        width: 5em;
+        height: 5em;
+        background-size: 5em 5em;
+    }
+
+}
+
