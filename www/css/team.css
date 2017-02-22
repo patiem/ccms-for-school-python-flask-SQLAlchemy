@@ -40,6 +40,10 @@ td {
     box-shadow: 5px 5px 10px #8d8a8a;
 }
 
+.add_student:hover{
+    box-shadow: 5px 5px 10px #00f;
+}
+
 #add_team{
     bottom: 0;
     left: 58%;
@@ -57,6 +61,10 @@ td {
     position: fixed;
 }
 
+#add_team:hover{
+    height: 80px;
+}
+
 .remove_team{
     background-color: #333333;
 }
@@ -71,6 +79,10 @@ td {
     -webkit-border-radius: 5px; /* Safari, Chrome */
     border-radius: 5px; /* CSS3 */
     padding: 5px;
+}
+
+.remove_student:hover{
+    box-shadow: 0 0 50px #f00;
 }
 
 .remove_a{
