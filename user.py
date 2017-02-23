@@ -48,7 +48,7 @@ class User(metaclass=ABCMeta):
         Edit user passed attribute
         :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
         :return: None or True if attribute is changed
-        """ 
+        """
         for person in cls.object_list:
             if person.mail == edit_list[0]:
                 person.change_value(edit_list[1], edit_list[2])
@@ -58,7 +58,6 @@ class User(metaclass=ABCMeta):
     @classmethod
     def add_user(cls, data):
         """
-
         :param data: LIST (FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
         :return:
         """
