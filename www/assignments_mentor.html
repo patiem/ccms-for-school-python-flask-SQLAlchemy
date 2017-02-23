@@ -138,18 +138,26 @@
                 <input type="text" name="a_tittle" id="a_tittle">
             </div>
             <div class="form-block">
-                <label for="link">Start date:</label>
-                <input type="text" name="link" id="link">
+                <label class="date_input for="start_date">Start date:</label>
+                <input type="date" id="start_date" name="start_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+            </div>
+            <div class="form-block">
+                <label class="date_input for="end_date">End date:</label>
+                <input type="date" id="end_date" name="end_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+            </div>
+            <div class="form-block">
+                <label for="group">Group:</label>
+                <input type="text" name="group" id="group" value="No">
+            </div>
+            <div class="form-block">
+                <label for="points">Points:</label>
+                <input type="text" name="points" id="points" placeholder="0">
             </div>
             <div class="load_file">
                 <label for="file">Upload file with assignment:</label>
                 <input type="file" name="file" id="file">
             </div>
-            <div class="form-block">
-                <label for="comment">Comment:</label>
-                <textarea maxlength="500" name ="comment" id="comment" rows="5" cols="55"
-                          placeholder="Your comments about assignment, max 500"></textarea>
-            </div>
+
 
             <input type="submit" value="Submit" id="submit" class="button orange">
         </form>
