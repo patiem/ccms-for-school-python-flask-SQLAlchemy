@@ -185,7 +185,7 @@ class Menu:
         """
         Ui.clear()
         options = '\t1: AVG GRADE\n' \
-                  '\t2: Attendance\n' \x
+                  '\t2: Attendance\n' \
                   '\t0: Back to menu'
 
         user_choice = Ui.get_menu(options, 0, 2)
