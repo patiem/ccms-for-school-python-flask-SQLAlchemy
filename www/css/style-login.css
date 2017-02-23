@@ -1,6 +1,6 @@
 body {
     
-background: url('http://hdwpro.com/wp-content/uploads/2015/12/Blue-Background.jpeg');
+background: url('../images/background.jpg');
     
 }
 
@@ -28,7 +28,10 @@ section.login div {
     
 }
 section.login h1 {
+    
     font-size: 40px;
+    font-weight: 900px;
+    font-style: italic;
     text-shadow: 2px 2px 2px black;
     color: white;
     margin: 0 auto;
@@ -43,13 +46,14 @@ section.login h1 img {
 section.login div span {
     color: white;
     font-family: Roboto;
+    font-weight: 500;
     text-shadow: 2px 2px 1px black;
     display:  block;
     margin-bottom: 35px;
 }
 section.login div {width: 300px; margin: 0 auto;}
 section.login input {
-
+    
     
     padding: 10px;
     margin-bottom: 15px;
@@ -61,10 +65,11 @@ section.login input {
     border-radius: 8px; /* CSS3 */
     
     background-color: rgba(255, 255, 255, 0.3);
-    border: none;
+    
     color: white;
     text-shadow: 1px 1px 1px black;
-    border-color: white;
+    border: none;
+    
 
     
 }
