@@ -252,3 +252,20 @@ select, option {
     align-content: center;
     margin: auto;
 }
+
+.student_to_team_table{
+    width: 45vw;
+    height: 80vh;
+    overflow: auto;
+    margin: auto;
+}
+
+.student_to_team_table a{
+    color: #da7c0c;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.student_to_team_table td{
+    background-color: #eeeeee;
+}

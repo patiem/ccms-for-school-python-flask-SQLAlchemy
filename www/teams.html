@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/table.css">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css">
     <link rel="stylesheet" type="text/css" href="css/team.css">
     <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
@@ -113,7 +114,7 @@
 
         </tr>
     </table>
-    <a href=""><div class="fixed_table_button"> + Student </div></a>
+    <a href="#add_student_to_team"><div class="fixed_table_button"> + Student </div></a>
     <a href=""><div class="fixed_table_button remove_team"> - Remove team </div></a>
 
     <table class="team_table">
@@ -143,7 +144,7 @@
         </tr>
 
     </table>
-    <a href=""><div class="fixed_table_button"> + Student </div></a>
+    <a href="#add_student_to_team"><div class="fixed_table_button"> + Student </div></a>
     <a href=""><div class="fixed_table_button remove_team"> - Remove team </div></a>
 
     <table class="team_table">
@@ -173,7 +174,7 @@
         </tr>
 
     </table>
-    <a href=""><div class="fixed_table_button"> + Student </div></a>
+    <a href="#add_student_to_team"><div class="fixed_table_button"> + Student </div></a>
     <a href=""><div class="fixed_table_button remove_team"> - Remove team </div></a>
 
     <table class="team_table">
@@ -202,11 +203,97 @@
 
         </tr>
     </table>
-    <a href=""><div class="fixed_table_button"> + Student </div></a>
+    <a href="#add_student_to_team"><div class="fixed_table_button"> + Student </div></a>
     <a href=""><div class="fixed_table_button remove_team"> - Remove team </div></a>
 
-    <a href=""><div class="fixed_bottom_button"> + TEAM </div></a>
+    <a href="#add_team"><div class="fixed_bottom_button"> + TEAM </div></a>
 
+
+
+    <div class="overlay" id="add_team">
+
+        <form name="add_student" class="edit_user">
+            <a class="close" href="#">&times;</a>
+            <div class="form-block">
+                <label for="new_team_name">Team name:</label>
+                <input type="text" name="new_team_name" id="new_team_name">
+            </div>
+            <input type="submit" value="Submit" id="add_submit" class="add_submit button orange">
+        </form>
+
+    </div>
+
+    <div class="overlay" id="add_student_to_team">
+
+
+
+
+
+        <form name="add_student" class="edit_user">
+            <a class="close" href="#">&times;</a>
+            <div class="student_to_team_table">
+            <table>
+                <tr>
+                    <th>Email</th>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">random@email.pl</a></td>
+                </tr>
+            </table>
+            </div>
+            <br>
+            <br>
+
+            <!--<div class="form-block">-->
+                <!--<label for="new_team_name">Team name:</label>-->
+                <!--<input type="text" name="new_team_name" id="new_team_name">-->
+            <!--</div>-->
+            <!--<input type="submit" value="Submit" id="add_submit" class="add_submit button orange">-->
+        </form>
+
+    </div>
 </div>
 
 
