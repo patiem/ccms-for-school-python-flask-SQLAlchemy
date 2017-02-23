@@ -171,6 +171,9 @@ h3 {
     position: relative;
 }
 
+select, option {
+    padding: 10px;
+}
 .load_file  label {
     position: relative;
 
