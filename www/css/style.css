@@ -178,6 +178,17 @@ h3 {
 
 }
 
+.info {
+    font-weight: 100;
+    margin-bottom: 20px;
+}
+
+.info p{
+    display: block;
+    margin: 20px 0;
+    float: right;
+}
+
 #submit,#add_submit{
     display: block;
     margin: 3em auto;
