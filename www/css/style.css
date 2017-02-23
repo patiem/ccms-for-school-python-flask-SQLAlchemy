@@ -102,23 +102,21 @@ h3 {
     opacity: 1;
 
 }
-.popup {
-    margin: 1em auto;
-    padding: 1em;
-    background: #fff;
-    border-radius: 5px;
-    height: 50vh;
-    width: 70em;
+/*.popup {*/
+    /*margin: 1em auto;*/
+    /*padding: 1em;*/
+    /*background: #fff;*/
+    /*border-radius: 5px;*/
+    /*height: 50vh;*/
+    /*width: 70em;*/
+    /*position: relative;*/
+    /*transition: all 2s ease-in-out;*/
 
-    position: relative;
-    transition: all 2s ease-in-out;
-
-}
+/*}*/
 
 .close {
     position: relative;
     right: -13em;
-    transition: all 200ms;
     font-size: 5em;
     font-weight: bold;
     text-decoration: none;
