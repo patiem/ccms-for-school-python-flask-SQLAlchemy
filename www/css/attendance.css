@@ -39,14 +39,18 @@ button[type=submit]:hover{
     height: 100px;
 }
 
+.date_input {
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    text-align: right;
+    display: block;
+}
 
-/*.submit_attendance:focus{*/
-    /*border: red;*/
-/*}*/
-
-/*.submit_attendance:checked{*/
-    /*border: red;*/
-/*}*/
-/*.submit_attendance:{*/
-    /*border: red;*/
-/*}*/
+#attendance_date{
+    padding: 12px 20px;
+    border: 2px solid #865e5e;
+    border-radius: 4px;
+    background-color: rgba(255, 252, 240, 0.78);
+    color: #6b5858;
+    font-size: 0.8em;
+}

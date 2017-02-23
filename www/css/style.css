@@ -124,7 +124,7 @@ h3 {
     text-decoration: none;
     color: #000;
 }
-/* form */
+
 .edit_user {
     width: 70em;
     margin: 1em auto 0 auto;
@@ -146,7 +146,7 @@ h3 {
     float: right;
     border-radius: 1.2em;
     top: -0.3em;
-    border: 0px;
+    border: 0;
     padding: 1.3em;
     box-shadow: 0 0 0.9em #888888;
     box-sizing: border-box;
@@ -167,7 +167,7 @@ h3 {
     width: 35em;
     float: right;
     top: -0.3em;
-    border: 0px;
+    border: 0;
     padding: 1.3em;
     box-sizing: border-box;
     position: relative;
@@ -175,7 +175,7 @@ h3 {
 
 .load_file  label {
     position: relative;
-    left: -15px;
+
 }
 
 #submit,#add_submit{
@@ -222,8 +222,9 @@ h3 {
 
 }
 @media screen and (max-height: 768px){
-    .form-block {
+    .form-block, .load_file {
         margin: 0 1.2em;
         padding: 0.5em;
         font-size: 2.1em;
+    }
 }

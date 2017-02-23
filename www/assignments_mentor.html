@@ -6,7 +6,12 @@
     <title>Puke Rainbow Unicorns CcMS</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/attendance.css">
+    <link rel="stylesheet" type="text/css" href="css/team.css">
+    <link rel="stylesheet" type="text/css" href="css/table.css">
+    <link rel="stylesheet" type="text/css" href="css/submission.css">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css">
+    <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
 </head>
 
 <body>
@@ -82,40 +87,77 @@
     </aside>
 </header>
 
-<div class="content">
-    <form>
-        <label class="date_input">Date:
-        <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" max="2020-08-14" value="2017-02-23">
-        </label>
-        <table>
+<div class="content" >
+    
+    <table>
         <tr>
-            <td>Person 1</td>
-            <td><label>Present <input type="radio" name="person1" value="present"/></label></td>
-            <td><label>Late <input type="radio" name="person1" value="late"/></label></td>
-            <td><label>Absent <input type="radio" name="person1" value="absent"/></label></td>
+            <th>ID</th>
+            <th>TITLE</th>
+            <th>START DATE</th>
+            <th>END DATE</th>
+            <th>POINTS</th>
+            <th>GROUP</th>
+
         </tr>
         <tr>
-            <td>Person 2</td>
-            <td><label>Present<input type="radio" name="person2" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person2" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person2" value="absent"/></label></td>
+            <td>1</td>
+            <td class='left'><a href="submissions.html">Assignment 1 - dupa</a></td>
+            <td>2017-01-10</td>
+            <td>2017-03-10</td>
+            <td>10</td>
+            <td>N</td>
+
         </tr>
         <tr>
-            <td>Person 3</td>
-            <td><label>Present<input type="radio" name="person3" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person3" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person3" value="absent"/></label></td>
+            <td>2</td>
+            <td class='left'><a href="submissions.html">Assignment 2 - lol</a></td>
+            <td>2017-01-10</td>
+            <td>2017-03-10</td>
+            <td>20</td>
+            <td>Y</td>
+
         </tr>
         <tr>
-            <td>Person 4</td>
-            <td><label>Present<input type="radio" name="person4" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person4" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person4" value="absent"/></label></td>
+            <td >3</td>
+            <td class='left'><a href="submissions.html">Assignment 3 - qwerty</a></td>
+            <td>2017-01-10</td>
+            <td>2017-03-10</td>
+            <td>30</td>
+            <td>N</td>
+
         </tr>
-        </table>
-        <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>
-    </form>
+        
+    </table>
+    <a href="#popup"><div class="fixed_table_button gray_button"> Add assignment </div></a>
+    <div id="popup" class="overlay">
+        <h2>Add submission</h2>
+        <form class="edit_user" name="add_assignment">
+            <a class="close" href="#">&times;</a>
+            <div class="form-block">
+                <label for="a_tittle">Assignment title:</label>
+                <input type="text" name="a_tittle" id="a_tittle">
+            </div>
+            <div class="form-block">
+                <label for="link">Start date:</label>
+                <input type="text" name="link" id="link">
+            </div>
+            <div class="load_file">
+                <label for="file">Upload file with assignment:</label>
+                <input type="file" name="file" id="file">
+            </div>
+            <div class="form-block">
+                <label for="comment">Comment:</label>
+                <textarea maxlength="500" name ="comment" id="comment" rows="5" cols="55"
+                          placeholder="Your comments about assignment, max 500"></textarea>
+            </div>
+
+            <input type="submit" value="Submit" id="submit" class="button orange">
+        </form>
+    </div>
+
 </div>
+
+
 
 </body>
 
