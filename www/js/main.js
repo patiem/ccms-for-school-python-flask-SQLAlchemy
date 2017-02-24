@@ -1,6 +1,15 @@
+function gradeValue(value) {
+    if (value > 0){
+        return value + '%'
+    }
+    else{
+        return 'None'
+    }
+}
+
 function confirm_remove(){
     location.reload(true);
-    var user_answear = confirm("Are you sure?")
+    var user_answear = confirm("Are you sure?");
     if (user_answear == true){
         alert("User removed")
     }
