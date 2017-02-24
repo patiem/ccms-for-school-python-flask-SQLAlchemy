@@ -1,5 +1,5 @@
 function gradeValue(value) {
-    if (value > 0){
+    if (value > -1){
         return value + '%'
     }
     else{
