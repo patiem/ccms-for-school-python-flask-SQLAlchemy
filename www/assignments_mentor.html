@@ -17,7 +17,6 @@
 <body>
 <header>
     <aside>
-
         <nav>
             <section id="logged_user">
                 <p>You are logged in as:</p>
@@ -37,9 +36,9 @@
             <section id="ManagerMenu" class="menus">
                 <h2>Manager Menu</h2>
                 <ul>
-                    <li><a href=""><h3>Mentors</h3></a></li>
+                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
                     <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href=""><h3>Student statistics</h3></a></li>
+                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
                 </ul>
                 <br>
             </section>
@@ -49,12 +48,12 @@
 
                 <ul>
                     <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href=""><h3>Submissions</h3></a></li>
+                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
+                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
                     <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href=""><h3>Checkpoint</h3></a></li>
+                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
                     <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href=""><h3>Student statistics</h3></a></li>
+                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
                 </ul>
                 <br>
 
@@ -73,7 +72,7 @@
                 <h2>Student Menu</h2>
                 <ul>
                     <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href=""><h3>Submissions</h3></a></li>
+                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
                 </ul>
                 <br>
 
@@ -86,6 +85,7 @@
 
     </aside>
 </header>
+
 
 <div class="content" >
     
@@ -138,11 +138,11 @@
                 <input type="text" name="a_tittle" id="a_tittle">
             </div>
             <div class="form-block">
-                <label class="date_input for="start_date">Start date:</label>
+                <label class="date_input" for="start_date">Start date:</label>
                 <input type="date" id="start_date" name="start_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
             </div>
             <div class="form-block">
-                <label class="date_input for="end_date">End date:</label>
+                <label class="date_input" for="end_date">End date:</label>
                 <input type="date" id="end_date" name="end_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
             </div>
             <div class="form-block">

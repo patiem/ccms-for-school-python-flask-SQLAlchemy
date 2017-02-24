@@ -15,7 +15,6 @@
 <body>
 <header>
     <aside>
-
         <nav>
             <section id="logged_user">
                 <p>You are logged in as:</p>
@@ -35,9 +34,9 @@
             <section id="ManagerMenu" class="menus">
                 <h2>Manager Menu</h2>
                 <ul>
-                    <li><a href=""><h3>Mentors</h3></a></li>
+                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
                     <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href=""><h3>Student statistics</h3></a></li>
+                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
                 </ul>
                 <br>
             </section>
@@ -47,12 +46,12 @@
 
                 <ul>
                     <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href=""><h3>Submissions</h3></a></li>
+                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
+                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
                     <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href=""><h3>Checkpoint</h3></a></li>
+                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
                     <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href=""><h3>Student statistics</h3></a></li>
+                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
                 </ul>
                 <br>
 
@@ -71,7 +70,7 @@
                 <h2>Student Menu</h2>
                 <ul>
                     <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href=""><h3>Submissions</h3></a></li>
+                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
                 </ul>
                 <br>
 
@@ -135,19 +134,19 @@
         <form name="add_student" class="edit_user">
             <a class="close" href="#">&times;</a>
             <div class="form-block">
-                <label for="name">Name:</label>
+                <label for="add_name">Name:</label>
                 <input type="text" name="name" id="add_name">
             </div>
             <div class="form-block">
-                <label for="surname">Surname:</label>
+                <label for="add_surname">Surname:</label>
                 <input type="text" name="surname" id="add_surname">
             </div>
             <div class="form-block">
-                <label for="email">E-mail: </label>
+                <label for="add_email">E-mail: </label>
                 <input type="email" name="email" id="add_email">
             </div>
             <div class="form-block">
-                <label for="telephone">Phone Number: </label>
+                <label for="add_telephone">Phone Number: </label>
                 <input type="number" name="telephone" id="add_telephone">
             </div>
             <input type="submit" value="Submit" id="add_submit" class="add_submit button orange">
