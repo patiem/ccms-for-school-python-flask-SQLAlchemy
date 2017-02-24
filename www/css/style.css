@@ -365,6 +365,9 @@ table a:hover {
     height: 80px;
 }
 
+.orange_shadow:hover{
+    box-shadow: 5px 5px 10px #FF8715;
+}
 
 .remove_button{
     width: 70px;
