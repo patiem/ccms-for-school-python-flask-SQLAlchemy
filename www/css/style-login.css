@@ -30,7 +30,7 @@ section.login div {
 section.login h1 {
     
     font-size: 40px;
-    font-weight: 900px;
+    font-weight: 900;
     font-style: italic;
     text-shadow: 2px 2px 2px black;
     color: white;
