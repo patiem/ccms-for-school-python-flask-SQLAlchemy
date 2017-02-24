@@ -1,3 +1,5 @@
+
+/*template*/
 body{
     font-family: Ubuntu, serif;
     font-size: 16px;
@@ -17,14 +19,6 @@ aside{
     box-sizing: border-box;
     background: url('../images/Blue-Background.jpeg');
 }
-
-#logged_user{
-    left: 50%;
-    padding: 5px;
-    text-align: left;
-    font-size: 0.7em;
-}
-
 footer {
     color: darkslategray;
     width: 20%;
@@ -35,12 +29,17 @@ footer {
     position: fixed;
     bottom: 1px;
 }
-
-.content {
-    float: right;
-    width: 80%;
-    box-sizing: border-box;
-    padding: 25px 25px;
+#logged_user{
+    left: 50%;
+    padding: 5px;
+    text-align: left;
+    font-size: 0.7em;
+}
+#user{
+    height: 90px;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
 }
 #user_photo{
     float: left;
@@ -53,11 +52,12 @@ footer {
     display: inline-block;
 }
 
-#user{
-    height: 90px;
-    margin: auto;
-    padding: 10px;
-    text-align: center;
+
+.content {
+    float: right;
+    width: 80%;
+    box-sizing: border-box;
+    padding: 25px 25px;
 }
 
 h1{
@@ -110,7 +110,7 @@ h3 {
     text-decoration: none;
     color: #000;
 }
-
+/*form*/
 .edit_user {
     width: 70em;
     margin: 1em auto 0 auto;
@@ -166,6 +166,17 @@ select, option {
     position: relative;
 
 }
+#submit,#add_submit{
+    display: block;
+    margin: 3em auto;
+    height: 3em;
+    width: 12em;
+    border-radius: 1.5em;
+    font-weight: 700;
+    font-size: 1.5em;
+    box-shadow: 0.5em 0.5em 0.5em #888888;
+
+}
 
 .info {
     font-weight: 100;
@@ -178,17 +189,6 @@ select, option {
     float: right;
 }
 
-#submit,#add_submit{
-    display: block;
-    margin: 3em auto;
-    height: 3em;
-    width: 12em;
-    border-radius: 1.5em;
-    font-weight: 700;
-    font-size: 1.5em;
-    box-shadow: 0.5em 0.5em 0.5em #888888;
-
-}
 
 #logged_user a {
     font-size: 1.5em;
@@ -257,11 +257,6 @@ select, option {
 
 
 }
-/*#top:after {
-    content: '';
-    display: block;
-    clear: both;
-    }*/
 
 .description {
     margin-top: 30px;
@@ -329,7 +324,7 @@ table a:hover {
     top: 2px;
     left: 2px;
 }
-
+/*fixed buttons*/
 .fixed_table_button{
     margin-bottom: 6px;
     font-family: 'Aladin', cursive;
@@ -433,6 +428,30 @@ table.assignment  {
 .remove_team{
     background-color: #333333;
 }
+.grade_output{
+    padding: 2px;
+    margin-left: 1px;
+}
+.grade_range{
+    display: block;
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+.student_to_team_table{
+    width: 45vw;
+    height: 80vh;
+    overflow: auto;
+    margin: auto;
+}
+.student_to_team_table a{
+    color: #da7c0c;
+    font-weight: bold;
+    font-size: x-large;
+}
+.student_to_team_table td{
+    background-color: #eeeeee;
+}
 
 @media screen and (max-width: 1360px) {
     #logged_user a {
@@ -467,33 +486,4 @@ table.assignment  {
         padding: 0.5em;
         font-size: 2.1em;
     }
-}
-
-.grade_output{
-    padding: 2px;
-    margin-left: 1px;
-}
-
-.grade_range{
-    display: block;
-    text-align: center;
-    align-content: center;
-    margin: auto;
-}
-
-.student_to_team_table{
-    width: 45vw;
-    height: 80vh;
-    overflow: auto;
-    margin: auto;
-}
-
-.student_to_team_table a{
-    color: #da7c0c;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.student_to_team_table td{
-    background-color: #eeeeee;
 }
