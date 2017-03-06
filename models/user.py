@@ -163,36 +163,22 @@ class User(metaclass=ABCMeta):
         raise NotImplementedError
 
     @staticmethod
-    def login():
+    def login(user_login, user_pass):
         """
         login method
         :return user_id:
         """
 
-        Ui.clear()
-        Ui.print_head('Authentication', 'header')  # displaying header of site
+        encoded_password = User.encode(user_pass)  # get passoword and encode using hash and salt
 
-        attempt = 0
-        while True:
+        if User.get_id_by_login_and_pass(user_login, encoded_password) is not None:
 
-            inputs = ['Login: ']
-            login = Ui.get_inputs(inputs)
-            login = login[0]
-            encoded_password = User.encode(Ui.get_pass('Password: '))  # get passoword and encode using hash and salt
+            return User.get_id_by_login_and_pass(user_login, encoded_password)
 
-            if User.get_id_by_login_and_pass(login, encoded_password) is not None:
-                Ui.clear()
-                return User.get_id_by_login_and_pass(login, encoded_password)
+        else:
+            return None
 
-            attempt += 1
 
-            Ui.print_head("Wrong password. It's your {}/3 attempt".format(attempt), 'error')
-
-            if attempt == 3:
-
-                Ui.print_head("Wrong password!!! Exit program", 'error')
-                exit(0)
-                return None
 
     @staticmethod
     def encode(password):
