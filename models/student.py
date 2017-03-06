@@ -107,3 +107,4 @@ class Student(User):
         for row in sql_data:
             table.append([row[0], row[1], row[2]])
         return table
+

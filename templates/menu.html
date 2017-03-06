@@ -11,79 +11,79 @@
         {% endblock %}
     </head>
 
-    <body>
+<body>
 
-  <header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
+    <header>
+        <aside>
+            <nav>
+                <section id="logged_user">
+                    <p>You are logged in as:</p>
+                    <div id="user_photo"></div>
+                    <div id="user">
+                        <h3>Przemysław Ciąćka</h3>
+                        <br>
+                        <p>Average grade: 78%</p>
+                        <p>Average attendance: 89%</p>
+                        <br>
+                        <a href="login.html">Logout</a>
+                    </div>
                     <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
+
+                </section>
+
+                <section id="ManagerMenu" class="menus">
+                    <h2>Manager Menu</h2>
+                    <ul>
+                        <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
+                        <li><a href="student_list.html"><h3>Students</h3></a></li>
+                        <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
+                    </ul>
                     <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
+                </section>
 
-            </section>
+                <section id="MentorMenu" class="menus">
+                    <h2>Mentor Menu</h2>
 
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
+                    <ul>
+                        <li><a href="student_list.html"><h3>Students</h3></a></li>
+                        <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
+                        <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
+                        <li><a href="attendance.html"><h3>Attendance</h3></a></li>
+                        <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
+                        <li><a href="teams.html"><h3>Teams</h3></a></li>
+                        <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
+                    </ul>
+                    <br>
 
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
+                </section>
 
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
+                <section id="Employee" class="menus">
+                    <h2>Employee Menu</h2>
+                    <ul>
+                        <li><a href="student_list.html"><h3>Students</h3></a></li>
+                    </ul>
+                    <br>
+                </section>
 
-            </section>
+                <section id="StudentMenu" class="menus">
 
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
+                    <h2>Student Menu</h2>
+                    <ul>
+                        <li><a href="assignments.html"><h3>Assignments</h3></a></li>
+                        <li><a href="assignments.html"><h3>Submissions</h3></a></li>
+                    </ul>
+                    <br>
 
-            <section id="StudentMenu" class="menus">
+                </section>
 
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
+            </nav>
         <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
+        <p>© Puke Rainbow Unicorns 2017</p>
         </footer>
-    </aside>
-  </header>
+        </aside>
+    </header>
 
-    <div class="content">{% block content %}{% endblock %}</div>
+<div class="content">{% block content %}{% endblock %}</div>
 
-    </body>
+</body>
 </html>
