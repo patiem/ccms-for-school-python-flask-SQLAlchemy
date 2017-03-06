@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template
+from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 
 
@@ -9,7 +9,8 @@ app.secret_key = 'any random string'
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return render_template('login.html')
+    return redirect(url_for('index'))
+
 
 
 @app.route('/', methods=['GET', 'POST'])
