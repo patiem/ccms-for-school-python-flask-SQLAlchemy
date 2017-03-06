@@ -5,6 +5,11 @@ from models.user import *
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
+@app.route('/checkpoint')
+def checkpoint():
+
+
+    return render_template('checkpoint.html')
 
 @app.route('/logout')
 def logout():
@@ -20,7 +25,7 @@ def index():
         logged_user = User.login(request.form['user_login'], request.form['user_pass'])
 
         if logged_user is not None:
-            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname':logged_user['Surname']}
+            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname':logged_user['Surname'], 'type':logged_user['Type']}
             session['user'] = user
 
     if 'user' in session:
