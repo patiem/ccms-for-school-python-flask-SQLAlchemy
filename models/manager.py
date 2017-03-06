@@ -1,31 +1,28 @@
-from user import *
-import sql
+from models.user import *
+from models import sql
 
 
-class Employee(User):
+class Manager(User):
     object_list = []
-    file = 'csv/employees.csv'
-
+    file = 'csv/managers.csv'
+    
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
-        Create Employee object
+        Create Manager object
         :param idx: string (id of student)
         :param name: string (name of student)
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
+        :param telephone: string (telephone number)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
 
     @classmethod
     def create_object_list(cls):
-        """
-        Create objects of class Employee
-        :return: None
-        """
         query = """
-                  SELECT ID, Name, Surname, `E-mail`, Telephone, Password
-                  FROM Users
-                  WHERE Type = 'Employee'"""
+                   SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+                   FROM Users
+                   WHERE Type = 'Manager'"""
         data = sql.query(query)
         if data:
             for row in data:
@@ -41,7 +38,7 @@ class Employee(User):
         """
         query = """
                     INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
-                    VALUES (?, ?, ?, ?, ?, 'Employee')"""
+                    VALUES (?, ?, ?, ?, ?, 'Manager')"""
         sql.query(query, data)
 
     @staticmethod
@@ -55,5 +52,5 @@ class Employee(User):
                   UPDATE Users
                   SET `{}` = ?
                   WHERE `E-mail` = ?
-                  AND Type = 'Employee'""".format(edit_list[1])
+                  AND Type = 'Manager'""".format(edit_list[1])
         sql.query(query, [edit_list[2], edit_list[0]])

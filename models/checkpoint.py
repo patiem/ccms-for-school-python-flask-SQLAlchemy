@@ -1,9 +1,9 @@
-from ui import Ui
-from ui import Color
-from common import Common
-import sql
+from models.ui import Ui
+from models.ui import Color
+from models.common import Common
+from models import sql
 import datetime
-from student import Student
+from models.student import Student
 
 
 class Checkpoint:

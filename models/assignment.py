@@ -1,7 +1,7 @@
-from common import *
+from models.common import *
 import datetime
-from test import Test
-import sql
+from models.test import Test
+from models import sql
 
 
 class Assignment:

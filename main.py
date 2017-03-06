@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, session
-from menu import Menu
+from flask import Flask
 
-app = Flask(__name__) # create the application instance :)
+app = Flask(__name__)
 
-def main():
-    Menu.run()
+@app.route('/')
+def index():
+    return 'Hello World'
 
-if __name__ == '__main__':
-    main()
+
+if __name__ == "__main__":
+    app.run(debug=True)

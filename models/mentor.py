@@ -1,36 +1,38 @@
-from user import *
-import sql
+from models.user import *
+from models import sql
 
 
-class Manager(User):
+class Mentor(User):
     object_list = []
-    file = 'csv/managers.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone, password):
         """
-        Create Manager object
+        Create Mentor object
         :param idx: string (id of student)
         :param name: string (name of student)
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
-        :param telephone: string (telephone number)
         """
         User.__init__(self, idx, name, last_name, mail, telephone, password)
 
     @classmethod
     def create_object_list(cls):
+        """
+        Create objects to list in class Mentor
+        :return: None
+        """
         query = """
                    SELECT ID, Name, Surname, `E-mail`, Telephone, Password
                    FROM Users
-                   WHERE Type = 'Manager'"""
+                   WHERE Type = 'Mentor'"""
         data = sql.query(query)
         if data:
             for row in data:
                 new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
                 cls.object_list.append(new_object)
 
-    @classmethod
-    def save_sql(cls, data):
+    @staticmethod
+    def save_sql(data):
         """
         Save data to sql
         :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
@@ -38,7 +40,7 @@ class Manager(User):
         """
         query = """
                     INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
-                    VALUES (?, ?, ?, ?, ?, 'Manager')"""
+                    VALUES (?, ?, ?, ?, ?, 'Mentor')"""
         sql.query(query, data)
 
     @staticmethod
@@ -49,8 +51,8 @@ class Manager(User):
         """
 
         query = """
-                  UPDATE Users
-                  SET `{}` = ?
-                  WHERE `E-mail` = ?
-                  AND Type = 'Manager'""".format(edit_list[1])
+                    UPDATE Users
+                    SET `{}` = ?
+                    WHERE `E-mail` = ?
+                    AND Type = 'Mentor'""".format(edit_list[1])
         sql.query(query, [edit_list[2], edit_list[0]])

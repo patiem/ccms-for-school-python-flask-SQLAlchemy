@@ -1,6 +1,6 @@
 import hashlib
-from ui import *
-import sql
+from models.ui import *
+from models import sql
 from abc import ABCMeta
 
 

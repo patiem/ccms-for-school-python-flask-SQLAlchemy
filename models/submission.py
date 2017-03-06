@@ -1,6 +1,6 @@
-from common import *
-from test import Test
-import sql
+from models.common import *
+from models.test import Test
+from models import sql
 
 
 class Submission:

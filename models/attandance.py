@@ -1,7 +1,7 @@
-from common import Common
-from student import Student
+from models.common import Common
+from models.student import Student
 import datetime
-import sql
+from models import sql
 
 
 class Attendance:

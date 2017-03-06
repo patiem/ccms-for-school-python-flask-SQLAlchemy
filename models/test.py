@@ -1,6 +1,6 @@
 import re
-from ui import Ui
-import sql
+from models.ui import Ui
+from models import sql
 
 
 class Test:

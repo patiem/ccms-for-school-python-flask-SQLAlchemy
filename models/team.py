@@ -1,4 +1,4 @@
-import sql
+from models import sql
 
 
 class Team:
