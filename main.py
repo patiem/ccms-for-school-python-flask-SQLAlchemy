@@ -4,6 +4,7 @@ from flask import Flask, request, session
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
+
 @app.route('/')
 def index():
     session['username'] = 'jest'
