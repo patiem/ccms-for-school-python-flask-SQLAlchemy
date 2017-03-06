@@ -116,7 +116,7 @@ class Student(User):
         :return average grade (int):
         """
         query = """
-                   SELECT ID, Name, Surname, AVG(GRADE)
+                   SELECT U.ID, Name, Surname, AVG(GRADE)
                    FROM Users as U
                    LEFT Join Sumbissions as S
                    ON U.ID = S.ID_Student
@@ -143,3 +143,23 @@ class Student(User):
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
 
+    @staticmethod
+    def my_attendance(idx):
+        query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
+        values = [int(idx)]
+        back_values = sql.query(query, values)
+        to_print =[]
+        all_days = 0
+        average = 0
+        if back_values:
+            for row in back_values:
+                to_print.append([row[0], row[1]])
+                if row[0] == 'Present':
+                    average += 1
+                elif row[0] == 'Late':
+                    average += 0.75
+                all_days += row[1]
+
+            return int(average * 100 / all_days)
+        else:
+            pass

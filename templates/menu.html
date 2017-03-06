@@ -8,7 +8,6 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
-        <script src="{{url_for 'static', filename = 'js/jquery-3.1.1.min.js'}}"
         {% endblock %}
     </head>
 
@@ -21,18 +20,25 @@
                     <p>You are logged in as:</p>
                     <div id="user_photo"></div>
                     <div id="user">
-                        <h3>Przemysław Ciąćka</h3>
+                        <h3>{{ user['name'] }} {{ user['surname'] }}</h3>
                         <br>
                         {% if user['type'] in ('student', 'Student') %}
+                            {% if  user['ave_grade'] %}
 
-                            {% set ave_grade = Student.ave_grade_flask_version(idx) %}
+                                <p>Average grade: {{ user['ave_grade'] }}%</p>
+                            {% else %}
+                                <p>Average grade: 0%</p>
+                            {% endif %}
 
-                            <p>Average grade: {{ ave_grade }}%</p>
+                            {% if  user['my_attendance'] %}
+                                <p>Average attendance: {{ user['my_attendance'] }}%</p>
+                            {% else %}
+                                <p>Average attendance: 0%</p>
+                            {% endif %}
 
-                            <p>Average attendance: 89%</p>
                         {% endif %}
                         <br>
-                        <a href="login.html">Logout</a>
+                        <a href="/logout">Logout</a>
                     </div>
                     <br>
 

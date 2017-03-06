@@ -6,6 +6,7 @@ from models.user import *
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
+
 @app.route('/checkpoint')
 def checkpoint():
     return render_template('checkpoint.html')
@@ -26,7 +27,8 @@ def index():
         if logged_user is not None:
 
             user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
-                    'type': logged_user['Type']}
+                    'type': logged_user['Type'], 'ave_grade': Student.ave_grade_flask_version(logged_user['ID']),
+                    'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
 
