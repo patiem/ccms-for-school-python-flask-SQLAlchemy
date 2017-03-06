@@ -107,3 +107,24 @@ class Student(User):
         for row in sql_data:
             table.append([row[0], row[1], row[2]])
         return table
+
+    @staticmethod
+    def ave_grade_flask_version(idx):
+        """
+        Count avg grade of students
+        :param idx: index of student
+        :return average grade (int):
+        """
+        query = """
+                   SELECT ID, Name, Surname, AVG(GRADE)
+                   FROM Users as U
+                   LEFT Join Sumbissions as S
+                   ON U.ID = S.ID_Student
+                   where Type = 'Student'
+                   GROUP BY Name;"""
+        sql_data = sql.query(query)
+
+        for row in sql_data:
+            student_id = row[0]
+            if int(student_id) == int(idx):
+                return int(row[3])

@@ -22,8 +22,15 @@
                     <div id="user">
                         <h3>Przemysław Ciąćka</h3>
                         <br>
-                        <p>Average grade: 78%</p>
-                        <p>Average attendance: 89%</p>
+                        {% if user.type == 'student' %}
+
+                            {% set ave_grade = user.ave_grade() %}
+
+                            <p>Average grade: {{ ave_grade }}%</p>
+
+
+                            <p>Average attendance: 89%</p>
+                        {% endif %}
                         <br>
                         <a href="login.html">Logout</a>
                     </div>

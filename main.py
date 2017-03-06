@@ -18,7 +18,7 @@ def index():
         logged_user = User.login(request.form['user_login'], request.form['user_pass'])
 
         if logged_user is not None:
-            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname':logged_user['Surname']}
+            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname']}
             session['user'] = user
 
     if 'user' in session:
