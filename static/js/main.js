@@ -17,3 +17,22 @@ function confirm_remove(){
         alert("Nothing happen")
     }
 }
+
+$('a.edit').click(function () {
+    var tr_id = $(this).closest('tr').find('#id').data('id');
+    $.ajax({
+        type: 'POST',
+        url: '/edit',
+        data : {'idx': tr_id},
+        contentType : 'application/json;charset=UTF-8',
+        dataType : 'json',
+        success: function(response) {
+                console.log(response);
+            },
+        error: function(error) {
+                console.log(error);
+            }
+
+    })
+    
+})

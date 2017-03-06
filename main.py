@@ -1,6 +1,6 @@
 from models.student import Student
-from flask import Flask, request, session, render_template,redirect, url_for
-from models.user import *
+from flask import Flask, request, session, render_template,redirect, url_for, json
+from models.user import User
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -35,10 +35,18 @@ def index():
 @app.route('/student_list')
 def student_list():
     table = Student.create_student_list()
-    student_object = User.return_by_id(1)
     if table:
-        return render_template('student_list.html', table=table, student_object=student_object)
+        return render_template('student_list.html', table=table)
     return render_template('student_list.html')
+
+
+@app.route('/edit', methods=['POST', 'GET'])
+def get_data():
+    if request.method == 'POST':
+        idx = request.form['idx']
+
+        return 'null'
+    return 'lipa'
 
 if __name__ == "__main__":
     app.run(debug=True)
