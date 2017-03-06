@@ -22,12 +22,11 @@
                     <div id="user">
                         <h3>Przemysław Ciąćka</h3>
                         <br>
-                        {% if user.type == 'student' %}
+                        {% if user['type'] in ('student', 'Student') %}
 
-                            {% set ave_grade = user.ave_grade() %}
+                            {% set ave_grade = Student.ave_grade_flask_version(idx) %}
 
                             <p>Average grade: {{ ave_grade }}%</p>
-
 
                             <p>Average attendance: 89%</p>
                         {% endif %}

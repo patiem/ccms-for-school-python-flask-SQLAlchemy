@@ -1,5 +1,6 @@
 from flask import Flask, request, session, render_template
 from models.user import *
+# from models.student import *
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -18,11 +19,12 @@ def index():
         logged_user = User.login(request.form['user_login'], request.form['user_pass'])
 
         if logged_user is not None:
-            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname']}
+            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
+                    'type': logged_user['Type']}
             session['user'] = user
 
     if 'user' in session:
-        return render_template('index.html')
+        return render_template('index.html', user=session['user'])
     else:
         return render_template('login.html')
 
