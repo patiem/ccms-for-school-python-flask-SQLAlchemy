@@ -9,7 +9,7 @@ class Student(User):
     object_list = []
     file = 'csv/students.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone, password, id_team=''):
+    def __init__(self, idx, name, last_name, mail, telephone, id_team=''):
         """
         Create Student object
         :param idx: string (id of student)
@@ -18,7 +18,7 @@ class Student(User):
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone, password)
+        User.__init__(self, idx, name, last_name, mail, telephone)
         self.id_team = id_team
 
     @classmethod
@@ -106,4 +106,19 @@ class Student(User):
         table = []
         for row in sql_data:
             table.append([row[0], row[1], row[2]])
+        return table
+
+
+    @classmethod
+    def create_student_list(cls):
+        query = """
+                  SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+                  FROM Users
+                  WHERE Type = 'Student'"""
+        data = sql.query(query)
+        table = []
+
+        if data:
+            for row in data:
+                table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
