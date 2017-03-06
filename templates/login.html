@@ -3,8 +3,9 @@
 <html>
 <head>
 
-    <link rel="stylesheet" type="text/css"  href="css/style.css" />
-    <link rel="stylesheet" type="text/css"  href="css/style-login.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style-login.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500i,700,900i" rel="stylesheet">
     
 </head>
@@ -16,9 +17,9 @@
            CCMS <span style="display: inline; font-weight: 400">login</span>
         </h1>
         <span>Welcome! Please login</span>
-        <form name="login" method="GET" action="index.html">
-        <input type="text" id="username" name="username" placeholder="Username" autofocus/><br />
-        <input type="password" id="password" name="password" placeholder="Password"  /><br />
+        <form name="login" method="POST" action="\">
+        <input type="text" id="user_login" name="user_login" placeholder="Username" autofocus/><br />
+        <input type="password" id="user_pass" name="user_pass" placeholder="Password"  /><br />
         <input type="submit" id="login" class="button orange" value="Log in" />
         </form>
 

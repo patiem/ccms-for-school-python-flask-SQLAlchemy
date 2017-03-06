@@ -1,24 +1,37 @@
 from flask import Flask, request, session, render_template
+from models.user import *
 
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return render_template('login.html')
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    #session['username'] = 'jest'
-    session.pop('username', None)
-    if 'username' in session:
-        username = session['username']
-        return 'Logged in as ' + username + '<br>' + \
-               "<b><a href = '/logout'>click here to log out</a></b>"
+
+    if request.method == 'POST':
+        logged_user = User.login(request.form['user_login'], request.form['user_pass'])
+
+        if logged_user is not None:
+            user = list([logged_user['ID'], logged_user['Name'], logged_user['Surname']])
+            session['user'] = user
+
+    if 'user' in session:
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
 
 
-    #return "You are not logged in <br><a href = '/login'></b>" + \
-      # "click here to log in</b></a>"
 
-    return render_template('login.html')
+
+
+
 
 
 
