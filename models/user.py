@@ -7,7 +7,7 @@ from abc import ABCMeta
 class User(metaclass=ABCMeta):
     object_list = None
 
-    def __init__(self, idx, name, last_name, mail, telephone, password):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
         :param idx: string (id of student)
@@ -22,7 +22,6 @@ class User(metaclass=ABCMeta):
         self.last_name = last_name
         self.mail = mail
         self.telephone = telephone
-        self.password = password
 
     def change_value(self, name_of_attribute, new_value):
         """
@@ -89,9 +88,11 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
-        for item in cls.object_list:
-            if item.idx == idx:
-                return item
+        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone FROM Users WHERE ID = ?"
+        user_data = sql.query(sql_query, [idx])[0]
+        if user_data:
+            new_object = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            return new_object
 
     @classmethod
     def create_object_list(cls):

@@ -1,15 +1,20 @@
-from flask import Flask, request, session, render_template
+from models.student import Student
+from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
-# from models.student import *
+
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
+
+@app.route('/checkpoint')
+def checkpoint():
+    return render_template('checkpoint.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return render_template('login.html')
+    return redirect(url_for('index'))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -19,8 +24,10 @@ def index():
         logged_user = User.login(request.form['user_login'], request.form['user_pass'])
 
         if logged_user is not None:
+
             user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
                     'type': logged_user['Type']}
+
             session['user'] = user
 
     if 'user' in session:
@@ -37,6 +44,15 @@ def teams():
 @app.route('/attendance')
 def attendance():
     return render_template('teams.html')
+
+
+@app.route('/student_list')
+def student_list():
+    table = Student.create_student_list()
+    student_object = User.return_by_id(1)
+    if table:
+        return render_template('student_list.html', table=table, student_object=student_object)
+    return render_template('student_list.html')
 
 
 if __name__ == "__main__":
