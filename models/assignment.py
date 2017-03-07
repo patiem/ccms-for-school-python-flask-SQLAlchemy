@@ -44,10 +44,9 @@ class Assignment:
                     start_date = Common.make_corect_date(item['START_DATA'])
                     if Test.is_date_correct(item['END_DATA']):
                         end_date = Common.make_corect_date(item['END_DATA'])
-                        if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
-                            file_name = item['LINK']
-                            group = item['GROUP']
-                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                        file_name = item['LINK']
+                        group = item['GROUP']
+                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
 
     @classmethod
     def create_assignment_list(cls):
@@ -144,10 +143,16 @@ class Assignment:
             text_to_print = f.read()
         return text_to_print
 
+    # @classmethod
+    # def get_by_id(cls, assignment_idx):
+    #     for assignment in cls.assigments_list:
+    #         if assignment.idx == assignment_idx:
+    #             return assignment
+
     @classmethod
     def get_by_id(cls, assignment_idx):
-        for assignment in cls.assigments_list:
-            if assignment.idx == assignment_idx:
-                return assignment
-
-
+        query = "SELECT * FROM `assigments` WHERE id=?"
+        params = [assignment_idx]
+        assignment = sql.query(query, params)[0]
+        print(assignment)
+        return assignment

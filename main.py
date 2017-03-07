@@ -2,6 +2,7 @@ from models.student import Student
 from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 from models.menu import StudentMenu
+from models.assignment import Assignment
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -14,16 +15,26 @@ def checkpoint():
 
 @app.route('/assignments')
 def show_assignments_list():
-    user_id = session['user']['id']
-    logged_user = Student.return_by_id(user_id) #what with team id??
+    logged_user = make_student()
     assignments = StudentMenu.assignment_list_with_grades(logged_user)
     return render_template('assignments.html', user=logged_user, assignments=assignments)
 
 
-@app.route('/assignments/<id>')
-def show_assignment(id):
-    # logged_user = None
-    return render_template('submissions.html')
+@app.route('/assignments/<idx>', methods=['GET', 'POST'])
+def show_assignment(idx):
+    logged_user = make_student()
+    assignment = Assignment.get_by_id(int(idx))
+    print(assignment)
+    if request.method == 'GET':
+        return render_template('submissions.html', user=logged_user, assignment=assignment)
+    elif request.method == 'POST':
+        pass
+
+
+def make_student():
+    user_id = session['user']['id']
+    logged_user = Student.return_by_id(user_id)  # what with team id??
+    return logged_user
 
 
 @app.route('/logout')

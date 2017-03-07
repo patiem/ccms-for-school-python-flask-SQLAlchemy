@@ -4,7 +4,7 @@
 
 {% block content %}
     <div id="top">
-    <h2 class="assign_title">Nazwa asignmentu</h2>
+    <h2 class="assign_title">{{ assignment[2] }}</h2>
     <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
     </div>
     <br>
@@ -13,7 +13,7 @@
         <table class="assignment">
             <tr>
                 <th>Termin dostarczenia</th>
-                <td>Brak terminu dostarczenia</td>
+                <td>{{ assignment[2] }}</td>
             </tr>
             <tr>
                 <th>Punkty</th>
@@ -26,7 +26,7 @@
         </table>
     </section>
     <hr>
-{#    {% html_for_assignment %}#}
+    {{ assignment[5]|safe }}
 
     <div id="popup" class="overlay">
             <h2>Add submission</h2>
