@@ -5,7 +5,7 @@ from models import sql
 class Mentor(User):
     object_list = []
     
-    def __init__(self, idx, name, last_name, mail, telephone, password):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create Mentor object
         :param idx: string (id of student)
@@ -13,7 +13,7 @@ class Mentor(User):
         :param last_name: string (last name of student)
         :param mail: string  (mail of student)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone, password)
+        User.__init__(self, idx, name, last_name, mail, telephone)
 
     @classmethod
     def create_object_list(cls):

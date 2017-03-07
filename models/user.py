@@ -7,7 +7,7 @@ from abc import ABCMeta
 class User(metaclass=ABCMeta):
     object_list = None
 
-    def __init__(self, idx, name, last_name, mail, telephone, password):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
         :param idx: string (id of student)
@@ -22,7 +22,6 @@ class User(metaclass=ABCMeta):
         self.last_name = last_name
         self.mail = mail
         self.telephone = telephone
-        self.password = password
 
     def change_value(self, name_of_attribute, new_value):
         """
@@ -111,9 +110,9 @@ class User(metaclass=ABCMeta):
         :return: None or True if object removed
         """
         for person in cls.object_list:
-            if person.mail == mail:
+            if person.mail == idx:
                 cls.object_list.remove(person)
-                cls.remove_sql(mail)
+                cls.remove_sql(idx)
                 return True
 
     @staticmethod

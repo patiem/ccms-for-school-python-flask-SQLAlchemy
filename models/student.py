@@ -9,7 +9,7 @@ class Student(User):
     object_list = []
     file = 'csv/students.csv'
 
-    def __init__(self, idx, name, last_name, mail, telephone, password, id_team=''):
+    def __init__(self, idx, name, last_name, mail, telephone, id_team=''):
         """
         Create Student object
         :param idx: string (id of student)
@@ -18,7 +18,7 @@ class Student(User):
         :param mail: string  (mail of student)
         :param telephone: string (telephone number)
         """
-        User.__init__(self, idx, name, last_name, mail, telephone, password)
+        User.__init__(self, idx, name, last_name, mail, telephone)
         self.id_team = id_team
 
     def full_name(self):
