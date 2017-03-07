@@ -1,208 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "menu.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Puke Rainbow Unicorns CcMS</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+{% block head %}
+
+    {{ super() }}
     <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
-</head>
 
-<body>
-<header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
-                    <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
-                    <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
+{% endblock %}
+{% block content %}
 
-            </section>
+    {% for team in teams %}
 
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
-
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="StudentMenu" class="menus">
-
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
-        <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
-        </footer>
-
-    </aside>
-</header>
-
-<div class="content">
-    <table class="team_table">
-        <tr>
-            <th>ID: 1</th>
-            <th>NAME: Dupa1</th>
-            <th>Action</th>
-
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Person 1</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Person 2</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-        <tr>
-            <td >3</td>
-            <td>Person 3</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-    </table>
-    <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-    <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
 
     <table class="team_table">
         <tr>
-            <th>ID: 2</th>
-            <th>NAME: Dupa2</th>
+            <th>TEAM ID: {{ team.id_team }}</th>
+            <th>NAME: {{ team.name }}</th>
             <th>Action</th>
-
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Person 1</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
 
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Person 2</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
+        {% set student_number = 1 %}
+        {% for student in students %}
+            {% if student.idx in team.students_id %}
 
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Person 3</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
+            <tr>
+                <td>{{ student_number }}</td>
+                <td>{{ student.name }} {{ student.last_name }}</td>
+                <td><a href="" class="remove_button">REMOVE</a></td>
 
-        </tr>
+                {% set student_number = student_number + 1 %}
+            </tr>
+            {% endif %}
+        {% endfor %}
 
     </table>
-    <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-    <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
+        <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
+        <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
 
-    <table class="team_table">
-        <tr>
-            <th>ID: 3</th>
-            <th>NAME: Dupa3</th>
-            <th>Action</th>
 
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Person 1</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
+    {% endfor %}
 
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Person 2</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Person 3</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-
-    </table>
-    <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-    <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
-
-    <table class="team_table">
-        <tr>
-            <th>ID: 4</th>
-            <th>NAME: Dupa4</th>
-            <th>Action</th>
-
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Person 1</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Person 2</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-        <tr>
-            <td >3</td>
-            <td>Person 3</td>
-            <td><a href="" class="remove_button">REMOVE</a></td>
-
-        </tr>
-    </table>
-    <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-    <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
 
     <a href="#add_team"><div class="fixed_bottom_button"> + TEAM </div></a>
-
 
 
     <div class="overlay" id="add_team">
@@ -226,51 +64,13 @@
                 <tr>
                     <th>Email</th>
                 </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
-                <tr>
-                    <td><a href="">random@email.pl</a></td>
-                </tr>
+
+                {% for student in students %}
+                    <tr>
+                        <td><a href="">{{ student.full_name() }}</a></td>
+                    </tr>
+                {% endfor %}
+
             </table>
             </div>
             <br>
@@ -278,9 +78,5 @@
         </form>
 
     </div>
-</div>
 
-
-</body>
-
-</html>
+{% endblock %}
