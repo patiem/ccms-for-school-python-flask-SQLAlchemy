@@ -55,7 +55,7 @@ class Team:
         """
         query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
         sql.query(query)
-        cls.clear_and_load_list()
+        # cls.clear_and_load_list()
 
     @classmethod
     def clear_and_load_list(cls):
@@ -98,7 +98,6 @@ class Team:
                 return team
         return False
 
-
     @classmethod
     def add_student_to_team(cls, student_id, team_id):
         """
@@ -113,8 +112,6 @@ class Team:
                 student = row
                 break
 
-        # student = Student.return_by_id(int(student_id))
-
         if student:
 
             team = Team.get_team_by_id(int(team_id))
@@ -125,9 +122,27 @@ class Team:
 
             else:
                 print('There is no team with this ID')
-
         else:
             print('There is no student of this ID')
 
+    @staticmethod
+    def remove_team(team_id):
+        query = "DELETE FROM `TEAMS` WHERE `ID` = {};".format(int(team_id))
+        sql.query(query)
 
-Team.add_student_to_team(1, 20)
+        query = "DELETE FROM `Users_team` WHERE `ID_TEAM` = {};".format(int(team_id))
+        sql.query(query)
+
+    @staticmethod
+    def add_new_team(team_name):
+        """
+        Adds new team
+        :return: None
+        """
+
+        name = team_name
+        if name == '' or '\t' in name or len(name) < 3 or name[0] == ' ' or '  ' in name:
+
+            return 'Wrong name format'
+
+        Team.new_team(name)

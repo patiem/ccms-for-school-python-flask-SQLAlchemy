@@ -59,6 +59,23 @@ def add_to_team(student_id, team_id):
     return redirect('/teams')
 
 
+@app.route('/remove_team/<team_id>')
+def remove_team(team_id):
+
+    Team.remove_team(team_id)
+
+    return redirect('/teams')
+
+
+@app.route('/add_team', methods=['POST'])
+def add_team():
+    name = request.form['new_team_name']
+
+    Team.new_team(name)
+
+    return redirect('/teams')
+
+
 @app.route('/attendance')
 def attendance():
     return render_template('teams.html')
