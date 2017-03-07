@@ -146,8 +146,7 @@ class Student(User):
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
 
-<<<<<<< HEAD
-=======
+
     @staticmethod
     def my_attendance(idx):
         query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
@@ -210,4 +209,4 @@ class Student(User):
                 students_list.append(new_object)
 
         return students_list
->>>>>>> flask
+
