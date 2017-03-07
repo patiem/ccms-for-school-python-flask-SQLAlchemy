@@ -86,12 +86,12 @@ def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         user = User.return_by_id(idx)
-        student_dict = {'id': idx,
+        user_dict = {'id': idx,
                         'name': user.name,
                         'surname': user.last_name,
                         'e-mail': user.mail,
                         'telephone': user.telephone}
-        return jsonify(student_dict)
+        return jsonify(user_dict)
     return 'lipa'
 
 
