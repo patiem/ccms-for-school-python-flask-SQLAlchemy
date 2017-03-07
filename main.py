@@ -8,8 +8,11 @@ app.secret_key = 'any random string'
 @app.route('/checkpoint')
 def checkpoint():
 
+    mentors = ""
+    students = ""
+    checkpoints = ""
 
-    return render_template('checkpoint.html')
+    return render_template('checkpoint.html', mentors=mentors, students=students, checkpoints=checkpoints)
 
 @app.route('/logout')
 def logout():

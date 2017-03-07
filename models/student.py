@@ -107,3 +107,14 @@ class Student(User):
         for row in sql_data:
             table.append([row[0], row[1], row[2]])
         return table
+
+    @staticmethod
+    def get_students_without_checkpoint(checkpoint_id):
+        """
+        :param checkpoint_id:
+        :return: list_of_students
+        """
+        query = "SELECT * FROM Users WHERE ID NOT  IN (SELECT ID_STUDENT FROM Users_checkpoints WHERE ID_CHECKPOINT = {}) AND Type='Student'".format(checkpoint_id)
+        students = sql.query(query)
+
+        return students
