@@ -31,7 +31,11 @@ def show_assignment(idx):
     if request.method == 'GET':
         return render_template('submissions.html', user=logged_user, assignment=assignment, submission=submission)
     elif request.method == 'POST':
-        pass
+        link = request.form['link']
+        comment = request.form['comment']
+        Submission.add_submission(logged_user.idx, assignment[0], link, comment)
+        return redirect(url_for('show_assignment', idx=idx))
+
 
 
 def make_student():

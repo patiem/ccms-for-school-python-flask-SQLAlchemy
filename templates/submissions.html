@@ -12,8 +12,8 @@
     <section>
         <table class="assignment">
             <tr>
-                <th>Date of submission</th>
-                <td>{{ assignment[2] }}</td>
+                <th>End date</th>
+                <td>{{ assignment[4] }}</td>
             </tr>
             {% if submission %}
                 <tr>
@@ -55,16 +55,16 @@
             </form>
             {% else %}
             <h2>Add submission</h2>
-            <form class="edit_user" name="add_submission">
+            <form class="edit_user" name="add_submission" method="POST" action="/assignments/{{ assignment[0] }}">
                 <a class="close" href="#">&times;</a>
                 <div class="form-block">
                     <label for="link">Link to assignment:</label>
                     <input type="text" name="link" id="link">
                 </div>
-                <div class="load_file">
-                    <label for="file">Upload file with assignment:</label>
-                    <input type="file" name="file" id="file">
-                </div>
+{#                <div class="load_file">#}
+{#                    <label for="file">Upload file with assignment:</label>#}
+{#                    <input type="file" name="file" id="file">#}
+{#                </div>#}
                 <div class="form-block">
                     <label for="comment">Comment:</label>
                     <textarea maxlength="500" name ="comment" id="comment" rows="5" cols="55"

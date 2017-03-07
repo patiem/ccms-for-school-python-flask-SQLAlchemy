@@ -79,7 +79,6 @@ class Assignment:
         :param group: bool (group/ind)
         :return: None
         """
-        #new_id = Common.generate_id()
         query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`) VALUES (?, ?, ?, ?, ?, ?);"
         values_list = [title, mentor_id, start_date, end_date, file_name, group]
         sql.query(query, values_list)
@@ -88,8 +87,7 @@ class Assignment:
         new_assignment = cls(new_id, title, mentor_id, start_date, end_date, file_name, group)
         if cls.assigments_list:
             cls.assigments_list.append(new_assignment)
-        #Common.save_file('csv/assignments.csv', cls.create_list_to_save())
-    
+
     @classmethod
     def create_list_to_save(cls):
         """
