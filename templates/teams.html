@@ -33,8 +33,30 @@
         {% endfor %}
 
     </table>
-        <a href="#add_student_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
+        <a href="#add_student_to_team{{ team.id_team }}"><div class="fixed_table_button orange_shadow"> + Student </div></a>
         <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
+
+        <div class="overlay" id="add_student_to_team{{ team.id_team }}">
+        <form name="add_student" class="edit_user">
+            <a class="close" href="#">&times;</a>
+            <div class="student_to_team_table">
+            <table>
+                <tr>
+                    <th>Email</th>
+                </tr>
+
+                {% for student in students %}
+                    <tr>
+                        <td><a href="/add_to_team/{{ student.idx }}{{ team.id_team }}">{{ student.full_name() }}</a></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            </div>
+            <br>
+            <br>
+        </form>
+        </div>
 
 
     {% endfor %}
@@ -56,27 +78,27 @@
 
     </div>
 
-    <div class="overlay" id="add_student_to_team">
-        <form name="add_student" class="edit_user">
-            <a class="close" href="#">&times;</a>
-            <div class="student_to_team_table">
-            <table>
-                <tr>
-                    <th>Email</th>
-                </tr>
-
-                {% for student in students %}
-                    <tr>
-                        <td><a href="">{{ student.full_name() }}</a></td>
-                    </tr>
-                {% endfor %}
-
-            </table>
-            </div>
-            <br>
-            <br>
-        </form>
-
-    </div>
+{#    <div class="overlay" id="add_student_to_team">#}
+{#        <form name="add_student" class="edit_user">#}
+{#            <a class="close" href="#">&times;</a>#}
+{#            <div class="student_to_team_table">#}
+{#            <table>#}
+{#                <tr>#}
+{#                    <th>Email</th>#}
+{#                </tr>#}
+{##}
+{#                {% for student in students %}#}
+{#                    <tr>#}
+{#                        <td><a href="/add_to_team/{{ student.idx }}{{ 2 }}">{{ student.full_name() }}</a></td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{##}
+{#            </table>#}
+{#            </div>#}
+{#            <br>#}
+{#            <br>#}
+{#        </form>#}
+{##}
+{#    </div>#}
 
 {% endblock %}

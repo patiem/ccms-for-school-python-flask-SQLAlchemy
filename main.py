@@ -2,10 +2,9 @@ from models.student import Student
 # from flask import Flask, request, session, render_template,redirect, url_for, jsonify, json
 # from models.user import User
 from models.team import Team
-from flask import Flask, request, session, render_template,redirect, url_for, jsonify
+from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from models.user import *
 from models.mentor import Mentor
-
 
 
 app = Flask(__name__)
@@ -51,6 +50,14 @@ def teams():
         return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
     else:
         return render_template('login.html')
+
+
+@app.route('/add_to_team/<student_id><team_id>')
+def add_to_team(student_id, team_id):
+
+    Team.add_student_to_team(student_id, team_id)
+
+    return redirect('/teams')
 
 
 @app.route('/attendance')
