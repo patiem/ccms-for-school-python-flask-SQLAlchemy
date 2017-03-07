@@ -88,10 +88,10 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
-        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone FROM Users WHERE ID = ?"
+        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
         user_data = sql.query(sql_query, [idx])[0]
         if user_data:
-            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4], user_data[5])
             return new_object
 
     @classmethod
@@ -103,24 +103,24 @@ class User(metaclass=ABCMeta):
         raise NotImplementedError
 
     @classmethod
-    def remove_object(cls, mail):
+    def remove_object(cls, idx):
         """
         Remove object from list
         :param mail: string ( mail of user to remove)
         :return: None or True if object removed
         """
         for person in cls.object_list:
-            if person.mail == mail:
+            if person.mail == idx:
                 cls.object_list.remove(person)
-                cls.remove_sql(mail)
+                cls.remove_sql(idx)
                 return True
 
     @staticmethod
-    def remove_sql(mail):
+    def remove_sql(idx):
         query = """
                 DELETE FROM Users
-                WHERE `E-mail` = ?"""
-        sql.query(query, [mail])
+                WHERE ID = ?"""
+        sql.query(query, [idx])
 
     @staticmethod
     def create_list_to_save(object_list):
