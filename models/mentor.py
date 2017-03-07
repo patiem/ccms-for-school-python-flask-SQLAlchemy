@@ -46,13 +46,25 @@ class Mentor(User):
     @staticmethod
     def update_sql(edit_list):
         """
-        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :param edit_list: (FORMAT:Name, Surname,  E-MAIL, Telephone, ID)
         :return:
         """
 
+        query = """UPDATE USERS
+                           SET Name = ?, Surname = ?, `E-mail` = ?, Telephone = ?
+                           WHERE ID = ?"""
+        sql.query(query, edit_list)
+
+    @classmethod
+    def create_mentor_list(cls):
         query = """
-                    UPDATE Users
-                    SET `{}` = ?
-                    WHERE `E-mail` = ?
-                    AND Type = 'Mentor'""".format(edit_list[1])
-        sql.query(query, [edit_list[2], edit_list[0]])
+                  SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+                  FROM Users
+                  WHERE Type = 'Mentor'"""
+        data = sql.query(query)
+        table = []
+
+        if data:
+            for row in data:
+                table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
+        return table

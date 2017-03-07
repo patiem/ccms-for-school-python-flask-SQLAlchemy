@@ -33,7 +33,8 @@ $('.remove_user').click(function () {
 
 $('a.edit').click(function () {
     var tr_id = $(this).closest('tr').find('#id').data('id');
-    var dict_id = { Idx: tr_id}
+    var type = $('.type').data('type');
+    var dict_id = { Idx: tr_id, Type: type};
     $.ajax({
         type: 'POST',
         url: 'http://localhost:5000/edit',

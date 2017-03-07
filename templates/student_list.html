@@ -25,6 +25,10 @@
         <div id="add" class="overlay">
                 <form name="add_student" class="edit_user" action="/save-student" method="post">
                     <a class="close" href="#">&times;</a>
+                    <div class="hidden">
+                        <label for="type">Name:</label>
+                        <input type="text" name="type" id="type" value="student">
+                    </div>
                     <div class="form-block">
                         <label for="add_name">Name:</label>
                         <input type="text" name="name" id="add_name">
@@ -50,6 +54,10 @@
                 <div class="hidden">
                     <label for="id">Name:</label>
                     <input type="number" name="id" id="edit_id" value="1">
+                </div>
+                <div class="hidden">
+                    <label for="type">Name:</label>
+                    <input type="text" name="type" id="type" value="student">
                 </div>
                 <div class="form-block">
                     <label for="name">Name:</label>

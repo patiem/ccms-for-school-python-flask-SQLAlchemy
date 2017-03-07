@@ -4,6 +4,7 @@ from models.student import Student
 from models.team import Team
 from flask import Flask, request, session, render_template,redirect, url_for, jsonify
 from models.user import *
+from models.mentor import Mentor
 
 
 
@@ -65,17 +66,24 @@ def student_list():
     return render_template('student_list.html', user=session['user'])
 
 
+@app.route('/mentor_list')
+def mentor_list():
+    table = Mentor.create_mentor_list()
+    if table:
+        return render_template('mentor_list.html', table=table, user=session['user'])
+    return render_template('mentor_list.html', user=session['user'])
+
 
 @app.route('/edit', methods=['POST', 'GET'])
 def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
-        student = Student.return_by_id(idx)
+        user = User.return_by_id(idx)
         student_dict = {'id': idx,
-                        'name': student.name,
-                        'surname': student.last_name,
-                        'e-mail': student.mail,
-                        'telephone': student.telephone}
+                        'name': user.name,
+                        'surname': user.last_name,
+                        'e-mail': user.mail,
+                        'telephone': user.telephone}
         return jsonify(student_dict)
     return 'lipa'
 
@@ -83,25 +91,35 @@ def get_data():
 @app.route('/edit-form', methods=['POST', 'GET'])
 def update_student():
     if request.method == 'POST':
+        user_type = request.form['type']
         idx = request.form['id']
         name = request.form['name']
         surname = request.form['surname']
         email = request.form['email']
         telephone = request.form['telephone']
         edit_list = [name, surname, email, telephone, idx]
-        Student.update_sql(edit_list)
-        return redirect(url_for('student_list'))
+        if user_type == 'student':
+            Student.update_sql(edit_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.update_sql(edit_list)
+            return redirect(url_for('mentor_list'))
 
-@app.route('/save-student', methods=['POST'])
-def save_student():
+@app.route('/save-user', methods=['POST'])
+def save_user():
     if request.method == 'POST':
+        user_type = request.form['type']
         name = request.form['name']
         surname = request.form['surname']
         email = request.form['email']
         telephone = request.form['telephone']
         add_list = [name, surname, email, telephone]
-        Student.add_user(add_list)
-        return redirect(url_for('student_list'))
+        if user_type == 'student':
+            Student.add_user(add_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.add_user(add_list)
+            return redirect(url_for('mentor_list'))
 
 
 @app.route('/remove-user', methods=['POST'])
@@ -109,7 +127,6 @@ def remove_user():
     if request.method == 'POST':
         idx = request.json['Idx']
         User.remove_sql(idx)
-        return redirect(url_for('student_list'))
 
 
 if __name__ == "__main__":
