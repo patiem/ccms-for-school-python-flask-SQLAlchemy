@@ -23,33 +23,23 @@
             <th>GROUP</th>
             <th>GRADE</th>
         </tr>
+        {% set i = 1 %}
+        {% for item in assignments %}
+        <!--[assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date,-->
+                        <!--type_of_assignment, 'submitted', submission.grade, assignment.idx]-->
+
         <tr>
-            <td>1</td>
-            <td class='left'><a href="/assignments/1">Assignment 1 - dupa łłłł</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>N</td>
-            <td>N</td>
-            <td>-</td>
+            <td>{{ i }}</td>
+            <td class='left'><a href="/assignments/{{ item[-1] }}">{{ item[0] }}</a></td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[6] }}</td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td class='left'><a href="submissions">Assignment 2 - lol</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>Y</td>
-            <td>N</td>
-            <td>-</td>
-        </tr>
-        <tr>
-            <td >3</td>
-            <td class='left'><a href="/submissions">Assignment 3 - qwerty</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>N</td>
-            <td>Y</td>
-            <td>-</td>
-        </tr>
+        {% set i = i + 1 %}
+        {% endfor %}
+
         
     </table>
    

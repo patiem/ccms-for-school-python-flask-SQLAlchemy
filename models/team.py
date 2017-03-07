@@ -91,3 +91,17 @@ class Team:
             if str(team.id_team) == str(team_id):
                 return team
         return False
+
+    @classmethod
+    def find_student_team(cls, student_id):
+        """
+
+        :param student_id: int - id of team which you object need
+        :return: team_id in which student is or False if he is not in team
+        """
+        query = "SELECT `id_team` FROM `Users_team` WHERE `user_id`=?;"
+        params = [student_id]
+        id_team = sql.query(query, params)[0][0]
+        if id_team:
+            return id_team
+        return False
