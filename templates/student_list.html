@@ -23,7 +23,7 @@
     {% endif %}
         <a href="#add"><div class="fixed_bottom_button">Add Student</div></a>
         <div id="add" class="overlay">
-                <form name="add_student" class="edit_user">
+                <form name="add_student" class="edit_user" action="/save-student">
                     <a class="close" href="#">&times;</a>
                     <div class="form-block">
                         <label for="add_name">Name:</label>
@@ -45,8 +45,12 @@
                 </form>
         </div>
         <div id="edit" class="overlay">
-            <form name="add_student" class="edit_user">
+            <form name="add_student" class="edit_user" action="/edit-form" method="post">
                 <a class="close" href="#">&times;</a>
+                <div class="hidden">
+                    <label for="id">Name:</label>
+                    <input type="number" name="id" id="edit_id" value="1">
+                </div>
                 <div class="form-block">
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" value="Kamil">

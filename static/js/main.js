@@ -30,7 +30,8 @@ $('a.edit').click(function () {
         // contentType : 'application/x-www-form-urlencoded',
 
         success: function(response) {
-                console.log(response['name']);
+                console.log(response['id']);
+                $('#edit_id').val(response['id'])
                 $('#name').val(response['name'])
                 $('#surname').val(response['surname'])
                 $('#email').val(response['e-mail'])

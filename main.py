@@ -71,12 +71,28 @@ def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         student = Student.return_by_id(idx)
-        student_dict = {'name':student.name,
-                        'surname':student.last_name,
-                        'e-mail':student.mail,
-                        'telephone':student.telephone}
+        student_dict = {'id': idx,
+                        'name': student.name,
+                        'surname': student.last_name,
+                        'e-mail': student.mail,
+                        'telephone': student.telephone}
         return jsonify(student_dict)
     return 'lipa'
+
+
+@app.route('/edit-form', methods=['POST', 'GET'])
+def update_student():
+    if request.method == 'POST':
+        idx = request.form['id']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        edit_list = [name, surname, email, telephone, idx]
+        Student.update_sql(edit_list)
+        return redirect(url_for('student_list'))
+
+@app.route()
 
 
 if __name__ == "__main__":
