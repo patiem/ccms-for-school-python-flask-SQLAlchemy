@@ -91,7 +91,7 @@ class User(metaclass=ABCMeta):
         sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone FROM Users WHERE ID = ?"
         user_data = sql.query(sql_query, [idx])[0]
         if user_data:
-            new_object = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
             return new_object
 
     @classmethod
