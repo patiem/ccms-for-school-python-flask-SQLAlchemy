@@ -1,8 +1,10 @@
 from models.student import Student
+from models.team import Team
 from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
+
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -50,15 +52,33 @@ def index():
         logged_user = User.login(request.form['user_login'], request.form['user_pass'])
 
         if logged_user is not None:
-            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname':logged_user['Surname'], 'type':logged_user['Type']}
+
+            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
+                    'type': logged_user['Type'], 'ave_grade': Student.ave_grade_flask_version(logged_user['ID']),
+                    'my_attendance': Student.my_attendance(logged_user['ID'])}
+
             session['user'] = user
             print(session['user']['id'])
 
     if 'user' in session:
-        return render_template('index.html')
+        return render_template('index.html', user=session['user'])
     else:
         return render_template('login.html')
 
+
+@app.route('/teams')
+def teams():
+    if 'user' in session:
+        teams_list = Team.create_teams_list()
+        students_list = Student.students_list()
+        return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
+    else:
+        return render_template('login.html')
+
+
+@app.route('/attendance')
+def attendance():
+    return render_template('teams.html')
 
 
 @app.route('/student_list')
