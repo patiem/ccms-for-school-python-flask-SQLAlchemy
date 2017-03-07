@@ -146,3 +146,8 @@ class Team:
             return 'Wrong name format'
 
         Team.new_team(name)
+
+    @staticmethod
+    def remove_student_from_team(student_id):
+        query = "DELETE FROM `Users_team` WHERE `ID_USER` = {};".format(int(student_id))
+        sql.query(query)

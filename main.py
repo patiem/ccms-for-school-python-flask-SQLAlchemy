@@ -53,26 +53,26 @@ def teams():
 
 @app.route('/add_to_team/<student_id><team_id>')
 def add_to_team(student_id, team_id):
-
     Team.add_student_to_team(student_id, team_id)
-
     return redirect('/teams')
 
 
 @app.route('/remove_team/<team_id>')
 def remove_team(team_id):
-
     Team.remove_team(team_id)
-
     return redirect('/teams')
 
 
 @app.route('/add_team', methods=['POST'])
 def add_team():
     name = request.form['new_team_name']
-
     Team.new_team(name)
+    return redirect('/teams')
 
+
+@app.route('/remove_from_team/<student_id>')
+def remove_from_team(student_id):
+    Team.remove_student_from_team(student_id)
     return redirect('/teams')
 
 
@@ -94,10 +94,10 @@ def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         student = Student.return_by_id(idx)
-        student_dict = {'name':student.name,
-                        'surname':student.last_name,
-                        'e-mail':student.mail,
-                        'telephone':student.telephone}
+        student_dict = {'name': student.name,
+                        'surname': student.last_name,
+                        'e-mail': student.mail,
+                        'telephone': student.telephone}
         return jsonify(student_dict)
     return 'lipa'
 
