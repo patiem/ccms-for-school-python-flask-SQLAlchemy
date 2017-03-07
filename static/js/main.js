@@ -6,17 +6,30 @@ function gradeValue(value) {
         return 'None'
     }
 }
-
-function confirm_remove(){
+$('.remove_user').click(function () {
     location.reload(true);
+    var tr_id = $(this).closest('tr').find('#id').data('id');
+    var dict_id = { Idx: tr_id}
     var user_answear = confirm("Are you sure?");
     if (user_answear == true){
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5000/remove-user',
+            data : JSON.stringify(dict_id),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            // contentType : 'application/x-www-form-urlencoded',
+
+    })
         alert("User removed")
     }
     else{
         alert("Nothing happen")
     }
-}
+})
+
+
+
 
 $('a.edit').click(function () {
     var tr_id = $(this).closest('tr').find('#id').data('id');

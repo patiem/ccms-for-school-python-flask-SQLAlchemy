@@ -104,7 +104,7 @@ class User(metaclass=ABCMeta):
         raise NotImplementedError
 
     @classmethod
-    def remove_object(cls, mail):
+    def remove_object(cls, idx):
         """
         Remove object from list
         :param mail: string ( mail of user to remove)
@@ -117,11 +117,11 @@ class User(metaclass=ABCMeta):
                 return True
 
     @staticmethod
-    def remove_sql(mail):
+    def remove_sql(idx):
         query = """
                 DELETE FROM Users
-                WHERE `E-mail` = ?"""
-        sql.query(query, [mail])
+                WHERE ID = ?"""
+        sql.query(query, [idx])
 
     @staticmethod
     def create_list_to_save(object_list):

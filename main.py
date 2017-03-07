@@ -103,5 +103,14 @@ def save_student():
         Student.add_user(add_list)
         return redirect(url_for('student_list'))
 
+
+@app.route('/remove-user', methods=['POST'])
+def remove_user():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        User.remove_sql(idx)
+        return redirect(url_for('student_list'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
