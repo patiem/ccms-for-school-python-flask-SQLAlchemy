@@ -27,27 +27,12 @@ class Checkpoint:
         sql.query(query, [user_object.idx, title, start_date])
 
     @staticmethod
-    def select_mentor_id_from_list(user_object):
+    def select_mentors_not_in_checkpoint(checkpoint_id):
 
-        Ui.clear()
-        Ui.print_head('Select second mentor', 'header')
-        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor' AND `ID` <> {} ".format(user_object.idx)
-        mentors = []
-        mentors_ids = []
+        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor' AND `ID` NOT IN (SELECT ID_USER FROM Checkpoints WHERE ID={})".format(checkpoint_id)
         sql_result = sql.query(query)
 
-        if isinstance(sql_result, list):
-            for mentor in sql_result:
-                mentors.append([mentor['ID'], mentor['SURNAME'], mentor['NAME'], ])
-                mentors_ids.append(mentor['ID'])
-
-            Ui.print_table(mentors, ['ID', 'Surname', 'Name'])
-
-            return Ui.get_id_only_in_list('Select second mentor (ID): ', mentors_ids)
-        else:
-            Ui.print_text('\n There is no second mentor in school! \n')
-            Ui.press_any_key_input()
-            return None
+        return sql_result
 
     @staticmethod
     def select_student_id_from_list(checkpoint_id):
@@ -149,25 +134,12 @@ class Checkpoint:
     @staticmethod
     def show_checkpoints():
 
-        Ui.clear()
-        Ui.print_head('Created checkpoints', 'header')
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
         titles = ['ID', 'Subject', 'Created by', 'Start date']
-        checkpoints = []
-        sql_query_result = sql.query(query)
-        ids = []
-        if isinstance(sql_query_result, list):
-            for checkpoint in sql_query_result:
-                checkpoints.append([checkpoint['ID'], checkpoint['TITLE'], checkpoint['NAME'] + checkpoint['SURNAME'],
-                                    checkpoint['START_DATE']])
-                ids.append(checkpoint["ID"])
-            Ui.print_table(checkpoints, titles)
-            checkpoint_id = Ui.get_id_only_in_list('Select checkpoint (ID): ', ids)
-            return checkpoint_id
 
-        else:
-            Ui.print_text('\n Create checkpoints first! \n')
-        return 0
+        sql_query_result = sql.query(query)
+        return sql_query_result
+
 
     @staticmethod
     def show_checkpoint_results(checkpoint_id):

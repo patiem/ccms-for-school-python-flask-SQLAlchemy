@@ -545,6 +545,12 @@ table.assignment  {
     background-color: #eeeeee;
 }
 
+.checkpoint {
+padding: 20px;
+}
+.checkpoint h1, .checkpoint h3 {
+margin-bottom: 20px;}
+
 #codecool_logo{
     height: 90vh;
     text-align: center;
@@ -593,3 +599,4 @@ table.assignment  {
         transform: rotate(360deg);
     }
 }
+

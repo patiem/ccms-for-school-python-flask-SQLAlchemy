@@ -1,74 +1,31 @@
 {% extends "menu.html" %}
 {% block content %}
-<div class="content">
-    
-    <h1>Select checkpoint title</h1>
+
+<div class="checkpoint">
+
+    <h1>Checkpoints</h1>
+    <h3>Select checkpoint title</h3>
     
     <figure class="table" id="table1">
     <table>
         <tr>
-            <th style="width: 10px;"></th>
-            <th  class='left'>Title</th>            
+            <th  class='left'>Title</th>
+            <th  class='left'>Created by</th>
+            <th  class='left'>Start date</th>
+            <th class="left"></th>
+
         </tr>
+        {% for checkpoint in checkpoints %}
         <tr>
-            <td style="width: 10px;"><input type="radio" name="title" /></td>
-            <td class="left">OOP</td>            
+
+            <td class="left">{{ checkpoint['Title'] }}</td>
+            <td class="left">{{ checkpoint['Name'] }} {{ checkpoint['Surname'] }}</td>
+            <td class="left">{{ checkpoint['Start_date'] }}</td>
+            <td> <a href="/checkpoint-make/{{ checkpoint['ID'] }}"     class="button orange">Checkpoint</a> </td>
         </tr>
-         <tr>
-            <td style="width: 10px;"><input type="radio" name="title" /></td>
-            <td class="left" >SQL</td>            
-        </tr>
-        
-       
-        
-        
+        {% endfor %}
     </table>
     </figure>
-    
-    <br /><br />
-    
-    <h1>Select second mentor</h1>
-    
-   <select>
-       <option></option>
-       <option>Rafał Stępień</option>
-       <option>Mateusz Ostafil</option>
-    
-    </select>
-    <br /><br />
-    
-    <h1>Select student</h1>
-    
-    <figure class="table" id="table2">
-    <table>
-        <tr>
-            <th></th>
-            <th  class='left'>SURNAME</th>
-            <th class='left'>NAME</th>
-            
-            
-            
-        </tr>
-        <tr>
-            <td style="width: 10px;"><input type="radio" name="student " id="student1"/></td>
-            <td class='left'><label for="student1">Osak</label></td>
-            <td class='left'>Michał</td>
-            
-            
-        </tr>
-        <tr>
-            <td style="width: 10px;"><input type="radio" name="student "id="student2" /></td>
-            <td class='left'><label for="student2">Siga</label></td>
-            <td class='left'>Mateusz</td>
-
-            
-        </tr>
-       
-        
-        
-    </table>
-    </figure><br /><br />
-    <a href="checkpoint-grade.html"     class="button orange">Make checkpoint</a>
 </div>
 
 {% endblock %}

@@ -1,22 +1,12 @@
+from flask import Flask, request, session, render_template,redirect, url_for
+from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.team import Team
-from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 
-
 app = Flask(__name__)
+app.register_blueprint(checkpointcontroller)
 app.secret_key = 'any random string'
-
-
-@app.route('/checkpoint')
-def checkpoint():
-
-    mentors = ""
-    students = ""
-    checkpoints = ""
-
-    return render_template('checkpoint.html', mentors=mentors, students=students, checkpoints=checkpoints)
-
 
 
 @app.route('/logout')
