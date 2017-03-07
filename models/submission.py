@@ -110,18 +110,32 @@ class Submission:
                 submission_for_student.append(submission)
         return submission_for_student
 
-    @classmethod
-    def find_submission(cls, student, assignment):
+    # @classmethod
+    # def find_submission(cls, student, assignment):
+    #     """
+    #     :param student: student object for whom we searching submitted assignment
+    #     :param assignment: assignment object for which checking submission
+    #     :return: submission object / False
+    #     """
+    #     for submission in cls.submission_list:
+    #         if submission.student_idx == student.idx:
+    #             if submission.assignment_idx == assignment.idx:
+    #                 return submission
+    #     return False
+
+    @staticmethod
+    def find_submission(assignment_id, student_id):
         """
-        :param student: student object for whom we searching submitted assignment
-        :param assignment: assignment object for which checking submission
+        :param student_id: logged student id
+        :param assignment_id: assignment id
         :return: submission object / False
         """
-        for submission in cls.submission_list:
-            if submission.student_idx == student.idx:
-                if submission.assignment_idx == assignment.idx:
-                    return submission
+        query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
+        params = [assignment_id, student_id]
+        if sql.query(query, params):
+            return sql.query(query, params)[0]
         return False
+
 
     def change_grade(self, grade, mentor_id, student_id, assignment_id):
         """

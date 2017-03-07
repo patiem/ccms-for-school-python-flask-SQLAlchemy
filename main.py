@@ -4,6 +4,7 @@ from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
+from models.submission import Submission
 
 
 app = Flask(__name__)
@@ -19,16 +20,16 @@ def checkpoint():
 def show_assignments_list():
     logged_user = make_student()
     assignments = StudentMenu.assignment_list_with_grades(logged_user)
-    return render_template('assignments.html', user=logged_user, assignments=assignments)
+    return render_template('assignments.html', user=session['user'], assignments=assignments)
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
     logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
-    print(assignment)
+    submission = Submission.find_submission(idx, session['user']['id'])
     if request.method == 'GET':
-        return render_template('submissions.html', user=logged_user, assignment=assignment)
+        return render_template('submissions.html', user=logged_user, assignment=assignment, submission=submission)
     elif request.method == 'POST':
         pass
 

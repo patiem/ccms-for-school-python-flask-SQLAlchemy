@@ -12,17 +12,32 @@
     <section>
         <table class="assignment">
             <tr>
-                <th>Termin dostarczenia</th>
+                <th>Date of submission</th>
                 <td>{{ assignment[2] }}</td>
             </tr>
-            <tr>
-                <th>Punkty</th>
-                <td>24</td>
-            </tr>
-            <tr>
-                <th>Przesyłanie</th>
-                <td>adres URL witryny internetowej</td>
-            </tr>
+            {% if submission %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>{{ submission[1] }}</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    {% if submission[0] == -1 %}
+                        <td>Not graded</td>
+                    {% else %}
+                        <td>{{ submission[0] }}</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    <td>Not graded</td>
+                </tr>
+            {% endif %}
         </table>
     </section>
     <hr>
