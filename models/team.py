@@ -9,11 +9,12 @@ class Team:
         self.name = name
         self.students_id = students_id
 
-    @classmethod
-    def create_teams_list(cls):
+    @staticmethod
+    def create_teams_list():
         """
         Creates teams_list with Team objects
         """
+        teams_list = []
         query = 'SELECT * FROM `TEAMS`'
         teams = sql.query(query)
         if teams:
@@ -26,9 +27,11 @@ class Team:
                 if students:
                     for student in students:
                         students_id.append(student['ID_USER'])
-                    cls.teams_list.append(Team(id_team, name, students_id))
+                    teams_list.append(Team(id_team, name, students_id))
                 else:
-                    cls.teams_list.append(Team(id_team, name, []))
+                    teams_list.append(Team(id_team, name, []))
+
+        return teams_list
 
     @classmethod
     def get_by_id(cls, team_id):

@@ -1,4 +1,5 @@
 from models.student import Student
+from models.team import Team
 from flask import Flask, request, session, render_template,redirect, url_for
 from models.user import *
 
@@ -40,7 +41,12 @@ def index():
 
 @app.route('/teams')
 def teams():
-    return render_template('teams.html')
+    if 'user' in session:
+        teams_list = Team.create_teams_list()
+        students_list = Student.students_list()
+        return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
+    else:
+        return render_template('login.html')
 
 
 @app.route('/attendance')

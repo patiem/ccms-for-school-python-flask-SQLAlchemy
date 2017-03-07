@@ -19,6 +19,7 @@ aside{
     box-sizing: border-box;
     background: url('../images/Blue-Background.jpeg');
 }
+
 footer {
     color: darkslategray;
     width: 20%;
@@ -29,18 +30,21 @@ footer {
     position: fixed;
     bottom: 1px;
 }
+
 #logged_user{
     left: 50%;
     padding: 5px;
     text-align: left;
     font-size: 0.7em;
 }
+
 #user{
     height: 90px;
     margin: auto;
     padding: 10px;
     text-align: center;
 }
+
 #user_photo{
     float: left;
     margin-top: 10px;
@@ -51,7 +55,6 @@ footer {
     background-size: 90px 90px;
     display: inline-block;
 }
-
 
 .content {
     float: right;
@@ -97,11 +100,13 @@ h3 {
     opacity: 0;
 
 }
+
 .overlay:target {
     visibility: visible;
     opacity: 1;
 
 }
+
 .close {
     position: relative;
     right: -13em;
@@ -110,6 +115,7 @@ h3 {
     text-decoration: none;
     color: #000;
 }
+
 /*form*/
 .edit_user {
     width: 70em;
@@ -124,8 +130,8 @@ h3 {
     margin: 1em 1.2em;
     padding: 0.9em;
     font-size: 2.1em;
-
 }
+
 .form-block input{
     height: 3em;
     width: 35em;
@@ -139,15 +145,18 @@ h3 {
     background-color: rgba(255, 255, 255, 0.3);
     position: relative;
 }
+
 .form-block label{
     position: relative;
 }
+
 .form-block textarea {
     position: relative;
     float: right;
     box-shadow: 0 0 0.9em #888888;
     box-sizing: border-box;
 }
+
 .load_file input{
     height: 3em;
     width: 35em;
@@ -162,10 +171,12 @@ h3 {
 select, option {
     padding: 10px;
 }
+
 .load_file  label {
     position: relative;
 
 }
+
 #submit,#add_submit{
     display: block;
     margin: 3em auto;
@@ -189,10 +200,10 @@ select, option {
     float: right;
 }
 
-
 #logged_user a {
     font-size: 1.5em;
 }
+
 /* button class */
 .button {
     display: inline-block;
@@ -211,9 +222,11 @@ select, option {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
+
 .button:hover {
     text-decoration: none;
 }
+
 .button:active {
     position: relative;
     top: 1px;
@@ -229,40 +242,40 @@ select, option {
     background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
 }
+
 .orange:hover {
     background: #f47c20;
     background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
     background: -moz-linear-gradient(top,  #f88e11,  #f06015);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
 }
+
 .orange:active {
     color: #fcd3a5;
     background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
     background: -moz-linear-gradient(top,  #f47a20,  #faa51a);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 }
+
 /* submission */
 .assign_title {
     float: left;
     color: #333333;
     font-size: 1.5em;
     margin: 10px;
-
 }
 
 #top {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-
-
 }
 
 .description {
     margin-top: 30px;
     width: 90%;
-
 }
+
 .description article {
     width: 100%;
     margin: 30px 40px 10px 10px;
@@ -276,13 +289,13 @@ article h3 {
     margin: 20px 0;
 
 }
+
 /*Table css*/
 table {
     padding: 10px;
     text-align: center;
     box-shadow: 5px 5px 10px #8d8a8a;
     width: 100%;
-
 }
 
 th {
@@ -291,20 +304,17 @@ th {
     padding: 20px 10px;
     font-weight: 700;
     font-size: 1.1em;
-
 }
 
 tr {
     border: 1px solid #eee;
     padding: 5px;
-
 }
 
 td {
     border-bottom: 5px inset lightgrey;
     padding: 20px 25px;
     margin: 2px;
-
 }
 
 .left {
@@ -324,6 +334,11 @@ table a:hover {
     top: 2px;
     left: 2px;
 }
+
+.team_table th{
+    min-width: 200px;
+}
+
 /*fixed buttons*/
 .fixed_table_button{
     margin-bottom: 6px;
@@ -385,10 +400,12 @@ table a:hover {
 .remove_button:hover{
     box-shadow: 0 0 50px #f00;
 }
+
 .edit{
     background-color: #f88e11;
     margin-right: 1em;
 }
+
 .gray_button{
     background-color: #333333;
 }
@@ -399,11 +416,13 @@ table a:hover {
     width: 100%;
 
 }
+
 #login{
     width: 270px;
     height: 50px;
     margin-top: 20px;
 }
+
 table.assignment  {
     box-shadow: 0 0 0 black;
 }
@@ -427,30 +446,36 @@ table.assignment  {
     border-bottom: 0;
 
 }
+
 .remove_team{
     background-color: #333333;
 }
+
 .grade_output{
     padding: 2px;
     margin-left: 1px;
 }
+
 .grade_range{
     display: block;
     text-align: center;
     align-content: center;
     margin: auto;
 }
+
 .student_to_team_table{
     width: 45vw;
     height: 80vh;
     overflow: auto;
     margin: auto;
 }
+
 .student_to_team_table a{
     color: #da7c0c;
     font-weight: bold;
     font-size: x-large;
 }
+
 .student_to_team_table td{
     background-color: #eeeeee;
 }
@@ -463,6 +488,7 @@ table.assignment  {
     #logged_user p {
         font-size: 0.8em;
     }
+
     h1{
         font-size: 1.2em;
     }
@@ -480,8 +506,8 @@ table.assignment  {
         height: 5em;
         background-size: 5em 5em;
     }
-
 }
+
 @media screen and (max-height: 768px){
     .form-block, .load_file {
         margin: 0 1.2em;
@@ -550,6 +576,7 @@ table.assignment  {
         transform: rotate(360deg);
     }
 }
+
 @keyframes rotate {
     from {
         -ms-transform: rotate(0deg);

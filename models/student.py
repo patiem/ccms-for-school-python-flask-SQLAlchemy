@@ -21,6 +21,9 @@ class Student(User):
         User.__init__(self, idx, name, last_name, mail, telephone)
         self.id_team = id_team
 
+    def full_name(self):
+        return self.name + ' ' + self.last_name
+
     @classmethod
     def create_object_list(cls):
         """
@@ -163,3 +166,42 @@ class Student(User):
             return int(average * 100 / all_days)
         else:
             pass
+
+    @staticmethod
+    def students_list():
+        """
+        Crete objects of class student from sql
+        :return: None
+        """
+        students_list =[]
+        query = """
+                    SELECT `ID`, `Name`, Surname, `E-mail`, `Telephone`
+                    FROM Users
+                    WHERE Type = 'Student'"""
+        data = sql.query(query)
+        table = []
+
+        if data:
+            for row in data:
+                table.append([row[0], row[1], row[2], row[3], row[4]])
+            for line in table:
+                team_id = []
+                get_team_id = """
+                                    SELECT ID_TEAM
+                                    FROM Users_team
+                                    WHERE ID_USER = ?"""
+
+                if sql.query(get_team_id, [line[0]]):
+                    for row in sql.query(get_team_id, [line[0]]):
+                        team_id = row[0]
+
+                if team_id:
+                    line.append(team_id)
+                    new_object = Student(line[0], line[1], line[2], line[3], line[4], line[5])
+                else:
+                    # TODO dodać walidacje telefonu (jesli jest None)
+                    new_object = Student(line[0], line[1], line[2], line[3], '214124214')
+
+                students_list.append(new_object)
+
+        return students_list
