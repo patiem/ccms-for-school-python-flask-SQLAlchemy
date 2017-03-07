@@ -1,6 +1,6 @@
 from models.student import Student
 from models.team import Team
-from flask import Flask, request, session, render_template,redirect, url_for
+from flask import Flask, request, session, render_template, redirect, url_for
 from models.user import *
 
 
@@ -47,6 +47,16 @@ def teams():
         return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
     else:
         return render_template('login.html')
+
+
+@app.route('/add_to_team/<student_id><team_id>')
+def add_to_team(student_id, team_id):
+
+    # return '{} {}'.format(student_id, team_id)
+
+    Team.add_student_to_team(student_id, team_id)
+
+    return redirect('/teams')
 
 
 @app.route('/attendance')
