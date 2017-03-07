@@ -1,9 +1,6 @@
 {% extends 'menu.html' %}
 
 {% block content %}
-    {% if student_object %}
-        <h1>{{ student_object }}</h1>
-    {% endif %}
     {% if table %}
         <table>
             <tr>
@@ -15,11 +12,11 @@
             </tr>
             {% for student in table %}
             <tr>
-                <td>{{ student[0] }}</td>
+                <td data-id={{ student[0] }} id='id' >{{ student[0] }}</td>
                 <td>{{ student[1] + ' ' + student[2] }}</td>
                 <td>{{ student[3] }}</td>
                 <td>{{ student[4] }}</td>
-                <td><a class="remove_button edit" href="{{ '#edit' + 'student[0]' }}">Edit</a><a href="#" class="remove_button" onclick="confirm_remove()">Remove</a> </td>
+                <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button" onclick="confirm_remove()">Remove</a> </td>
             </tr>
             {% endfor %}
         </table>
@@ -70,5 +67,5 @@
             </form>
         </div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 {% endblock %}

@@ -1,8 +1,10 @@
-from flask import Flask, request, session, render_template,redirect, url_for
+from flask import Flask, request, session, render_template,redirect, url_for, jsonify, Blueprint
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
+from models.user import User
 from models.team import Team
 from models.user import *
+
 
 app = Flask(__name__)
 app.register_blueprint(checkpointcontroller)
@@ -53,10 +55,23 @@ def attendance():
 @app.route('/student_list')
 def student_list():
     table = Student.create_student_list()
-    student_object = User.return_by_id(1)
     if table:
-        return render_template('student_list.html', table=table, student_object=student_object)
-    return render_template('student_list.html')
+        return render_template('student_list.html', table=table, user=session['user'])
+    return render_template('student_list.html', user=session['user'])
+
+
+
+@app.route('/edit', methods=['POST', 'GET'])
+def get_data():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        student = Student.return_by_id(idx)
+        student_dict = {'name':student.name,
+                        'surname':student.last_name,
+                        'e-mail':student.mail,
+                        'telephone':student.telephone}
+        return jsonify(student_dict)
+    return 'lipa'
 
 
 if __name__ == "__main__":
