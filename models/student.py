@@ -199,8 +199,11 @@ class Student(User):
                     line.append(team_id)
                     new_object = Student(line[0], line[1], line[2], line[3], line[4], line[5])
                 else:
-                    # TODO dodać walidacje telefonu (jesli jest None)
-                    new_object = Student(line[0], line[1], line[2], line[3], '214124214')
+
+                    if line[4]:
+                        new_object = Student(line[0], line[1], line[2], line[3], line[4])
+                    else:
+                        new_object = Student(line[0], line[1], line[2], line[3], 'Empty')
 
                 students_list.append(new_object)
 
