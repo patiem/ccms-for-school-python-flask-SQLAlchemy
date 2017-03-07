@@ -22,8 +22,8 @@
                 </tr>
                 <tr>
                     <th>Grade</th>
-                    {% if submission[0] == -1 %}
-                        <td>Not graded</td>
+                    {% if submission[0] == '-1' %}
+                        <td>None</td>
                     {% else %}
                         <td>{{ submission[0] }}</td>
                     {% endif %}
@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <th>Grade</th>
-                    <td>Not graded</td>
+                    <td>None</td>
                 </tr>
             {% endif %}
         </table>
@@ -44,6 +44,16 @@
     {{ assignment[5]|safe }}
 
     <div id="popup" class="overlay">
+            {% if submission %}
+            <h2>You already submitted this assignment</h2>
+            <form class="edit_user" name="add_submission">
+                <a class="close" href="#">&times;</a>
+                <div class="form-block">
+                    <label for="link">You already submitted this assignment</label>
+                    <input type="hidden" name="hidden" id="hidden">
+                </div>
+            </form>
+            {% else %}
             <h2>Add submission</h2>
             <form class="edit_user" name="add_submission">
                 <a class="close" href="#">&times;</a>
@@ -63,5 +73,6 @@
 
                 <input type="submit" value="Submit" id="submit" class="button orange">
             </form>
+        {% endif %}
     </div>
 {% endblock %}

@@ -27,7 +27,7 @@ def show_assignments_list():
 def show_assignment(idx):
     logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
-    submission = Submission.find_submission(idx, session['user']['id'])
+    submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
         return render_template('submissions.html', user=logged_user, assignment=assignment, submission=submission)
     elif request.method == 'POST':
