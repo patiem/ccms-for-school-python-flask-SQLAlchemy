@@ -7,7 +7,7 @@ from abc import ABCMeta
 class User(metaclass=ABCMeta):
     object_list = None
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, password):
         """
         Create object
         :param idx: string (id of student)
@@ -22,6 +22,7 @@ class User(metaclass=ABCMeta):
         self.last_name = last_name
         self.mail = mail
         self.telephone = telephone
+        self.password = password
 
     def change_value(self, name_of_attribute, new_value):
         """
