@@ -29,7 +29,7 @@ def show_assignment(idx):
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
-        return render_template('submissions.html', user=logged_user, assignment=assignment, submission=submission)
+        return render_template('submissions.html', user=session['user'], assignment=assignment, submission=submission)
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']

@@ -178,8 +178,6 @@ class User(metaclass=ABCMeta):
         else:
             return None
 
-
-
     @staticmethod
     def encode(password):
         """Encoding password using salt and hash sha256
