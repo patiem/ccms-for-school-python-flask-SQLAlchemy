@@ -92,8 +92,16 @@ def update_student():
         Student.update_sql(edit_list)
         return redirect(url_for('student_list'))
 
-@app.route()
-
+@app.route('/save-student', methods=['POST'])
+def save_student():
+    if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        add_list = [name, surname, email, telephone]
+        Student.add_user(add_list)
+        return redirect(url_for('student_list'))
 
 if __name__ == "__main__":
     app.run(debug=True)

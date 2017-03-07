@@ -89,10 +89,10 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
-        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone FROM Users WHERE ID = ?"
+        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
         user_data = sql.query(sql_query, [idx])[0]
         if user_data:
-            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4], user_data[5])
             return new_object
 
     @classmethod
