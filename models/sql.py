@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def connect_db(DATABASE_NAME='CCMS.db'):
+def connect_db(DATABASE_NAME='models/CCMS.db'):
     return sqlite3.connect(DATABASE_NAME)
 
 
