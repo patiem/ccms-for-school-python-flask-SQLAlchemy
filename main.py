@@ -18,14 +18,14 @@ def checkpoint():
 
 @app.route('/assignments')
 def show_assignments_list():
-    logged_user = make_student()
-    assignments = StudentMenu.assignment_list_with_grades(logged_user)
+    #logged_user = make_student()
+    assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
     return render_template('assignments.html', user=session['user'], assignments=assignments)
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
-    logged_user = make_student()
+    # logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
@@ -33,15 +33,14 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(logged_user.idx, assignment[0], link, comment)
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
         return redirect(url_for('show_assignment', idx=idx))
 
 
-
-def make_student():
-    user_id = session['user']['id']
-    logged_user = Student.return_by_id(user_id)  # what with team id??
-    return logged_user
+# def make_student():
+#     user_id = session['user']['id']
+#     logged_user = Student.return_by_id(user_id)  # what with team id??
+#     return logged_user
 
 
 @app.route('/logout')

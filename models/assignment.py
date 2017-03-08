@@ -33,6 +33,7 @@ class Assignment:
 
     @classmethod
     def list_from_sql(cls):
+        cls.assigments_list = []
         query = "SELECT * FROM `Assigments`;"
         list_from_sql = sql.query(query)
         if list_from_sql:

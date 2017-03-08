@@ -29,6 +29,7 @@ class Submission:
 
     @classmethod
     def list_from_sql(cls):
+        cls.submission_list = []
         query = "SELECT * FROM `Sumbissions`;"
         list_from_sql = sql.query(query)
         if list_from_sql:

@@ -210,3 +210,7 @@ class Student(User):
 
         return students_list
 
+    @classmethod
+    def make_student(cls, user_id):
+        logged_user = cls.return_by_id(user_id)  # what with team id??
+        return logged_user

@@ -341,13 +341,14 @@ class StudentMenu(Menu):
     #     return assignments_list_to_print
 
     @staticmethod
-    def assignment_list_with_grades(logged_user):
+    def assignment_list_with_grades(user_id):
         """
         Makes list with assignments visible for student with notation if assignment was submitted
         and how it was graded.
         :param logged_user: (user object)
         :return: assignments_list_to_print
         """
+        logged_user = Student.make_student(user_id)
         Assignment.list_from_sql()
         assignments_list = Assignment.pass_assign_for_student()
         Submission.list_from_sql()
