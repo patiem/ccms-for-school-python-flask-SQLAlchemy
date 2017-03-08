@@ -10,7 +10,6 @@ from models.submission import Submission
 from models.mentor import Mentor
 
 
-
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
@@ -20,20 +19,29 @@ def checkpoint():
     return render_template('checkpoint.html')
 
 
-@app.route('/assignments')
+@app.route('/assignments', methods=['GET', 'POST'])
 def show_assignments_list():
-    # logged_user = make_student()
-    if session['user']['type'] == 'Student':
-        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
-        return render_template('assignments.html', user=session['user'], assignments=assignments)
-    elif session['user']['type'] == 'Mentor':
+    print(request.method)
+    # if session['user']['type'] == 'Student':
+    #     assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+    #     return render_template('assignments.html', user=session['user'], assignments=assignments)
+
+    # elif session['user']['type'] == 'Mentor':
+    if request.method == 'GET':
         assignments = Assignment.pass_assign_for_mentor()
         return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+    elif request.method == 'POST':
+        assignment_title = request.form['a_title']
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        group = request.form['group']
+        description = request.form['description']
+        return redirect(url_for('show_assignments_list'))
+
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
-    # logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
@@ -43,12 +51,6 @@ def show_assignment(idx):
         comment = request.form['comment']
         Submission.add_submission(session['user']['id'], assignment[0], link, comment)
         return redirect(url_for('show_assignment', idx=idx))
-
-
-# def make_student():
-#     user_id = session['user']['id']
-#     logged_user = Student.return_by_id(user_id)  # what with team id??
-#     return logged_user
 
 
 @app.route('/logout')

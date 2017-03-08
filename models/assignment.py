@@ -89,8 +89,8 @@ class Assignment:
         Passes full list of assignments.
         :return: Assignment.assigments_list (list)
         """
-        assigments_list = cls.list_from_sql
-        return assigments_list
+        assignments_list = cls.list_from_sql()
+        return assignments_list
 
     @classmethod
     def pass_assign_for_student(cls):
