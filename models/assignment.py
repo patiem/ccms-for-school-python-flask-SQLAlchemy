@@ -33,7 +33,7 @@ class Assignment:
 
     @classmethod
     def list_from_sql(cls):
-        cls.assigments_list = []
+        assignments_list = []
         query = "SELECT * FROM `Assigments`;"
         list_from_sql = sql.query(query)
         if list_from_sql:
@@ -47,7 +47,8 @@ class Assignment:
                         end_date = Common.make_corect_date(item['END_DATA'])
                         file_name = item['LINK']
                         group = item['GROUP']
-                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                        assignments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+        return assignments_list
 
     @classmethod
     def add_assignment(cls, title, mentor_id, start_date, end_date, file_name, group='0'):
@@ -88,9 +89,8 @@ class Assignment:
         Passes full list of assignments.
         :return: Assignment.assigments_list (list)
         """
-        cls.assigments_list = []
-        cls.list_from_sql()
-        return cls.assigments_list
+        assigments_list = cls.list_from_sql
+        return assigments_list
 
     @classmethod
     def pass_assign_for_student(cls):
@@ -101,11 +101,10 @@ class Assignment:
         """
         today = datetime.date.today()
         assignments_for_students = []
-        for assignment in cls.assigments_list:
+        assignments_list = cls.list_from_sql()
+        for assignment in assignments_list:
             if assignment.start_date <= today:
                 assignments_for_students.append(assignment)
-                """if assignment.end_date >= today:
-                    assignments_for_students.append(assignment)"""
         return assignments_for_students
 
     def __str__(self):

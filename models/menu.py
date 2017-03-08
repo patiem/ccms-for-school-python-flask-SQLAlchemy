@@ -351,7 +351,7 @@ class StudentMenu(Menu):
         logged_user = Student.make_student(user_id)
         Assignment.list_from_sql()
         assignments_list = Assignment.pass_assign_for_student()
-        Submission.list_from_sql()
+        submissions = Submission.list_from_sql()
         assignments_list_to_print = []
         for assignment in assignments_list:
             type_of_assignment = 'Individual'
