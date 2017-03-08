@@ -55,6 +55,15 @@ class User(metaclass=ABCMeta):
                 return True
 
     @classmethod
+    def return_mails(cls):
+        query = """ SELECT `E-MAIL` FROM Users"""
+        email_list = []
+        data_sql = sql.query(query)
+        for item in data_sql:
+            email_list.append(item[0])
+        return email_list
+
+    @classmethod
     def add_user(cls, data):
         """
         :param data: LIST (FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
@@ -91,7 +100,7 @@ class User(metaclass=ABCMeta):
         sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
         user_data = sql.query(sql_query, [idx])[0]
         if user_data:
-            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4], user_data[5])
+            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
             return new_object
 
     @classmethod

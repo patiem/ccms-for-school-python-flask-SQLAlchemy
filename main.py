@@ -86,12 +86,12 @@ def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         user = User.return_by_id(idx)
-        user_dict = {'id': idx,
+        student_dict = {   'id': idx,
                         'name': user.name,
                         'surname': user.last_name,
                         'e-mail': user.mail,
                         'telephone': user.telephone}
-        return jsonify(user_dict)
+        return jsonify(student_dict)
     return 'lipa'
 
 
@@ -134,6 +134,22 @@ def remove_user():
     if request.method == 'POST':
         idx = request.json['Idx']
         User.remove_sql(idx)
+
+
+@app.route('/check-mail', methods=['POST'])
+def mail_exist():
+    if request.method == 'POST':
+        if request.is_json:
+            mail_list = User.return_mails()
+            if request.json['Mail'] in mail_list:
+                value = {'value': True}
+                return jsonify(value)
+            else:
+                value = {'value': False}
+                return jsonify(value)
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
+
 
 
 if __name__ == "__main__":

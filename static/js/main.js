@@ -28,13 +28,38 @@ $('.remove_user').click(function () {
     }
 })
 
+$('#add_email').change(function () {
+    var email = $(this).val();
+    var email_dict = { Mail: email};
+    $.ajax({
+        type: 'POST',
+        url: 'http://localhost:5000/check-mail',
+        data : JSON.stringify(email_dict),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(response) {
+                console.log(response['value']);
+                if(response['value'] == false){
+                    $('#add_submit').removeClass('inactive').addClass('orange');
+                    $('#add_submit').prop("disabled", false)
 
+                }
+                else {
+                    $('#add_submit').addClass('inactive').removeClass('orange');
+                    $('#add_submit').prop("disabled", true)
+                }
+
+            },
+        error: function(error) {
+                console.log(error);
+            }
+    })
+})
 
 
 $('a.edit').click(function () {
     var tr_id = $(this).closest('tr').find('#id').data('id');
-    var type = $('.type').data('type');
-    var dict_id = { Idx: tr_id, Type: type};
+    var dict_id = { Idx: tr_id};
     $.ajax({
         type: 'POST',
         url: 'http://localhost:5000/edit',

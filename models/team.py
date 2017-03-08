@@ -128,6 +128,3 @@ class Team:
 
         else:
             print('There is no student of this ID')
-
-
-Team.add_student_to_team(1, 20)
