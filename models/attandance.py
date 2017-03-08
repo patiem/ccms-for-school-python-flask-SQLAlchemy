@@ -5,7 +5,6 @@ from models import sql
 
 
 class Attendance:
-
     file = 'csv/attendance.csv'
     attendance_list = []
 
@@ -99,15 +98,25 @@ class Attendance:
         return output_string[:-1]
 
     @classmethod
-    def create_attendance_list(cls):
+    def create_attendance_list(cls, date):
         """
         Creates attendance_list with Attendance objects
         """
-        query = "SELECT * FROM `Attendance`"
+        attendance_list = []
 
-        student_list = sql.query(query)
-        for student in student_list:
-            cls.attendance_list.append(Attendance(student['ID_STUDENT'], student['DATE'], student['STATUS']))
+        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
+        params = [date]
+        attendance = sql.query(query, params)
+        # student_list = Student.students_list()
+
+        # for student in student_list:
+        #     attendance_list.append(cls(student.idx, date, student['STATUS']))
+        if attendance:
+            for student in attendance:
+                attendance_list.append(Attendance(student['ID_STUDENT'], student['DATE'], student['STATUS']))
+
+            return attendance_list
+        return False
 
     @classmethod
     def students_engagement(cls):
@@ -126,3 +135,39 @@ class Attendance:
                                     str(student_attendance['Late']),
                                     str(student_attendance['Absent'])])
         return engagement_list
+
+    @staticmethod
+    def get_attendance_list(date):
+        """
+        Sets the state of the presence each student at today
+        :param date: str 'YYYY-MM-DD'
+        :return list_of_attendance: list with Attendance objects
+        """
+
+        # EXAMPLE: today = '2017-03-07', date = '2017-03-07'
+        today = str(datetime.date.today())
+
+        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
+        params = [date]
+        attendance = sql.query(query, params)
+
+        if today == date:
+            if attendance:
+                pass
+            else:
+                for student in Student.students_list():
+                    query = """INSERT INTO `Attendance`(`ID`,`ID_STUDENT`,`DATE`,`STATUS`) VALUES (NULL,?,?,'None');"""
+                    params = [student.idx, today]
+                    sql.query(query, params)
+        list_of_attendance = Attendance.create_attendance_list(date)
+
+        # ------------------------- EXAMPLE USE -------------------------- #
+
+        # attendance_list = Attendance.get_attendance_list('2016-10-00')
+        # if attendance_list:
+        #     for student in attendance_list:
+        #         print(student.id_student, student.date, student.present)
+
+        # ---------------------------------------------------------------- #
+
+        return list_of_attendance
