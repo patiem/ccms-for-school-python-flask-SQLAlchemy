@@ -1,0 +1,42 @@
+{% extends "menu.html" %}
+{% block content %}
+
+    <div class="checkpoint">
+    <h1>Checkpoints</h1>
+
+    {% if students != None %}
+    <h3>Select student to grade</h3>
+    <figure class="table" id="table1">
+
+    <table>
+        <tr>
+            <th  class='left'>Student</th>
+            <th  class='right' style="padding-right: 50px;"  >Grade student</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+
+            <td class="left">{{ student['Name'] }} {{ student['Surname'] }}</td>
+            <td class='right'>
+                <form action="/checkpoint-make/{{ checkpoint_id }}/{{ mentor }}/gradestudent" method="POST">
+                    <input type="hidden" name="mentor" value="{{ mentor  }}" />
+                    <input type="hidden" name="student" value="{{ student['ID']  }}" />
+                    <input type="hidden" name="checkpoint" value="{{ checkpoint_id  }}" />
+                    <input type="radio" id="green{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="green" /><label for="green{{ student['ID'] }}">green</label>
+                    <input type="radio" id="yellow{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="yellow" /><label for="yellow{{ student['ID'] }}">yellow</label>
+                    <input type="radio" id="red{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="red" /><label for="red{{ student['ID'] }}">red</label>
+                    <input type="submit" value="GRADE"   class="button orange" />
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </figure>
+        {% else%}
+        <h3>All students are graded!</h3>
+        <a href="/checkpoint-make" class="button orange">Back to checkpoints</a>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

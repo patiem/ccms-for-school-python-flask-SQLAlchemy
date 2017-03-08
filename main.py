@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template,redirect, url_for, jsonify, Blueprint
+from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.user import User
@@ -8,6 +8,8 @@ from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
+
+
 
 
 app = Flask(__name__)
