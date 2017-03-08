@@ -92,17 +92,17 @@ class Submission:
         param = [sub_id, comment]
         sql.query(query_3, param)
 
-    @classmethod
-    def create_list_to_save(cls):
-        """
-        Creates 2d list which can be use for saving process
-        :return: list_to_save - 2d list ready to be saved in csv file
-        """
-        list_to_save = []
-        for submission in cls.submission_list:
-            list_to_save.append([submission.student_idx, submission.assignment_idx, str(submission.date_of_submission),
-                                 submission.link, str(submission.grade)])
-        return list_to_save
+    # @classmethod
+    # def create_list_to_save(cls):
+    #     """
+    #     Creates 2d list which can be use for saving process
+    #     :return: list_to_save - 2d list ready to be saved in csv file
+    #     """
+    #     list_to_save = []
+    #     for submission in cls.submission_list:
+    #         list_to_save.append([submission.student_idx, submission.assignment_idx, str(submission.date_of_submission),
+    #                              submission.link, str(submission.grade)])
+    #     return list_to_save
 
     @classmethod
     def pass_submission_for_student(cls, student):
