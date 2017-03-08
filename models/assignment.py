@@ -33,6 +33,7 @@ class Assignment:
 
     @classmethod
     def list_from_sql(cls):
+        cls.assigments_list = []
         query = "SELECT * FROM `Assigments`;"
         list_from_sql = sql.query(query)
         if list_from_sql:
@@ -44,10 +45,9 @@ class Assignment:
                     start_date = Common.make_corect_date(item['START_DATA'])
                     if Test.is_date_correct(item['END_DATA']):
                         end_date = Common.make_corect_date(item['END_DATA'])
-                        if Test.does_file_exist('csv/assignments_description/' + item['LINK']):
-                            file_name = item['LINK']
-                            group = item['GROUP']
-                            cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+                        file_name = item['LINK']
+                        group = item['GROUP']
+                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
 
     @classmethod
     def create_assignment_list(cls):
@@ -80,7 +80,6 @@ class Assignment:
         :param group: bool (group/ind)
         :return: None
         """
-        #new_id = Common.generate_id()
         query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`) VALUES (?, ?, ?, ?, ?, ?);"
         values_list = [title, mentor_id, start_date, end_date, file_name, group]
         sql.query(query, values_list)
@@ -89,8 +88,7 @@ class Assignment:
         new_assignment = cls(new_id, title, mentor_id, start_date, end_date, file_name, group)
         if cls.assigments_list:
             cls.assigments_list.append(new_assignment)
-        #Common.save_file('csv/assignments.csv', cls.create_list_to_save())
-    
+
     @classmethod
     def create_list_to_save(cls):
         """
@@ -144,10 +142,16 @@ class Assignment:
             text_to_print = f.read()
         return text_to_print
 
+    # @classmethod
+    # def get_by_id(cls, assignment_idx):
+    #     for assignment in cls.assigments_list:
+    #         if assignment.idx == assignment_idx:
+    #             return assignment
+
     @classmethod
     def get_by_id(cls, assignment_idx):
-        for assignment in cls.assigments_list:
-            if assignment.idx == assignment_idx:
-                return assignment
-
-
+        query = "SELECT * FROM `assigments` WHERE id=?"
+        params = [assignment_idx]
+        assignment = sql.query(query, params)[0]
+        print(assignment)
+        return assignment

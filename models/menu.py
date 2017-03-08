@@ -1,18 +1,18 @@
-from ui import Ui
-from user import User
-from manager import Manager
-from student import Student
-from mentor import Mentor
-from employee import Employee
-from common import Common
-from assignment import Assignment
-from submission import Submission
-from attandance import Attendance
+from models.ui import Ui
+from models.user import User
+from models.manager import Manager
+from models.student import Student
+from models.mentor import Mentor
+from models.employee import Employee
+from models.common import Common
+from models.assignment import Assignment
+from models.submission import Submission
+from models.attandance import Attendance
 from datetime import date
-from test import Test
-from checkpoint import Checkpoint
-from team import Team
-import sql
+from models.test import Test
+from models.checkpoint import Checkpoint
+from models.team import Team
+import models.sql
 
 
 class Menu:
@@ -254,76 +254,111 @@ class Menu:
 
 class StudentMenu(Menu):
 
-    @classmethod
-    def print_menu(cls, user_object):
-        """
-        Prints menu with options for student.
-        :param user_object: object of one of user's subclass
-        :return:
-        """
-        while True:
-            Ui.clear()
-            Menu.logged_as(user_object)
-            Ui.print_head('Student menu:', 'header')
+    # @classmethod
+    # def print_menu(cls, user_object):
+    #     """
+    #     Prints menu with options for student.
+    #     :param user_object: object of one of user's subclass
+    #     :return:
+    #     """
+    #     while True:
+    #         Ui.clear()
+    #         Menu.logged_as(user_object)
+    #         Ui.print_head('Student menu:', 'header')
+    #
+    #         options = '\t1: Show assignment list with grades\n' \
+    #                   '\t2: Show assignment description\n' \
+    #                   '\t3: Submit assignment\n' \
+    #                   '\t4: Show my submission list \n' \
+    #                   '\t5: Show my overall attendance \n' \
+    #                   '\t0: Exit program'
+    #
+    #         user_choice = Ui.get_menu(options, 0, 6)
+    #         cls.choose_option(user_choice, user_object)
 
-            options = '\t1: Show assignment list with grades\n' \
-                      '\t2: Show assignment description\n' \
-                      '\t3: Submit assignment\n' \
-                      '\t4: Show my submission list \n' \
-                      '\t5: Show my overall attendance \n' \
-                      '\t0: Exit program'
+    # @classmethod
+    # def choose_option(cls, choice, logged_user):
+    #     """
+    #     Creates action for option, which was chosen.
+    #     :param choice: str - users choice
+    #     :param logged_user: user object
+    #     :return:
+    #     """
+    #
+    #     students_assignments = Assignment.pass_assign_for_student()
+    #
+    #     if choice == '1':
+    #         cls.get_assignment_list_with_grades(logged_user)
+    #         input('Enter to back to menu')
+    #     elif choice == '2':
+    #         cls.assignment_description()
+    #         input('Enter to back to menu')
+    #     elif choice == '3':
+    #         cls.student_makes_submission(logged_user, students_assignments)
+    #         input('Enter to back to menu')
+    #     elif choice == '4':
+    #         cls.my_subbmisions(logged_user)
+    #         input('Enter to back to menu')
+    #     elif choice == '5':
+    #         cls.my_attendance(logged_user)
+    #         input('Enter to back to menu')
+    #     elif choice == '0':
+    #         exit()
 
-            user_choice = Ui.get_menu(options, 0, 6)
-            cls.choose_option(user_choice, user_object)
-
-    @classmethod
-    def choose_option(cls, choice, logged_user):
-        """
-        Creates action for option, which was chosen.
-        :param choice: str - users choice
-        :param logged_user: user object
-        :return:
-        """
-
-        students_assignments = Assignment.pass_assign_for_student()
-
-        if choice == '1':
-            cls.get_assignment_list_with_grades(logged_user)
-            input('Enter to back to menu')
-        elif choice == '2':
-            cls.assignment_description()
-            input('Enter to back to menu')
-        elif choice == '3':
-            cls.student_makes_submission(logged_user, students_assignments)
-            input('Enter to back to menu')
-        elif choice == '4':
-            cls.my_subbmisions(logged_user)
-            input('Enter to back to menu')
-        elif choice == '5':
-            cls.my_attendance(logged_user)
-            input('Enter to back to menu')
-        elif choice == '0':
-            exit()
+    # @staticmethod
+    # def get_assignment_list_with_grades(logged_user):
+    #     """
+    #     Makes list with assignments visible for student with notation if assignment was submitted
+    #     and how it was graded.
+    #     :param logged_user: (user object)
+    #     :return: assignments_list_to_print
+    #     """
+    #     Ui.clear()
+    #     Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
+    #     title_list = ['nr', 'title', 'mentor_id', 'start date', 'end date', 'type of assignment', 'submitted', 'grade']
+    #     assignments_list = Assignment.pass_assign_for_student()
+    #     assignments_list_to_print = []
+    #     n = 1
+    #     for assignment in assignments_list:
+    #         type_of_assignment = 'Individual'
+    #         if assignment.group == '1':
+    #             type_of_assignment = 'Group'
+    #         new_line = [str(n), assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date, type_of_assignment]
+    #         submission = Submission.find_submission(logged_user, assignment)
+    #         if submission:
+    #             new_line.append('submitted')
+    #             if submission.grade:
+    #                 new_line.append(submission.grade)
+    #             else:
+    #                 new_line.append('None')
+    #         else:
+    #             new_line.append('not submitted')
+    #             new_line.append('None')
+    #         assignments_list_to_print.append(new_line)
+    #         n += 1
+    #     Ui.print_table(assignments_list_to_print, title_list)
+    #
+    #     return assignments_list_to_print
 
     @staticmethod
-    def get_assignment_list_with_grades(logged_user):
+    def assignment_list_with_grades(user_id):
         """
         Makes list with assignments visible for student with notation if assignment was submitted
         and how it was graded.
         :param logged_user: (user object)
         :return: assignments_list_to_print
         """
-        Ui.clear()
-        Ui.print_head("{} {}'s assignments with grades".format(logged_user.name, logged_user.last_name), 'header')
-        title_list = ['nr', 'title', 'mentor_id', 'start date', 'end date', 'type of assignment', 'submitted', 'grade']
+        logged_user = Student.make_student(user_id)
+        Assignment.list_from_sql()
         assignments_list = Assignment.pass_assign_for_student()
+        Submission.list_from_sql()
         assignments_list_to_print = []
-        n = 1
         for assignment in assignments_list:
             type_of_assignment = 'Individual'
             if assignment.group == '1':
                 type_of_assignment = 'Group'
-            new_line = [str(n), assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date, type_of_assignment]
+            new_line = [assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date,
+                        type_of_assignment]
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
                 new_line.append('submitted')
@@ -334,11 +369,11 @@ class StudentMenu(Menu):
             else:
                 new_line.append('not submitted')
                 new_line.append('None')
+            new_line.append(assignment.idx)
             assignments_list_to_print.append(new_line)
-            n += 1
-        Ui.print_table(assignments_list_to_print, title_list)
 
         return assignments_list_to_print
+
 
     @staticmethod
     def assignment_description():

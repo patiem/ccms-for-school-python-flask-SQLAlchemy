@@ -4,7 +4,11 @@ from models.student import Student
 from models.team import Team
 from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from models.user import *
+from models.menu import StudentMenu
+from models.assignment import Assignment
+from models.submission import Submission
 from models.mentor import Mentor
+
 
 
 app = Flask(__name__)
@@ -14,6 +18,33 @@ app.secret_key = 'any random string'
 @app.route('/checkpoint')
 def checkpoint():
     return render_template('checkpoint.html')
+
+
+@app.route('/assignments')
+def show_assignments_list():
+    #logged_user = make_student()
+    assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+    return render_template('assignments.html', user=session['user'], assignments=assignments)
+
+
+@app.route('/assignments/<idx>', methods=['GET', 'POST'])
+def show_assignment(idx):
+    # logged_user = make_student()
+    assignment = Assignment.get_by_id(int(idx))
+    submission = Submission.find_submission_sql(idx, session['user']['id'])
+    if request.method == 'GET':
+        return render_template('submissions.html', user=session['user'], assignment=assignment, submission=submission)
+    elif request.method == 'POST':
+        link = request.form['link']
+        comment = request.form['comment']
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        return redirect(url_for('show_assignment', idx=idx))
+
+
+# def make_student():
+#     user_id = session['user']['id']
+#     logged_user = Student.return_by_id(user_id)  # what with team id??
+#     return logged_user
 
 
 @app.route('/logout')
@@ -35,6 +66,7 @@ def index():
                     'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
+            print(session['user']['id'])
 
     if 'user' in session:
         return render_template('index.html', user=session['user'])
@@ -167,7 +199,6 @@ def mail_exist():
                 return jsonify(value)
         return redirect(url_for('index'))
     return redirect(url_for('index'))
-
 
 
 if __name__ == "__main__":

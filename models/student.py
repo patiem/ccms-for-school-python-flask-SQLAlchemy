@@ -144,6 +144,7 @@ class Student(User):
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
 
+
     @staticmethod
     def my_attendance(idx):
         query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
@@ -206,3 +207,8 @@ class Student(User):
                 students_list.append(new_object)
 
         return students_list
+
+    @classmethod
+    def make_student(cls, user_id):
+        logged_user = cls.return_by_id(user_id)  # what with team id??
+        return logged_user
