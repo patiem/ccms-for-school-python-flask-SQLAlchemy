@@ -112,7 +112,8 @@ class Team:
             return id_team
         return False
 
-    def add_student_to_team(cls, student_id, team_id):
+    @staticmethod
+    def add_student_to_team(student_id, team_id):
         """
         Lets user to move student between teams
         :return: None
