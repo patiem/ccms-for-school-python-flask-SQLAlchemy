@@ -9,22 +9,11 @@ from models.student import Student
 class Checkpoint:
 
     @staticmethod
-    def add_checkpoint(user_object):
+    def add_checkpoint(title, start_date,  mentor):
 
-        Ui.clear()
-
-        Ui.print_head('Add new checkpoint', 'header')
-
-        title = Ui.get_input('Subject of checkpoint')
-        while True:
-            try:
-                start_date = Common.make_corect_date(Ui.get_input('start date(YYYY-MM-DD)'))
-                break
-            except (IndexError, ValueError, UnboundLocalError):
-                print('Wrong date format, try one more time.')
 
         query = "INSERT INTO Checkpoints ('ID_USER', 'TITLE', 'START_DATE') VALUES (?, ?, ?)"
-        sql.query(query, [user_object.idx, title, start_date])
+        sql.query(query, [mentor, title, start_date])
 
     @staticmethod
     def select_mentors_not_in_checkpoint(checkpoint_id):
@@ -84,52 +73,16 @@ class Checkpoint:
             return 0
 
     @staticmethod
-    def make_checkpoint(user_object):
-
-        Ui.clear()
-        Ui.print_head('Make checkpoint', 'header')
+    def make_checkpoint(mentor1, mentor2, student, checkpoint_id, grade):
 
         today = datetime.date.today()
 
-        checkpoint_id = Checkpoint.show_checkpoints()
-
-        if checkpoint_id != 0:
-            second_mentor_id = Checkpoint.select_mentor_id_from_list(user_object)
-
-            while True:
-                if second_mentor_id == None:
-                    break
-                student = Checkpoint.select_student_id_from_list(checkpoint_id)
-                if student == None:
-                    break
-
-                student = Student.return_by_id(int(student))
-
-                grade = Checkpoint.grade(student)
-
-                if grade == 0:
-                    break
-
-                query = "INSERT INTO Users_checkpoints " \
+        query = "INSERT INTO Users_checkpoints " \
                         "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
                         " VALUES (?, ?, ?, ?, ?, ?)"
-                params = [checkpoint_id, today, grade, int(student.idx), int(user_object.idx), int(second_mentor_id)]
-                sql.query(query, params)
+        params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
+        sql.query(query, params)
 
-                Ui.clear()
-                Ui.print_head('Checkpoint', 'header')
-
-                options = 'Select:\n\n' \
-                          '\t1: Grade next student\n' \
-                          '\t0: Exit Checkpoint '
-
-                user_choice = Ui.get_menu(options, 0, 1)
-
-                if user_choice == '0':
-                    break
-
-                if user_choice == '1':
-                    pass
 
     @staticmethod
     def show_checkpoints():

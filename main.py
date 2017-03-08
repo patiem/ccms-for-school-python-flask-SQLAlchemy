@@ -1,18 +1,17 @@
-from flask import Flask, request, session, render_template,redirect, url_for, jsonify, Blueprint
+from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.user import User
 from models.team import Team
-<<<<<<< HEAD
-=======
-from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+
+
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
 
->>>>>>> 3128e417c8919abe56c8741781b4ee67e54252f9
+
 
 
 app = Flask(__name__)
@@ -20,8 +19,6 @@ app.register_blueprint(checkpointcontroller)
 app.secret_key = 'any random string'
 
 
-<<<<<<< HEAD
-=======
 @app.route('/checkpoint')
 def checkpoint():
     return render_template('checkpoint.html')
@@ -58,7 +55,6 @@ def show_assignment(idx):
 #     return logged_user
 
 
->>>>>>> 3128e417c8919abe56c8741781b4ee67e54252f9
 @app.route('/logout')
 def logout():
     session.pop('user', None)
