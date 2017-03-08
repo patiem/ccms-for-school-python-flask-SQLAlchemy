@@ -25,7 +25,7 @@
             <tr>
                 <td>{{ student_number }}</td>
                 <td>{{ student.name }} {{ student.last_name }}</td>
-                <td><a href="" class="remove_button">REMOVE</a></td>
+                <td><a href="remove_from_team/{{ student.idx }}" class="remove_button">REMOVE</a></td>
 
                 {% set student_number = student_number + 1 %}
             </tr>
@@ -34,7 +34,7 @@
 
     </table>
         <a href="#add_student_to_team{{ team.id_team }}"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-        <a href=""><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
+        <a href="/remove_team/{{ team.id_team }}"><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
 
         <div class="overlay" id="add_student_to_team{{ team.id_team }}">
         <form name="add_student" class="edit_user">
@@ -67,7 +67,7 @@
 
     <div class="overlay" id="add_team">
 
-        <form name="add_student" class="edit_user">
+        <form action="add_team" class="edit_user" method="POST">
             <a class="close" href="#">&times;</a>
             <div class="form-block">
                 <label for="new_team_name">Team name:</label>
