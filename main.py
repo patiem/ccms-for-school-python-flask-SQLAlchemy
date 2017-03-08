@@ -4,7 +4,11 @@ from models.student import Student
 from models.team import Team
 from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from models.user import *
+from models.menu import StudentMenu
+from models.assignment import Assignment
+from models.submission import Submission
 from models.mentor import Mentor
+
 
 
 app = Flask(__name__)
@@ -14,6 +18,37 @@ app.secret_key = 'any random string'
 @app.route('/checkpoint')
 def checkpoint():
     return render_template('checkpoint.html')
+
+
+@app.route('/assignments')
+def show_assignments_list():
+    # logged_user = make_student()
+    if session['user']['type'] == 'Student':
+        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        return render_template('assignments.html', user=session['user'], assignments=assignments)
+    elif session['user']['type'] == 'Mentor':
+        assignments = Assignment.pass_assign_for_mentor()
+        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+
+
+@app.route('/assignments/<idx>', methods=['GET', 'POST'])
+def show_assignment(idx):
+    # logged_user = make_student()
+    assignment = Assignment.get_by_id(int(idx))
+    submission = Submission.find_submission_sql(idx, session['user']['id'])
+    if request.method == 'GET':
+        return render_template('submissions.html', user=session['user'], assignment=assignment, submission=submission)
+    elif request.method == 'POST':
+        link = request.form['link']
+        comment = request.form['comment']
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        return redirect(url_for('show_assignment', idx=idx))
+
+
+# def make_student():
+#     user_id = session['user']['id']
+#     logged_user = Student.return_by_id(user_id)  # what with team id??
+#     return logged_user
 
 
 @app.route('/logout')
@@ -35,6 +70,7 @@ def index():
                     'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
+            print(session['user']['id'])
 
     if 'user' in session:
         return render_template('index.html', user=session['user'])
@@ -115,12 +151,12 @@ def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         user = User.return_by_id(idx)
-        user_dict = {'id': idx,
+        student_dict = {   'id': idx,
                         'name': user.name,
                         'surname': user.last_name,
                         'e-mail': user.mail,
                         'telephone': user.telephone}
-        return jsonify(user_dict)
+        return jsonify(student_dict)
     return 'lipa'
 
 
@@ -164,6 +200,21 @@ def remove_user():
     if request.method == 'POST':
         idx = request.json['Idx']
         User.remove_sql(idx)
+
+
+@app.route('/check-mail', methods=['POST'])
+def mail_exist():
+    if request.method == 'POST':
+        if request.is_json:
+            mail_list = User.return_mails()
+            if request.json['Mail'] in mail_list:
+                value = {'value': True}
+                return jsonify(value)
+            else:
+                value = {'value': False}
+                return jsonify(value)
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":

@@ -1,148 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "menu.html" %}
+<title>Submission</title>
 
-<head>
-    <meta charset="utf-8">
-    <title>Puke Rainbow Unicorns CcMS</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
-</head>
 
-<body>
-<header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
-                    <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
-                    <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
-
-            </section>
-
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
-
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="StudentMenu" class="menus">
-
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
-        <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
-        </footer>
-
-    </aside>
-</header>
-
-<div class="content">
+{% block content %}
     <div id="top">
-    <h2 class="assign_title">Nazwa asignmentu</h2>
-    <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
+    <h2 class="assign_title">{{ assignment[2] }}</h2>
+    <div>
+        {% if user['type'] == 'Student' %}
+            <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
+        {% endif %}
+        <a href="{{ url_for('show_assignments_list') }}" ><div class="fixed_table_button orange_button orange_shadow">
+            Back to list </div></a>
+        </div>
     </div>
     <br>
     <hr>
     <section>
         <table class="assignment">
             <tr>
-                <th>Termin dostarczenia</th>
-                <td>Brak terminu dostarczenia</td>
+                <th>End date</th>
+                <td>{{ assignment[4] }}</td>
             </tr>
-            <tr>
-                <th>Punkty</th>
-                <td>24</td>
-            </tr>
-            <tr>
-                <th>Przesyłanie</th>
-                <td>adres URL witryny internetowej</td>
-            </tr>
+            {% if submission %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>{{ submission[1] }}</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    {% if submission[0] == '-1' %}
+                        <td>None</td>
+                    {% else %}
+                        <td>{{ submission[0] }}</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    <td>None</td>
+                </tr>
+            {% endif %}
         </table>
     </section>
     <hr>
-    <section>
-        <div class="description">
-        <article>
-            <h3>Story</h3>
-            <div>A client came and asked about a software for displaying information about cities, towns and villages in Małopolska.
-                Good news is that he is providing data file (Link (Łącza do strony zewnętrznej.)).
-                Bad news, he's totally newbie when it comes to IT and is interesting only in results.
-                ASAP results, to be more precised. </div>
-        </article>
-        <article>
-            <h3>Descripion</h3>
-            <div>Please:
-                I. Define what classes you'll implement in the system.
-                II. Draw UML Class diagram.
-                III. Create a python program that suits client's needs. </div>
-        </article>
-        <article>
-            <h3>Illustration</h3>
-            <figure>
-                <img src="https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/1524687_10202387511361199_1643696660_n.jpg?oh=78f4151af1f0c67ea5c5fae54e2360a3&oe=593E63FD" />
-            </figure>
-        </article>
-        </div>
-    </section>
+    {{ assignment[5]|safe }}
 
     <div id="popup" class="overlay">
-            <h2>Add submission</h2>
+            {% if submission %}
+            <h2>You already submitted this assignment</h2>
             <form class="edit_user" name="add_submission">
+                <a class="close" href="#">&times;</a>
+                <div class="form-block">
+                    <label for="link">You already submitted this assignment</label>
+                    <input type="hidden" name="hidden" id="hidden">
+                </div>
+            </form>
+            {% else %}
+            <h2>Add submission</h2>
+            <form class="edit_user" name="add_submission" method="POST" action="/assignments/{{ assignment[0] }}">
                 <a class="close" href="#">&times;</a>
                 <div class="form-block">
                     <label for="link">Link to assignment:</label>
                     <input type="text" name="link" id="link">
                 </div>
-                <div class="load_file">
-                    <label for="file">Upload file with assignment:</label>
-                    <input type="file" name="file" id="file">
-                </div>
+{#                <div class="load_file">#}
+{#                    <label for="file">Upload file with assignment:</label>#}
+{#                    <input type="file" name="file" id="file">#}
+{#                </div>#}
                 <div class="form-block">
                     <label for="comment">Comment:</label>
                     <textarea maxlength="500" name ="comment" id="comment" rows="5" cols="55"
@@ -151,10 +79,6 @@
 
                 <input type="submit" value="Submit" id="submit" class="button orange">
             </form>
+        {% endif %}
     </div>
-
-</div>
-
-</body>
-
-</html>
+{% endblock %}
