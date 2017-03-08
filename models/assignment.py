@@ -50,25 +50,6 @@ class Assignment:
                         cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
 
     @classmethod
-    def create_assignment_list(cls):
-        """
-        Create list containing object of assignments
-        :return: None
-        """
-        list_from_csv = Common.read_file('csv/assignments.csv')
-        for item in list_from_csv:
-            idx = item[0]
-            title = item[1]
-            mentor_id = item[2]
-            if Test.is_date_correct(item[3]):
-                start_date = Common.make_corect_date(item[3])
-                if Test.is_date_correct(item[4]):
-                    end_date = Common.make_corect_date(item[4])
-                    if Test.does_file_exist('csv/assignments_description/' + item[5]):
-                        file_name = item[5]
-                        cls.assigments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name))
-
-    @classmethod
     def add_assignment(cls, title, mentor_id, start_date, end_date, file_name, group='0'):
         """
         Add new student object to list
@@ -107,6 +88,8 @@ class Assignment:
         Passes full list of assignments.
         :return: Assignment.assigments_list (list)
         """
+        cls.assigments_list = []
+        cls.list_from_sql()
         return cls.assigments_list
 
     @classmethod

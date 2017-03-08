@@ -1,129 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Puke Rainbow Unicorns CcMS</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
-</head>
-
-<body>
-<header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
-                    <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
-                    <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
-
-            </section>
-
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
-
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="StudentMenu" class="menus">
-
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
-        <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
-        </footer>
-
-    </aside>
-</header>
+{% extends "menu.html" %}
+<title>Submission</title>
 
 
-<div class="content" >
-    
+{% block content %}
+
+    <section class="info">
+        <hr>
+        <p>Click on assignment title to see description or to submit. </p>
+        <div style="clear: both;"></div>
+        <hr>
+    </section>
+
     <table>
         <tr>
             <th>ID</th>
             <th>TITLE</th>
             <th>START DATE</th>
             <th>END DATE</th>
-            <th>POINTS</th>
+            <th>MENTOR</th>
             <th>GROUP</th>
-
         </tr>
+
+        {% set i = 1 %}
+        {% for item in assignments %}
+
         <tr>
-            <td>1</td>
-            <td class='left'><a href="submissions.html">Assignment 1 - dupa</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>10</td>
-            <td>N</td>
-
+            <td>{{ i }}</td>
+            <td class='left'><a href="/assignments/{{ item.idx }}">{{ item.title }}</a></td>
+            <td>{{ item.start_date }}</td>
+            <td>{{ item.end_date }}</td>
+            <td>{{ item.mentor_id }}</td>
+            {% if item.group == '0' %}
+                <td>No</td>
+            {% else %}
+                <td>Yes</td>
+            {% endif %}
         </tr>
-        <tr>
-            <td>2</td>
-            <td class='left'><a href="submissions.html">Assignment 2 - lol</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>20</td>
-            <td>Y</td>
+        {% set i = i + 1 %}
+        {% endfor %}
 
-        </tr>
-        <tr>
-            <td >3</td>
-            <td class='left'><a href="submissions.html">Assignment 3 - qwerty</a></td>
-            <td>2017-01-10</td>
-            <td>2017-03-10</td>
-            <td>30</td>
-            <td>N</td>
-
-        </tr>
-        
-    </table>
     <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Add assignment </div></a>
     <div id="popup" class="overlay">
         <h2>Add submission</h2>
@@ -159,10 +75,4 @@
         </form>
     </div>
 
-</div>
-
-
-
-</body>
-
-</html>
+{% endblock %}
