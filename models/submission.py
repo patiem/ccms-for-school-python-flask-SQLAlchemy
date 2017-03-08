@@ -1,6 +1,7 @@
 from models.common import *
 from models.test import Test
 from models import sql
+from models.team import Team
 
 
 class Submission:
@@ -68,41 +69,56 @@ class Submission:
                 else:
                     cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
 
-    @classmethod
-    def add_submission(cls, student_idx, assignment_idx, link, comment):
+    @classmethod  # IN USE
+    def add_submission(cls, student_idx, assignment_idx, link, comment, group):
         """
         New submission made by student.
         :param student_idx: string
         :param assignment_idx: string
         :param link: string
+        :param comment: str
         :return: None
         """
+
         date_of_submission = datetime.date.today()
-        new_submission = cls(student_idx, assignment_idx, date_of_submission, link)
-        if cls.submission_list:
-            cls.submission_list.append(new_submission)
-        query = "INSERT INTO `Sumbissions` (ID_STUDENT, ID_ASSIGMENT, GRADE, DATE, LINK, ID_MENTOR) VALUES (?, ?, ?, ?, ?, ?);"
-        values_list = [student_idx, assignment_idx, -1, date_of_submission, link, 0]
-        sql.query(query, values_list)
+        # new_submission = cls(student_idx, assignment_idx, date_of_submission, link)
+        # if cls.submission_list:
+        #     cls.submission_list.append(new_submission)
+        if group == 0:
+            members = [student_idx]
+        else:
+            members = cls.get_team_users(student_idx)
 
-        query_3 = "SELECT max(id) as max_id FROM Sumbissions;"
-        sub_id = sql.query(query_3)[0][0]
+        for mem in members:
 
-        query_3 = "INSERT INTO `comments` (sub_id, comment) VALUES (?, ?);"
-        param = [sub_id, comment]
-        sql.query(query_3, param)
+            query = "INSERT INTO `Sumbissions` (ID_STUDENT, ID_ASSIGMENT, GRADE, DATE, LINK, ID_MENTOR)" \
+                    "VALUES (?, ?, ?, ?, ?, ?);"
+            values_list = [mem, assignment_idx, -1, date_of_submission, link, 0]
+            sql.query(query, values_list)
 
-    # @classmethod
-    # def create_list_to_save(cls):
-    #     """
-    #     Creates 2d list which can be use for saving process
-    #     :return: list_to_save - 2d list ready to be saved in csv file
-    #     """
-    #     list_to_save = []
-    #     for submission in cls.submission_list:
-    #         list_to_save.append([submission.student_idx, submission.assignment_idx, str(submission.date_of_submission),
-    #                              submission.link, str(submission.grade)])
-    #     return list_to_save
+            query_3 = "SELECT max(id) as max_id FROM Sumbissions;"
+            sub_id = sql.query(query_3)[0][0]
+
+            query_3 = "INSERT INTO `comments` (sub_id, comment) VALUES (?, ?);"
+            param = [sub_id, comment]
+            sql.query(query_3, param)
+
+        # else:
+        #     cls.group_submission(student_idx, assignment_idx, link, comment)
+
+    @classmethod
+    def group_submission(cls, student_idx, assignment_idx, link, comment):
+        pass
+
+    @staticmethod
+    def get_team_users(student_idx):
+        team_id = Team.find_student_team(student_idx)
+        team_members = Team.get_team_members(team_id)
+        clean_list = []
+        for item in team_members:
+            clean_list.append(item[0])
+        return clean_list
+
 
     @classmethod
     def pass_submission_for_student(cls, student):

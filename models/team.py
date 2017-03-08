@@ -105,7 +105,7 @@ class Team:
         :param student_id: int - id of team which you object need
         :return: team_id in which student is or False if he is not in team
         """
-        query = "SELECT `id_team` FROM `Users_team` WHERE `user_id`=?;"
+        query = "SELECT `id_team` FROM `Users_team` WHERE `id_user`=?;"
         params = [student_id]
         id_team = sql.query(query, params)[0][0]
         if id_team:
@@ -166,3 +166,8 @@ class Team:
         query = "DELETE FROM `Users_team` WHERE `ID_USER` = {};".format(int(student_id))
         sql.query(query)
 
+    @classmethod
+    def get_team_members(cls, team_id):
+        query = "SELECT ID_USER FROM users_team WHERE ID_TEAM=?"
+        params = [team_id]
+        return sql.query(query, params)

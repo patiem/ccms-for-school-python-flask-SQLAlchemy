@@ -21,23 +21,22 @@ def checkpoint():
 
 @app.route('/assignments', methods=['GET', 'POST'])
 def show_assignments_list():
-    print(request.method)
-    # if session['user']['type'] == 'Student':
-    #     assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
-    #     return render_template('assignments.html', user=session['user'], assignments=assignments)
+    if session['user']['type'] == 'Student':
+        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        return render_template('assignments.html', user=session['user'], assignments=assignments)
 
-    # elif session['user']['type'] == 'Mentor':
-    if request.method == 'GET':
-        assignments = Assignment.pass_assign_for_mentor()
-        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
-    elif request.method == 'POST':
-        title = request.form['a_title']
-        start_date = request.form['start_date']
-        end_date = request.form['end_date']
-        group = request.form['group']
-        description = request.form['description']
-        Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
-        return redirect(url_for('show_assignments_list'))
+    elif session['user']['type'] == 'Mentor':
+        if request.method == 'GET':
+            assignments = Assignment.pass_assign_for_mentor()
+            return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        elif request.method == 'POST':
+            title = request.form['a_title']
+            start_date = request.form['start_date']
+            end_date = request.form['end_date']
+            group = request.form['group']
+            description = request.form['description']
+            Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
+            return redirect(url_for('show_assignments_list'))
 
 
 
@@ -50,7 +49,7 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
         return redirect(url_for('show_assignment', idx=idx))
 
 
