@@ -6,8 +6,9 @@
     <div id="top">
     <h2 class="assign_title">{{ assignment[2] }}</h2>
     <div>
-
-        <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
+        {% if user['type'] == 'Student' %}
+            <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
+        {% endif %}
         <a href="{{ url_for('show_assignments_list') }}" ><div class="fixed_table_button orange_button orange_shadow">
             Back to list </div></a>
         </div>

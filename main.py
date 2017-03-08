@@ -22,9 +22,13 @@ def checkpoint():
 
 @app.route('/assignments')
 def show_assignments_list():
-    #logged_user = make_student()
-    assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
-    return render_template('assignments.html', user=session['user'], assignments=assignments)
+    # logged_user = make_student()
+    if session['user']['type'] == 'Student':
+        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        return render_template('assignments.html', user=session['user'], assignments=assignments)
+    elif session['user']['type'] == 'Mentor':
+        assignments = Assignment.pass_assign_for_mentor()
+        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
