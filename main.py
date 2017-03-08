@@ -166,44 +166,62 @@ def update_student():
             return redirect(url_for('mentor_list'))
 
 
-@app.route('/save-user', methods=['POST'])
+@app.route('/save-user', methods=['POST', 'GET'])
 def save_user():
-    if request.method == 'POST':
-        user_type = request.form['type']
-        name = request.form['name']
-        surname = request.form['surname']
-        email = request.form['email']
-        telephone = request.form['telephone']
-        add_list = [name, surname, email, telephone]
-        if user_type == 'student':
-            Student.add_user(add_list)
-            return redirect(url_for('student_list'))
-        elif user_type == 'mentor':
-            Mentor.add_user(add_list)
+    if 'user' in session:
+        if session['user']['Type'] == ('Manager' or 'Mentor'):
+            if request.method == 'POST':
+                user_type = request.form['type']
+                name = request.form['name']
+                surname = request.form['surname']
+                email = request.form['email']
+                telephone = request.form['telephone']
+                add_list = [name, surname, email, telephone]
+                if user_type == 'student':
+                    Student.add_user(add_list)
+                    return redirect(url_for('student_list'))
+                elif user_type == 'mentor':
+                    Mentor.add_user(add_list)
+                    return redirect(url_for('mentor_list'))
             return redirect(url_for('mentor_list'))
+        else:
+            return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
 
 
-@app.route('/remove-user', methods=['POST'])
+@app.route('/remove-user', methods=['POST', 'GET'])
 def remove_user():
-    if request.method == 'POST':
-        idx = request.json['Idx']
-        User.remove_sql(idx)
+    if 'user' in session:
+        if session['user']['Type'] == ('Manager' or 'Mentor'):
+            if request.method == 'POST':
+                idx = request.json['Idx']
+                User.remove_sql(idx)
+        else:
+            return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
 
 
 @app.route('/check-mail', methods=['POST'])
 def mail_exist():
-    if request.method == 'POST':
-        if request.is_json:
-            mail_list = User.return_mails()
-            if request.json['Mail'] in mail_list:
-                value = {'value': True}
-                return jsonify(value)
-            else:
-                value = {'value': False}
-                return jsonify(value)
+    if 'user' in session:
+        if session['user']['Type'] == ('Manager' or 'Mentor'):
+            if request.method == 'POST':
+                if request.is_json:
+                    mail_list = User.return_mails()
+                    if request.json['Mail'] in mail_list:
+                        value = {'value': True}
+                        return jsonify(value)
+                    else:
+                        value = {'value': False}
+                        return jsonify(value)
+                return redirect(url_for('index'))
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('index'))
+    else:
         return redirect(url_for('index'))
-    return redirect(url_for('index'))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
