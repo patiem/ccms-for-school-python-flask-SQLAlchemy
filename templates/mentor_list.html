@@ -25,9 +25,10 @@
         <div id="add" class="overlay">
                 <form name="add_student" class="edit_user" action="/save-user" method="post">
                     <a class="close" href="#">&times;</a>
+                    <p class="required">* required</p>
                     <div class="hidden">
                         <label for="type">Name:</label>
-                        <input type="text" name="type" id="type" value="mentor">
+                        <input type="text" name="type" id="type" value="student">
                     </div>
                     <div class="form-block">
                         <label for="add_name">Name:</label>
@@ -38,14 +39,15 @@
                         <input type="text" name="surname" id="add_surname">
                     </div>
                     <div class="form-block">
-                        <label for="add_email">E-mail: </label>
-                        <input type="email" name="email" id="add_email">
+                        <label for="add_email">*E-mail: </label>
+                        <input type="email" name="email" id="add_email" class="">
+                        <p class="required mail_message" id="mail_message"></p>
                     </div>
                     <div class="form-block">
                         <label for="add_telephone">Phone Number: </label>
                         <input type="number" name="telephone" id="add_telephone">
                     </div>
-                    <input type="submit" value="Submit" id="add_submit" class="add_submit button orange">
+                    <input type="submit" value="Submit" id="add_submit" disabled="disabled" class="add_submit button inactive">
                 </form>
         </div>
         <div id="edit" class="overlay">
@@ -53,27 +55,28 @@
                 <a class="close" href="#">&times;</a>
                 <div class="hidden">
                     <label for="id">Name:</label>
-                    <input type="number" name="id" id="edit_id" value="1">
+                    <input type="number" name="id" id="edit_id" value="">
                 </div>
                 <div class="hidden">
                     <label for="type">Name:</label>
-                    <input type="text" name="type" id="type" value="mentor">
+                    <input type="text" name="type" id="type" value="">
                 </div>
                 <div class="form-block">
                     <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="Kamil">
+                    <input type="text" name="name" id="name" value="">
                 </div>
                 <div class="form-block">
                     <label for="surname">Surname:</label>
-                    <input type="text" name="surname" id="surname" value="Mika">
+                    <input type="text" name="surname" id="surname" value="">
                 </div>
                 <div class="form-block">
                     <label for="email">E-mail: </label>
-                    <input type="email" name="email" id="email" value="ka@ka.pl">
+                    <input type="email" name="email" id="email" value="">
+                    <p class="required mail_message" id="mail_message_add"></p>
                 </div>
                 <div class="form-block">
                     <label for="telephone">Phone Number: </label>
-                    <input type="number" name="telephone" id="telephone" value="123456789">
+                    <input type="number" name="telephone" id="telephone" value="">
                 </div>
                 <input type="submit" value="Submit" id="submit" class="button orange">
             </form>
