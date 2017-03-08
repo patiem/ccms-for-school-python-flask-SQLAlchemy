@@ -57,7 +57,7 @@ class Assignment:
         :param title: string (assignment name)
         :param mentor_id: int (name of mentor)
         :param start_date: datetime object (date of start)
-        :param end_date: datetime object (date of end )
+        :param end_date: datetime object (date of end )pp
         :param file_name: string (file path)
         :param group: bool (group/ind)
         :return: None
@@ -65,11 +65,7 @@ class Assignment:
         query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`) VALUES (?, ?, ?, ?, ?, ?);"
         values_list = [title, mentor_id, start_date, end_date, file_name, group]
         sql.query(query, values_list)
-        query_2 = "SELECT MAX(`ID`) FROM `Assigments`;"
-        new_id = sql.query(query_2)[0]
-        new_assignment = cls(new_id, title, mentor_id, start_date, end_date, file_name, group)
-        if cls.assigments_list:
-            cls.assigments_list.append(new_assignment)
+
 
     @classmethod
     def create_list_to_save(cls):
@@ -112,7 +108,6 @@ class Assignment:
         :return: String representation for object
         """
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
-
 
     def assignment_description(self):
         """
