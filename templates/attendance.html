@@ -11,7 +11,7 @@
 
     <form>
         <label class="date_input">Date:
-        <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+        <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" value="{{ date }}">
         </label>
         <table>
         <tr>
@@ -41,5 +41,6 @@
         </table>
         <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>
     </form>
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 
 {% endblock %}

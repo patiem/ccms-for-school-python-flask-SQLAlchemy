@@ -147,3 +147,14 @@ $('.close').click(function () {
     $('#add_telephone').val('');
 
 });
+
+$('#attendance_date').change(function () {
+    var date = $('#attendance_date').val();
+    var pathname = window.location.pathname; // Returns path only
+    if(date){
+        window.location.replace(pathname + '/' + date);
+    }
+    else{
+        window.location.replace(pathname);
+    }
+});
