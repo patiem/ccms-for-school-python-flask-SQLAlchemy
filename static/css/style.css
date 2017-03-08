@@ -320,6 +320,9 @@ td {
 .left {
     text-align: left;
 }
+.right {
+    text-align: right;
+}
 
 table a {
     color: #8d7882;

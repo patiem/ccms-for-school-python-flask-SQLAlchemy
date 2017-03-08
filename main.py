@@ -3,7 +3,6 @@ from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.user import User
 from models.team import Team
-from models.user import *
 
 
 app = Flask(__name__)
