@@ -1,10 +1,14 @@
 from models.student import Student
+# from flask import Flask, request, session, render_template,redirect, url_for, jsonify, json
+# from models.user import User
 from models.team import Team
-from flask import Flask, request, session, render_template,redirect, url_for
+from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
+from models.mentor import Mentor
+
 
 
 app = Flask(__name__)
@@ -80,6 +84,31 @@ def teams():
         return render_template('login.html')
 
 
+@app.route('/add_to_team/<student_id><team_id>')
+def add_to_team(student_id, team_id):
+    Team.add_student_to_team(student_id, team_id)
+    return redirect('/teams')
+
+
+@app.route('/remove_team/<team_id>')
+def remove_team(team_id):
+    Team.remove_team(team_id)
+    return redirect('/teams')
+
+
+@app.route('/add_team', methods=['POST'])
+def add_team():
+    name = request.form['new_team_name']
+    Team.new_team(name)
+    return redirect('/teams')
+
+
+@app.route('/remove_from_team/<student_id>')
+def remove_from_team(student_id):
+    Team.remove_student_from_team(student_id)
+    return redirect('/teams')
+
+
 @app.route('/attendance')
 def attendance():
     return render_template('teams.html')
@@ -88,10 +117,88 @@ def attendance():
 @app.route('/student_list')
 def student_list():
     table = Student.create_student_list()
-    student_object = User.return_by_id(1)
     if table:
-        return render_template('student_list.html', table=table, student_object=student_object)
-    return render_template('student_list.html')
+        return render_template('student_list.html', table=table, user=session['user'])
+    return render_template('student_list.html', user=session['user'])
+
+
+@app.route('/mentor_list')
+def mentor_list():
+    table = Mentor.create_mentor_list()
+    if table:
+        return render_template('mentor_list.html', table=table, user=session['user'])
+    return render_template('mentor_list.html', user=session['user'])
+
+
+@app.route('/edit', methods=['POST', 'GET'])
+def get_data():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        user = User.return_by_id(idx)
+        student_dict = {   'id': idx,
+                        'name': user.name,
+                        'surname': user.last_name,
+                        'e-mail': user.mail,
+                        'telephone': user.telephone}
+        return jsonify(student_dict)
+    return 'lipa'
+
+
+@app.route('/edit-form', methods=['POST', 'GET'])
+def update_student():
+    if request.method == 'POST':
+        user_type = request.form['type']
+        idx = request.form['id']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        edit_list = [name, surname, email, telephone, idx]
+        if user_type == 'student':
+            Student.update_sql(edit_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.update_sql(edit_list)
+            return redirect(url_for('mentor_list'))
+
+
+@app.route('/save-user', methods=['POST'])
+def save_user():
+    if request.method == 'POST':
+        user_type = request.form['type']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        add_list = [name, surname, email, telephone]
+        if user_type == 'student':
+            Student.add_user(add_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.add_user(add_list)
+            return redirect(url_for('mentor_list'))
+
+
+@app.route('/remove-user', methods=['POST'])
+def remove_user():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        User.remove_sql(idx)
+
+
+@app.route('/check-mail', methods=['POST'])
+def mail_exist():
+    if request.method == 'POST':
+        if request.is_json:
+            mail_list = User.return_mails()
+            if request.json['Mail'] in mail_list:
+                value = {'value': True}
+                return jsonify(value)
+            else:
+                value = {'value': False}
+                return jsonify(value)
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":

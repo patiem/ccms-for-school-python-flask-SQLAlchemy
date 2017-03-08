@@ -1,9 +1,6 @@
 {% extends 'menu.html' %}
 
 {% block content %}
-    {% if student_object %}
-        <h1>{{ student_object }}</h1>
-    {% endif %}
     {% if table %}
         <table>
             <tr>
@@ -15,19 +12,23 @@
             </tr>
             {% for student in table %}
             <tr>
-                <td>{{ student[0] }}</td>
+                <td data-id={{ student[0] }} id='id' >{{ student[0] }}</td>
                 <td>{{ student[1] + ' ' + student[2] }}</td>
                 <td>{{ student[3] }}</td>
                 <td>{{ student[4] }}</td>
-                <td><a class="remove_button edit" href="{{ '#edit' + 'student[0]' }}">Edit</a><a href="#" class="remove_button" onclick="confirm_remove()">Remove</a> </td>
+                <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button remove_user" >Remove</a> </td>
             </tr>
             {% endfor %}
         </table>
     {% endif %}
         <a href="#add"><div class="fixed_bottom_button">Add Student</div></a>
         <div id="add" class="overlay">
-                <form name="add_student" class="edit_user">
+                <form name="add_student" class="edit_user" action="/save-user" method="post">
                     <a class="close" href="#">&times;</a>
+                    <div class="hidden">
+                        <label for="type">Name:</label>
+                        <input type="text" name="type" id="type" value="student">
+                    </div>
                     <div class="form-block">
                         <label for="add_name">Name:</label>
                         <input type="text" name="name" id="add_name">
@@ -44,31 +45,39 @@
                         <label for="add_telephone">Phone Number: </label>
                         <input type="number" name="telephone" id="add_telephone">
                     </div>
-                    <input type="submit" value="Submit" id="add_submit" class="add_submit button orange">
+                    <input type="submit" value="Submit" id="add_submit" disabled="disabled" class="add_submit button inactive">
                 </form>
         </div>
         <div id="edit" class="overlay">
-            <form name="add_student" class="edit_user">
+            <form name="add_student" class="edit_user" action="/edit-form" method="post">
                 <a class="close" href="#">&times;</a>
+                <div class="hidden">
+                    <label for="id">Name:</label>
+                    <input type="number" name="id" id="edit_id" value="">
+                </div>
+                <div class="hidden">
+                    <label for="type">Name:</label>
+                    <input type="text" name="type" id="type" value="">
+                </div>
                 <div class="form-block">
                     <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="Kamil">
+                    <input type="text" name="name" id="name" value="">
                 </div>
                 <div class="form-block">
                     <label for="surname">Surname:</label>
-                    <input type="text" name="surname" id="surname" value="Mika">
+                    <input type="text" name="surname" id="surname" value="">
                 </div>
                 <div class="form-block">
                     <label for="email">E-mail: </label>
-                    <input type="email" name="email" id="email" value="ka@ka.pl">
+                    <input type="email" name="email" id="email" value="">
                 </div>
                 <div class="form-block">
                     <label for="telephone">Phone Number: </label>
-                    <input type="number" name="telephone" id="telephone" value="123456789">
+                    <input type="number" name="telephone" id="telephone" value="">
                 </div>
                 <input type="submit" value="Submit" id="submit" class="button orange">
             </form>
         </div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 {% endblock %}

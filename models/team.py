@@ -1,4 +1,5 @@
 from models import sql
+from models.student import Student
 
 
 class Team:
@@ -54,7 +55,7 @@ class Team:
         """
         query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
         sql.query(query)
-        cls.clear_and_load_list()
+        # cls.clear_and_load_list()
 
     @classmethod
     def clear_and_load_list(cls):
@@ -90,7 +91,9 @@ class Team:
         :param team_id: int - id of team which you object need
         :return: Team object
         """
-        for team in cls.teams_list:
+        teams_list = cls.create_teams_list()
+
+        for team in teams_list:
             if str(team.id_team) == str(team_id):
                 return team
         return False
@@ -108,3 +111,57 @@ class Team:
         if id_team:
             return id_team
         return False
+
+    def add_student_to_team(cls, student_id, team_id):
+        """
+        Lets user to move student between teams
+        :return: None
+        """
+        student = False
+        students_list = Student.students_list()
+
+        for row in students_list:
+            if int(row.idx) == int(student_id):
+                student = row
+                break
+
+        if student:
+
+            team = Team.get_team_by_id(int(team_id))
+
+            if team:
+                print(team)
+                Team.student_to_team(team, student)
+
+            else:
+                print('There is no team with this ID')
+        else:
+            print('There is no student of this ID')
+
+    @staticmethod
+    def remove_team(team_id):
+        query = "DELETE FROM `TEAMS` WHERE `ID` = {};".format(int(team_id))
+        sql.query(query)
+
+        query = "DELETE FROM `Users_team` WHERE `ID_TEAM` = {};".format(int(team_id))
+        sql.query(query)
+
+    @staticmethod
+    def add_new_team(team_name):
+        """
+        Adds new team
+        :return: None
+        """
+
+        name = team_name
+        if name == '' or '\t' in name or len(name) < 3 or name[0] == ' ' or '  ' in name:
+
+            return 'Wrong name format'
+
+        Team.new_team(name)
+
+    @staticmethod
+    def remove_student_from_team(student_id):
+        query = "DELETE FROM `Users_team` WHERE `ID_USER` = {};".format(int(student_id))
+        sql.query(query)
+

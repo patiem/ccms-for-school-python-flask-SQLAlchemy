@@ -81,16 +81,14 @@ class Student(User):
     @staticmethod
     def update_sql(edit_list):
         """
-        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :param edit_list: (FORMAT:Name, Surname,  E-MAIL, Telephone, ID)
         :return:
         """
 
-        query = """
-                  UPDATE Users
-                  SET `{}` = ?
-                  WHERE `E-mail` = ?
-                  AND Type = 'Student'""".format(edit_list[1])
-        sql.query(query, [edit_list[2], edit_list[0]])
+        query = """UPDATE USERS
+                           SET Name = ?, Surname = ?, `E-mail` = ?, Telephone = ?
+                           WHERE ID = ?"""
+        sql.query(query, edit_list)
 
     @staticmethod
     def avg_grade():
