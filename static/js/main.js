@@ -30,31 +30,80 @@ $('.remove_user').click(function () {
 
 $('#add_email').change(function () {
     var email = $(this).val();
-    var email_dict = { Mail: email};
-    $.ajax({
-        type: 'POST',
-        url: 'http://localhost:5000/check-mail',
-        data : JSON.stringify(email_dict),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function(response) {
+    var atpos = email.indexOf("@");
+    if (atpos>1 && (email.endsWith(".com") || email.endsWith(".pl"))) {
+        var email_dict = {Mail: email};
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5000/check-mail',
+            data: JSON.stringify(email_dict),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
                 console.log(response['value']);
-                if(response['value'] == false){
-                    $('#add_submit').removeClass('inactive').addClass('orange');
-                    $('#add_submit').prop("disabled", false)
+                if (response['value'] == false) {
+                    $('#add_submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+                    $('#add_email').removeClass('error');
+                    $('#mail_message').html("");
 
                 }
                 else {
-                    $('#add_submit').addClass('inactive').removeClass('orange');
-                    $('#add_submit').prop("disabled", true)
+                    $('#add_submit').addClass('inactive').removeClass('orange').prop("disabled", true);
+                    $('#add_email').addClass('error');
+                    $('#mail_message').html("E-mail already exist")
                 }
 
             },
-        error: function(error) {
+            error: function (error) {
                 console.log(error);
             }
-    })
-})
+        })
+    }
+    else{
+        $('#add_submit').addClass('inactive').removeClass('orange').prop("disabled", true);
+        $('#add_email').addClass('error');
+        $('#mail_message').html("Wrong e-mail format: need to have @ and end with .pl or .com");
+    }
+});
+
+
+$('#email').change(function () {
+    var email = $(this).val();
+    var atpos = email.indexOf("@");
+    if (atpos>1 && (email.endsWith(".com") || email.endsWith(".pl"))) {
+        var email_dict = {Mail: email};
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5000/check-mail',
+            data: JSON.stringify(email_dict),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response['value']);
+                if (response['value'] == false) {
+                    $('#submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+                    $('#email').removeClass('error');
+                    $('#mail_message_add').html("")
+
+                }
+                else {
+                    $('#submit').addClass('inactive').removeClass('orange').prop("disabled", true);
+                    $('#email').addClass('error');
+                    $('#mail_message_add').html("E-mail already exist")
+                }
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+    else{
+        $('#submit').addClass('inactive').removeClass('orange').prop("disabled", true);
+        $('#email').addClass('error');
+        $('#mail_message_add').html("Wrong e-mail format: need to have @ and end with .pl or .com");
+    }
+});
 
 
 $('a.edit').click(function () {
@@ -83,4 +132,18 @@ $('a.edit').click(function () {
 
     })
     
-})
+});
+
+$('.close').click(function () {
+    $('#submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+    $('#email').removeClass('error');
+    $('#mail_message_add').html("");
+    $('#add_submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+    $('#add_email').removeClass('error');
+    $('#mail_message').html("");
+    $('#add_name').val('');
+    $('#add_surname').val('');
+    $('#add_email').val('');
+    $('#add_telephone').val('');
+
+});
