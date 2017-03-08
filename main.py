@@ -116,7 +116,7 @@ def attendance():
 
 @app.route('/student_list')
 def student_list():
-    table = Student.create_student_list()
+    table = Student.students_list()
     if table:
         return render_template('student_list.html', table=table, user=session['user'])
     return render_template('student_list.html', user=session['user'])
