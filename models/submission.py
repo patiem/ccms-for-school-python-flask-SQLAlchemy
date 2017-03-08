@@ -29,6 +29,7 @@ class Submission:
 
     @classmethod
     def list_from_sql(cls):
+        submission_list = []
         query = "SELECT * FROM `Sumbissions`;"
         list_from_sql = sql.query(query)
         if list_from_sql:
@@ -43,9 +44,10 @@ class Submission:
                 if Test.is_date_correct(date):
                     date_of_submission = Common.make_corect_date(date)
                     if grade != 0:
-                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
+                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
                     else:
-                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
+                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
+        return submission_list
 
     @classmethod
     def create_submission_list(cls):
@@ -67,22 +69,28 @@ class Submission:
                     cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
 
     @classmethod
-    def add_submission(cls, student_idx, assignment_idx, date_of_submission, link):
+    def add_submission(cls, student_idx, assignment_idx, link, comment):
         """
         New submission made by student.
         :param student_idx: string
         :param assignment_idx: string
-        :param date_of_submission: string
         :param link: string
         :return: None
         """
+        date_of_submission = datetime.date.today()
         new_submission = cls(student_idx, assignment_idx, date_of_submission, link)
         if cls.submission_list:
             cls.submission_list.append(new_submission)
         query = "INSERT INTO `Sumbissions` (ID_STUDENT, ID_ASSIGMENT, GRADE, DATE, LINK, ID_MENTOR) VALUES (?, ?, ?, ?, ?, ?);"
-        values_list = [student_idx, assignment_idx, 0, date_of_submission, link, 0]
+        values_list = [student_idx, assignment_idx, -1, date_of_submission, link, 0]
         sql.query(query, values_list)
-        #Common.save_file('csv/submission.csv', cls.create_list_to_save())
+
+        query_3 = "SELECT max(id) as max_id FROM Sumbissions;"
+        sub_id = sql.query(query_3)[0][0]
+
+        query_3 = "INSERT INTO `comments` (sub_id, comment) VALUES (?, ?);"
+        param = [sub_id, comment]
+        sql.query(query_3, param)
 
     @classmethod
     def create_list_to_save(cls):
@@ -117,10 +125,28 @@ class Submission:
         :param assignment: assignment object for which checking submission
         :return: submission object / False
         """
-        for submission in cls.submission_list:
+        submissions_list = cls.list_from_sql()
+        for submission in submissions_list:
             if submission.student_idx == student.idx:
                 if submission.assignment_idx == assignment.idx:
                     return submission
+        return False
+
+    @staticmethod
+    def find_submission_sql(assignment_id, student_id):
+        """
+        :param student_id: logged student id
+        :param assignment_id: assignment id
+        :return: submission object / False
+        """
+        query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
+        params = [assignment_id, student_id]
+        if sql.query(query, params):
+            if sql.query(query, params)[0][0] == -1:
+                grade = 'Not graded'
+            else:
+                grade = sql.query(query, params)[0][0]
+            return [grade, sql.query(query, params)[0][1]]
         return False
 
     def change_grade(self, grade, mentor_id, student_id, assignment_id):

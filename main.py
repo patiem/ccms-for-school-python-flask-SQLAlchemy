@@ -3,6 +3,16 @@ from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.user import User
 from models.team import Team
+<<<<<<< HEAD
+=======
+from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+from models.user import *
+from models.menu import StudentMenu
+from models.assignment import Assignment
+from models.submission import Submission
+from models.mentor import Mentor
+
+>>>>>>> 3128e417c8919abe56c8741781b4ee67e54252f9
 
 
 app = Flask(__name__)
@@ -10,6 +20,45 @@ app.register_blueprint(checkpointcontroller)
 app.secret_key = 'any random string'
 
 
+<<<<<<< HEAD
+=======
+@app.route('/checkpoint')
+def checkpoint():
+    return render_template('checkpoint.html')
+
+
+@app.route('/assignments')
+def show_assignments_list():
+    # logged_user = make_student()
+    if session['user']['type'] == 'Student':
+        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        return render_template('assignments.html', user=session['user'], assignments=assignments)
+    elif session['user']['type'] == 'Mentor':
+        assignments = Assignment.pass_assign_for_mentor()
+        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+
+
+@app.route('/assignments/<idx>', methods=['GET', 'POST'])
+def show_assignment(idx):
+    # logged_user = make_student()
+    assignment = Assignment.get_by_id(int(idx))
+    submission = Submission.find_submission_sql(idx, session['user']['id'])
+    if request.method == 'GET':
+        return render_template('submissions.html', user=session['user'], assignment=assignment, submission=submission)
+    elif request.method == 'POST':
+        link = request.form['link']
+        comment = request.form['comment']
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        return redirect(url_for('show_assignment', idx=idx))
+
+
+# def make_student():
+#     user_id = session['user']['id']
+#     logged_user = Student.return_by_id(user_id)  # what with team id??
+#     return logged_user
+
+
+>>>>>>> 3128e417c8919abe56c8741781b4ee67e54252f9
 @app.route('/logout')
 def logout():
     session.pop('user', None)
@@ -29,6 +78,7 @@ def index():
                     'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
+            print(session['user']['id'])
 
     if 'user' in session:
         return render_template('index.html', user=session['user'])
@@ -43,12 +93,49 @@ def teams():
         students_list = Student.students_list()
         return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
     else:
-        return render_template('login.html')
+        return redirect('/logout')
+
+
+@app.route('/add_to_team/<student_id><team_id>')
+def add_to_team(student_id, team_id):
+    if 'user' in session:
+        Team.add_student_to_team(student_id, team_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
+
+
+@app.route('/remove_team/<team_id>')
+def remove_team(team_id):
+    if 'user' in session:
+        Team.remove_team(team_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
+
+
+@app.route('/add_team', methods=['POST'])
+def add_team():
+    if 'user' in session:
+        name = request.form['new_team_name']
+        Team.new_team(name)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
+
+
+@app.route('/remove_from_team/<student_id>')
+def remove_from_team(student_id):
+    if 'user' in session:
+        Team.remove_student_from_team(student_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
 
 
 @app.route('/attendance')
 def attendance():
-    return render_template('teams.html')
+    return render_template('attendance.html', user=session['user'])
 
 
 @app.route('/student_list')
@@ -59,18 +146,83 @@ def student_list():
     return render_template('student_list.html', user=session['user'])
 
 
+@app.route('/mentor_list')
+def mentor_list():
+    table = Mentor.create_mentor_list()
+    if table:
+        return render_template('mentor_list.html', table=table, user=session['user'])
+    return render_template('mentor_list.html', user=session['user'])
+
 
 @app.route('/edit', methods=['POST', 'GET'])
 def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
-        student = Student.return_by_id(idx)
-        student_dict = {'name':student.name,
-                        'surname':student.last_name,
-                        'e-mail':student.mail,
-                        'telephone':student.telephone}
+        user = User.return_by_id(idx)
+        student_dict = {   'id': idx,
+                        'name': user.name,
+                        'surname': user.last_name,
+                        'e-mail': user.mail,
+                        'telephone': user.telephone}
         return jsonify(student_dict)
     return 'lipa'
+
+
+@app.route('/edit-form', methods=['POST', 'GET'])
+def update_student():
+    if request.method == 'POST':
+        user_type = request.form['type']
+        idx = request.form['id']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        edit_list = [name, surname, email, telephone, idx]
+        if user_type == 'student':
+            Student.update_sql(edit_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.update_sql(edit_list)
+            return redirect(url_for('mentor_list'))
+
+
+@app.route('/save-user', methods=['POST'])
+def save_user():
+    if request.method == 'POST':
+        user_type = request.form['type']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        add_list = [name, surname, email, telephone]
+        if user_type == 'student':
+            Student.add_user(add_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.add_user(add_list)
+            return redirect(url_for('mentor_list'))
+
+
+@app.route('/remove-user', methods=['POST'])
+def remove_user():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        User.remove_sql(idx)
+
+
+@app.route('/check-mail', methods=['POST'])
+def mail_exist():
+    if request.method == 'POST':
+        if request.is_json:
+            mail_list = User.return_mails()
+            if request.json['Mail'] in mail_list:
+                value = {'value': True}
+                return jsonify(value)
+            else:
+                value = {'value': False}
+                return jsonify(value)
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":

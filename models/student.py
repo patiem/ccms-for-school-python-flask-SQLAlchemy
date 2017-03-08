@@ -81,16 +81,14 @@ class Student(User):
     @staticmethod
     def update_sql(edit_list):
         """
-        :param edit_list: (FORMAT: E-MAIL, ATTRIBUTE, NEW VALUE)
+        :param edit_list: (FORMAT:Name, Surname,  E-MAIL, Telephone, ID)
         :return:
         """
 
-        query = """
-                  UPDATE Users
-                  SET `{}` = ?
-                  WHERE `E-mail` = ?
-                  AND Type = 'Student'""".format(edit_list[1])
-        sql.query(query, [edit_list[2], edit_list[0]])
+        query = """UPDATE USERS
+                           SET Name = ?, Surname = ?, `E-mail` = ?, Telephone = ?
+                           WHERE ID = ?"""
+        sql.query(query, edit_list)
 
     @staticmethod
     def avg_grade():
@@ -157,6 +155,7 @@ class Student(User):
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
 
+
     @staticmethod
     def my_attendance(idx):
         query = 'SELECT STATUS, COUNT(STATUS) AS count FROM `Attendance` WHERE ID_STUDENT=? GROUP BY STATUS'
@@ -220,3 +219,7 @@ class Student(User):
 
         return students_list
 
+    @classmethod
+    def make_student(cls, user_id):
+        logged_user = cls.return_by_id(user_id)  # what with team id??
+        return logged_user
