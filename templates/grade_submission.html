@@ -1,154 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<title>Submission</title>
+{% extends "menu.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Puke Rainbow Unicorns CcMS</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Anaheim&subset=latin-ext' rel='stylesheet' type='text/css'>
-</head>
 
-<body>
-<header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
-                    <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
-                    <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
-
-            </section>
-
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
-
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="StudentMenu" class="menus">
-
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
-        <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
-        </footer>
-
-    </aside>
-</header>
-
-<div class="content" >
+{% block content %}
     <form>
         <table>
             <tr>
                 <th>ID</th>
-                <th>Student's e-mail</th>
+                <th>Student</th>
                 <th>Date of submission</th>
                 <th>Assignment title</th>
                 <th>Grade</th>
-                <th>Mentor id</th>
+                <th>Mentor</th>
 
             </tr>
+            {% set i = 1 %}
+            {% for item in sub_list %}
+
             <tr>
-                <td>1</td>
-                <td>random@email.com</td>
-                <td>2017-02-09</td>
-                <td class='left'><a href="submissions.html">Assignment 1 - dupa</a></td>
+                <td>{{ i }}</td>
+                <td>{{ item[1].full_name() }}</td>
+                <td>{{ item[0].date_of_submission }}</td>
+                <td class='left'><a href="submissions.html">{{ item[2]}}</a></td>
                 <td>
                     <div class="grade_range">
-                    <output name="gradeOutput1" class="grade_output">None</output>
-                    <label for="gradeInput1"></label>
+                    {% if item[0].grade == -1 %}
+                    <output name="gradeOutput1" class="grade_output">Not graded</output>
+                    {% else %}
+                    <output name="gradeOutput1" class="grade_output">{{ item[0].grade }}</output>
+                    {% endif %}
+                        <label for="gradeInput1"></label>
                         <input type="range" class="grade_range" id="gradeInput1" name="gradeInput1"
-                           value="50" min="-1" max="100" oninput="gradeOutput1.value = gradeValue(gradeInput1.value)">
+                           value="{{ item[0].grade }}" min="-1" max="100" oninput="gradeOutput1.value = gradeValue(gradeInput1.value)">
                     </div>
                 </td>
                 <td>2</td>
             </tr>
-
-            <tr>
-                <td>2</td>
-                <td>random@email.com</td>
-                <td>2017-02-09</td>
-                <td class='left'><a href="submissions.html">Assignment 1 - dupa</a></td>
-                <td>
-                    <div class="grade_range">
-                    <output name="gradeOutput2" class="grade_output">None</output>
-                    <label for="gradeInput2"></label>
-                        <input type="range" class="grade_range" id="gradeInput2" name="gradeInput2"
-                           value="50" min="-1" max="100" oninput="gradeOutput2.value = gradeValue(gradeInput2.value)">
-                    </div>
-                </td>
-                <td>3</td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-                <td>random@email.com</td>
-                <td>2017-02-09</td>
-                <td class='left'><a href="submissions.html">Assignment 1 - dupa</a></td>
-                <td>
-                    <div class="grade_range">
-                    <output name="gradeOutput3" class="grade_output">None</output>
-                    <label for="gradeInput3"></label>
-                        <input type="range" class="grade_range" id="gradeInput3" name="gradeInput3"
-                           value="50" min="-1" max="100" oninput="gradeOutput3.value = gradeValue(gradeInput3.value)">
-                    </div>
-                </td>
-                <td>4</td>
-            </tr>
+            {% set i = 1 + i %}
+            {% endfor %}
 
         </table>
         <a href=""><div class="fixed_table_button orange_shadow"> Submit </div></a>
     </form>
+    
+{% endblock %}
 
-</div>
-
-
-<script src="../static/js/main.js"></script>
-</body>
-
-</html>

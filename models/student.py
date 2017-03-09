@@ -24,46 +24,46 @@ class Student(User):
     def full_name(self):
         return self.name + ' ' + self.last_name
 
-    @classmethod
-    def create_object_list(cls):
-        """
-        Crete objects of class student from sql
-        :return: None
-        """
-        query = """
-                SELECT ID, Name, Surname, `E-mail`, Telephone, Password
-                FROM Users
-                WHERE Type = 'Student'"""
-        data = sql.query(query)
-        table = []
-
-        if data:
-            for row in data:
-                table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
-            for line in table:
-                team_id = []
-                get_team_id = """
-                                SELECT ID_TEAM
-                                FROM Users_team
-                                WHERE ID_USER = ?"""
-
-                # for row in sql.query(get_team_id, [line[0]]):
-                #     team_id = row[0]
-                # line.append(team_id)
-                # print(line)
-                # new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
-
-                if sql.query(get_team_id, [line[0]]):
-                    for row in sql.query(get_team_id, [line[0]]):
-                        team_id = row[0]
-
-                if team_id:
-                    line.append(team_id)
-                    new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
-                else:
-                    new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5])
-
-                cls.object_list.append(new_object)
+    # @classmethod
+    # def create_object_list(cls):
+    #     """
+    #     Crete objects of class student from sql
+    #     :return: None
+    #     """
+    #     query = """
+    #             SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+    #             FROM Users
+    #             WHERE Type = 'Student'"""
+    #     data = sql.query(query)
+    #     table = []
+    #
+    #     if data:
+    #         for row in data:
+    #             table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
+    #         for line in table:
+    #             team_id = []
+    #             get_team_id = """
+    #                             SELECT ID_TEAM
+    #                             FROM Users_team
+    #                             WHERE ID_USER = ?"""
+    #
+    #             # for row in sql.query(get_team_id, [line[0]]):
+    #             #     team_id = row[0]
+    #             # line.append(team_id)
+    #             # print(line)
+    #             # new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+    #
+    #             if sql.query(get_team_id, [line[0]]):
+    #                 for row in sql.query(get_team_id, [line[0]]):
+    #                     team_id = row[0]
+    #
+    #             if team_id:
+    #                 line.append(team_id)
+    #                 new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+    #             else:
+    #                 new_object = cls(line[0], line[1], line[2], line[3], line[4], line[5])
+    #
+    #             cls.object_list.append(new_object)
 
 
     @staticmethod
@@ -141,19 +141,19 @@ class Student(User):
             if int(student_id) == int(idx):
                 return int(row[3])
 
-    @classmethod
-    def create_student_list(cls):
-        query = """
-                  SELECT ID, Name, Surname, `E-mail`, Telephone, Password
-                  FROM Users
-                  WHERE Type = 'Student'"""
-        data = sql.query(query)
-        table = []
-
-        if data:
-            for row in data:
-                table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
-        return table
+    # @classmethod
+    # def create_student_list(cls):
+    #     query = """
+    #               SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+    #               FROM Users
+    #               WHERE Type = 'Student'"""
+    #     data = sql.query(query)
+    #     table = []
+    #
+    #     if data:
+    #         for row in data:
+    #             table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
+    #     return table
 
 
     @staticmethod
@@ -221,5 +221,7 @@ class Student(User):
 
     @classmethod
     def make_student(cls, user_id):
-        logged_user = cls.return_by_id(user_id)  # what with team id??
-        return logged_user
+        if cls.return_by_id(user_id):
+            logged_user = cls.return_by_id(user_id)  # what with team id??
+            return logged_user
+        return False

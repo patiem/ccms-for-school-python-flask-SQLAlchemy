@@ -132,7 +132,7 @@ h3 {
     font-size: 2.1em;
 }
 
-.form-block input{
+.form-block input, form-block select{
     height: 3em;
     width: 35em;
     float: right;
@@ -159,7 +159,7 @@ h3 {
     box-sizing: border-box;
 }
 
-.load_file input{
+.load_file input, .load_file select{
     height: 3em;
     width: 35em;
     float: right;

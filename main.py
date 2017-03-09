@@ -1,15 +1,14 @@
-from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+from flask import Flask, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from controllers.statistics_controller import statistics
 from models.student import Student
-from models.user import User
 from models.team import Team
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
-
+from models.attandance import Attendance
 from models.decorator import *
 
 
@@ -24,20 +23,28 @@ def checkpoint():
     return render_template('checkpoint.html')
 
 
-@app.route('/assignments')
+@app.route('/assignments', methods=['GET', 'POST'])
 def show_assignments_list():
-    # logged_user = make_student()
     if session['user']['type'] == 'Student':
         assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
         return render_template('assignments.html', user=session['user'], assignments=assignments)
+
     elif session['user']['type'] == 'Mentor':
-        assignments = Assignment.pass_assign_for_mentor()
-        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        if request.method == 'GET':
+            assignments = Assignment.pass_assign_for_mentor()
+            return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        elif request.method == 'POST':
+            title = request.form['a_title']
+            start_date = request.form['start_date']
+            end_date = request.form['end_date']
+            group = request.form['group']
+            description = request.form['description']
+            Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
+            return redirect(url_for('show_assignments_list'))
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
-    # logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
@@ -45,8 +52,16 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
         return redirect(url_for('show_assignment', idx=idx))
+
+
+@app.route('/grade_submission', methods=['GET', 'POST'])
+def grade_submission():
+    if request.method == 'GET':
+        sub_list = Submission.subs_to_grade()
+        return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
+
 
 @app.route('/logout')
 def logout():
@@ -122,9 +137,37 @@ def remove_from_team(student_id):
         return redirect('/logout')
 
 
-@app.route('/attendance')
+@app.route('/attendance', methods=['GET', 'POST'])
 def attendance():
-    return render_template('attendance.html', user=session['user'])
+    if request.method == 'GET':
+        import datetime
+        date = str(datetime.date.today())
+        if 'date' in request.args:
+            date = request.args['date']
+        attendance_list = Attendance.get_attendance_list(date)
+        return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+    elif request.method == 'POST':
+        students_present = {}
+        date_from_form = ''
+        for item in request.form:
+            if item[:6] == 'person':
+                student_id = int(item[6:])
+                students_present[student_id] = request.form[item]
+            elif item == 'set_date':
+                date_from_form = request.form[item]
+
+        # ------ SHOW REQUEST ------
+        # for value in students_present:
+        #     print(value, students_present[value])
+        # print(date_from_form)
+        # --------------------------
+        Attendance.update(students_present, date_from_form)
+        return 'DUPA'
+
+
+@app.route('/attendance/<date>')
+def attendance_date(date):
+    return redirect(url_for('attendance', date=date))
 
 
 @app.route('/student_list')
@@ -182,6 +225,8 @@ def update_user():
         elif user_type == 'mentor':
             Mentor.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
@@ -202,7 +247,8 @@ def save_user():
         elif user_type == 'mentor':
             Mentor.add_user(add_list)
             return redirect(url_for('mentor_list'))
-    return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/remove-user', methods=['POST', 'GET'])

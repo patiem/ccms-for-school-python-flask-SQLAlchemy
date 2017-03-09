@@ -17,16 +17,14 @@ $('.remove_user').click(function () {
             url: '/remove-user',
             data : JSON.stringify(dict_id),
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            // contentType : 'application/x-www-form-urlencoded',
-
-    })
+            contentType: 'application/json; charset=utf-8'
+    });
         alert("User removed")
     }
     else{
         alert("Nothing happen")
     }
-})
+});
 
 $('#add_email').change(function () {
     var email = $(this).val();
@@ -148,6 +146,7 @@ $('.close').click(function () {
 
 });
 
+<<<<<<< HEAD
 
 function validate_checkpoint(){
     var new_checkpoint = document.getElementById('new_checkpoint').value;
@@ -157,3 +156,15 @@ function validate_checkpoint(){
     }
     return false;
 }
+=======
+$('#attendance_date').change(function () {
+    var date = $('#attendance_date').val();
+    var pathname = window.location.pathname; // Returns path only
+    if(date){
+        window.location.replace(pathname + '/' + date);
+    }
+    else{
+        window.location.replace(pathname);
+    }
+});
+>>>>>>> 52afe552dcfbf2fce2c2e50c9750e899e60ea5d1
