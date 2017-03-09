@@ -110,10 +110,21 @@ class Student(User):
         return table
 
     @staticmethod
+    def get_students_without_checkpoint(checkpoint_id):
+        """
+        :param checkpoint_id:
+        :return: list_of_students
+        """
+        query = "SELECT * FROM Users WHERE ID NOT  IN (SELECT ID_STUDENT FROM Users_checkpoints WHERE ID_CHECKPOINT = {}) AND Type='Student'".format(checkpoint_id)
+        students = sql.query(query)
+
+        return students
+
+    @staticmethod
     def ave_grade_flask_version(idx):
         """
         Count avg grade of students
-        :param idx: index of student
+        :param idx: index of studentSELECT * FROM Users WHERE ID NOT  IN (SELECT ID_STUDENT FROM Users_checkpoints WHERE ID_CHECKPOINT = 1) AND Type='Student'
         :return average grade (int):
         """
         query = """

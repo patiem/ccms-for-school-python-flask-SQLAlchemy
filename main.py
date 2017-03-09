@@ -1,8 +1,8 @@
-from models.student import Student
-# from flask import Flask, request, session, render_template,redirect, url_for, jsonify, json
-# from models.user import User
-from models.team import Team
 from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+from controllers.checkpoint_controller import checkpointcontroller
+from models.student import Student
+from models.user import User
+from models.team import Team
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
@@ -11,7 +11,9 @@ from models.mentor import Mentor
 
 from models.decorator import *
 
+
 app = Flask(__name__)
+app.register_blueprint(checkpointcontroller)
 app.secret_key = 'any random string'
 
 
@@ -45,7 +47,6 @@ def show_assignment(idx):
         comment = request.form['comment']
         Submission.add_submission(session['user']['id'], assignment[0], link, comment)
         return redirect(url_for('show_assignment', idx=idx))
-
 
 @app.route('/logout')
 def logout():
@@ -81,37 +82,49 @@ def teams():
         students_list = Student.students_list()
         return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
     else:
-        return render_template('login.html')
+        return redirect('/logout')
 
 
 @app.route('/add_to_team/<student_id><team_id>')
 def add_to_team(student_id, team_id):
-    Team.add_student_to_team(student_id, team_id)
-    return redirect('/teams')
+    if 'user' in session:
+        Team.add_student_to_team(student_id, team_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
 
 
 @app.route('/remove_team/<team_id>')
 def remove_team(team_id):
-    Team.remove_team(team_id)
-    return redirect('/teams')
+    if 'user' in session:
+        Team.remove_team(team_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
 
 
 @app.route('/add_team', methods=['POST'])
 def add_team():
-    name = request.form['new_team_name']
-    Team.new_team(name)
-    return redirect('/teams')
+    if 'user' in session:
+        name = request.form['new_team_name']
+        Team.new_team(name)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
 
 
 @app.route('/remove_from_team/<student_id>')
 def remove_from_team(student_id):
-    Team.remove_student_from_team(student_id)
-    return redirect('/teams')
+    if 'user' in session:
+        Team.remove_student_from_team(student_id)
+        return redirect('/teams')
+    else:
+        return redirect('/logout')
 
 
 @app.route('/attendance')
 def attendance():
-    return render_template('teams.html')
+    return render_template('attendance.html', user=session['user'])
 
 
 @app.route('/student_list')

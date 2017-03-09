@@ -29,7 +29,7 @@ class Submission:
 
     @classmethod
     def list_from_sql(cls):
-        cls.submission_list = []
+        submission_list = []
         query = "SELECT * FROM `Sumbissions`;"
         list_from_sql = sql.query(query)
         if list_from_sql:
@@ -44,9 +44,10 @@ class Submission:
                 if Test.is_date_correct(date):
                     date_of_submission = Common.make_corect_date(date)
                     if grade != 0:
-                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
+                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
                     else:
-                        cls.submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
+                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
+        return submission_list
 
     @classmethod
     def create_submission_list(cls):
@@ -124,7 +125,8 @@ class Submission:
         :param assignment: assignment object for which checking submission
         :return: submission object / False
         """
-        for submission in cls.submission_list:
+        submissions_list = cls.list_from_sql()
+        for submission in submissions_list:
             if submission.student_idx == student.idx:
                 if submission.assignment_idx == assignment.idx:
                     return submission
