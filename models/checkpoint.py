@@ -23,31 +23,31 @@ class Checkpoint:
 
         return sql_result
 
-    @staticmethod
-    def select_student_id_from_list(checkpoint_id):
-
-        Ui.clear()
-        Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
-        query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints " \
-                "WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
-
-        students = []
-        students_ids = []
-
-        query_result = sql.query(query)
-
-        if isinstance(query_result, list):
-            for student in query_result:
-                students.append([student['ID'], student['SURNAME'], student['NAME'], ])
-                students_ids.append(student['ID'])
-
-            Ui.print_table(students, ['ID', 'Surname', 'Name'])
-            return Ui.get_id_only_in_list('Select student (ID): ', students_ids)
-
-        else:
-            Ui.print_text('\n All students are graded in this checkpoint! \n')
-            Ui.press_any_key_input()
-            return None
+    # @staticmethod
+    # def select_student_id_from_list(checkpoint_id):
+    #
+    #     Ui.clear()
+    #     Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
+    #     query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints " \
+    #             "WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
+    #
+    #     students = []
+    #     students_ids = []
+    #
+    #     query_result = sql.query(query)
+    #
+    #     if isinstance(query_result, list):
+    #         for student in query_result:
+    #             students.append([student['ID'], student['SURNAME'], student['NAME'], ])
+    #             students_ids.append(student['ID'])
+    #
+    #         Ui.print_table(students, ['ID', 'Surname', 'Name'])
+    #         return Ui.get_id_only_in_list('Select student (ID): ', students_ids)
+    #
+    #     else:
+    #         Ui.print_text('\n All students are graded in this checkpoint! \n')
+    #         Ui.press_any_key_input()
+    #         return None
 
     @staticmethod
     def grade(student):

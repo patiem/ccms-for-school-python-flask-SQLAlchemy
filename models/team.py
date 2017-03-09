@@ -35,18 +35,6 @@ class Team:
         return teams_list
 
     @classmethod
-    def get_by_id(cls, team_id):
-        """
-        Returns Team object
-        :param team_id: int - id of team which you object need
-        :return: Team object
-        """
-        for team in cls.teams_list:
-            if team.id_team == team_id:
-                return team
-        return False
-
-    @classmethod
     def new_team(cls, name):
         """
         Send new team to DB & reload teams_list
@@ -55,34 +43,6 @@ class Team:
         """
         query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
         sql.query(query)
-        # cls.clear_and_load_list()
-
-    @classmethod
-    def clear_and_load_list(cls):
-        """
-        Loads class attribute teams_list
-        :return: None
-        """
-        cls.teams_list = []
-        cls.create_teams_list()
-
-    @classmethod
-    def student_to_team(cls, team, student):
-        """
-        Adds student to team
-        :param team: Team object
-        :param student: Student object
-        :return: None
-        """
-        id_t = team.id_team
-        id_s = student.idx
-        if student.id_team:
-            query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
-        else:
-            query = "INSERT INTO `Users_team`(`ID_TEAM`, `ID_USER`) VALUES ({}, {});".format(id_t, id_s)
-        student.id_team = id_t
-        sql.query(query)
-        cls.clear_and_load_list()
 
     @classmethod
     def get_team_by_id(cls, team_id):
@@ -101,7 +61,6 @@ class Team:
     @classmethod
     def find_student_team(cls, student_id):
         """
-
         :param student_id: int - id of team which you object need
         :return: team_id in which student is or False if he is not in team
         """
@@ -137,20 +96,6 @@ class Team:
         sql.query(query)
 
     @staticmethod
-    def add_new_team(team_name):
-        """
-        Adds new team
-        :return: None
-        """
-
-        name = team_name
-        if name == '' or '\t' in name or len(name) < 3 or name[0] == ' ' or '  ' in name:
-
-            return 'Wrong name format'
-
-        Team.new_team(name)
-
-    @staticmethod
     def remove_student_from_team(student_id):
         query = "DELETE FROM `Users_team` WHERE `ID_USER` = {};".format(int(student_id))
         sql.query(query)
@@ -168,3 +113,60 @@ class Team:
                    WHERE ID = ?"""
         edit_list = [team_name, idx]
         sql.query(query, edit_list)
+
+    @classmethod
+    def student_to_team(cls, team, student):
+        """
+        Adds student to team
+        :param team: Team object
+        :param student: Student object
+        :return: None
+        """
+        id_t = team.id_team
+        id_s = student.idx
+        query = "SELECT * FROM `Users_team` WHERE ID_USER=?"
+        params = [student.idx]
+        id_team = sql.query(query, params)
+        if id_team:
+            query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
+        else:
+            query = "INSERT INTO `Users_team`(`ID_TEAM`, `ID_USER`) VALUES ({}, {});".format(id_t, id_s)
+        student.id_team = id_t
+        sql.query(query)
+
+    # @staticmethod
+    # def add_new_team(team_name):
+    #     """
+    #     Adds new team
+    #     :return: None
+    #     """
+    #
+    #     name = team_name
+    #     if name == '' or '\t' in name or len(name) < 3 or name[0] == ' ' or '  ' in name:
+    #
+    #         return 'Wrong name format'
+    #
+    #     Team.new_team(name)
+
+    # @classmethod
+    # def get_by_id(cls, team_id):
+    #     """
+    #     Returns Team object
+    #     :param team_id: int - id of team which you object need
+    #     :return: Team object
+    #     """
+    #     for team in cls.teams_list:
+    #         if team.id_team == team_id:
+    #             return team
+    #     return False
+
+
+
+    # @classmethod
+    # def clear_and_load_list(cls):
+    #     """
+    #     Loads class attribute teams_list
+    #     :return: None
+    #     """
+    #     cls.teams_list = []
+    #     cls.create_teams_list()
