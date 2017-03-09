@@ -19,9 +19,8 @@
             <table>
             {% for student in attendance_list %}
 
-                <tr>
+                <tr class="attendance_tr">
                     <td>{{ student.fullname }}</td>
-
                     <td><label>Present <input type="radio" name="person{{ student.id_student }}" value="Present"
                             {% if student.present == 'Present' %} checked="checked" {% endif %}/></label></td>
 

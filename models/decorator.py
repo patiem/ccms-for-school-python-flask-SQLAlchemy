@@ -23,6 +23,7 @@ def correct_type(type_list=None):
         return check_type
     return decorator
 
+
 def correct_form(form_list):
     def decorator(f):
         @wraps(f)

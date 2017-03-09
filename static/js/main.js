@@ -26,6 +26,35 @@ $('.remove_user').click(function () {
     }
 });
 
+$('a.edit').click(function () {
+    var tr_id = $(this).closest('tr').find('#id').data('id');
+    var dict_id = { Idx: tr_id};
+    $.ajax({
+        type: 'POST',
+        url: '/edit',
+        data : JSON.stringify(dict_id),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        // contentType : 'application/x-www-form-urlencoded',
+
+        success: function(response) {
+            console.log(response['id']);
+            $('#edit_id').val(response['id'])
+            $('#name').val(response['name'])
+            $('#surname').val(response['surname'])
+            $('#email').val(response['e-mail'])
+            $('#telephone').val(response['telephone'])
+        },
+        error: function(error) {
+            console.log(error);
+            alert('nope');
+        }
+
+    })
+
+});
+
+
 $('#add_email').change(function () {
     var email = $(this).val();
     var atpos = email.indexOf("@");
@@ -104,6 +133,7 @@ $('#email').change(function () {
 });
 
 
+
 $('a.edit').click(function () {
     var tr_id = $(this).closest('tr').find('.id').data('id');
     var dict_id = { Idx: tr_id};
@@ -155,4 +185,37 @@ $('#attendance_date').change(function () {
     else{
         window.location.replace(pathname);
     }
+});
+
+$('.attendance_tr').change(function () {
+    $(this).css('background-color','#70FF9E');
+    // alert('JUPI!!')
+});
+
+$('a.edit_team').click(function () {
+    var tr_id = $(this).closest('tr').find('#id').data('id');
+    var dict_id = { Idx: tr_id};
+    $.ajax({
+        type: 'POST',
+        url: '/edit',
+        data : JSON.stringify(dict_id),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        // contentType : 'application/x-www-form-urlencoded',
+
+        success: function(response) {
+            console.log(response['id']);
+            $('#edit_id').val(response['id'])
+            $('#name').val(response['name'])
+            $('#surname').val(response['surname'])
+            $('#email').val(response['e-mail'])
+            $('#telephone').val(response['telephone'])
+        },
+        error: function(error) {
+            console.log(error);
+            alert('nope');
+        }
+
+    })
+
 });
