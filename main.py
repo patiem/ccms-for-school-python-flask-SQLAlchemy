@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+from flask import Flask, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.team import Team
@@ -7,6 +7,7 @@ from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
+from models.attandance import Attendance
 from models.decorator import *
 
 
@@ -134,9 +135,37 @@ def remove_from_team(student_id):
         return redirect('/logout')
 
 
-@app.route('/attendance')
+@app.route('/attendance', methods=['GET', 'POST'])
 def attendance():
-    return render_template('attendance.html', user=session['user'])
+    if request.method == 'GET':
+        import datetime
+        date = str(datetime.date.today())
+        if 'date' in request.args:
+            date = request.args['date']
+        attendance_list = Attendance.get_attendance_list(date)
+        return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+    elif request.method == 'POST':
+        students_present = {}
+        date_from_form = ''
+        for item in request.form:
+            if item[:6] == 'person':
+                student_id = int(item[6:])
+                students_present[student_id] = request.form[item]
+            elif item == 'set_date':
+                date_from_form = request.form[item]
+
+        # ------ SHOW REQUEST ------
+        # for value in students_present:
+        #     print(value, students_present[value])
+        # print(date_from_form)
+        # --------------------------
+        Attendance.update(students_present, date_from_form)
+        return 'DUPA'
+
+
+@app.route('/attendance/<date>')
+def attendance_date(date):
+    return redirect(url_for('attendance', date=date))
 
 
 @app.route('/student_list')
@@ -194,6 +223,8 @@ def update_user():
         elif user_type == 'mentor':
             Mentor.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
@@ -214,7 +245,8 @@ def save_user():
         elif user_type == 'mentor':
             Mentor.add_user(add_list)
             return redirect(url_for('mentor_list'))
-    return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/remove-user', methods=['POST', 'GET'])

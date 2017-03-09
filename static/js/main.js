@@ -17,16 +17,14 @@ $('.remove_user').click(function () {
             url: '/remove-user',
             data : JSON.stringify(dict_id),
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            // contentType : 'application/x-www-form-urlencoded',
-
-    })
+            contentType: 'application/json; charset=utf-8'
+    });
         alert("User removed")
     }
     else{
         alert("Nothing happen")
     }
-})
+});
 
 $('#add_email').change(function () {
     var email = $(this).val();
@@ -74,7 +72,7 @@ $('#email').change(function () {
         var email_dict = {Mail: email};
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/check-mail',
+            url: '/check-mail',
             data: JSON.stringify(email_dict),
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -146,4 +144,15 @@ $('.close').click(function () {
     $('#add_email').val('');
     $('#add_telephone').val('');
 
+});
+
+$('#attendance_date').change(function () {
+    var date = $('#attendance_date').val();
+    var pathname = window.location.pathname; // Returns path only
+    if(date){
+        window.location.replace(pathname + '/' + date);
+    }
+    else{
+        window.location.replace(pathname);
+    }
 });

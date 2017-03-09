@@ -8,7 +8,7 @@ class Attendance:
     file = 'csv/attendance.csv'
     attendance_list = []
 
-    def __init__(self, id_student, date, present):
+    def __init__(self, id_student, fullname, date, present):
         """
         Create Attendance object
         :param id_student: string (user id)
@@ -16,6 +16,7 @@ class Attendance:
         :param present: string (Present/Late/Absent)
         """
         self.id_student = id_student
+        self.fullname = fullname
         self.date = date
         self.present = present
 
@@ -107,13 +108,12 @@ class Attendance:
         query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
         params = [date]
         attendance = sql.query(query, params)
-        # student_list = Student.students_list()
 
-        # for student in student_list:
-        #     attendance_list.append(cls(student.idx, date, student['STATUS']))
         if attendance:
             for student in attendance:
-                attendance_list.append(Attendance(student['ID_STUDENT'], student['DATE'], student['STATUS']))
+                user = Student.return_by_id(int(student['ID_STUDENT']))
+                fullname = user.full_name()
+                attendance_list.append(Attendance(student['ID_STUDENT'], fullname, student['DATE'], student['STATUS']))
 
             return attendance_list
         return False
@@ -171,3 +171,21 @@ class Attendance:
         # ---------------------------------------------------------------- #
 
         return list_of_attendance
+
+    @classmethod
+    def update(cls, students_dict, date):  # IN USE
+
+        # ----------- SQL UPDATE EXAMPLE ------------
+        # """UPDATE `Attendance` SET `STATUS`='None'
+        # WHERE `ID_STUDENT`=12
+        # AND `DATE`='2017-03-09';"""
+        # -------------------------------------------
+
+        for idx in students_dict:
+
+            query = """UPDATE `Attendance` SET `STATUS`=?
+                       WHERE `ID_STUDENT`=? AND `DATE`=?;"""
+
+            params = [students_dict[idx], idx, date]
+            sql.query(query, params)
+

@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import session, url_for, redirect, request
+from flask import session, url_for, redirect, request, render_template
 
 def login_required(f):
     @wraps(f)
@@ -33,7 +33,7 @@ def correct_form(form_list):
                     table.append(item)
                 for name in form_list:
                     if name not in table:
-                        return redirect(url_for('index'))
+                        return render_template('bad.html', user=session['user'])
                 return f(*args, **kwargs)
         return check_form
     return decorator
@@ -49,7 +49,7 @@ def correct_json(form_list):
                     table.append(item)
                 for name in form_list:
                     if name not in table:
-                        return redirect(url_for('index'))
+                        return render_template('bad.html', user=session['user'])
                 return f(*args, **kwargs)
         return check_form
     return decorator
