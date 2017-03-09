@@ -94,11 +94,14 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
+        print('yo')
         sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
-        user_data = sql.query(sql_query, [idx])[0]
+        user_data = sql.query(sql_query, [idx])
+        print(user_data)
         if user_data:
-            new_object = cls(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            new_object = cls(user_data[0][0], user_data[0][1], user_data[0][2], user_data[0][3], user_data[0][4])
             return new_object
+        return False
 
     @classmethod
     def create_object_list(cls):
@@ -195,3 +198,6 @@ class User(metaclass=ABCMeta):
         encoded_password.update(_salt.encode('utf-8') + password.encode('utf-8'))
         encoded_password = encoded_password.digest()
         return str(encoded_password)
+
+    def full_name(self):
+        return self.name + ' ' + self.last_name

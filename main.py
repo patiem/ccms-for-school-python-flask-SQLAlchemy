@@ -21,20 +21,28 @@ def checkpoint():
     return render_template('checkpoint.html')
 
 
-@app.route('/assignments')
+@app.route('/assignments', methods=['GET', 'POST'])
 def show_assignments_list():
-    # logged_user = make_student()
     if session['user']['type'] == 'Student':
         assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
         return render_template('assignments.html', user=session['user'], assignments=assignments)
+
     elif session['user']['type'] == 'Mentor':
-        assignments = Assignment.pass_assign_for_mentor()
-        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        if request.method == 'GET':
+            assignments = Assignment.pass_assign_for_mentor()
+            return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        elif request.method == 'POST':
+            title = request.form['a_title']
+            start_date = request.form['start_date']
+            end_date = request.form['end_date']
+            group = request.form['group']
+            description = request.form['description']
+            Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
+            return redirect(url_for('show_assignments_list'))
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
-    # logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
@@ -42,8 +50,15 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
         return redirect(url_for('show_assignment', idx=idx))
+
+
+@app.route('/grade_submission', methods=['GET', 'POST'])
+def grade_submission():
+    if request.method == 'GET':
+        sub_list = Submission.subs_to_grade()
+        return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
 
 
 @app.route('/logout')
