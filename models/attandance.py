@@ -113,7 +113,6 @@ class Attendance:
             for student in attendance:
                 user = Student.return_by_id(int(student['ID_STUDENT']))
                 fullname = user.full_name()
-                print(fullname)
                 attendance_list.append(Attendance(student['ID_STUDENT'], fullname, student['DATE'], student['STATUS']))
 
             return attendance_list

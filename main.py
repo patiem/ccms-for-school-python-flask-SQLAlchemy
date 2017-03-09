@@ -125,14 +125,32 @@ def remove_from_team(student_id):
         return redirect('/logout')
 
 
-@app.route('/attendance')
+@app.route('/attendance', methods=['GET', 'POST'])
 def attendance():
-    import datetime
-    date = str(datetime.date.today())
-    if 'date' in request.args:
-        date = request.args['date']
-    attendance_list = Attendance.get_attendance_list(date)
-    return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+    if request.method == 'GET':
+        import datetime
+        date = str(datetime.date.today())
+        if 'date' in request.args:
+            date = request.args['date']
+        attendance_list = Attendance.get_attendance_list(date)
+        return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+    elif request.method == 'POST':
+        students_present = {}
+        date_from_form = ''
+        for item in request.form:
+            if item[:6] == 'person':
+                student_id = int(item[6:])
+                students_present[student_id] = request.form[item]
+            elif item == 'set_date':
+                date_from_form = request.form[item]
+
+        # ------ SHOW REQUEST ------
+        # for value in students_present:
+        #     print(value, students_present[value])
+        # print(date_from_form)
+        # --------------------------
+
+        return 'DUPA'
 
 
 @app.route('/attendance/<date>')

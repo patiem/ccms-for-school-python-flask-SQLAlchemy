@@ -9,9 +9,10 @@
 
 {% block content %}
 
-    <form>
+    <form method="POST">
         <label class="date_input">Date:
-        <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" value="{{ date }}">
+{#        <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" value="{{ date }}">#}
+        <input type="date" name="set_date" id="attendance_date" min="2016-10-01" value="{{ date }}">
         </label>
         {% if attendance_list %}
 
@@ -21,13 +22,13 @@
                 <tr>
                     <td>{{ student.fullname }}</td>
 
-                    <td><label>Present <input type="radio" name="person{{ student.id_student }}" value="present"
+                    <td><label>Present <input type="radio" name="person{{ student.id_student }}" value="Present"
                             {% if student.present == 'Present' %} checked="checked" {% endif %}/></label></td>
 
-                    <td><label>Late <input type="radio" name="person{{ student.id_student }}" value="late"
+                    <td><label>Late <input type="radio" name="person{{ student.id_student }}" value="Late"
                             {% if student.present == 'Late' %} checked="checked" {% endif %}/></label></td>
 
-                    <td><label>Absent <input type="radio" name="person{{ student.id_student }}" value="absent"
+                    <td><label>Absent <input type="radio" name="person{{ student.id_student }}" value="Absent"
                             {% if student.present == 'Absent' %} checked="checked" {% endif %}/></label></td>
                 </tr>
 
@@ -36,7 +37,8 @@
         </table>
 
         {% endif %}
-        <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>
+{#        <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>#}
+        <button type="submit" class="submit_attendance">Submit</button>
     </form>
     <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 
