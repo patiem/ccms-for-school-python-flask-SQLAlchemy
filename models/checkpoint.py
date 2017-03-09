@@ -83,7 +83,6 @@ class Checkpoint:
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
-
     @staticmethod
     def show_checkpoints():
 
@@ -93,11 +92,17 @@ class Checkpoint:
         sql_query_result = sql.query(query)
         return sql_query_result
 
+    @staticmethod
+    def get_name(checkpoint_id):
+
+        query = "SELECT TITLE FROM Checkpoints WHERE ID = ?"
+        return sql.query(query, [checkpoint_id])
+
 
     @staticmethod
     def show_checkpoint_results(checkpoint_id):
         if checkpoint_id != 0:
-            Ui.clear()
+
             query = "SELECT TITLE, ID_CHECKPOINT, DATE, GRADE, student.Name as student_name,  " \
                     "student.Surname as student_surname , mentor.Name as mentor_name,  " \
                     "mentor.Surname as mentor_surname , mentor2.Name as mentor2_name,  " \
@@ -109,35 +114,20 @@ class Checkpoint:
                     "WHERE ID_CHECKPOINT  = {}".format(checkpoint_id)
 
             table = []
-            titles = ['Student', 'First mentor ', 'Second mentor', 'Date', Color.Yellow +'Grade       ' + Color.End]
             sql_query_result = sql.query(query)
 
             if isinstance(sql_query_result, list):
 
                 for checkpoint in sql_query_result:
-                    if checkpoint['grade'] == 'Yellow':
-                        color = Color.Yellow
-                    elif  checkpoint['grade'] == 'Red':
-                        color = Color.Red
-                    elif checkpoint['grade'] == 'Green':
-                        color = Color.Green
-                    table.append([checkpoint['student_name'] + ' '+  checkpoint['student_surname'],
-                                  checkpoint['mentor_name'] + ' '+ checkpoint['mentor_surname'],
-                                  checkpoint['mentor2_name'] + ' '+ checkpoint['mentor2_surname'],
-                                  checkpoint['DATE'],
-                                  color + checkpoint['grade'] + Color.End,
 
-                                  ])
+                    table.append({'student': checkpoint['student_name'] + ' ' + checkpoint['student_surname'],
+                                  'mentor1': checkpoint['mentor_name'] + ' ' + checkpoint['mentor_surname'],
+                                  'mentor2': checkpoint['mentor2_name'] + ' ' + checkpoint['mentor2_surname'],
+                                  'date': checkpoint['DATE'],
+                                  'grade': checkpoint['grade']
+                                  })
 
-                Ui.print_head('Checkpoint title: {} (Date: {})'.format(sql_query_result[0]['TITLE'], sql_query_result[0]['DATE']))
-                Ui.print_table(table, titles, 7)
-                Ui.press_any_key_input()
-
-            else:
-
-                Ui.print_text('\n No results for this checkpoint yet! \n')
-
-                Ui.press_any_key_input()
+                return table
 
     @staticmethod
 

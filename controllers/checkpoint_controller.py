@@ -31,6 +31,15 @@ def checkpoint_mentor_student(checkpoint_id, mentor_id):
     return render_template('checkpoint-select-student.html', user=session['user'], checkpoint_id=checkpoint_id, mentor=mentor, students=students_list)
 
 
+@checkpointcontroller.route('/checkpoint-results/<checkpoint_id>')
+def checkpoint_results(checkpoint_id):
+
+    results = Checkpoint.show_checkpoint_results(checkpoint_id)
+    checkpoint_name = Checkpoint.get_name(checkpoint_id)
+
+    return render_template('checkpoint-results.html', user=session['user'], checkpoint_id=checkpoint_id,
+                           checkpoint_name=checkpoint_name[0]['TITLE'], results=results)
+
 @checkpointcontroller.route('/checkpoint-make/<checkpoint_id>')
 def checkpoint_mentor(checkpoint_id):
     checkpoint = Checkpoint()
@@ -53,4 +62,4 @@ def checkpoint():
 
     checkpoints = checkpoint.show_checkpoints()
 
-    return render_template('checkpoint.html', checkpoints=checkpoints, user=session['user'])
+    return render_template('checkpoint.html', checkpoints=checkpoints, user=session['user'], today = datetime.date.today())

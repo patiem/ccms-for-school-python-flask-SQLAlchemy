@@ -1,0 +1,40 @@
+{% extends "menu.html" %}
+{% block content %}
+
+    <div class="checkpoint">
+    <h1>Checkpoints</h1>
+        <h3>Results for "{{ checkpoint_name }}"</h3>
+
+    {% if results != None %}
+
+    <figure class="table" id="table1">
+
+    <table>
+        <tr>
+            <th  class='left'>Student</th>
+            <th  class='left'>Mentor 1</th>
+            <th  class='left'>Mentor 2</th>
+            <th  class='left'  >Grade</th>
+        </tr>
+        {% for student in results %}
+        <tr>
+
+            <td class="left">{{ student['student'] }}</td>
+            <td class="left">{{ student['mentor1'] }}</td>
+            <td class="left">{{ student['mentor2'] }}</td>
+            <td class='left'>
+               {{ student['grade'] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </figure>
+        <a href="/checkpoint-make" class="button orange" style="margin-top: 20px;">Back to checkpoints</a>
+        {% else%}
+        <h3>Grade students first!</h3>
+        <a href="/checkpoint-make" class="button orange">Back to checkpoints</a>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
