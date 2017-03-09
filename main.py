@@ -92,57 +92,53 @@ def index():
 @login_required
 @correct_type(['Mentor'])
 def teams():
-    if 'user' in session:
-        teams_list = Team.create_teams_list()
-        students_list = Student.students_list()
-        return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
-    else:
-        return redirect('/logout')
+    teams_list = Team.create_teams_list()
+    students_list = Student.students_list()
+    return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
+
+
+@app.route('/team_name_edit', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+@correct_form(['id', 'team_name'])
+def team_name_edit():
+    idx = request.form['id']
+    team_name = request.form['team_name']
+    Team.update_name(idx, team_name)
+    return redirect('/teams')
 
 
 @app.route('/add_to_team/<student_id>/<team_id>')
 @login_required
 @correct_type(['Mentor'])
 def add_to_team(student_id, team_id):
-    if 'user' in session:
-        Team.add_student_to_team(student_id, team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.add_student_to_team(student_id, team_id)
+    return redirect('/teams')
 
 
 @app.route('/remove_team/<team_id>')
 @login_required
 @correct_type(['Mentor'])
 def remove_team(team_id):
-    if 'user' in session:
-        Team.remove_team(team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.remove_team(team_id)
+    return redirect('/teams')
 
 
 @app.route('/add_team', methods=['POST'])
 @login_required
 @correct_type(['Mentor'])
 def add_team():
-    if 'user' in session:
-        name = request.form['new_team_name']
-        Team.new_team(name)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    name = request.form['new_team_name']
+    Team.new_team(name)
+    return redirect('/teams')
 
 
 @app.route('/remove_from_team/<student_id>')
 @login_required
 @correct_type(['Mentor'])
 def remove_from_team(student_id):
-    if 'user' in session:
         Team.remove_student_from_team(student_id)
         return redirect('/teams')
-    else:
-        return redirect('/logout')
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
@@ -157,6 +153,7 @@ def attendance():
             date = request.args['date']
         attendance_list = Attendance.get_attendance_list(date)
         return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+
     elif request.method == 'POST':
         students_present = {}
         date_from_form = ''
@@ -166,12 +163,6 @@ def attendance():
                 students_present[student_id] = request.form[item]
             elif item == 'set_date':
                 date_from_form = request.form[item]
-
-        # ------ SHOW REQUEST ------
-        # for value in students_present:
-        #     print(value, students_present[value])
-        # print(date_from_form)
-        # --------------------------
         Attendance.update(students_present, date_from_form)
         return redirect(url_for('attendance', date=date_from_form))
 

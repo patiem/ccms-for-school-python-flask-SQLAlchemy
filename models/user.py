@@ -131,6 +131,11 @@ class User(metaclass=ABCMeta):
                 WHERE ID = ?"""
         sql.query(query, [idx])
 
+        query = """
+                DELETE FROM Attendance
+                WHERE ID_STUDENT = ?"""
+        sql.query(query, [idx])
+
     # @staticmethod
     # def create_list_to_save(object_list):
     #     """

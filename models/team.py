@@ -160,3 +160,11 @@ class Team:
         query = "SELECT ID_USER FROM users_team WHERE ID_TEAM=?"
         params = [team_id]
         return sql.query(query, params)
+
+    @classmethod
+    def update_name(cls, idx, team_name):
+        query = """UPDATE TEAMS
+                   SET NAME = ?
+                   WHERE ID = ?"""
+        edit_list = [team_name, idx]
+        sql.query(query, edit_list)

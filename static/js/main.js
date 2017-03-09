@@ -9,7 +9,7 @@ function gradeValue(value) {
 $('.remove_user').click(function () {
     location.reload(true);
     var tr_id = $(this).closest('tr').find('#id').data('id');
-    var dict_id = { Idx: tr_id}
+    var dict_id = { Idx: tr_id};
     var user_answear = confirm("Are you sure?");
     if (user_answear == true){
         $.ajax({
@@ -163,33 +163,27 @@ $('.attendance_tr').change(function () {
 
 $('a.edit_team').click(function () {
     var team_id = $(this).parent('.table_parent').find('.team_id').data('id');
-    console.log(team_id);
+    var team_name = $(this).parent('.table_parent').find('.team_name').data('name');
 
-    // var tr_id = $(this).closest('table').find('.team_id').data('id');
-    // $(this).closest('table').css('background-color', 'red');
-    // var dict_id = { Idx: tr_id};
-    // console.log(tr_id);
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '/edit',
-    //     data : JSON.stringify(dict_id),
-    //     dataType: 'json',
-    //     contentType: 'application/json; charset=utf-8',
-    //     // contentType : 'application/x-www-form-urlencoded',
-    //
-    //     success: function(response) {
-    //         console.log(response['id']);
-    //         $('#edit_id').val(response['id'])
-    //         $('#name').val(response['name'])
-    //         $('#surname').val(response['surname'])
-    //         $('#email').val(response['e-mail'])
-    //         $('#telephone').val(response['telephone'])
-    //     },
-    //     error: function(error) {
-    //         console.log(error);
-    //         alert('nope');
-    //     }
+    $('#edit_name').val(team_name);
+    $('#team_edit_id').val(team_id);
 
-    // })
+});
 
+$('.edit_team_submit').click(function () {
+   $('.close').trigger('click');
+});
+
+$(function () {
+    var team_id;
+
+    $('.add_to_team').click(function () {
+        team_id = $(this).parent('.table_parent').find('.team_id').data('id');
+    });
+
+    $('.to_team').click(function () {
+        var url = $(this).attr('href');
+        url = url + team_id;
+        $(this).attr('href', url);
+    });
 });
