@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import session, url_for, redirect, request, render_template
 
+
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -22,6 +23,7 @@ def correct_type(type_list=None):
                 return redirect(url_for('index'))
         return check_type
     return decorator
+
 
 def correct_form(form_list):
     def decorator(f):
