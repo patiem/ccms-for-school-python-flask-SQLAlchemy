@@ -3,7 +3,6 @@ from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.team import Team
 from models.user import *
-from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
@@ -67,6 +66,18 @@ def grade_submission():
         return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
 
 
+@app.route('/update_submission', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+def update_submission():
+    value = request.json['Value']
+    link = request.json['Link']
+    print(value, link)
+    Submission.update_grade(value, link)
+    user_dict = {'fullname': session['user']['name'] + " " + session['user']['surname']}
+    return jsonify(user_dict)
+
+
 @app.route('/logout')
 def logout():
     session.pop('user', None)
@@ -96,63 +107,59 @@ def index():
 @login_required
 @correct_type(['Mentor'])
 def teams():
-    if 'user' in session:
-        teams_list = Team.create_teams_list()
-        students_list = Student.students_list()
-        return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
-    else:
-        return redirect('/logout')
+    teams_list = Team.create_teams_list()
+    students_list = Student.students_list()
+    return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
 
 
-@app.route('/add_to_team/<student_id><team_id>')
+@app.route('/team_name_edit', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+@correct_form(['id', 'team_name'])
+def team_name_edit():
+    idx = request.form['id']
+    team_name = request.form['team_name']
+    Team.update_name(idx, team_name)
+    return redirect('/teams')
+
+
+@app.route('/add_to_team/<student_id>/<team_id>')
 @login_required
 @correct_type(['Mentor'])
 def add_to_team(student_id, team_id):
-    if 'user' in session:
-        Team.add_student_to_team(student_id, team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.add_student_to_team(student_id, team_id)
+    return redirect('/teams')
 
 
 @app.route('/remove_team/<team_id>')
 @login_required
 @correct_type(['Mentor'])
 def remove_team(team_id):
-    if 'user' in session:
-        Team.remove_team(team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.remove_team(team_id)
+    return redirect('/teams')
 
 
 @app.route('/add_team', methods=['POST'])
 @login_required
 @correct_type(['Mentor'])
 def add_team():
-    if 'user' in session:
-        name = request.form['new_team_name']
-        Team.new_team(name)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    name = request.form['new_team_name']
+    Team.new_team(name)
+    return redirect('/teams')
 
 
 @app.route('/remove_from_team/<student_id>')
 @login_required
 @correct_type(['Mentor'])
 def remove_from_team(student_id):
-    if 'user' in session:
         Team.remove_student_from_team(student_id)
         return redirect('/teams')
-    else:
-        return redirect('/logout')
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
 @login_required
 @correct_type(['Mentor'])
-@correct_form(['date'])
+@correct_form(['set_date'])
 def attendance():
     if request.method == 'GET':
         import datetime
@@ -161,6 +168,7 @@ def attendance():
             date = request.args['date']
         attendance_list = Attendance.get_attendance_list(date)
         return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+
     elif request.method == 'POST':
         students_present = {}
         date_from_form = ''
@@ -170,12 +178,6 @@ def attendance():
                 students_present[student_id] = request.form[item]
             elif item == 'set_date':
                 date_from_form = request.form[item]
-
-        # ------ SHOW REQUEST ------
-        # for value in students_present:
-        #     print(value, students_present[value])
-        # print(date_from_form)
-        # --------------------------
         Attendance.update(students_present, date_from_form)
         return redirect(url_for('attendance', date=date_from_form))
 

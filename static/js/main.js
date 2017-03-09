@@ -1,13 +1,14 @@
-$('.grade_range').change(function () {
+$('.grade_input').change(function () {
     var value =  $(this).val();
     if (value > -1){
         $(this).parent('.grade_range').find('.grade_output').val(value)
     }
     else {
         $(this).parent('.grade_range').find('.grade_output').val('None')
-   }
+    }
+    $(this).addClass('Changed');
     var link = $(this).closest('tr').find('.left').data('link');
-    dict_data = { Value: value, Link:link}
+    var dict_data = { Value: value, Link:link};
     $.ajax({
         type: 'POST',
         url: '/update_submission',
@@ -16,15 +17,18 @@ $('.grade_range').change(function () {
         contentType: 'application/json; charset=utf-8',
 
         success: function(response) {
-            console.log(response);
-             $(this).closest('tr').find('.mentor_name').html(response['fullname'])
+            var mentor_name = response['fullname'];
+            $('.Changed').closest('tr').find('.mentor_name').html(mentor_name);
+            $('.Changed').removeClass('Changed');
+
+            // $('.grade_input').closest('tr').find('.left').val(mentor)
         },
         error: function(error) {
             console.log(error);
             alert('nope');
         }
 
-    })
+    });
 });
 
 
@@ -212,33 +216,31 @@ $('#attendance_date').change(function () {
 
 $('.attendance_tr').change(function () {
     $(this).css('background-color','#70FF9E');
-    // alert('JUPI!!')
 });
 
 $('a.edit_team').click(function () {
-    var tr_id = $(this).closest('tr').find('#id').data('id');
-    var dict_id = { Idx: tr_id};
-    $.ajax({
-        type: 'POST',
-        url: '/edit',
-        data : JSON.stringify(dict_id),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        // contentType : 'application/x-www-form-urlencoded',
+    var team_id = $(this).parent('.table_parent').find('.team_id').data('id');
+    var team_name = $(this).parent('.table_parent').find('.team_name').data('name');
 
-        success: function(response) {
-            console.log(response['id']);
-            $('#edit_id').val(response['id'])
-            $('#name').val(response['name'])
-            $('#surname').val(response['surname'])
-            $('#email').val(response['e-mail'])
-            $('#telephone').val(response['telephone'])
-        },
-        error: function(error) {
-            console.log(error);
-            alert('nope');
-        }
+    $('#edit_name').val(team_name);
+    $('#team_edit_id').val(team_id);
 
-    })
+});
 
+$('.edit_team_submit').click(function () {
+   $('.close').trigger('click');
+});
+
+$(function () {
+    var team_id;
+
+    $('.add_to_team').click(function () {
+        team_id = $(this).parent('.table_parent').find('.team_id').data('id');
+    });
+
+    $('.to_team').click(function () {
+        var url = $(this).attr('href');
+        url = url + team_id;
+        $(this).attr('href', url);
+    });
 });
