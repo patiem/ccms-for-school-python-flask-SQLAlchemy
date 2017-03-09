@@ -165,9 +165,9 @@ class Submission:
         sql.query(query, values_list)
 
     @classmethod
-    def update_grade(self, value, link):
+    def update_grade(cls, value, link, mentor_id):
         query = """UPDATE Sumbissions
-                   SET GRADE = ?
+                   SET GRADE = ?, ID_MENTOR = ?
                    WHERE LINK = ?"""
-        edit_list = [value, link]
+        edit_list = [value, mentor_id, link]
         sql.query(query, edit_list)
