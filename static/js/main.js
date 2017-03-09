@@ -6,6 +6,8 @@ function gradeValue(value) {
         return 'None'
     }
 }
+
+
 $('.remove_user').click(function () {
     location.reload(true);
     var tr_id = $(this).closest('tr').find('.id').data('id');
