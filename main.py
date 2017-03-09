@@ -9,10 +9,12 @@ from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
 
-
+from models.decorator import *
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
+
+
 
 
 @app.route('/checkpoint')
@@ -43,12 +45,6 @@ def show_assignment(idx):
         comment = request.form['comment']
         Submission.add_submission(session['user']['id'], assignment[0], link, comment)
         return redirect(url_for('show_assignment', idx=idx))
-
-
-# def make_student():
-#     user_id = session['user']['id']
-#     logged_user = Student.return_by_id(user_id)  # what with team id??
-#     return logged_user
 
 
 @app.route('/logout')
@@ -119,6 +115,8 @@ def attendance():
 
 
 @app.route('/student_list')
+@login_required
+@correct_type(['Manager', 'Employee', 'Mentor'])
 def student_list():
     table = Student.students_list()
     if table:
@@ -127,6 +125,8 @@ def student_list():
 
 
 @app.route('/mentor_list')
+@login_required
+@correct_type(['Manager'])
 def mentor_list():
     table = Mentor.create_mentor_list()
     if table:
@@ -135,21 +135,26 @@ def mentor_list():
 
 
 @app.route('/edit', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
 def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         user = User.return_by_id(idx)
-        student_dict = {   'id': idx,
-                        'name': user.name,
-                        'surname': user.last_name,
-                        'e-mail': user.mail,
-                        'telephone': user.telephone}
-        return jsonify(student_dict)
+        user_dict= {'id': idx,
+                    'name': user.name,
+                    'surname': user.last_name,
+                    'e-mail': user.mail,
+                    'telephone': user.telephone}
+        return jsonify(user_dict)
     return 'lipa'
 
 
 @app.route('/edit-form', methods=['POST', 'GET'])
-def update_student():
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_form(['type', 'id', 'name', 'surname', 'email', 'telephone'])
+def update_user():
     if request.method == 'POST':
         user_type = request.form['type']
         idx = request.form['id']
@@ -167,61 +172,53 @@ def update_student():
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_form(['type', 'name', 'surname', 'email', 'telephone'])
 def save_user():
-    if 'user' in session:
-        if session['user']['Type'] == ('Manager' or 'Mentor'):
-            if request.method == 'POST':
-                user_type = request.form['type']
-                name = request.form['name']
-                surname = request.form['surname']
-                email = request.form['email']
-                telephone = request.form['telephone']
-                add_list = [name, surname, email, telephone]
-                if user_type == 'student':
-                    Student.add_user(add_list)
-                    return redirect(url_for('student_list'))
-                elif user_type == 'mentor':
-                    Mentor.add_user(add_list)
-                    return redirect(url_for('mentor_list'))
+    if request.method == 'POST':
+        user_type = request.form['type']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        add_list = [name, surname, email, telephone]
+        if user_type == 'student':
+            Student.add_user(add_list)
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.add_user(add_list)
             return redirect(url_for('mentor_list'))
-        else:
-            return redirect(url_for('index'))
-    else:
-        return redirect(url_for('index'))
+    return redirect(url_for('mentor_list'))
 
 
 @app.route('/remove-user', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_json(['Idx'])
 def remove_user():
-    if 'user' in session:
-        if session['user']['Type'] == ('Manager' or 'Mentor'):
-            if request.method == 'POST':
-                idx = request.json['Idx']
-                User.remove_sql(idx)
-        else:
-            return redirect(url_for('index'))
-    else:
-        return redirect(url_for('index'))
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        User.remove_sql(idx)
 
 
 @app.route('/check-mail', methods=['POST'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_json(['Mail'])
 def mail_exist():
-    if 'user' in session:
-        if session['user']['Type'] == ('Manager' or 'Mentor'):
-            if request.method == 'POST':
-                if request.is_json:
-                    mail_list = User.return_mails()
-                    if request.json['Mail'] in mail_list:
-                        value = {'value': True}
-                        return jsonify(value)
-                    else:
-                        value = {'value': False}
-                        return jsonify(value)
-                return redirect(url_for('index'))
+        if request.method == 'POST':
+            if request.is_json:
+                mail_list = User.return_mails()
+                if request.json['Mail'] in mail_list:
+                    value = {'value': True}
+                    return jsonify(value)
+                else:
+                    value = {'value': False}
+                    return jsonify(value)
             return redirect(url_for('index'))
-        else:
-            return redirect(url_for('index'))
-    else:
         return redirect(url_for('index'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
