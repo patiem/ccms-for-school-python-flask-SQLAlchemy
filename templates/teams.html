@@ -10,10 +10,10 @@
 
     {% for team in teams %}
 
-
+    <div class="table_parent">
     <table class="team_table">
         <tr>
-            <th>TEAM ID: {{ team.id_team }}</th>
+            <th data-id={{ team.id_team }} class="team_id">TEAM ID: {{ team.id_team }}</th>
             <th>NAME: {{ team.name }}</th>
             <th>Action</th>
         </tr>
@@ -35,8 +35,8 @@
     </table>
         <a href="#add_student_to_team{{ team.id_team }}"><div class="fixed_table_button orange_shadow"> + Student </div></a>
         <a href="/remove_team/{{ team.id_team }}"><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
-        <a href="#edit_team">
-            <div class="fixed_table_button edit_team orange_shadow edit_team"> Edit team name </div>
+        <a href="#edit_team" class="edit_team">
+            <div class="fixed_table_button orange_shadow edit_team"> Edit team name </div>
         </a>
 
         <div class="overlay" id="add_student_to_team{{ team.id_team }}">
@@ -50,7 +50,7 @@
 
                 {% for student in students %}
                     <tr>
-                        <td><a href="/add_to_team/{{ student.idx }}{{ team.id_team }}">{{ student.full_name() }}</a></td>
+                        <td><a href="/add_to_team/{{ student.idx }}/{{ team.id_team }}">{{ student.full_name() }}</a></td>
                     </tr>
                 {% endfor %}
 
@@ -60,7 +60,7 @@
             <br>
         </form>
         </div>
-
+    </div>
 
     {% endfor %}
 
@@ -120,5 +120,5 @@
                 <input type="submit" value="Submit" id="submit" class="button orange">
             </form>
         </div>
-
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 {% endblock %}

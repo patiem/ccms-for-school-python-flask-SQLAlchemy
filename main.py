@@ -100,7 +100,7 @@ def teams():
         return redirect('/logout')
 
 
-@app.route('/add_to_team/<student_id><team_id>')
+@app.route('/add_to_team/<student_id>/<team_id>')
 @login_required
 @correct_type(['Mentor'])
 def add_to_team(student_id, team_id):
@@ -148,7 +148,7 @@ def remove_from_team(student_id):
 @app.route('/attendance', methods=['GET', 'POST'])
 @login_required
 @correct_type(['Mentor'])
-@correct_form(['date'])
+@correct_form(['set_date'])
 def attendance():
     if request.method == 'GET':
         import datetime

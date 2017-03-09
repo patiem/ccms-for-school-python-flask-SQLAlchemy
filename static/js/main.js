@@ -159,33 +159,37 @@ $('#attendance_date').change(function () {
 
 $('.attendance_tr').change(function () {
     $(this).css('background-color','#70FF9E');
-    // alert('JUPI!!')
 });
 
 $('a.edit_team').click(function () {
-    var tr_id = $(this).closest('tr').find('#id').data('id');
-    var dict_id = { Idx: tr_id};
-    $.ajax({
-        type: 'POST',
-        url: '/edit',
-        data : JSON.stringify(dict_id),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        // contentType : 'application/x-www-form-urlencoded',
+    var team_id = $(this).parent('.table_parent').find('.team_id').data('id');
+    console.log(team_id);
 
-        success: function(response) {
-            console.log(response['id']);
-            $('#edit_id').val(response['id'])
-            $('#name').val(response['name'])
-            $('#surname').val(response['surname'])
-            $('#email').val(response['e-mail'])
-            $('#telephone').val(response['telephone'])
-        },
-        error: function(error) {
-            console.log(error);
-            alert('nope');
-        }
+    // var tr_id = $(this).closest('table').find('.team_id').data('id');
+    // $(this).closest('table').css('background-color', 'red');
+    // var dict_id = { Idx: tr_id};
+    // console.log(tr_id);
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '/edit',
+    //     data : JSON.stringify(dict_id),
+    //     dataType: 'json',
+    //     contentType: 'application/json; charset=utf-8',
+    //     // contentType : 'application/x-www-form-urlencoded',
+    //
+    //     success: function(response) {
+    //         console.log(response['id']);
+    //         $('#edit_id').val(response['id'])
+    //         $('#name').val(response['name'])
+    //         $('#surname').val(response['surname'])
+    //         $('#email').val(response['e-mail'])
+    //         $('#telephone').val(response['telephone'])
+    //     },
+    //     error: function(error) {
+    //         console.log(error);
+    //         alert('nope');
+    //     }
 
-    })
+    // })
 
 });
