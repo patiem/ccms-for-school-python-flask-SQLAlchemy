@@ -24,7 +24,7 @@
                     <input type="hidden" name="checkpoint" value="{{ checkpoint_id  }}" />
                     <input type="radio" id="green{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="green" /><label for="green{{ student['ID'] }}">green</label>
                     <input type="radio" id="yellow{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="yellow" /><label for="yellow{{ student['ID'] }}">yellow</label>
-                    <input type="radio" id="red{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="red" /><label for="red{{ student['ID'] }}">red</label>
+                    <input type="radio" id="red{{ student['ID'] }}" name="grade{{ student['ID'] }}" value="red" checked /><label for="red{{ student['ID'] }}">red</label>
                     <input type="submit" value="GRADE"   class="button orange" />
                 </form>
             </td>
@@ -34,9 +34,9 @@
     </figure>
         {% else%}
         <h3>All students are graded!</h3>
-        <a href="/checkpoint-make" class="button orange">Back to checkpoints</a>
-        {% endif %}
 
+        {% endif %}
+  <a href="/checkpoint-make" class="button orange" style="margin-top: 20px;">Back to checkpoints</a>
     </div>
 
 {% endblock %}

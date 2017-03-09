@@ -22,8 +22,8 @@
             <td class="left">{{ student['student'] }}</td>
             <td class="left">{{ student['mentor1'] }}</td>
             <td class="left">{{ student['mentor2'] }}</td>
-            <td class='left'>
-               {{ student['grade'] }}
+            <td class='left'><span class="{{ student['grade'] }}">
+               {{ student['grade'] }}</span>
             </td>
         </tr>
         {% endfor %}

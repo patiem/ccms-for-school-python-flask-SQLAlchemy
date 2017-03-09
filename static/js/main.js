@@ -147,3 +147,13 @@ $('.close').click(function () {
     $('#add_telephone').val('');
 
 });
+
+
+function validate_checkpoint(){
+    var new_checkpoint = document.getElementById('new_checkpoint').value;
+
+    if (new_checkpoint.length > 0){
+        return true;
+    }
+    return false;
+}

@@ -68,3 +68,12 @@ class Mentor(User):
             for row in data:
                 table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
         return table
+
+    @staticmethod
+    def mentor_exist(id):
+        query = "SELECT * FROM users WHERE type='Mentor' AND ID=?"
+        result=sql.query(query, [id])
+        if result is not None:
+            return True
+        else:
+            return False

@@ -11,7 +11,6 @@ class Checkpoint:
     @staticmethod
     def add_checkpoint(title, start_date,  mentor):
 
-
         query = "INSERT INTO Checkpoints ('ID_USER', 'TITLE', 'START_DATE') VALUES (?, ?, ?)"
         sql.query(query, [mentor, title, start_date])
 
@@ -130,7 +129,6 @@ class Checkpoint:
                 return table
 
     @staticmethod
-
     def show_statistics_for_mentor_cards(id_mentor):
 
         query = "SELECT *, COUNT(GRADE) as cards FROM Users_checkpoints WHERE ID_MENTOR_1 = {} OR ID_MENTOR_2 = {} " \
@@ -138,36 +136,17 @@ class Checkpoint:
 
         sql_query_result = sql.query(query)
 
-        table = list()
-        title = ['Grades', 'Amount']
-
-        if isinstance(sql_query_result, list):
-            for row in sql_query_result:
-                table.append([row['GRADE'], row['cards']])
-        else:
-            table.append(['0', '0'])
-        Ui.print_table(table, title)
+        return sql_query_result
 
     @staticmethod
     def show_statistics_for_mentor_checkpoints(id_mentor):
 
-        query = "SELECT *FROM Checkpoints WHERE ID_USER = {} ORDER BY START_DATE ASC".format(
+        query = "SELECT * FROM Checkpoints WHERE ID_USER = {} ORDER BY START_DATE ASC".format(
             id_mentor, id_mentor)
 
         sql_query_result = sql.query(query)
 
-        table = list()
-        title = ['My checkpoints', 'Date of creation']
-        if isinstance(sql_query_result, list):
-            for row in sql_query_result:
-                table.append([row['TITLE'], row['START_DATE']])
-            no = [str(len(sql_query_result))]
-        else:
-            table.append(['', ''])
-            no = str(0)
-
-        Ui.print_table(no, ['No of created checkpoints'])
-        Ui.print_table(table, title)
+        return sql_query_result
 
     @staticmethod
     def show_statistics_for_mentor(id_mentor):
