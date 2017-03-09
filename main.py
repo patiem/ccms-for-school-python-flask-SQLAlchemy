@@ -22,9 +22,11 @@ def checkpoint():
 
 
 @app.route('/assignments', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Student', 'Mentor'])
 def show_assignments_list():
     if session['user']['type'] == 'Student':
-        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        assignments = Assignment.assignment_list_with_grades(session['user']['id'])
         return render_template('assignments.html', user=session['user'], assignments=assignments)
 
     elif session['user']['type'] == 'Mentor':
@@ -42,6 +44,8 @@ def show_assignments_list():
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Student', 'Mentor'])
 def show_assignment(idx):
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
@@ -55,6 +59,8 @@ def show_assignment(idx):
 
 
 @app.route('/grade_submission', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Mentor'])
 def grade_submission():
     if request.method == 'GET':
         sub_list = Submission.subs_to_grade()
