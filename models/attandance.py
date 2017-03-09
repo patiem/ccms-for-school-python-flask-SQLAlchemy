@@ -171,3 +171,21 @@ class Attendance:
         # ---------------------------------------------------------------- #
 
         return list_of_attendance
+
+    @classmethod
+    def update(cls, students_dict, date):  # IN USE
+
+        # ----------- SQL UPDATE EXAMPLE ------------
+        # """UPDATE `Attendance` SET `STATUS`='None'
+        # WHERE `ID_STUDENT`=12
+        # AND `DATE`='2017-03-09';"""
+        # -------------------------------------------
+
+        for idx in students_dict:
+
+            query = """UPDATE `Attendance` SET `STATUS`=?
+                       WHERE `ID_STUDENT`=? AND `DATE`=?;"""
+
+            params = [students_dict[idx], idx, date]
+            sql.query(query, params)
+

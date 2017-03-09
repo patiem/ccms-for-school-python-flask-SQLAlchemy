@@ -149,7 +149,7 @@ def attendance():
         #     print(value, students_present[value])
         # print(date_from_form)
         # --------------------------
-
+        Attendance.update(students_present, date_from_form)
         return 'DUPA'
 
 
