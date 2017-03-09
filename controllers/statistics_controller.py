@@ -23,6 +23,8 @@ def statistics_student():
 def statistics_manager():
     if session['user']['type'] == 'Manager':
 
+        grades = Student.get_students_grades()
+        attandance = Student.get_students_attandance()
 
         return render_template('statistics_manager.html', user=session['user'], grades=grades, attandance=attandance)
     return redirect(url_for('index'))
