@@ -138,7 +138,7 @@ $('.close').click(function () {
     $('#submit').removeClass('inactive').addClass('orange').prop("disabled", false);
     $('#email').removeClass('error');
     $('#mail_message_add').html("");
-    $('#add_submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+    $('#add_submit').removeClass('orange').addClass('inactive').prop("disabled", true);
     $('#add_email').removeClass('error');
     $('#mail_message').html("");
     $('#add_name').val('');
