@@ -59,13 +59,16 @@ class Submission:
         for sub in sub_list:
             if Student.make_student(sub.student_idx):
                 ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
+                sub_id = sql.query('SELECT id FROM Sumbissions WHERE ID_ASSIGMENT=? AND ID_STUDENT=?',
+                                   [sub.assignment_idx, sub.student_idx])[0][0]
                 if sub.mentor_id != 0:
                     mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])[0]
                     mentor_name = ' '.join(mentor_name)
                 else:
                     mentor_name = 'None'
+                comment = sql.query('SELECT comment FROM comments WHERE sub_id=?', [sub_id])[0][0]
                 student = Student.make_student(sub.student_idx)
-                list_for_mentor.append([sub, student, ass_title, mentor_name])
+                list_for_mentor.append([sub, student, ass_title, mentor_name, comment])
         return list_for_mentor
 
     @classmethod  # IN USE

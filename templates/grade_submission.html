@@ -22,7 +22,7 @@
                 <td>{{ i }}</td>
                 <td>{{ item[1].full_name() }}</td>
                 <td>{{ item[0].date_of_submission }}</td>
-                <td class='left'><a href="{{ item[0].link }}" target="_blank">{{ item[2]}}</a></td>
+                <td class='left'><a href="{{ item[0].link }}" target="_blank">{{ item[2]}}<p>Comment: <br> {{ item[4] }}</p></a></td>
                 <td>
                     <div class="grade_range">
                     {% if item[0].grade == -1 %}
