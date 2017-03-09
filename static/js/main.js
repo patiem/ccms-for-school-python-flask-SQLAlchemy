@@ -1,17 +1,39 @@
-function gradeValue(value) {
+$('.grade_range').change(function () {
+    var value =  $(this).val();
     if (value > -1){
-        return value + '%'
+        $(this).parent('.grade_range').find('.grade_output').val(value)
     }
-    else{
-        return 'None'
-    }
-}
+    else {
+        $(this).parent('.grade_range').find('.grade_output').val('None')
+   }
+    var link = $(this).closest('tr').find('.left').data('link');
+    dict_data = { Value: value, Link:link}
+    $.ajax({
+        type: 'POST',
+        url: '/update_submission',
+        data : JSON.stringify(dict_data),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+
+        success: function(response) {
+            console.log(response);
+             $(this).closest('tr').find('.mentor_name').html(response['fullname'])
+        },
+        error: function(error) {
+            console.log(error);
+            alert('nope');
+        }
+
+    })
+});
+
+
 
 
 $('.remove_user').click(function () {
     location.reload(true);
     var tr_id = $(this).closest('tr').find('.id').data('id');
-    var dict_id = { Idx: tr_id}
+    var dict_id = { Idx: tr_id};
     var user_answear = confirm("Are you sure?");
     if (user_answear == true){
         $.ajax({
@@ -37,7 +59,6 @@ $('a.edit').click(function () {
         data : JSON.stringify(dict_id),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        // contentType : 'application/x-www-form-urlencoded',
 
         success: function(response) {
             console.log(response['id']);

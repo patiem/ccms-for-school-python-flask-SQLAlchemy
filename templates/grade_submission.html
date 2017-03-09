@@ -24,10 +24,10 @@
 {#                item[3] mentor name#}
 
             <tr>
-                <td>{{ item[0].idx }}</td>
+                <td class="sub_idx" data-id ={{ item[0].idx }} >{{ item[0].idx }}</td>
                 <td>{{ item[1].full_name() }}</td>
                 <td>{{ item[0].date_of_submission }}</td>
-                <td class='left'><a href="{{ item[0].link }}">{{ item[2]}}</a></td>
+                <td class='left' data-link = {{ item[0].link }} ><a href="{{ item[0].link }}">{{ item[2]}}</a></td>
                 <td>
                     <div class="grade_range">
                     {% if item[0].grade == -1 %}
@@ -36,11 +36,11 @@
                     <output name="gradeOutput1" class="grade_output">{{ item[0].grade }}</output>
                     {% endif %}
                         <label for="gradeInput1"></label>
-                        <input type="range" class="grade_range" id="gradeInput1" name="gradeInput1"
+                        <input type="range" class="grade_range" name="gradeInput1"
                            value="{{ item[0].grade }}" min="-1" max="100">
                     </div>
                 </td>
-                <td>{{ item[3] }}</td>
+                <td class="mentor_name">{{ item[3] }}</td>
             </tr>
             {% set i = 1 + i %}
             {% endfor %}
@@ -48,6 +48,6 @@
         </table>
         <a href=""><div class="fixed_table_button orange_shadow"> Submit </div></a>
     </form>
-    
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 {% endblock %}
 
