@@ -182,7 +182,8 @@ def update_user():
         elif user_type == 'mentor':
             Mentor.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
-    return redirect(url_for('index'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
@@ -203,7 +204,8 @@ def save_user():
         elif user_type == 'mentor':
             Mentor.add_user(add_list)
             return redirect(url_for('mentor_list'))
-    return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
 
 
 @app.route('/remove-user', methods=['POST', 'GET'])
