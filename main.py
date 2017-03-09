@@ -182,6 +182,7 @@ def update_user():
         elif user_type == 'mentor':
             Mentor.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
+    return redirect(url_for('index'))
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
