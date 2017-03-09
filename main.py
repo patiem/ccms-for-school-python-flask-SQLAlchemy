@@ -1,16 +1,12 @@
 from flask import Flask, request, session, render_template, redirect, url_for, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
-from models.user import User
 from models.team import Team
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
-
-
-
 
 app = Flask(__name__)
 app.register_blueprint(checkpointcontroller)
@@ -22,20 +18,28 @@ def checkpoint():
     return render_template('checkpoint.html')
 
 
-@app.route('/assignments')
+@app.route('/assignments', methods=['GET', 'POST'])
 def show_assignments_list():
-    # logged_user = make_student()
     if session['user']['type'] == 'Student':
         assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
         return render_template('assignments.html', user=session['user'], assignments=assignments)
+
     elif session['user']['type'] == 'Mentor':
-        assignments = Assignment.pass_assign_for_mentor()
-        return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        if request.method == 'GET':
+            assignments = Assignment.pass_assign_for_mentor()
+            return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+        elif request.method == 'POST':
+            title = request.form['a_title']
+            start_date = request.form['start_date']
+            end_date = request.form['end_date']
+            group = request.form['group']
+            description = request.form['description']
+            Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
+            return redirect(url_for('show_assignments_list'))
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
 def show_assignment(idx):
-    # logged_user = make_student()
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
@@ -43,13 +47,15 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(session['user']['id'], assignment[0], link, comment)
+        Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
         return redirect(url_for('show_assignment', idx=idx))
 
-# def make_student():
-#     user_id = session['user']['id']
-#     logged_user = Student.return_by_id(user_id)  # what with team id??
-#     return logged_user
+
+@app.route('/grade_submission', methods=['GET', 'POST'])
+def grade_submission():
+    if request.method == 'GET':
+        return render_template('grade_submission.html', user=session['user'])
+
 
 @app.route('/logout')
 def logout():
