@@ -52,6 +52,6 @@ def correct_json(form_list):
                 for name in form_list:
                     if name not in table:
                         return render_template('bad.html', user=session['user'])
-                return f(*args, **kwargs)
+            return f(*args, **kwargs)
         return check_form
     return decorator

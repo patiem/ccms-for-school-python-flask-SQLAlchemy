@@ -12,7 +12,7 @@ class Submission:
 
     submission_list = []
 
-    def __init__(self, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
+    def __init__(self, idx, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
         Creates object of Submission class.
         :param student_idx: str (idx of student who wants to make submission)
@@ -22,6 +22,7 @@ class Submission:
         :param grade: None (if not graded)/ str (if graded)
         :param mentor_id: None/int (id of mentor, who graded submission)
         """
+        self.idx = idx
         self.student_idx = student_idx
         self.assignment_idx = assignment_idx
         self.date_of_submission = date_of_submission
@@ -36,7 +37,7 @@ class Submission:
         list_from_sql = sql.query(query)
         if list_from_sql:
             for item in list_from_sql:
-
+                idx = item['ID']
                 student_idx = item['ID_STUDENT']
                 assignment_idx = item['ID_ASSIGMENT']
                 mentor_id = item['ID_MENTOR']
@@ -46,10 +47,10 @@ class Submission:
                 if Test.is_date_correct(date):
                     date_of_submission = Common.make_corect_date(date)
                     if grade != 0:
-                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade,
+                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link, grade,
                                                    mentor_id))
                     else:
-                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
+                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link))
         return submission_list
 
     @classmethod  # IN USE

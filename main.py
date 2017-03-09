@@ -97,8 +97,6 @@ def index():
                     'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
-            print(session['user']['id'])
-
     if 'user' in session:
         return render_template('index.html', user=session['user'])
     else:

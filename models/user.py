@@ -130,6 +130,10 @@ class User(metaclass=ABCMeta):
                 DELETE FROM Users
                 WHERE ID = ?"""
         sql.query(query, [idx])
+        query = """
+                    DELETE FROM Attendance
+                    WHERE ID_STUDENT = ?"""
+        sql.query(query, [idx])
 
         query = """
                 DELETE FROM Attendance

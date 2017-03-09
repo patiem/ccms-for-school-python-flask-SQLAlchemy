@@ -12,7 +12,7 @@
             </tr>
             {% for mentor in table %}
             <tr>
-                <td data-id={{ mentor[0] }} id='id' >{{ mentor[0] }}</td>
+                <td data-id={{ mentor[0] }} class='id' >{{ mentor[0] }}</td>
                 <td>{{ mentor[1] + ' ' + mentor[2] }}</td>
                 <td>{{ mentor[3] }}</td>
                 <td>{{ mentor[4] }}</td>
@@ -23,12 +23,12 @@
     {% endif %}
         <a href="#add"><div class="fixed_bottom_button">Add Mentor</div></a>
         <div id="add" class="overlay">
-                <form name="add_student" class="edit_user" action="/save-user" method="post">
+                <form name="add_mentor" class="edit_user" action="/save-user" method="post">
                     <a class="close" href="#">&times;</a>
                     <p class="required">* required</p>
                     <div class="hidden">
                         <label for="type">Name:</label>
-                        <input type="text" name="type" id="type" value="student">
+                        <input type="text" name="type" id="type" value="mentor">
                     </div>
                     <div class="form-block">
                         <label for="add_name">Name:</label>
@@ -51,7 +51,7 @@
                 </form>
         </div>
         <div id="edit" class="overlay">
-            <form name="add_student" class="edit_user" action="/edit-form" method="post">
+            <form name="edit_mentor" class="edit_user" action="/edit-form" method="post">
                 <a class="close" href="#">&times;</a>
                 <div class="hidden">
                     <label for="id">Name:</label>
