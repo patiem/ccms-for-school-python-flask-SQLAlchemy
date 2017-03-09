@@ -2,6 +2,8 @@ from models.common import *
 import datetime
 from models.test import Test
 from models import sql
+from models.submission import Submission
+from models.student import Student
 
 
 class Assignment:
@@ -62,10 +64,10 @@ class Assignment:
         :param group: bool (group/ind)
         :return: None
         """
-        query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`) VALUES (?, ?, ?, ?, ?, ?);"
+        query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`)" \
+                "VALUES (?, ?, ?, ?, ?, ?);"
         values_list = [title, mentor_id, start_date, end_date, file_name, group]
         sql.query(query, values_list)
-
 
     @classmethod
     def create_list_to_save(cls):
@@ -132,3 +134,37 @@ class Assignment:
         assignment = sql.query(query, params)[0]
         print(assignment)
         return assignment
+
+    @staticmethod
+    def assignment_list_with_grades(user_id):  # IN USE
+        """
+        Makes list with assignments visible for student with notation if assignment was submitted
+        and how it was graded.
+        :param user_id: int (logged user id from seesion)
+        :return: assignments_list_to_print (list with all available assignments)
+        """
+        logged_user = Student.make_student(user_id)
+        Assignment.list_from_sql()
+        assignments_list = Assignment.pass_assign_for_student()
+        submissions = Submission.list_from_sql()  # ??
+        assignments_list_to_print = []
+        for assignment in assignments_list:
+            type_of_assignment = 'Individual'
+            if assignment.group == '1':
+                type_of_assignment = 'Group'
+            new_line = [assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date,
+                        type_of_assignment]
+            submission = Submission.find_submission(logged_user, assignment)
+            if submission:
+                new_line.append('submitted')
+                if submission.grade:
+                    new_line.append(submission.grade)
+                else:
+                    new_line.append('None')
+            else:
+                new_line.append('not submitted')
+                new_line.append('None')
+            new_line.append(assignment.idx)
+            assignments_list_to_print.append(new_line)
+
+        return assignments_list_to_print
