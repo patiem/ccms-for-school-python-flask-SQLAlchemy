@@ -1,5 +1,4 @@
 from models.common import *
-from models.test import Test
 from models import sql
 from models.team import Team
 from models.student import Student
@@ -9,8 +8,6 @@ class Submission:
     """
     Class of students submission.
     """
-
-    submission_list = []
 
     def __init__(self, idx, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
@@ -107,19 +104,19 @@ class Submission:
             clean_list.append(item[0])
         return clean_list
 
-    @classmethod
-    def pass_submission_for_student(cls, student):
-        """
-        EEeee nie wiem w sumie po co to miało być.
-        Może mnie potem oswieci.
-        :param student:
-        :return:
-        """
-        submission_for_student = []
-        for submission in cls.submission_list:
-            if submission.student_idx == student.idx:
-                submission_for_student.append(submission)
-        return submission_for_student
+    # @classmethod
+    # def pass_submission_for_student(cls, student):
+    #     """
+    #     EEeee nie wiem w sumie po co to miało być.
+    #     Może mnie potem oswieci.
+    #     :param student:
+    #     :return:
+    #     """
+    #     submission_for_student = []
+    #     for submission in cls.submission_list:
+    #         if submission.student_idx == student.idx:
+    #             submission_for_student.append(submission)
+    #     return submission_for_student
 
     @classmethod
     def find_submission(cls, student, assignment):
@@ -152,17 +149,17 @@ class Submission:
             return [grade, sql.query(query, params)[0][1]]
         return False
 
-    def change_grade(self, grade, mentor_id, student_id, assignment_id):
-        """
-        Changes grade of submission. Then saves to file.
-        :param grade: int
-        :return: None
-        """
-        self.grade = grade
-        self.mentor_id = mentor_id
-        query = "UPDATE `Sumbissions` SET GRADE=?, ID_MENTOR=? WHERE ID_ASSIGMENT=? AND ID_STUDENT=?;"
-        values_list = [int(grade), mentor_id, assignment_id, student_id]
-        sql.query(query, values_list)
+    # def change_grade(self, grade, mentor_id, student_id, assignment_id):
+    #     """
+    #     Changes grade of submission. Then saves to file.
+    #     :param grade: int
+    #     :return: None
+    #     """
+    #     self.grade = grade
+    #     self.mentor_id = mentor_id
+    #     query = "UPDATE `Sumbissions` SET GRADE=?, ID_MENTOR=? WHERE ID_ASSIGMENT=? AND ID_STUDENT=?;"
+    #     values_list = [int(grade), mentor_id, assignment_id, student_id]
+    #     sql.query(query, values_list)
 
     @classmethod
     def update_grade(cls, value, link, mentor_id):

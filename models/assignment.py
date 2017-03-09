@@ -69,17 +69,17 @@ class Assignment:
         values_list = [title, mentor_id, start_date, end_date, file_name, group]
         sql.query(query, values_list)
 
-    @classmethod
-    def create_list_to_save(cls):
-        """
-        Creates 2d list which can be use for saving process
-        :return: list_to_save - 2d list ready to be saved in csv file
-        """
-        list_to_save = []
-        for assigment in cls.assigments_list:
-            list_to_save.append([assigment.idx, assigment.title, assigment.mentor_id,
-                                assigment.start_date, assigment.end_date, assigment.file_name])
-        return list_to_save
+    # @classmethod
+    # def create_list_to_save(cls):
+    #     """
+    #     Creates 2d list which can be use for saving process
+    #     :return: list_to_save - 2d list ready to be saved in csv file
+    #     """
+    #     list_to_save = []
+    #     for assigment in cls.assigments_list:
+    #         list_to_save.append([assigment.idx, assigment.title, assigment.mentor_id,
+    #                             assigment.start_date, assigment.end_date, assigment.file_name])
+    #     return list_to_save
 
     @classmethod
     def pass_assign_for_mentor(cls):
@@ -111,15 +111,15 @@ class Assignment:
         """
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
 
-    def assignment_description(self):
-        """
-        Creates string from description file of assignment.
-        :return: text_to_print (str)
-        """
-        filename = 'csv/assignments_description/{}'.format(self.file_name)
-        with open(filename, 'r') as f:
-            text_to_print = f.read()
-        return text_to_print
+    # def assignment_description(self):
+    #     """
+    #     Creates string from description file of assignment.
+    #     :return: text_to_print (str)
+    #     """
+    #     filename = 'csv/assignments_description/{}'.format(self.file_name)
+    #     with open(filename, 'r') as f:
+    #         text_to_print = f.read()
+    #     return text_to_print
 
     # @classmethod
     # def get_by_id(cls, assignment_idx):
@@ -146,7 +146,7 @@ class Assignment:
         logged_user = Student.make_student(user_id)
         Assignment.list_from_sql()
         assignments_list = Assignment.pass_assign_for_student()
-        submissions = Submission.list_from_sql()  # ??
+        # submissions = Submission.list_from_sql()  # ??
         assignments_list_to_print = []
         for assignment in assignments_list:
             type_of_assignment = 'Individual'
