@@ -8,15 +8,15 @@
         <h2>ATTANDANCE</h2><br /><br />
     <table>
         <tr>
-            <th>NAME</th>
-            <th>AVG ATTANDANCE</th>
+            <th class="left">NAME</th>
+            <th class="left">AVG ATTANDANCE</th>
 
         </tr>
          {% if attandance != None %}
         {% for att in attandance %}
          <tr>
             <td class="left">{{ att[0]}} {{ att[1]}}</td>
-            <td>{% if att[2] != None %}{{ att[2] }}{% else %} None attandance for this student {% endif %}</td>
+            <td class="left">{% if att[2] != None %}{{ att[2] }}{% else %} None attandance for this student {% endif %}</td>
         </tr>
         {% endfor %}
     {% endif %}
@@ -28,14 +28,14 @@
         <h2>GRADES</h2><br /><br />
     <table>
         <tr>
-            <th>NAME</th>            
-            <th>AVG GRADE</th>
+            <th class="left">NAME</th>
+            <th class="left">AVG GRADE</th>
         </tr>
      {% if grades != None %}
         {% for grade in grades %}
          <tr>
-            <td class="left">{{ grade[0] }}</td>
-            <td>{{ grade[1] }}</td>
+            <td class="left">{{ grade[0] }} {{ grade[1] }}</td>
+            <td class="left">{{ grade[2] }}</td>
         </tr>
         {% endfor %}
     {% endif %}
