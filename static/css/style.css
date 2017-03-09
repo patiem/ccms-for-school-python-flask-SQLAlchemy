@@ -341,7 +341,8 @@ table a:hover {
 }
 
 .team_table th{
-    min-width: 200px;
+    width: 350px;
+    /*width: 1%;*/
 }
 
 /*fixed buttons*/
@@ -454,6 +455,11 @@ table.assignment  {
 
 .remove_team{
     background-color: #333333;
+}
+
+.edit_team{
+    background-color: #00FF93;
+    color: #333333;
 }
 
 .grade_output{

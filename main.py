@@ -4,7 +4,6 @@ from controllers.statistics_controller import statistics
 from models.student import Student
 from models.team import Team
 from models.user import *
-from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
@@ -24,9 +23,11 @@ def checkpoint():
 
 
 @app.route('/assignments', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Student', 'Mentor'])
 def show_assignments_list():
     if session['user']['type'] == 'Student':
-        assignments = StudentMenu.assignment_list_with_grades(session['user']['id'])
+        assignments = Assignment.assignment_list_with_grades(session['user']['id'])
         return render_template('assignments.html', user=session['user'], assignments=assignments)
 
     elif session['user']['type'] == 'Mentor':
@@ -44,6 +45,8 @@ def show_assignments_list():
 
 
 @app.route('/assignments/<idx>', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Student', 'Mentor'])
 def show_assignment(idx):
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
@@ -57,10 +60,24 @@ def show_assignment(idx):
 
 
 @app.route('/grade_submission', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Mentor'])
 def grade_submission():
     if request.method == 'GET':
         sub_list = Submission.subs_to_grade()
         return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
+
+
+@app.route('/update_submission', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+def update_submission():
+    value = request.json['Value']
+    link = request.json['Link']
+    mentor_id = session['user']['id']
+    Submission.update_grade(value, link, mentor_id)
+    user_dict = {'fullname': session['user']['name'] + ' ' + session['user']['surname']}
+    return jsonify(user_dict)
 
 
 @app.route('/logout')
@@ -82,8 +99,6 @@ def index():
                     'my_attendance': Student.my_attendance(logged_user['ID'])}
 
             session['user'] = user
-            print(session['user']['id'])
-
     if 'user' in session:
         return render_template('index.html', user=session['user'])
     else:
@@ -91,53 +106,62 @@ def index():
 
 
 @app.route('/teams')
+@login_required
+@correct_type(['Mentor'])
 def teams():
-    if 'user' in session:
-        teams_list = Team.create_teams_list()
-        students_list = Student.students_list()
-        return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
-    else:
-        return redirect('/logout')
+    teams_list = Team.create_teams_list()
+    students_list = Student.students_list()
+    return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
 
 
-@app.route('/add_to_team/<student_id><team_id>')
+@app.route('/team_name_edit', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+@correct_form(['id', 'team_name'])
+def team_name_edit():
+    idx = request.form['id']
+    team_name = request.form['team_name']
+    Team.update_name(idx, team_name)
+    return redirect('/teams')
+
+
+@app.route('/add_to_team/<student_id>/<team_id>')
+@login_required
+@correct_type(['Mentor'])
 def add_to_team(student_id, team_id):
-    if 'user' in session:
-        Team.add_student_to_team(student_id, team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.add_student_to_team(student_id, team_id)
+    return redirect('/teams')
 
 
 @app.route('/remove_team/<team_id>')
+@login_required
+@correct_type(['Mentor'])
 def remove_team(team_id):
-    if 'user' in session:
-        Team.remove_team(team_id)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    Team.remove_team(team_id)
+    return redirect('/teams')
 
 
 @app.route('/add_team', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
 def add_team():
-    if 'user' in session:
-        name = request.form['new_team_name']
-        Team.new_team(name)
-        return redirect('/teams')
-    else:
-        return redirect('/logout')
+    name = request.form['new_team_name']
+    Team.new_team(name)
+    return redirect('/teams')
 
 
 @app.route('/remove_from_team/<student_id>')
+@login_required
+@correct_type(['Mentor'])
 def remove_from_team(student_id):
-    if 'user' in session:
         Team.remove_student_from_team(student_id)
         return redirect('/teams')
-    else:
-        return redirect('/logout')
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Mentor'])
+@correct_form(['set_date'])
 def attendance():
     if request.method == 'GET':
         import datetime
@@ -146,6 +170,7 @@ def attendance():
             date = request.args['date']
         attendance_list = Attendance.get_attendance_list(date)
         return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+
     elif request.method == 'POST':
         students_present = {}
         date_from_form = ''
@@ -155,17 +180,13 @@ def attendance():
                 students_present[student_id] = request.form[item]
             elif item == 'set_date':
                 date_from_form = request.form[item]
-
-        # ------ SHOW REQUEST ------
-        # for value in students_present:
-        #     print(value, students_present[value])
-        # print(date_from_form)
-        # --------------------------
         Attendance.update(students_present, date_from_form)
-        return 'DUPA'
+        return redirect(url_for('attendance', date=date_from_form))
 
 
 @app.route('/attendance/<date>')
+@login_required
+@correct_type(['Mentor'])
 def attendance_date(date):
     return redirect(url_for('attendance', date=date))
 

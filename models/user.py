@@ -94,10 +94,10 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
-        print('yo')
         sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
+
         user_data = sql.query(sql_query, [idx])
-        print(user_data)
+
         if user_data:
             new_object = cls(user_data[0][0], user_data[0][1], user_data[0][2], user_data[0][3], user_data[0][4])
             return new_object
@@ -129,6 +129,15 @@ class User(metaclass=ABCMeta):
         query = """
                 DELETE FROM Users
                 WHERE ID = ?"""
+        sql.query(query, [idx])
+        query = """
+                    DELETE FROM Attendance
+                    WHERE ID_STUDENT = ?"""
+        sql.query(query, [idx])
+
+        query = """
+                DELETE FROM Attendance
+                WHERE ID_STUDENT = ?"""
         sql.query(query, [idx])
 
     # @staticmethod

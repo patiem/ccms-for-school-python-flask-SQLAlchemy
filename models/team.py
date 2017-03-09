@@ -118,26 +118,15 @@ class Team:
         Lets user to move student between teams
         :return: None
         """
-        student = False
-        students_list = Student.students_list()
-
-        for row in students_list:
-            if int(row.idx) == int(student_id):
-                student = row
-                break
-
+        student = Student.return_by_id(student_id)
         if student:
-
             team = Team.get_team_by_id(int(team_id))
-
             if team:
-                print(team)
                 Team.student_to_team(team, student)
-
             else:
                 print('There is no team with this ID')
         else:
-            print('There is no student of this ID')
+            print('There is no student with this ID')
 
     @staticmethod
     def remove_team(team_id):
@@ -171,3 +160,11 @@ class Team:
         query = "SELECT ID_USER FROM users_team WHERE ID_TEAM=?"
         params = [team_id]
         return sql.query(query, params)
+
+    @classmethod
+    def update_name(cls, idx, team_name):
+        query = """UPDATE TEAMS
+                   SET NAME = ?
+                   WHERE ID = ?"""
+        edit_list = [team_name, idx]
+        sql.query(query, edit_list)
