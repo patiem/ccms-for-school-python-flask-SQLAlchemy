@@ -74,7 +74,7 @@ $('#email').change(function () {
         var email_dict = {Mail: email};
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/check-mail',
+            url: '/check-mail',
             data: JSON.stringify(email_dict),
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
