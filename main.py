@@ -3,20 +3,20 @@ from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.user import User
 from models.team import Team
-
-
 from models.user import *
 from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
 
-
+from models.decorator import *
 
 
 app = Flask(__name__)
 app.register_blueprint(checkpointcontroller)
 app.secret_key = 'any random string'
+
+
 
 
 @app.route('/checkpoint')
@@ -47,13 +47,6 @@ def show_assignment(idx):
         comment = request.form['comment']
         Submission.add_submission(session['user']['id'], assignment[0], link, comment)
         return redirect(url_for('show_assignment', idx=idx))
-
-
-# def make_student():
-#     user_id = session['user']['id']
-#     logged_user = Student.return_by_id(user_id)  # what with team id??
-#     return logged_user
-
 
 @app.route('/logout')
 def logout():
@@ -135,14 +128,18 @@ def attendance():
 
 
 @app.route('/student_list')
+@login_required
+@correct_type(['Manager', 'Employee', 'Mentor'])
 def student_list():
-    table = Student.create_student_list()
+    table = Student.students_list()
     if table:
         return render_template('student_list.html', table=table, user=session['user'])
     return render_template('student_list.html', user=session['user'])
 
 
 @app.route('/mentor_list')
+@login_required
+@correct_type(['Manager'])
 def mentor_list():
     table = Mentor.create_mentor_list()
     if table:
@@ -151,21 +148,26 @@ def mentor_list():
 
 
 @app.route('/edit', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
 def get_data():
     if request.method == 'POST':
         idx = request.json['Idx']
         user = User.return_by_id(idx)
-        student_dict = {   'id': idx,
-                        'name': user.name,
-                        'surname': user.last_name,
-                        'e-mail': user.mail,
-                        'telephone': user.telephone}
-        return jsonify(student_dict)
+        user_dict= {'id': idx,
+                    'name': user.name,
+                    'surname': user.last_name,
+                    'e-mail': user.mail,
+                    'telephone': user.telephone}
+        return jsonify(user_dict)
     return 'lipa'
 
 
 @app.route('/edit-form', methods=['POST', 'GET'])
-def update_student():
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_form(['type', 'id', 'name', 'surname', 'email', 'telephone'])
+def update_user():
     if request.method == 'POST':
         user_type = request.form['type']
         idx = request.form['id']
@@ -182,7 +184,10 @@ def update_student():
             return redirect(url_for('mentor_list'))
 
 
-@app.route('/save-user', methods=['POST'])
+@app.route('/save-user', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_form(['type', 'name', 'surname', 'email', 'telephone'])
 def save_user():
     if request.method == 'POST':
         user_type = request.form['type']
@@ -197,9 +202,13 @@ def save_user():
         elif user_type == 'mentor':
             Mentor.add_user(add_list)
             return redirect(url_for('mentor_list'))
+    return redirect(url_for('mentor_list'))
 
 
-@app.route('/remove-user', methods=['POST'])
+@app.route('/remove-user', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_json(['Idx'])
 def remove_user():
     if request.method == 'POST':
         idx = request.json['Idx']
@@ -207,18 +216,21 @@ def remove_user():
 
 
 @app.route('/check-mail', methods=['POST'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_json(['Mail'])
 def mail_exist():
-    if request.method == 'POST':
-        if request.is_json:
-            mail_list = User.return_mails()
-            if request.json['Mail'] in mail_list:
-                value = {'value': True}
-                return jsonify(value)
-            else:
-                value = {'value': False}
-                return jsonify(value)
+        if request.method == 'POST':
+            if request.is_json:
+                mail_list = User.return_mails()
+                if request.json['Mail'] in mail_list:
+                    value = {'value': True}
+                    return jsonify(value)
+                else:
+                    value = {'value': False}
+                    return jsonify(value)
+            return redirect(url_for('index'))
         return redirect(url_for('index'))
-    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
