@@ -17,16 +17,14 @@ $('.remove_user').click(function () {
             url: '/remove-user',
             data : JSON.stringify(dict_id),
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            // contentType : 'application/x-www-form-urlencoded',
-
-    })
+            contentType: 'application/json; charset=utf-8'
+    });
         alert("User removed")
     }
     else{
         alert("Nothing happen")
     }
-})
+});
 
 $('#add_email').change(function () {
     var email = $(this).val();
