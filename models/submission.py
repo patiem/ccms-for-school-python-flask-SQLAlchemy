@@ -110,7 +110,7 @@ class Submission:
     def group_submission(cls, student_idx, assignment_idx, link, comment):
         pass
 
-    @staticmethod
+    @staticmethod  # IN USE
     def get_team_users(student_idx):
         team_id = Team.find_student_team(student_idx)
         team_members = Team.get_team_members(team_id)
@@ -118,7 +118,6 @@ class Submission:
         for item in team_members:
             clean_list.append(item[0])
         return clean_list
-
 
     @classmethod
     def pass_submission_for_student(cls, student):
