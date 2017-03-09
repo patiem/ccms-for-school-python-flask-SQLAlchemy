@@ -5,9 +5,7 @@ from models import sql
 class Student(User):
     """
     Class represent student
-    """
-    object_list = []
-    file = 'csv/students.csv'
+    """ 
 
     def __init__(self, idx, name, last_name, mail, telephone, id_team=''):
         """
@@ -90,24 +88,24 @@ class Student(User):
                            WHERE ID = ?"""
         sql.query(query, edit_list)
 
-    @staticmethod
-    def avg_grade():
-        """
-        Count avg grade of students
-        :return: Table (FORMAT: NAME, SURNAME, AVG GRADE)
-        """
-        query = """
-                   SELECT Name, Surname, AVG(GRADE)
-                   FROM Users as U
-                   LEFT Join Sumbissions as S
-                   ON U.ID = S.ID_Student
-                   where Type = 'Student'
-                   GROUP BY Name;"""
-        sql_data = sql.query(query)
-        table = []
-        for row in sql_data:
-            table.append([row[0], row[1], row[2]])
-        return table
+    # @staticmethod
+    # def avg_grade():
+    #     """
+    #     Count avg grade of students
+    #     :return: Table (FORMAT: NAME, SURNAME, AVG GRADE)
+    #     """
+    #     query = """
+    #                SELECT Name, Surname, AVG(GRADE)
+    #                FROM Users as U
+    #                LEFT Join Sumbissions as S
+    #                ON U.ID = S.ID_Student
+    #                where Type = 'Student'
+    #                GROUP BY Name;"""
+    #     sql_data = sql.query(query)
+    #     table = []
+    #     for row in sql_data:
+    #         table.append([row[0], row[1], row[2]])
+    #     return table
 
     @staticmethod
     def get_students_without_checkpoint(checkpoint_id):
