@@ -1,7 +1,6 @@
-from flask import Flask, request, session, render_template, redirect, url_for, jsonify
+from flask import Flask, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
-from models.user import User
 from models.team import Team
 from models.user import *
 from models.menu import StudentMenu
