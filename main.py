@@ -72,8 +72,9 @@ def grade_submission():
 def update_submission():
     value = request.json['Value']
     link = request.json['Link']
-    Submission.update_grade(value, link)
-    user_dict = {'fullname': session['user']['name'] + session['user']['surname']}
+    mentor_id = session['user']['id']
+    Submission.update_grade(value, link, mentor_id)
+    user_dict = {'fullname': session['user']['name'] + ' ' + session['user']['surname']}
     return jsonify(user_dict)
 
 
