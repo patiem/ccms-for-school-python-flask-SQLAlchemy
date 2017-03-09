@@ -14,19 +14,17 @@ $('.remove_user').click(function () {
     if (user_answear == true){
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/remove-user',
+            url: '/remove-user',
             data : JSON.stringify(dict_id),
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            // contentType : 'application/x-www-form-urlencoded',
-
-    })
+            contentType: 'application/json; charset=utf-8'
+    });
         alert("User removed")
     }
     else{
         alert("Nothing happen")
     }
-})
+});
 
 $('#add_email').change(function () {
     var email = $(this).val();
@@ -35,7 +33,7 @@ $('#add_email').change(function () {
         var email_dict = {Mail: email};
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/check-mail',
+            url: '/check-mail',
             data: JSON.stringify(email_dict),
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -74,7 +72,7 @@ $('#email').change(function () {
         var email_dict = {Mail: email};
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/check-mail',
+            url: '/check-mail',
             data: JSON.stringify(email_dict),
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -111,7 +109,7 @@ $('a.edit').click(function () {
     var dict_id = { Idx: tr_id};
     $.ajax({
         type: 'POST',
-        url: 'http://localhost:5000/edit',
+        url: '/edit',
         data : JSON.stringify(dict_id),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
@@ -138,7 +136,7 @@ $('.close').click(function () {
     $('#submit').removeClass('inactive').addClass('orange').prop("disabled", false);
     $('#email').removeClass('error');
     $('#mail_message_add').html("");
-    $('#add_submit').removeClass('inactive').addClass('orange').prop("disabled", false);
+    $('#add_submit').removeClass('orange').addClass('inactive').prop("disabled", true);
     $('#add_email').removeClass('error');
     $('#mail_message').html("");
     $('#add_name').val('');

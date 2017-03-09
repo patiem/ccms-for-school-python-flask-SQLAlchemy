@@ -3,7 +3,6 @@ from models import sql
 
 
 class Mentor(User):
-    object_list = []
     
     def __init__(self, idx, name, last_name, mail, telephone):
         """
@@ -15,21 +14,21 @@ class Mentor(User):
         """
         User.__init__(self, idx, name, last_name, mail, telephone)
 
-    @classmethod
-    def create_object_list(cls):
-        """
-        Create objects to list in class Mentor
-        :return: None
-        """
-        query = """
-                   SELECT ID, Name, Surname, `E-mail`, Telephone, Password
-                   FROM Users
-                   WHERE Type = 'Mentor'"""
-        data = sql.query(query)
-        if data:
-            for row in data:
-                new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
-                cls.object_list.append(new_object)
+    # @classmethod
+    # def create_object_list(cls):
+    #     """
+    #     Create objects to list in class Mentor
+    #     :return: None
+    #     """
+    #     query = """
+    #                SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+    #                FROM Users
+    #                WHERE Type = 'Mentor'"""
+    #     data = sql.query(query)
+    #     if data:
+    #         for row in data:
+    #             new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
+    #             cls.object_list.append(new_object)
 
     @staticmethod
     def save_sql(data):

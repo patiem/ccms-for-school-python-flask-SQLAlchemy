@@ -322,6 +322,9 @@ td {
 .left {
     text-align: left;
 }
+.right {
+    text-align: right;
+}
 
 table a {
     color: #8d7882;
@@ -547,6 +550,21 @@ table.assignment  {
     background-color: #eeeeee;
 }
 
+.checkpoint {
+    padding: 20px;
+}
+.checkpoint input {
+    padding: 10px;
+}
+.checkpoint .new_checkpoint {
+    padding-top: 20px;
+}
+.checkpoint .new_checkpoint div{
+    padding-top: 20px;
+}
+.checkpoint h1, .checkpoint h3 {
+margin-bottom: 20px;}
+
 #codecool_logo{
     height: 90vh;
     text-align: center;
@@ -616,3 +634,4 @@ table.assignment  {
         transform: rotate(360deg);
     }
 }
+

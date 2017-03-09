@@ -12,10 +12,10 @@
             </tr>
             {% for student in table %}
             <tr>
-                <td data-id={{ student[0] }} id='id' >{{ student[0] }}</td>
-                <td>{{ student[1] + ' ' + student[2] }}</td>
-                <td>{{ student[3] }}</td>
-                <td>{{ student[4] }}</td>
+                <td data-id={{ student.idx }} id='id' >{{ student.idx }}</td>
+                <td>{{ student.name + ' ' + student.last_name }}</td>
+                <td>{{ student.mail }}</td>
+                <td>{{ student.telephone }}</td>
                 <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button remove_user" >Remove</a> </td>
             </tr>
             {% endfor %}
@@ -59,7 +59,7 @@
                 </div>
                 <div class="hidden">
                     <label for="type">Name:</label>
-                    <input type="text" name="type" id="type" value="">
+                    <input type="text" name="type" id="type" value="student">
                 </div>
                 <div class="form-block">
                     <label for="name">Name:</label>

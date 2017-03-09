@@ -3,8 +3,6 @@ from models import sql
 
 
 class Manager(User):
-    object_list = []
-    file = 'csv/managers.csv'
     
     def __init__(self, idx, name, last_name, mail, telephone):
         """
@@ -17,17 +15,17 @@ class Manager(User):
         """
         User.__init__(self, idx, name, last_name, mail, telephone)
 
-    @classmethod
-    def create_object_list(cls):
-        query = """
-                   SELECT ID, Name, Surname, `E-mail`, Telephone, Password
-                   FROM Users
-                   WHERE Type = 'Manager'"""
-        data = sql.query(query)
-        if data:
-            for row in data:
-                new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
-                cls.object_list.append(new_object)
+    # @classmethod
+    # def create_object_list(cls):
+    #     query = """
+    #                SELECT ID, Name, Surname, `E-mail`, Telephone, Password
+    #                FROM Users
+    #                WHERE Type = 'Manager'"""
+    #     data = sql.query(query)
+    #     if data:
+    #         for row in data:
+    #             new_object = cls(row[0], row[1], row[2], row[3], row[4], row[5])
+    #             cls.object_list.append(new_object)
 
     @classmethod
     def save_sql(cls, data):
