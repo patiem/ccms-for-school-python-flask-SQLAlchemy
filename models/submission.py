@@ -162,3 +162,11 @@ class Submission:
         query = "UPDATE `Sumbissions` SET GRADE=?, ID_MENTOR=? WHERE ID_ASSIGMENT=? AND ID_STUDENT=?;"
         values_list = [int(grade), mentor_id, assignment_id, student_id]
         sql.query(query, values_list)
+
+    @classmethod
+    def update_grade(self, value, link):
+        query = """UPDATE Sumbissions
+                   SET GRADE = ?
+                   WHERE LINK = ?"""
+        edit_list = [value, link]
+        sql.query(query, edit_list)

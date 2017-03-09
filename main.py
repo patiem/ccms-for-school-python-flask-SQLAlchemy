@@ -3,7 +3,6 @@ from controllers.checkpoint_controller import checkpointcontroller
 from models.student import Student
 from models.team import Team
 from models.user import *
-from models.menu import StudentMenu
 from models.assignment import Assignment
 from models.submission import Submission
 from models.mentor import Mentor
@@ -65,6 +64,17 @@ def grade_submission():
     if request.method == 'GET':
         sub_list = Submission.subs_to_grade()
         return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
+
+
+@app.route('/update_submission', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
+def update_submission():
+    value = request.json['Value']
+    link = request.json['Link']
+    Submission.update_grade(value, link)
+    user_dict = {'fullname': session['user']['name'] + session['user']['surname']}
+    return jsonify(user_dict)
 
 
 @app.route('/logout')
