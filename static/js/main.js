@@ -105,7 +105,7 @@ $('#email').change(function () {
 
 
 $('a.edit').click(function () {
-    var tr_id = $(this).closest('tr').find('#id').data('id');
+    var tr_id = $(this).closest('tr').find('.id').data('id');
     var dict_id = { Idx: tr_id};
     $.ajax({
         type: 'POST',
