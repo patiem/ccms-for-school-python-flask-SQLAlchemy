@@ -2,6 +2,7 @@ from models.common import *
 from models.test import Test
 from models import sql
 from models.team import Team
+from models.student import Student
 
 
 class Submission:
@@ -45,10 +46,27 @@ class Submission:
                 if Test.is_date_correct(date):
                     date_of_submission = Common.make_corect_date(date)
                     if grade != 0:
-                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade, mentor_id))
+                        submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link, grade,
+                                                   mentor_id))
                     else:
                         submission_list.append(cls(student_idx, assignment_idx, date_of_submission, link))
         return submission_list
+
+    @classmethod  # IN USE
+    def subs_to_grade(cls):
+        sub_list = cls.list_from_sql()
+        list_for_mentor = []
+        for sub in sub_list:
+            if Student.make_student(sub.student_idx):
+                ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
+                if sub.mentor_id != 0:
+                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])[0]
+                    mentor_name = ' '.join(mentor_name)
+                else:
+                    mentor_name = 'None'
+                student = Student.make_student(sub.student_idx)
+                list_for_mentor.append([sub, student, ass_title, mentor_name])
+        return list_for_mentor
 
     @classmethod  # IN USE
     def add_submission(cls, student_idx, assignment_idx, link, comment, group):

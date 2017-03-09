@@ -21,9 +21,6 @@ class Student(User):
         User.__init__(self, idx, name, last_name, mail, telephone)
         self.id_team = id_team
 
-    def full_name(self):
-        return self.name + ' ' + self.last_name
-
     @classmethod
     def create_object_list(cls):
         """
@@ -221,5 +218,7 @@ class Student(User):
 
     @classmethod
     def make_student(cls, user_id):
-        logged_user = cls.return_by_id(user_id)  # what with team id??
-        return logged_user
+        if cls.return_by_id(user_id):
+            logged_user = cls.return_by_id(user_id)  # what with team id??
+            return logged_user
+        return False

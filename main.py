@@ -53,11 +53,11 @@ def show_assignment(idx):
         return redirect(url_for('show_assignment', idx=idx))
 
 
-
 @app.route('/grade_submission', methods=['GET', 'POST'])
 def grade_submission():
     if request.method == 'GET':
-        return render_template('grade_submission.html', user=session['user'])
+        sub_list = Submission.subs_to_grade()
+        return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
 
 
 @app.route('/logout')
