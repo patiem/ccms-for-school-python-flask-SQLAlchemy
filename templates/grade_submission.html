@@ -22,7 +22,7 @@
                 <td>{{ i }}</td>
                 <td>{{ item[1].full_name() }}</td>
                 <td>{{ item[0].date_of_submission }}</td>
-                <td class='left'><a href="submissions.html">{{ item[2]}}</a></td>
+                <td class='left'><a href="{{ item[0].link }}" target="_blank">{{ item[2]}}</a></td>
                 <td>
                     <div class="grade_range">
                     {% if item[0].grade == -1 %}
@@ -35,7 +35,7 @@
                            value="{{ item[0].grade }}" min="-1" max="100" oninput="gradeOutput1.value = gradeValue(gradeInput1.value)">
                     </div>
                 </td>
-                <td>2</td>
+                <td>{{ item[3] }}</td>
             </tr>
             {% set i = 1 + i %}
             {% endfor %}
