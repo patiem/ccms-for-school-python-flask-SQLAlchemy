@@ -135,12 +135,14 @@ class Student(User):
                    where Type = 'Student'
                    GROUP BY Name;"""
         sql_data = sql.query(query)
-
         for row in sql_data:
             student_id = row[0]
             if int(student_id) == int(idx):
-                return int(row[3])
-
+                print(row)
+                if row[3]:
+                    return int(row[3])
+                else:
+                    return
     # @classmethod
     # def create_student_list(cls):
     #     query = """

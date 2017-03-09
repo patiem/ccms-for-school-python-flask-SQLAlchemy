@@ -95,6 +95,8 @@ def index():
 
 
 @app.route('/teams')
+@login_required
+@correct_type(['Mentor'])
 def teams():
     if 'user' in session:
         teams_list = Team.create_teams_list()
@@ -105,6 +107,8 @@ def teams():
 
 
 @app.route('/add_to_team/<student_id><team_id>')
+@login_required
+@correct_type(['Mentor'])
 def add_to_team(student_id, team_id):
     if 'user' in session:
         Team.add_student_to_team(student_id, team_id)
@@ -114,6 +118,8 @@ def add_to_team(student_id, team_id):
 
 
 @app.route('/remove_team/<team_id>')
+@login_required
+@correct_type(['Mentor'])
 def remove_team(team_id):
     if 'user' in session:
         Team.remove_team(team_id)
@@ -123,6 +129,8 @@ def remove_team(team_id):
 
 
 @app.route('/add_team', methods=['POST'])
+@login_required
+@correct_type(['Mentor'])
 def add_team():
     if 'user' in session:
         name = request.form['new_team_name']
@@ -133,6 +141,8 @@ def add_team():
 
 
 @app.route('/remove_from_team/<student_id>')
+@login_required
+@correct_type(['Mentor'])
 def remove_from_team(student_id):
     if 'user' in session:
         Team.remove_student_from_team(student_id)
@@ -142,6 +152,9 @@ def remove_from_team(student_id):
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
+@login_required
+@correct_type(['Mentor'])
+@correct_form(['date'])
 def attendance():
     if request.method == 'GET':
         import datetime
@@ -166,10 +179,12 @@ def attendance():
         # print(date_from_form)
         # --------------------------
         Attendance.update(students_present, date_from_form)
-        return 'DUPA'
+        return redirect(url_for('attendance', date=date_from_form))
 
 
 @app.route('/attendance/<date>')
+@login_required
+@correct_type(['Mentor'])
 def attendance_date(date):
     return redirect(url_for('attendance', date=date))
 
