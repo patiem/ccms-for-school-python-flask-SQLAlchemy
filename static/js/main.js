@@ -8,7 +8,7 @@ function gradeValue(value) {
 }
 $('.remove_user').click(function () {
     location.reload(true);
-    var tr_id = $(this).closest('tr').find('#id').data('id');
+    var tr_id = $(this).closest('tr').find('.id').data('id');
     var dict_id = { Idx: tr_id}
     var user_answear = confirm("Are you sure?");
     if (user_answear == true){
