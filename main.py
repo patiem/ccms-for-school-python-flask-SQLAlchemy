@@ -145,7 +145,7 @@ def attendance():
         # print(date_from_form)
         # --------------------------
         Attendance.update(students_present, date_from_form)
-        return 'DUPA'
+        return redirect(url_for('attendance', date=date_from_form))
 
 
 @app.route('/attendance/<date>')

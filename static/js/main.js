@@ -156,3 +156,8 @@ $('#attendance_date').change(function () {
         window.location.replace(pathname);
     }
 });
+
+$('.attendance_tr').change(function () {
+    $(this).css('background-color','#70FF9E');
+    // alert('JUPI!!')
+});
