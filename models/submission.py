@@ -60,8 +60,11 @@ class Submission:
             if Student.make_student(sub.student_idx):
                 ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
                 if sub.mentor_id != 0:
-                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])[0]
-                    mentor_name = ' '.join(mentor_name)
+                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])
+                    if mentor_name:
+                        mentor_name = ' '.join(mentor_name[0])
+                    else:
+                        mentor_name = 'None'
                 else:
                     mentor_name = 'None'
                 student = Student.make_student(sub.student_idx)
