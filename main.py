@@ -127,20 +127,17 @@ def remove_from_team(student_id):
 
 @app.route('/attendance')
 def attendance():
+    import datetime
+    date = str(datetime.date.today())
     if 'date' in request.args:
         date = request.args['date']
-        if date == 'mm/dd/yyyy':
-            return redirect(url_for('.attendance'))
-        return render_template('attendance.html', user=session['user'], date=date)
-
-    import datetime
-    today = str(datetime.date.today())
-    return render_template('attendance.html', user=session['user'], date=today)
+    attendance_list = Attendance.get_attendance_list(date)
+    return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
 
 
 @app.route('/attendance/<date>')
 def attendance_date(date):
-    return redirect(url_for('.attendance', date=date))
+    return redirect(url_for('attendance', date=date))
 
 
 @app.route('/student_list')

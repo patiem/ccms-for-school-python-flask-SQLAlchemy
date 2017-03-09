@@ -13,32 +13,29 @@
         <label class="date_input">Date:
         <input type="date" id="attendance_date" name="usr_time" min="2016-10-01" value="{{ date }}">
         </label>
-        <table>
-        <tr>
-            <td>Person 1</td>
-            <td><label>Present <input type="radio" name="person1" value="present"/></label></td>
-            <td><label>Late <input type="radio" name="person1" value="late"/></label></td>
-            <td><label>Absent <input type="radio" name="person1" value="absent"/></label></td>
-        </tr>
-        <tr>
-            <td>Person 2</td>
-            <td><label>Present<input type="radio" name="person2" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person2" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person2" value="absent"/></label></td>
-        </tr>
-        <tr>
-            <td>Person 3</td>
-            <td><label>Present<input type="radio" name="person3" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person3" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person3" value="absent"/></label></td>
-        </tr>
-        <tr>
-            <td>Person 4</td>
-            <td><label>Present<input type="radio" name="person4" value="present"/></label></td>
-            <td><label>Late<input type="radio" name="person4" value="late"/></label></td>
-            <td><label>Absent<input type="radio" name="person4" value="absent"/></label></td>
-        </tr>
+        {% if attendance_list %}
+
+            <table>
+            {% for student in attendance_list %}
+
+                <tr>
+                    <td>{{ student.fullname }}</td>
+
+                    <td><label>Present <input type="radio" name="person{{ student.id_student }}" value="present"
+                            {% if student.present == 'Present' %} checked="checked" {% endif %}/></label></td>
+
+                    <td><label>Late <input type="radio" name="person{{ student.id_student }}" value="late"
+                            {% if student.present == 'Late' %} checked="checked" {% endif %}/></label></td>
+
+                    <td><label>Absent <input type="radio" name="person{{ student.id_student }}" value="absent"
+                            {% if student.present == 'Absent' %} checked="checked" {% endif %}/></label></td>
+                </tr>
+
+            {% endfor %}
+
         </table>
+
+        {% endif %}
         <button name="send_attendance" type="submit" class="submit_attendance">Submit</button>
     </form>
     <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
