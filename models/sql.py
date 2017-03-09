@@ -5,7 +5,7 @@ def connect_db(DATABASE_NAME='CCMS.db'):
     return sqlite3.connect(DATABASE_NAME)
 
 
-def query(query, params=list()):
+def query(query, params=''):
     """
     :param query: query with ?
     :param params: list or tuple of params (replace ?)

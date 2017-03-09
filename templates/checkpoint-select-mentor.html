@@ -1,0 +1,27 @@
+{% extends "menu.html" %}
+{% block content %}
+
+
+    <div class="checkpoint">
+    <h1>Checkpoints</h1>
+    <h3>Select second mentor</h3>
+    <figure class="table" id="table1">
+    <table>
+        <tr>
+            <th  class='left'>Mentor</th>
+            <th  class='left'></th>
+
+
+        </tr>
+        {% for mentor in mentors %}
+        <tr>
+
+            <td class="left">{{ mentor['Name'] }} {{ mentor['Surname'] }}</td>
+            <td> <a href="/checkpoint-make/{{ checkpoint_id}}/{{ mentor['ID'] }}"     class="button orange">Select mentor</a> </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </figure>
+    </div>
+
+{% endblock %}

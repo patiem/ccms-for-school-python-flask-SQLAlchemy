@@ -1,0 +1,39 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<div class="checkpoint">
+
+    <h1>Checkpoints</h1>
+    <h3>Select checkpoint title</h3>
+    
+    <figure class="table" id="table1">
+    <table>
+        <tr>
+            <th  class='left'>Title</th>
+            <th  class='left'>Created by</th>
+            <th  class='left'>Start date</th>
+            <th class="left"></th>
+
+        </tr>
+        {% for checkpoint in checkpoints %}
+        <tr>
+
+            <td class="left">{{ checkpoint['Title'] }}</td>
+            <td class="left">{{ checkpoint['Name'] }} {{ checkpoint['Surname'] }}</td>
+            <td class="left">{{ checkpoint['Start_date'] }}</td>
+            <td> <a href="/checkpoint-results/{{ checkpoint['ID'] }}"     class="button orange">Show results</a>
+                 <a href="/checkpoint-make/{{ checkpoint['ID'] }}"     class="button orange">Checkpoint</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </figure>
+    <div class="new_checkpoint">
+    <form action="/checkpoint-make"  method="POST">
+        <div><label for="new_checkpoint">New checkpoint: </label><input type="text" name="new_checkpoint" id="new_checkpoint" placeholder="Title for new checkpoint" />
+        <label for="date_checkpoint">Date of checkpoint: </label><input type="date" id="date_checkpoint" name="date_checkpoint" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+        <input type="submit" class="button orange" value="Add new checkpoint"/>
+    </form>
+    </div>
+</div>
+
+{% endblock %}

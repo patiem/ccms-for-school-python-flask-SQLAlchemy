@@ -1,0 +1,86 @@
+{% extends 'menu.html' %}
+
+{% block content %}
+    {% if table %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>E-mail</th>
+                <th>Phone number</th>
+                <th>Actions</th>
+            </tr>
+            {% for mentor in table %}
+            <tr>
+                <td data-id={{ mentor[0] }} class='id' >{{ mentor[0] }}</td>
+                <td>{{ mentor[1] + ' ' + mentor[2] }}</td>
+                <td>{{ mentor[3] }}</td>
+                <td>{{ mentor[4] }}</td>
+                <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button remove_user" >Remove</a> </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+        <a href="#add"><div class="fixed_bottom_button">Add Mentor</div></a>
+        <div id="add" class="overlay">
+                <form name="add_mentor" class="edit_user" action="/save-user" method="post">
+                    <a class="close" href="#">&times;</a>
+                    <p class="required">* required</p>
+                    <div class="hidden">
+                        <label for="type">Name:</label>
+                        <input type="text" name="type" id="type" value="mentor">
+                    </div>
+                    <div class="form-block">
+                        <label for="add_name">Name:</label>
+                        <input type="text" name="name" id="add_name">
+                    </div>
+                    <div class="form-block">
+                        <label for="add_surname">Surname:</label>
+                        <input type="text" name="surname" id="add_surname">
+                    </div>
+                    <div class="form-block">
+                        <label for="add_email">*E-mail: </label>
+                        <input type="email" name="email" id="add_email" class="">
+                        <p class="required mail_message" id="mail_message"></p>
+                    </div>
+                    <div class="form-block">
+                        <label for="add_telephone">Phone Number: </label>
+                        <input type="number" name="telephone" id="add_telephone">
+                    </div>
+                    <input type="submit" value="Submit" id="add_submit" disabled="disabled" class="add_submit button inactive">
+                </form>
+        </div>
+        <div id="edit" class="overlay">
+            <form name="edit_mentor" class="edit_user" action="/edit-form" method="post">
+                <a class="close" href="#">&times;</a>
+                <div class="hidden">
+                    <label for="id">Name:</label>
+                    <input type="number" name="id" id="edit_id" value="">
+                </div>
+                <div class="hidden">
+                    <label for="type">Name:</label>
+                    <input type="text" name="type" id="type" value="mentor">
+                </div>
+                <div class="form-block">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value="">
+                </div>
+                <div class="form-block">
+                    <label for="surname">Surname:</label>
+                    <input type="text" name="surname" id="surname" value="">
+                </div>
+                <div class="form-block">
+                    <label for="email">E-mail: </label>
+                    <input type="email" name="email" id="email" value="">
+                    <p class="required mail_message" id="mail_message_add"></p>
+                </div>
+                <div class="form-block">
+                    <label for="telephone">Phone Number: </label>
+                    <input type="number" name="telephone" id="telephone" value="">
+                </div>
+                <input type="submit" value="Submit" id="submit" class="button orange">
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
+{% endblock %}

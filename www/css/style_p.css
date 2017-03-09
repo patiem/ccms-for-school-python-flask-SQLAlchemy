@@ -1,0 +1,274 @@
+body{
+    font-family: Ubuntu, serif;
+    font-size: 16px;
+    background-color: beige;
+    /*font-size: 1.1em;*/
+}
+
+aside{
+    color: white;
+    text-align: center;
+    float: left;
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    /*background-color: cornflowerblue;*/
+    border: white dashed;
+    box-sizing: border-box;
+    background: url('../images/Blue-Background.jpeg');
+}
+
+/*aside .menus {*/
+    /*text-align: left;*/
+    /*padding: 5px 0 5px 20px;*/
+/*}*/
+.pati {
+    box-sizing: border-box;
+    box-shadow: 5px 5px 10px #8d8a8a;
+    border: 5px ridge lightgrey;
+    background: url('../images/codecool_logo_symbol-01.png') lightgray;
+    background-repeat: no-repeat;
+    background-size: 15%;
+    background-attachment: fixed;
+    background-position:  13% 110%;
+
+}
+.align_left {
+    text-align: left;
+    padding-left: 10%;
+    line-height: 130%;
+}
+.align_left h2 {
+    font-weight: 700;
+    font-size: 1.3em;
+    margin: 5px 0;
+    color: #333;
+}
+.align_left h3 {
+    font-weight: 300;
+    font-size: 1.2em;
+    color: #333333 ;
+}
+
+#logged_user{
+    left: 50%;
+    padding: 5px;
+    text-align: left;
+    font-size: 0.7em;
+}
+
+footer {
+    color: darkslategray;
+    width: 20%;
+    padding: 2px;
+    margin: auto;
+    text-align: center;
+    font-size: 0.8em;
+    position: fixed;
+    bottom: 1px;
+}
+
+.content {
+    float: right;
+    width: 80%;
+    box-sizing: border-box;
+    padding: 25px 25px;
+}
+#user_photo{
+    float: left;
+    margin-top: 10px;
+    width: 90px;
+    height: 90px;
+    border: groove;
+    background-image: url('../images/avatar.png');
+    background-size: 90px 90px;
+    display: inline-block;
+}
+
+#user{
+    height: 90px;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+}
+
+h1{
+    font-size: 2.5em;
+}
+
+h2{
+    font-size: 2.2em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+.menus a{
+    color: #333333;
+    text-decoration: none;
+}
+
+.menus a:hover h3{
+    color: #f47a20;
+    text-decoration: none;
+    /*font-size: 2em;*/
+}
+
+/* popup */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+
+}
+/*.popup {*/
+    /*margin: 1em auto;*/
+    /*padding: 1em;*/
+    /*background: #fff;*/
+    /*border-radius: 5px;*/
+    /*height: 50vh;*/
+    /*width: 70em;*/
+    /*position: relative;*/
+    /*transition: all 2s ease-in-out;*/
+
+/*}*/
+
+.close {
+    position: relative;
+    right: -13em;
+    font-size: 5em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+}
+
+.edit_user {
+    width: 70em;
+    margin: 1em auto 0 auto;
+    border: 0.09em solid #000;
+    border-radius: 1.7em;
+    box-shadow: 0.9em 0.9em 0.9em #888888;
+    background-color: rgba(245,245,220,0.7);
+}
+
+.form-block, .load_file {
+    margin: 1em 1.2em;
+    padding: 0.9em;
+    font-size: 2.1em;
+
+}
+.form-block input{
+    height: 3em;
+    width: 35em;
+    float: right;
+    border-radius: 1.2em;
+    top: -0.3em;
+    border: 0;
+    padding: 1.3em;
+    box-shadow: 0 0 0.9em #888888;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+.form-block label{
+    position: relative;
+}
+.form-block textarea {
+    position: relative;
+    float: right;
+    box-shadow: 0 0 0.9em #888888;
+    box-sizing: border-box;
+}
+.load_file input{
+    height: 3em;
+    width: 35em;
+    float: right;
+    top: -0.3em;
+    border: 0;
+    padding: 1.3em;
+    box-sizing: border-box;
+    position: relative;
+}
+
+select, option {
+    padding: 10px;
+}
+.load_file  label {
+    position: relative;
+
+}
+
+.info {
+    font-weight: 100;
+    margin-bottom: 20px;
+}
+
+.info p{
+    display: block;
+    margin: 20px 0;
+    float: right;
+}
+
+#submit,#add_submit{
+    display: block;
+    margin: 3em auto;
+    height: 3em;
+    width: 12em;
+    border-radius: 1.5em;
+    font-weight: 700;
+    font-size: 1.5em;
+    box-shadow: 0.5em 0.5em 0.5em #888888;
+
+}
+
+#logged_user a {
+    font-size: 1.5em;
+}
+
+@media screen and (max-width: 1360px) {
+    #logged_user a {
+        font-size: 0.8em;
+    }
+
+    #logged_user p {
+        font-size: 0.8em;
+    }
+    h1{
+        font-size: 1.2em;
+    }
+
+    h2{
+        font-size: 1.1em;
+    }
+
+    h3 {
+        font-size: 1em;
+    }
+
+    #user_photo{
+        width: 5em;
+        height: 5em;
+        background-size: 5em 5em;
+    }
+
+}
+@media screen and (max-height: 768px){
+    .form-block, .load_file {
+        margin: 0 1.2em;
+        padding: 0.5em;
+        font-size: 2.1em;
+    }
+}

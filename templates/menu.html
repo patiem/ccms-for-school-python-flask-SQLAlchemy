@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        {% block head %}
+        <meta charset="utf-8">
+        <title>Puke Rainbow Unicorns CcMS</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <link href="https://fonts.googleapis.com/css?family=Aladin" rel="stylesheet">
+        <script src="{{url_for('static', filename = 'js/jquery-3.1.1.min.js')}}"></script>
+        {% endblock %}
+    </head>
+
+<body>
+
+    <header>
+        <aside>
+            <nav>
+                <section id="logged_user">
+                    <p>You are logged in as:</p>
+                    <div id="user_photo"></div>
+                    <div id="user">
+                        <h3>{{ user['name'] }} {{ user['surname'] }}</h3>
+                        <br>
+                        {% if user['type'] in ('student', 'Student') %}
+                            {% if  user['ave_grade'] %}
+
+                                <p>Average grade: {{ user['ave_grade'] }}%</p>
+                            {% else %}
+                                <p>Average grade: 0%</p>
+                            {% endif %}
+
+                            {% if  user['my_attendance'] %}
+                                <p>Average attendance: {{ user['my_attendance'] }}%</p>
+                            {% else %}
+                                <p>Average attendance: 0%</p>
+                            {% endif %}
+
+                        {% endif %}
+                        <br>
+                        <a href="/logout">Logout</a>
+                    </div>
+                    <br>
+
+                </section>
+
+                {% if user['type'] in ('manager', 'Manager') %}
+
+                    <section id="ManagerMenu" class="menus">
+                        <h2>Manager Menu</h2>
+                        <ul>
+                            <li><a href="/mentor_list"><h3>Mentors</h3></a></li>
+                            <li><a href="/student_list"><h3>Students</h3></a></li>
+                            <li><a href="/statistics_manager"><h3>Student statistics</h3></a></li>
+                        </ul>
+                        <br>
+                    </section>
+                {% endif %}
+
+                {% if user['type'] in ('mentor', 'Mentor') %}
+
+                    <section id="MentorMenu" class="menus">
+                        <h2>Mentor Menu</h2>
+
+                        <ul>
+                            <li><a href="/student_list"><h3>Students</h3></a></li>
+                            <li><a href="/assignments"><h3>Assignments</h3></a></li>
+                            <li><a href="/grade_submission"><h3>Submissions</h3></a></li>
+                            <li><a href="/attendance"><h3>Attendance</h3></a></li>
+                            <li><a href="/checkpoint-make"><h3>Checkpoint</h3></a></li>
+                            <li><a href="/teams"><h3>Teams</h3></a></li>
+                            <li><a href="/statistics_mentor"><h3>Mentor statistics</h3></a></li>
+                        </ul>
+                        <br>
+
+                    </section>
+                {% endif %}
+
+                {% if user['type'] in ('employee', 'Employee') %}
+                    <section id="Employee" class="menus">
+                        <h2>Employee Menu</h2>
+                        <ul>
+                            <li><a href="/student_list"><h3>Students</h3></a></li>
+                        </ul>
+                        <br>
+                    </section>
+                {% endif %}
+
+                {% if user['type'] in ('student', 'Student') %}
+                    <section id="StudentMenu" class="menus">
+
+                        <h2>Student Menu</h2>
+                        <ul>
+                            <li><a href="/assignments"><h3>Assignments</h3></a></li>
+                            <li><a href="/assignments"><h3>Submissions</h3></a></li>
+                        </ul>
+                        <br>
+
+                    </section>
+                {% endif %}
+
+            </nav>
+        <footer>
+        <p>© Puke Rainbow Unicorns 2017</p>
+        </footer>
+        </aside>
+    </header>
+
+<div class="content">{% block content %}{% endblock %}</div>
+
+</body>
+</html>

@@ -64,7 +64,7 @@ class Ui:
         return table_size, cell_size
 
     @staticmethod
-    def print_table(table, title_list):
+    def print_table(table, title_list, remove_dashes = 0):
         """
                Displays table
 
@@ -80,14 +80,14 @@ class Ui:
         cell_size = table_size[1]
         table_size = table_size[0]
 
-        print(Color.TableHead + '', '-' * table_size)
+        print(Color.TableHead + '', '-' * (table_size - remove_dashes))
 
         for i, title in enumerate(title_list):
             if i == 0:
                 print(' |', end="")
             print(' {:{width}} |'.format(title, width=cell_size[i]), end="")
 
-        print('\n ' + '-' * table_size + Color.End)
+        print('\n ' + '-' * (table_size - remove_dashes) + Color.End)
 
         for items in table:
             for i, item in enumerate(items):
@@ -97,7 +97,7 @@ class Ui:
                 print(' {:{width}} |'.format(str(item), width=cell_size[i]), end="")
             print()
 
-        print('', '-' * table_size)
+        print('', '-' * (table_size - remove_dashes))
         print()
 
     @staticmethod
@@ -179,6 +179,27 @@ class Ui:
         return getpass.getpass(label)
 
     @staticmethod
+    def get_id_only_in_list(title, list):
+
+        while True:
+
+            try:
+                option = input(title)
+                if int(option) not in list:
+                    raise NameError('None option')
+                else:
+                    break
+            except:
+                print('Wrong select!')
+
+        return option
+    @staticmethod
+    def press_any_key_input():
+        """print any key to exit"""
+
+        input('Press ENTER to exit.....')
+
+    @staticmethod
     def get_menu(menu, menu_from, menu_to):
         """
         printing menu from menu, menu from option to option
@@ -192,7 +213,7 @@ class Ui:
             print(menu)
             try:
 
-                option = input("Select an option: ")
+                option = input("\nSelect an option: ")
                 if menu_from > int(option) or int(option) > menu_to:
                     raise NameError('None option')
                 else:

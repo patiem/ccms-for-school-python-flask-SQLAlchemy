@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends "menu.html" %}
+<title>Submission</title>
+
+
+{% block content %}
+
+
+    <section class="info">
+        <hr>
+        <p>Click on assignment title to see description or to submit. </p>
+        <div style="clear: both;"></div>
+        <hr>
+    </section>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>TITLE</th>
+            <th>START DATE</th>
+            <th>END DATE</th>
+            <th>SUBMITTED</th>
+            <th>GROUP</th>
+            <th>GRADE</th>
+        </tr>
+        {% set i = 1 %}
+        {% for item in assignments %}
+
+        <!--[assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date,-->
+        <!--type_of_assignment, 'submitted', submission.grade, assignment.idx]-->
+
+        <tr>
+            <td>{{ i }}</td>
+            <td class='left'><a href="/assignments/{{ item[-1] }}">{{ item[0] }}</a></td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[4] }}</td>
+            {% if item[6] == -1 %}
+                <td>None</td>
+            {% else %}
+                <td>{{ item[6] }}</td>
+            {% endif %}
+        </tr>
+        {% set i = i + 1 %}
+        {% endfor %}
+
+        
+    </table>
+
+{% endblock %}

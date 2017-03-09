@@ -1,0 +1,80 @@
+{% extends "menu.html" %}
+<title>Submission</title>
+
+
+{% block content %}
+    <div id="top">
+    <h2 class="assign_title">{{ assignment[2] }}</h2>
+    <div>
+        {% if user['type'] == 'Student' %}
+            <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
+        {% endif %}
+        <a href="{{ url_for('show_assignments_list') }}" ><div class="fixed_table_button orange_button orange_shadow">
+            Back to list </div></a>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <section>
+        <table class="assignment">
+            <tr>
+                <th>End date</th>
+                <td>{{ assignment[4] }}</td>
+            </tr>
+            {% if submission %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>{{ submission[1] }}</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    {% if submission[0] == '-1' %}
+                        <td>None</td>
+                    {% else %}
+                        <td>{{ submission[0] }}</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Submitted</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Grade</th>
+                    <td>None</td>
+                </tr>
+            {% endif %}
+        </table>
+    </section>
+    <hr>
+    {{ assignment[5]|safe }}
+
+    <div id="popup" class="overlay">
+            {% if submission %}
+            <h2>You already submitted this assignment</h2>
+            <form class="edit_user" name="add_submission">
+                <a class="close" href="#">&times;</a>
+                <div class="form-block">
+                    <label for="link">You already submitted this assignment</label>
+                    <input type="hidden" name="hidden" id="hidden">
+                </div>
+            </form>
+            {% else %}
+            <h2>Add submission</h2>
+            <form class="edit_user" name="add_submission" method="POST" action="/assignments/{{ assignment[0] }}">
+                <a class="close" href="#">&times;</a>
+                <div class="form-block">
+                    <label for="link">Link to assignment:</label>
+                    <input type="text" name="link" id="link">
+                </div>
+                <div class="form-block">
+                    <label for="comment">Comment:</label>
+                    <textarea maxlength="500" name ="comment" id="comment" rows="5" cols="55"
+                              placeholder="Your comments about assignment, max 500"></textarea>
+                </div>
+
+                <input type="submit" value="Submit" id="submit" class="button orange">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

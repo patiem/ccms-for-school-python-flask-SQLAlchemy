@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Puke Rainbow Unicorns CcMS</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500i,700,900i" rel="stylesheet">
+</head>
+
+<body>
+<header>
+    <aside>
+        <nav>
+            <section id="logged_user">
+                <p>You are logged in as:</p>
+                <div id="user_photo"></div>
+                <div id="user">
+                    <h3>Przemysław Ciąćka</h3>
+                    <br>
+                    <p>Average grade: 78%</p>
+                    <p>Average attendance: 89%</p>
+                    <br>
+                    <a href="login.html">Logout</a>
+                </div>
+                <br>
+
+            </section>
+
+            <section id="ManagerMenu" class="menus">
+                <h2>Manager Menu</h2>
+                <ul>
+                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
+                </ul>
+                <br>
+            </section>
+
+            <section id="MentorMenu" class="menus">
+                <h2>Mentor Menu</h2>
+
+                <ul>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
+                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
+                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
+                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
+                    <li><a href="teams.html"><h3>Teams</h3></a></li>
+                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
+                </ul>
+                <br>
+
+            </section>
+
+            <section id="Employee" class="menus">
+                <h2>Employee Menu</h2>
+                <ul>
+                    <li><a href="student_list.html"><h3>Students</h3></a></li>
+                </ul>
+                <br>
+            </section>
+
+            <section id="StudentMenu" class="menus">
+
+                <h2>Student Menu</h2>
+                <ul>
+                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
+                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
+                </ul>
+                <br>
+
+            </section>
+
+        </nav>
+        <footer>
+            <p>© Puke Rainbow Unicorns 2017</p>
+        </footer>
+
+    </aside>
+</header>
+
+<div class="content">
+
+    <h1>You are grading Michał Osak</h1>
+    <br /><br />
+   <h2>Choose grade:</h2><br /><br />
+   <form>
+        <label for="red">Red</label><input id="red" type="radio" name="grade"/>
+        <label for="yellow">Yellow</label><input id="yellow" type="radio" name="grade"/>
+        <label for="red">Green</label><input id="red" type="radio" name="grade"/><br /><br />
+       <input type="submit" value="Grade" class="button orange" />
+ </form>
+
+</div>
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+    <br /><br />
+
+    <h1>Select second mentor</h1>
+
+   <select>
+       <option></option>
+       <option>Rafał Stępień</option>
+       <option>Mateusz Ostafil</option>
+
+    </select>
+    <br /><br />
+
+    <h1>Select student</h1>
+
+    <figure class="table" id="table2">
+    <table>
+        <tr>
+            <th></th>
+            <th  class='left'>SURNAME</th>
+            <th class='left'>NAME</th>
+
+
+
+        </tr>
+        <tr>
+            <td style="width: 10px;"><input type="radio" name="student " id="student1"/></td>
+            <td class='left'><label for="student1">Osak</label></td>
+            <td class='left'>Michał</td>
+
+
+        </tr>
+        <tr>
+            <td style="width: 10px;"><input type="radio" name="student "id="student2" /></td>
+            <td class='left'><label for="student2">Siga</label></td>
+            <td class='left'>Mateusz</td>
+
+
+        </tr>
+
+
+
+    </table>
+    </figure><br /><br />
+    <a href="checkpoint-grade.html"     class="button orange">Make checkpoint</a>
+</div>

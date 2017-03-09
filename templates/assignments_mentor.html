@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% extends "menu.html" %}
+<title>Submission</title>
+
+
+{% block content %}
+    <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Add assignment </div></a>
+    <section class="info">
+        <hr>
+        <p>Click on assignment title to see description or to submit. </p>
+        <div style="clear: both;"></div>
+        <hr>
+    </section>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>TITLE</th>
+            <th>START DATE</th>
+            <th>END DATE</th>
+            <th>MENTOR</th>
+            <th>GROUP</th>
+        </tr>
+
+        {% set i = 1 %}
+        {% for item in assignments %}
+
+        <tr>
+            <td>{{ i }}</td>
+            <td class='left'><a href="/assignments/{{ item.idx }}">{{ item.title }}</a></td>
+            <td>{{ item.start_date }}</td>
+            <td>{{ item.end_date }}</td>
+            <td>{{ item.mentor_id }}</td>
+            {% if item.group == '0' %}
+                <td>No</td>
+            {% else %}
+                <td>Yes</td>
+            {% endif %}
+        </tr>
+        {% set i = i + 1 %}
+        {% endfor %}
+    </table>
+
+
+    <div id="popup" class="overlay">
+        <h2>Add submission</h2>
+        <form class="edit_user" name="add_assignment" method="post" action="{{ url_for('show_assignments_list') }}">
+            <a class="close" href="#">&times;</a>
+            <div class="form-block">
+                <label for="a_title">Assignment title:</label>
+                <input type="text" name="a_title" id="a_title">
+            </div>
+            <div class="form-block">
+                <label class="date_input" for="start_date">Start date:</label>
+                <input type="date" id="start_date" name="start_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+            </div>
+            <div class="form-block">
+                <label class="date_input" for="end_date">End date:</label>
+                <input type="date" id="end_date" name="end_date" min="2016-10-01" max="2020-08-14" value="2017-02-23">
+            </div>
+{#            <div class="form-block">#}
+{#                <label for="group">Group:</label>#}
+{#                <input type="text" name="group" id="group" value="No">#}
+{#            </div>#}
+            <div class="load_file">
+                <label for="group">Group:</label>
+                <select name="group">
+                    <option value="0" selected>No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-block">
+                <label for="description">Description (in html):</label>
+                <textarea maxlength="5000" name ="description" id="comment" rows="5" cols="55"
+                              placeholder="Your html code to assignment description"></textarea>
+            </div>
+
+            <input type="submit" value="Submit" id="submit" class="button orange">
+        </form>
+    </div>
+
+{% endblock %}

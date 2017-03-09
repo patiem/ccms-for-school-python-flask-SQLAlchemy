@@ -1,15 +1,13 @@
-from common import Common
-from student import Student
+from models.common import Common
+from models.student import Student
 import datetime
-import sql
-
+from models import sql
 
 class Attendance:
-
     file = 'csv/attendance.csv'
     attendance_list = []
 
-    def __init__(self, id_student, date, present):
+    def __init__(self, id_student, fullname, date, present):
         """
         Create Attendance object
         :param id_student: string (user id)
@@ -17,6 +15,7 @@ class Attendance:
         :param present: string (Present/Late/Absent)
         """
         self.id_student = id_student
+        self.fullname = fullname
         self.date = date
         self.present = present
 
@@ -35,8 +34,6 @@ class Attendance:
             student.present = 'Late'
         elif choice == '3':
             student.present = 'Absent'
-
-        cls.save_attendance_list()
 
     @classmethod
     def save_attendance_list(cls):
@@ -58,12 +55,13 @@ class Attendance:
         :return: None
         """
         today = str(datetime.date.today())
-        query = "SELECT * FROM Users WHERE `Type`=?"
-        params = list(['Student'])
-        stundents_list = sql.query(query, params)
-        for student in stundents_list:
-            cls.attendance_list.append(Attendance(str(student['ID']), today, 'Absent'))
-        cls.save_attendance_list()
+        for student in Student.object_list:
+            cls.attendance_list.append(Attendance(student.idx, today, 'Absent'))
+
+            query = 'INSERT INTO `Attendance`(`ID_STUDENT`,`DATE`,`STATUS`) VALUES (?,?,?)'
+            params = list([student.idx, today, 'Absent'])
+
+            sql.query(query, params)
 
     @classmethod
     def get_attendance_by_date(cls, date):
@@ -77,7 +75,7 @@ class Attendance:
             if attendance.date == date:
                 for student in Student.object_list:
                     if student.id == attendance.id_student:
-                        output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' +\
+                        output_string += date + ' ' + student.name + ' ' + student.last_name + ' presence status: ' + \
                                          attendance.present + '\n'
         return output_string[:-1]
 
@@ -99,13 +97,24 @@ class Attendance:
         return output_string[:-1]
 
     @classmethod
-    def create_attendance_list(cls):
+    def create_attendance_list(cls, date):
         """
         Creates attendance_list with Attendance objects
         """
-        student_list = Common.read_file(cls.file)
-        for student in student_list:
-            cls.attendance_list.append(Attendance(student[0], student[1], student[2]))
+        attendance_list = []
+
+        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
+        params = [date]
+        attendance = sql.query(query, params)
+
+        if attendance:
+            for student in attendance:
+                user = Student.return_by_id(int(student['ID_STUDENT']))
+                fullname = user.full_name()
+                attendance_list.append(Attendance(student['ID_STUDENT'], fullname, student['DATE'], student['STATUS']))
+
+            return attendance_list
+        return False
 
     @classmethod
     def students_engagement(cls):
@@ -124,3 +133,57 @@ class Attendance:
                                     str(student_attendance['Late']),
                                     str(student_attendance['Absent'])])
         return engagement_list
+
+    @staticmethod
+    def get_attendance_list(date):
+        """
+        Sets the state of the presence each student at today
+        :param date: str 'YYYY-MM-DD'
+        :return list_of_attendance: list with Attendance objects
+        """
+
+        # EXAMPLE: today = '2017-03-07', date = '2017-03-07'
+        today = str(datetime.date.today())
+
+        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
+        params = [date]
+        attendance = sql.query(query, params)
+
+        if today == date:
+            if attendance:
+                pass
+            else:
+                for student in Student.students_list():
+                    query = """INSERT INTO `Attendance`(`ID`,`ID_STUDENT`,`DATE`,`STATUS`) VALUES (NULL,?,?,'None');"""
+                    params = [student.idx, today]
+                    sql.query(query, params)
+        list_of_attendance = Attendance.create_attendance_list(date)
+
+        # ------------------------- EXAMPLE USE -------------------------- #
+
+        # attendance_list = Attendance.get_attendance_list('2016-10-00')
+        # if attendance_list:
+        #     for student in attendance_list:
+        #         print(student.id_student, student.date, student.present)
+
+        # ---------------------------------------------------------------- #
+
+        return list_of_attendance
+
+    @classmethod
+    def update(cls, students_dict, date):  # IN USE
+
+        # ----------- SQL UPDATE EXAMPLE ------------
+        # """UPDATE `Attendance` SET `STATUS`='None'
+        # WHERE `ID_STUDENT`=12
+        # AND `DATE`='2017-03-09';"""
+        # -------------------------------------------
+
+        for idx in students_dict:
+
+            query = """UPDATE `Attendance` SET `STATUS`=?
+                       WHERE `ID_STUDENT`=? AND `DATE`=?;"""
+
+            params = [students_dict[idx], idx, date]
+            sql.query(query, params)
+
