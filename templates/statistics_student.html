@@ -1,90 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Puke Rainbow Unicorns CcMS</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500i,700,900i" rel="stylesheet">
-</head>
-
-<body>
-<header>
-    <aside>
-        <nav>
-            <section id="logged_user">
-                <p>You are logged in as:</p>
-                <div id="user_photo"></div>
-                <div id="user">
-                    <h3>Przemysław Ciąćka</h3>
-                    <br>
-                    <p>Average grade: 78%</p>
-                    <p>Average attendance: 89%</p>
-                    <br>
-                    <a href="login.html">Logout</a>
-                </div>
-                <br>
-
-            </section>
-
-            <section id="ManagerMenu" class="menus">
-                <h2>Manager Menu</h2>
-                <ul>
-                    <li><a href="mentor_list.html"><h3>Mentors</h3></a></li>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="statistics_manager.html"><h3>Student statistics</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="MentorMenu" class="menus">
-                <h2>Mentor Menu</h2>
-
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                    <li><a href="assignments_mentor.html"><h3>Assignments</h3></a></li>
-                    <li><a href="grade_submission.html"><h3>Submissions</h3></a></li>
-                    <li><a href="attendance.html"><h3>Attendance</h3></a></li>
-                    <li><a href="checkpoint-make.html"><h3>Checkpoint</h3></a></li>
-                    <li><a href="teams.html"><h3>Teams</h3></a></li>
-                    <li><a href="statistics_mentor.html"><h3>Mentor statistics</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-            <section id="Employee" class="menus">
-                <h2>Employee Menu</h2>
-                <ul>
-                    <li><a href="student_list.html"><h3>Students</h3></a></li>
-                </ul>
-                <br>
-            </section>
-
-            <section id="StudentMenu" class="menus">
-
-                <h2>Student Menu</h2>
-                <ul>
-                    <li><a href="assignments.html"><h3>Assignments</h3></a></li>
-                    <li><a href="assignments.html"><h3>Submissions</h3></a></li>
-                </ul>
-                <br>
-
-            </section>
-
-        </nav>
-        <footer>
-            <p>© Puke Rainbow Unicorns 2017</p>
-        </footer>
-
-    </aside>
-</header>
-
-<div class="content">
+{% extends "menu.html" %}
+{% block content %}
 
     <h1>Statistic for student Patrycja Mikulska</h1>
-    
     <figure class="table" id="table">
         <br /><br />
         <h2>Checkpoints</h2><br /><br />
@@ -97,8 +14,6 @@
             <th>CREATED</th>
             <th>DATE</th>
             <th>GRADE</th>
-            
-            
         </tr>
         <tr>
             <td>1</td>
@@ -108,9 +23,7 @@
             <td>2017.01.01</td>
             <td>2017.03.01</td>
             <td>Green</td>
-            
         </tr>
-        
         <tr>
             <td>1</td>
             <td class='left'>SQL</td>
@@ -119,32 +32,20 @@
             <td>2017.01.01</td>
             <td>2017.03.01</td>
             <td>Green</td>
-            
         </tr>
-        
     </table>
-        
-        
     </figure>
-    
     <br /><br />
-      <figure class="table" id="table">
-        
+    <figure class="table" id="table">
     <table>
         <tr>
             <th>STATISTIC</th>
             <th>VALUE</th>
-        
-            
-            
         </tr>
-    
-    
         <tr>
             <td class='left'>Atendance Absent</td>
             <td>1</td>
         </tr>
-        
         <tr>
             <td class='left'>Atendance Late</td>
             <td>1</td>
@@ -157,26 +58,14 @@
             <td class='left'>Atendance Overall</td>
             <td>100%</td>
         </tr>  
-        
         <tr>
             <td class='left'>Avg grades</td>
             <td>70%</td>
         </tr>
-        
         <tr>
             <td class='left'>No of checkpoints</td>
             <td>2</td>
         </tr>
-        
-        
     </table>
-        
-        
     </figure>
-</div>
-
-
-
-</body>
-
-</html>
+{% endblock %}

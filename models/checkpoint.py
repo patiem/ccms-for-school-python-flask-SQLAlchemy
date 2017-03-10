@@ -9,7 +9,6 @@ class Checkpoint:
     @staticmethod
     def add_checkpoint(title, start_date,  mentor):
 
-
         query = "INSERT INTO Checkpoints ('ID_USER', 'TITLE', 'START_DATE') VALUES (?, ?, ?)"
         sql.query(query, [mentor, title, start_date])
 
@@ -81,7 +80,6 @@ class Checkpoint:
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
-
     @staticmethod
     def show_checkpoints():
 
@@ -90,6 +88,12 @@ class Checkpoint:
 
         sql_query_result = sql.query(query)
         return sql_query_result
+
+    @staticmethod
+    def get_name(checkpoint_id):
+
+        query = "SELECT TITLE FROM Checkpoints WHERE ID = ?"
+        return sql.query(query, [checkpoint_id])
 
 
     # @staticmethod
@@ -199,6 +203,7 @@ class Checkpoint:
     #             user_checkpoints.append([title, line['GRADE'], line['DATE'], line['ID_MENTOR_1'],
     #                                     line['ID_MENTOR_2']])
     #     Ui.print_table(user_checkpoints, titles)
+
 
 
 

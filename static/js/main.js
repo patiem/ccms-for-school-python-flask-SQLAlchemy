@@ -175,6 +175,15 @@ $('.close').click(function () {
 
 });
 
+function validate_checkpoint(){
+    var new_checkpoint = document.getElementById('new_checkpoint').value;
+
+    if (new_checkpoint.length > 0){
+        return true;
+    }
+    return false;
+}
+
 $('#attendance_date').change(function () {
     var date = $('#attendance_date').val();
     var pathname = window.location.pathname; // Returns path only
@@ -185,6 +194,7 @@ $('#attendance_date').change(function () {
         window.location.replace(pathname);
     }
 });
+
 
 $('.attendance_tr').change(function () {
     $(this).css('background-color','#70FF9E');
@@ -216,3 +226,4 @@ $(function () {
         $(this).attr('href', url);
     });
 });
+
