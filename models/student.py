@@ -138,7 +138,6 @@ class Student(User):
         for row in sql_data:
             student_id = row[0]
             if int(student_id) == int(idx):
-                print(row)
                 if row[3]:
                     return int(row[3])
                 else:
