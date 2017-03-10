@@ -633,11 +633,6 @@ margin-bottom: 20px;}
         -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
-}
-
-/*.comment a p {display:none;}*/
-/*.comment a:hover p {display:block;}*/
-/*.comment a:hover {display:block;}*/
 
 .tooltip {
     position: relative;
