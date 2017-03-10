@@ -27,7 +27,8 @@
                 <td class="sub_idx" data-id ={{ item[0].idx }} >{{ item[0].idx }}</td>
                 <td>{{ item[1].full_name() }}</td>
                 <td>{{ item[0].date_of_submission }}</td>
-                <td class='left' data-link = {{ item[0].link }} ><a href="{{ item[0].link }}">{{ item[2]}}</a></td>
+                <td class='left' data-link = {{ item[0].link }} ><p class="tooltip"><a href="{{ item[0].link }}">
+                    {{ item[2]}}<span>Comments <br> {{ item[5] }}</span></a></p></td>
                 <td>
                     <div class="grade_range">
                     {% if item[0].grade == -1 %}

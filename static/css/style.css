@@ -660,3 +660,23 @@ margin-bottom: 20px;}
     }
 }
 
+.tooltip {
+    position: relative;
+}
+
+.tooltip a span {
+    isplay: none;
+    color: #FFFFFF;
+}
+
+.tooltip a:hover span {
+    display: block;
+    position: absolute;
+    width: 200px;
+    background: #aaa;
+    height: 50px;
+    left: 100px;
+    top: -10px;
+    color: #FFFFFF;
+    padding: 0 5px;
+}
