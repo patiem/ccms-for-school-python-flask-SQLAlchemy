@@ -18,9 +18,22 @@
     <section>
         <table class="assignment">
             <tr>
+                <th>Start date</th>
+                <td>{{ assignment[3] }}</td>
+            </tr>
+            <tr>
                 <th>End date</th>
                 <td>{{ assignment[4] }}</td>
             </tr>
+            <tr>
+                <th>Group</th>
+                {% if assignment[6] == 0%}
+                <td>Individual</td>
+                {% else %}
+                <td>Group</td>
+                {% endif %}
+            </tr>
+            {% if user['type'] == 'Student' %}
             {% if submission %}
                 <tr>
                     <th>Submitted</th>
@@ -44,6 +57,7 @@
                     <td>None</td>
                 </tr>
             {% endif %}
+        {% endif %}
         </table>
     </section>
     <hr>
