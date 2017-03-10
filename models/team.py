@@ -66,9 +66,10 @@ class Team:
         """
         query = "SELECT `id_team` FROM `Users_team` WHERE `id_user`=?;"
         params = [student_id]
-        id_team = sql.query(query, params)[0][0]
+        id_team = sql.query(query, params)
         if id_team:
-            return id_team
+            if id_team:
+                return id_team[0][0]
         return False
 
     @staticmethod
