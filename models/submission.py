@@ -58,6 +58,8 @@ class Submission:
         for sub in sub_list:
             if Student.make_student(sub.student_idx):
                 ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
+                sub_id = sql.query('SELECT id FROM Sumbissions WHERE ID_ASSIGMENT=? AND ID_STUDENT=?',
+                                   [sub.assignment_idx, sub.student_idx])[0][0]
                 if sub.mentor_id != 0:
                     mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])
                     if mentor_name:
@@ -66,8 +68,13 @@ class Submission:
                         mentor_name = 'None'
                 else:
                     mentor_name = 'None'
+                comment = sql.query('SELECT comment FROM comments WHERE sub_id=?', [sub_id])
+                if comment:
+                    comment = comment[0][0]
+                else:
+                    comment = 'No comments'
                 student = Student.make_student(sub.student_idx)
-                list_for_mentor.append([sub, student, ass_title, mentor_name])
+                list_for_mentor.append([sub, student, ass_title, mentor_name, comment])
         return list_for_mentor
 
     @classmethod  # IN USE
@@ -104,20 +111,6 @@ class Submission:
         for item in team_members:
             clean_list.append(item[0])
         return clean_list
-
-    # @classmethod
-    # def pass_submission_for_student(cls, student):
-    #     """
-    #     EEeee nie wiem w sumie po co to miało być.
-    #     Może mnie potem oswieci.
-    #     :param student:
-    #     :return:
-    #     """
-    #     submission_for_student = []
-    #     for submission in cls.submission_list:
-    #         if submission.student_idx == student.idx:
-    #             submission_for_student.append(submission)
-    #     return submission_for_student
 
     @classmethod
     def find_submission(cls, student, assignment):
