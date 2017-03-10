@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from controllers.checkpoint_controller import checkpointcontroller
+from controllers.statistics_controller import statistics
 from models.student import Student
 from models.team import Team
 from models.user import *
@@ -12,6 +13,7 @@ from models.decorator import *
 
 app = Flask(__name__)
 app.register_blueprint(checkpointcontroller)
+app.register_blueprint(statistics)
 app.secret_key = 'any random string'
 
 

@@ -136,7 +136,6 @@ class Student(User):
         for row in sql_data:
             student_id = row[0]
             if int(student_id) == int(idx):
-                print(row)
                 if row[3]:
                     return int(row[3])
                 else:
@@ -155,6 +154,28 @@ class Student(User):
     #             table.append([row[0], row[1], row[2], row[3], row[4], row[5]])
     #     return table
 
+    @staticmethod
+    def get_students_attandance():
+
+        students = Student.students_list()
+
+        table = []
+        for student in students:
+            table.append([student.name, student.last_name, Student.my_attendance(student.idx)])
+
+
+        return table
+
+    @staticmethod
+    def get_students_grades():
+
+        students = Student.students_list()
+
+        table = []
+        for student in students:
+            table.append([student.name, student.last_name, Student.ave_grade_flask_version(student.idx)])
+
+        return table
 
     @staticmethod
     def my_attendance(idx):

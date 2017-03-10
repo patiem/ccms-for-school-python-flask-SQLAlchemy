@@ -571,6 +571,25 @@ table.assignment  {
 .checkpoint h1, .checkpoint h3 {
 margin-bottom: 20px;}
 
+.checkpoint .yellow,
+.checkpoint .red,
+.checkpoint .green {
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    display: block;
+
+}
+.checkpoint .yellow {
+    background-color: 	#FFEF00;
+}
+.checkpoint .red {
+    background-color: 	#C80815;
+}
+.checkpoint .green {
+    background-color: 	#ADFF2F;
+}
+
 #codecool_logo{
     height: 90vh;
     text-align: center;
