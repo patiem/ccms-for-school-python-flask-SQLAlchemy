@@ -66,7 +66,11 @@ class Submission:
                     mentor_name = ' '.join(mentor_name)
                 else:
                     mentor_name = 'None'
-                comment = sql.query('SELECT comment FROM comments WHERE sub_id=?', [sub_id])[0][0]
+                comment = sql.query('SELECT comment FROM comments WHERE sub_id=?', [sub_id])
+                if comment:
+                    comment = comment[0][0]
+                else:
+                    comment = 'No comments'
                 student = Student.make_student(sub.student_idx)
                 list_for_mentor.append([sub, student, ass_title, mentor_name, comment])
         return list_for_mentor
