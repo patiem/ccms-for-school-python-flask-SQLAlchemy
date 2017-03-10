@@ -143,7 +143,6 @@ $('a.edit').click(function () {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         // contentType : 'application/x-www-form-urlencoded',
-
         success: function(response) {
                 console.log(response['id']);
                 $('#edit_id').val(response['id'])
@@ -158,8 +157,8 @@ $('a.edit').click(function () {
             }
 
     })
-    
 });
+
 
 $('.close').click(function () {
     $('#submit').removeClass('inactive').addClass('orange').prop("disabled", false);

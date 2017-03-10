@@ -33,7 +33,7 @@ def show_assignments_list():
     elif session['user']['type'] == 'Mentor':
         if request.method == 'GET':
             assignments = Assignment.pass_assign_for_mentor()
-            return render_template('assignments_mentor.html', user=session['user'], assignments=assignments)
+            return render_template('assigprosze o informacje czy wszyskto sie zgadzanments_mentor.html', user=session['user'], assignments=assignments)
         elif request.method == 'POST':
             title = request.form['a_title']
             start_date = request.form['start_date']
