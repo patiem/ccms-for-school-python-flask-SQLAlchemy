@@ -23,8 +23,8 @@ class Checkpoint:
     # @staticmethod
     # def select_student_id_from_list(checkpoint_id):
     #
-    #     # Ui.clear()
-    #     # Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
+    #     Ui.clear()
+    #     Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
     #     query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints " \
     #             "WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
     #

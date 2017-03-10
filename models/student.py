@@ -5,7 +5,7 @@ from models import sql
 class Student(User):
     """
     Class represent student
-    """ 
+    """
 
     def __init__(self, idx, name, last_name, mail, telephone, id_team=''):
         """

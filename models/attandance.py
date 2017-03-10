@@ -2,7 +2,6 @@ from models.student import Student
 import datetime
 from models import sql
 
-
 class Attendance:
 
     def __init__(self, id_student, fullname, date, present):

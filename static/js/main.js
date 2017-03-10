@@ -54,6 +54,7 @@ $('.remove_user').click(function () {
     }
 });
 
+
 $('#add_email').change(function () {
     var email = $(this).val();
     var atpos = email.indexOf("@");
@@ -158,7 +159,7 @@ $('a.edit').click(function () {
             }
 
     })
-    
+
 });
 
 $('.close').click(function () {

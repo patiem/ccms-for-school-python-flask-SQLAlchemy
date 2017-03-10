@@ -2,6 +2,7 @@ from models.common import *
 from models import sql
 from models.team import Team
 from models.student import Student
+from models.test import Test
 
 
 class Submission:
