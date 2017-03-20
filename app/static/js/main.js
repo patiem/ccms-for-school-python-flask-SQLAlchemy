@@ -1,10 +1,11 @@
 $('.grade_input').change(function () {
     var value =  $(this).val();
+    var link = $(this).parent('.grade_range').find('.grade_output').data('link');
     if (value > -1){
-        $(this).parent('.grade_range').find('.grade_output').val(value)
+        $('table').find("[data-link='" + link + "']" ).val(value)
     }
     else {
-        $(this).parent('.grade_range').find('.grade_output').val('None')
+        $('table').find("[data-link='" + link + "']" ).val('None')
     }
     $(this).addClass('Changed');
     var link = $(this).closest('tr').find('.left').data('link');
