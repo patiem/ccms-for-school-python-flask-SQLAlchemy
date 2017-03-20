@@ -29,12 +29,12 @@ def checkpoint():
 def show_assignments_list():
     if session['user']['type'] == 'Student':
         assignments = Assignment.assignment_list_with_grades(session['user']['id'])
-        return render_template('assignmets/assignments.html', user=session['user'], assignments=assignments)
+        return render_template('assignments/assignments.html', user=session['user'], assignments=assignments)
 
     elif session['user']['type'] == 'Mentor':
         if request.method == 'GET':
             assignments = Assignment.pass_assign_for_mentor()
-            return render_template('assignmets/assignments.html', user=session['user'], assignments=assignments)
+            return render_template('assignments/assignments_mentor.html', user=session['user'], assignments=assignments)
         elif request.method == 'POST':
             title = request.form['a_title']
             start_date = request.form['start_date']
