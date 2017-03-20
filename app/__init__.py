@@ -52,7 +52,7 @@ def show_assignment(idx):
     assignment = Assignment.get_by_id(int(idx))
     submission = Submission.find_submission_sql(idx, session['user']['id'])
     if request.method == 'GET':
-        return render_template('submissions.html', user=session['user'], assignment=assignment, submission=submission)
+        return render_template('submission/submissions.html', user=session['user'], assignment=assignment, submission=submission)
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
@@ -66,7 +66,7 @@ def show_assignment(idx):
 def grade_submission():
     if request.method == 'GET':
         sub_list = Submission.subs_to_grade()
-        return render_template('grade_submission.html', user=session['user'], sub_list=sub_list)
+        return render_template('submission/grade_submission.html', user=session['user'], sub_list=sub_list)
 
 
 @app.route('/update_submission', methods=['POST'])
@@ -170,7 +170,7 @@ def attendance():
         if 'date' in request.args:
             date = request.args['date']
         attendance_list = Attendance.get_attendance_list(date)
-        return render_template('attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
+        return render_template('attendance/attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
 
     elif request.method == 'POST':
         students_present = {}
