@@ -31,12 +31,12 @@
                 <td>
                     <div class="grade_range">
                     {% if item[0].grade == -1 %}
-                    <output name="gradeOutput1" class="grade_output">Not graded</output>
+                    <output data-link = {{ item[0].link }} name="gradeOutput1" class="grade_output">Not graded</output>
                     {% else %}
-                    <output name="gradeOutput1" class="grade_output">{{ item[0].grade }}</output>
+                    <output data-link = {{ item[0].link }} name="gradeOutput1" class="grade_output">{{ item[0].grade }}</output>
                     {% endif %}
                         <label for="gradeInput1"></label>
-                        <input type="range" class="grade_range grade_input" name="gradeInput1"
+                        <input data-link = {{ item[0].link }} type="range" class="grade_range grade_input" name="gradeInput1"
                            value="{{ item[0].grade }}" min="-1" max="100">
                     </div>
                 </td>
@@ -46,7 +46,6 @@
             {% endfor %}
 
         </table>
-        <a href=""><div class="fixed_table_button orange_shadow"> Submit </div></a>
     </form>
     <script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 {% endblock %}
