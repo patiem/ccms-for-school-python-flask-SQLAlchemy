@@ -1,5 +1,6 @@
 from flask import session, render_template, Blueprint, request, redirect, url_for
 from app.models.mod_checkpoint.checkpoint import *
+from app.models.mod_student.student import Student
 
 
 statistics = Blueprint('statistics', __name__, template_folder='templates')
@@ -9,8 +10,9 @@ def statistics_mentor():
     if session['user']['type'] == 'Mentor':
         cards = Checkpoint.show_statistics_for_mentor_cards(session['user']['id'])
         checkpoints = Checkpoint.show_statistics_for_mentor_checkpoints(session['user']['id'])
+        print(checkpoints[0][0])
 
-        return render_template('statistics_mentor.html', user=session['user'], cards=cards, checkpoints=checkpoints)
+        return render_template('statistic/statistics_mentor.html', user=session['user'], cards=cards, checkpoints=checkpoints)
     return redirect(url_for('index'))
 
 @statistics.route('/statistics_student', methods=['POST', 'GET'])
