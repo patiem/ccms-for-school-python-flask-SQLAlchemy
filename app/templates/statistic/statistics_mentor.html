@@ -14,8 +14,8 @@
         {% if checkpoints != None %}
             {% for checkpoint in checkpoints %}
             <tr>
-                <td class='left'>{{ checkpoint['Title'] }}</td>
-                <td>{{ checkpoint['Name'] }}{{ checkpoint['Surname'] }}</td>
+                <td>{{ checkpoint['Title'] }}</td>
+                <td>{{ user.name }} {{ user.surname }} </td>
                 <td>{{ checkpoint['Start_date'] }}</td>
             </tr>
             {% endfor %}
@@ -31,14 +31,14 @@
             <th>VALUE</th>
         </tr>
         <tr>
-            <td class='left'>Checkpoints</td>
+            <td>Checkpoints</td>
             <td>{% if checkpoints != None %}{{ checkpoints|length }}{% else %}0{% endif %}</td>
         </tr>
 
     {% if cards != None %}
         {% for card in cards %}
          <tr>
-             <td class='left'>{{ card['grade'] }} cards</td>
+             <td>{{ card['grade'] }} cards</td>
             <td>{{ card['cards'] }}</td>
         </tr>
         {% endfor %}
