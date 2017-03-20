@@ -3,7 +3,7 @@ import datetime
 from app.models import sql
 from app.models.common import *
 from app.models.mod_student.student import Student
-from app.models.submission import Submission
+from app.models.mod_submission.submission import Submission
 from app.models.test import Test
 
 

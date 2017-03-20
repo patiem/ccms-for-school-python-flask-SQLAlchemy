@@ -1,4 +1,4 @@
-from app.models.user import *
+from app.models.mod_user.user import *
 from app.models import sql
 
 

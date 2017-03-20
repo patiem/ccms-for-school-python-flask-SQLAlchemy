@@ -1,7 +1,7 @@
 from app.models import sql
 from app.models.common import *
 from app.models.mod_student.student import Student
-from app.models.team import Team
+from app.models.mod_team.team import Team
 
 
 class Submission:
