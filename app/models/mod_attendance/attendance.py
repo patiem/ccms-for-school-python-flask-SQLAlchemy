@@ -1,6 +1,7 @@
-from app.models.student import Student
 import datetime
+
 from app.models import sql
+from app.models.mod_student.student import Student
 
 
 class Attendance:

@@ -1,5 +1,5 @@
 from app.models import sql
-from app.models.student import Student
+from app.models.mod_student.student import Student
 
 
 class Team:
