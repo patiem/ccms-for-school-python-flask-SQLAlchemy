@@ -1,7 +1,7 @@
-from models.common import *
-from models import sql
-from models.team import Team
-from models.student import Student
+from app.models.common import *
+from app.models import sql
+from app.models.team import Team
+from app.models.student import Student
 
 
 class Submission:

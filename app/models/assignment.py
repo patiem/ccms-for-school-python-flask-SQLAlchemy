@@ -1,9 +1,9 @@
-from models.common import *
+from app.models.common import *
 import datetime
-from models.test import Test
-from models import sql
-from models.submission import Submission
-from models.student import Student
+from app.models.test import Test
+from app.models import sql
+from app.models.submission import Submission
+from app.models.student import Student
 
 
 class Assignment:

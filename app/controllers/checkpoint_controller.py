@@ -1,6 +1,6 @@
 from flask import session, render_template, Blueprint, request, redirect, url_for
-from models.checkpoint import *
-from models.mentor import Mentor
+from app.models.checkpoint import *
+from app.models.mentor import Mentor
 
 checkpointcontroller = Blueprint('checkpointcontroller', __name__, template_folder='templates')
 

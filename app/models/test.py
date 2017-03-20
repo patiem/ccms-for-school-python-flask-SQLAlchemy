@@ -1,5 +1,5 @@
 import re
-from models import sql
+from app.models import sql
 
 
 class Test:

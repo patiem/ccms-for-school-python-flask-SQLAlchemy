@@ -1,5 +1,5 @@
-from models.user import *
-from models import sql
+from app.models.user import *
+from app.models import sql
 
 
 class Student(User):

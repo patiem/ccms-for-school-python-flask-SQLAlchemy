@@ -1,5 +1,5 @@
 from flask import session, render_template, Blueprint, request, redirect, url_for
-from models.checkpoint import *
+from app.models.checkpoint import *
 
 
 statistics = Blueprint('statistics', __name__, template_folder='templates')
