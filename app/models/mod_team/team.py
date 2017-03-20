@@ -107,8 +107,9 @@ class Team:
         """
         query = "SELECT `id_team` FROM `Users_team` WHERE `id_user`=?;"
         params = [student_id]
-        id_team = sql.query(query, params)[0][0]
+        id_team = sql.query(query, params)
         if id_team:
+            id_team = id_team[0][0]
             return id_team
         return False
 
@@ -120,6 +121,8 @@ class Team:
         """
         student = Student.return_by_id(student_id)
         if student:
+            student_team = Team.get_team(student.idx)
+            student.id_team = student_team
             team = Team.get_team_by_id(int(team_id))
             if team:
                 Team.student_to_team(team, student)
@@ -168,3 +171,12 @@ class Team:
                    WHERE ID = ?"""
         edit_list = [team_name, idx]
         sql.query(query, edit_list)
+
+    @classmethod
+    def get_team(cls, idx):
+        query = """SELECT ID_TEAM FROM Users_team WHERE ID_USER = ?"""
+        team = sql.query(query, [str(idx)])
+        if team:
+            team_idx = team[0]
+            return team_idx
+        return None
