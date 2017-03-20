@@ -26,7 +26,7 @@
         {% for item in assignments %}
 
         <tr>
-            <td>{{ i }}</td>
+            <td>{{ item.idx }}</td>
             <td class='left'><a href="/assignments/{{ item.idx }}">{{ item.title }}</a></td>
             <td>{{ item.start_date }}</td>
             <td>{{ item.end_date }}</td>
