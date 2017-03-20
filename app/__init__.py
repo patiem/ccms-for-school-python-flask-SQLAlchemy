@@ -29,12 +29,12 @@ def checkpoint():
 def show_assignments_list():
     if session['user']['type'] == 'Student':
         assignments = Assignment.assignment_list_with_grades(session['user']['id'])
-        return render_template('assignments.html', user=session['user'], assignments=assignments)
+        return render_template('assignmets/assignments.html', user=session['user'], assignments=assignments)
 
     elif session['user']['type'] == 'Mentor':
         if request.method == 'GET':
             assignments = Assignment.pass_assign_for_mentor()
-            return render_template('assignments.html', user=session['user'], assignments=assignments)
+            return render_template('assignmets/assignments.html', user=session['user'], assignments=assignments)
         elif request.method == 'POST':
             title = request.form['a_title']
             start_date = request.form['start_date']
@@ -112,7 +112,7 @@ def index():
 def teams():
     teams_list = Team.create_teams_list()
     students_list = Student.students_list()
-    return render_template('teams.html', user=session['user'], teams=teams_list, students=students_list)
+    return render_template('team/teams.html', user=session['user'], teams=teams_list, students=students_list)
 
 
 @app.route('/team_name_edit', methods=['POST'])
@@ -198,8 +198,8 @@ def attendance_date(date):
 def student_list():
     table = Student.students_list()
     if table:
-        return render_template('student_list.html', table=table, user=session['user'])
-    return render_template('student_list.html', user=session['user'])
+        return render_template('student/student_list.html', table=table, user=session['user'])
+    return render_template('student/student_list.html', user=session['user'])
 
 
 @app.route('/mentor_list')
@@ -208,8 +208,8 @@ def student_list():
 def mentor_list():
     table = Mentor.create_mentor_list()
     if table:
-        return render_template('mentor_list.html', table=table, user=session['user'])
-    return render_template('mentor_list.html', user=session['user'])
+        return render_template('mentor/mentor_list.html', table=table, user=session['user'])
+    return render_template('mentor/mentor_list.html', user=session['user'])
 
 
 @app.route('/edit', methods=['POST', 'GET'])

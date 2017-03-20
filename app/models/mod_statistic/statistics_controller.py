@@ -16,7 +16,7 @@ def statistics_mentor():
 @statistics.route('/statistics_student', methods=['POST', 'GET'])
 def statistics_student():
     if session['user']['type'] == 'Student':
-        return render_template('statistics_student.html', user=session['user'])
+        return render_template('statistic/statistics_student.html', user=session['user'])
     return redirect(url_for('index'))
 
 @statistics.route('/statistics_manager', methods=['POST', 'GET'])
@@ -26,5 +26,5 @@ def statistics_manager():
         grades = Student.get_students_grades()
         attandance = Student.get_students_attandance()
 
-        return render_template('statistics_manager.html', user=session['user'], grades=grades, attandance=attandance)
+        return render_template('statistic/statistics_manager.html', user=session['user'], grades=grades, attandance=attandance)
     return redirect(url_for('index'))

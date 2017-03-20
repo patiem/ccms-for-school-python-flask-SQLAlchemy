@@ -33,7 +33,7 @@ def checkpoint_mentor_student(checkpoint_id, mentor):
 
     students_list = Student.get_students_without_checkpoint(checkpoint_id)
 
-    return render_template('checkpoint-select-student.html', user=session['user'], checkpoint_id=checkpoint_id,
+    return render_template('checkpoint/checkpoint-select-student.html', user=session['user'], checkpoint_id=checkpoint_id,
                            mentor=mentor, students=students_list)
 
 
@@ -45,7 +45,7 @@ def checkpoint_results(checkpoint_id):
         return redirect(url_for('checkpointcontroller.checkpoint'))
     checkpoint_name = Checkpoint.get_name(checkpoint_id)
 
-    return render_template('checkpoint-results.html', user=session['user'], checkpoint_id=checkpoint_id,
+    return render_template('checkpoint/checkpoint-results.html', user=session['user'], checkpoint_id=checkpoint_id,
                            checkpoint_name=checkpoint_name[0]['TITLE'], results=results)
 
 
@@ -56,7 +56,7 @@ def checkpoint_mentor(checkpoint_id):
     if Checkpoint.get_name(checkpoint_id) is None:
         return redirect(url_for('checkpointcontroller.checkpoint'))
 
-    return render_template('checkpoint-select-mentor.html', user=session['user'], checkpoint_id=checkpoint_id,
+    return render_template('checkpoint/checkpoint-select-mentor.html', user=session['user'], checkpoint_id=checkpoint_id,
                            mentors=mentors)
 
 
@@ -70,4 +70,4 @@ def checkpoint():
 
     checkpoints = Checkpoint.show_checkpoints()
 
-    return render_template('checkpoint.html', checkpoints=checkpoints, user=session['user'], today=datetime.date.today())
+    return render_template('checkpoint/checkpoint.html', checkpoints=checkpoints, user=session['user'], today=datetime.date.today())
