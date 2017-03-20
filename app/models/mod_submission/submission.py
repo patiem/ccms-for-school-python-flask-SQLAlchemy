@@ -2,6 +2,7 @@ from app.models import sql
 from app.models.common import *
 from app.models.mod_student.student import Student
 from app.models.mod_team.team import Team
+from app.models.test import Test
 
 
 class Submission:
@@ -84,6 +85,8 @@ class Submission:
             members = [student_idx]
         else:
             members = cls.get_team_users(student_idx)
+            if not members:
+                members = [student_idx]
         for mem in members:
             query = "INSERT INTO `Sumbissions` (ID_STUDENT, ID_ASSIGMENT, GRADE, DATE, LINK, ID_MENTOR)" \
                     "VALUES (?, ?, ?, ?, ?, ?);"
@@ -98,10 +101,11 @@ class Submission:
     @staticmethod  # IN USE
     def get_team_users(student_idx):
         team_id = Team.find_student_team(student_idx)
-        team_members = Team.get_team_members(team_id)
         clean_list = []
-        for item in team_members:
-            clean_list.append(item[0])
+        if team_id:
+            team_members = Team.get_team_members(team_id)
+            for item in team_members:
+                clean_list.append(item[0])
         return clean_list
 
     # @classmethod
