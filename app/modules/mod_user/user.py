@@ -14,7 +14,7 @@ class User(db.Model):
     Type = db.Column(db.String)
 
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, type, password):
         """
         Create object
         :param idx: string (id of student)
@@ -29,6 +29,8 @@ class User(db.Model):
         self.Surname = last_name
         self.Email = mail
         self.Telephone = telephone
+        self.Password = password
+        self.Type = type
 
 
 
@@ -54,12 +56,8 @@ class User(db.Model):
         """
         sql_query = "SELECT ID, Name, Surname, `Email`, Telephone, Password FROM Users WHERE ID = ?"
 
-        user_data = sql.query(sql_query, [idx])
-
-        if user_data:
-            new_object = cls(user_data[0][0], user_data[0][1], user_data[0][2], user_data[0][3], user_data[0][4])
-            return new_object
-        return False
+        user_object = User.query.filter_by(ID=idx).first()
+        return user_object
 
     @classmethod
     def create_object_list(cls):
@@ -89,7 +87,7 @@ class User(db.Model):
         """
         :return: String representation for object
         """
-        return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
+        return 'ID: {}'.format(self.ID)
 
     @staticmethod
     def get_id_by_login_and_pass(login, password):
