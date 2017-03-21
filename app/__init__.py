@@ -1,14 +1,7 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from app.modules.mod_student.student import Student
-from app.modules.mod_team.team import Team
-from app.modules.mod_user.user import *
-from app.modules.mod_assigment.assignment import Assignment
-from app.modules.mod_submission.submission import Submission
-from app.modules.mod_mentor.mentor import Mentor
-from app.modules.mod_attendance.attendance import Attendance
-from app.modules.decorator import *
+
 
 
 app = Flask(__name__)
@@ -23,7 +16,15 @@ db = SQLAlchemy(app)
 # from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
 from app.modules.mod_statistic.statistics_controller import statistics
+from app.modules.mod_user.user import *
+from app.modules.mod_student.student import Student
+from app.modules.mod_team.team import Team
 
+from app.modules.mod_assigment.assignment import Assignment
+from app.modules.mod_submission.submission import Submission
+from app.modules.mod_mentor.mentor import Mentor
+from app.modules.mod_attendance.attendance import Attendance
+from app.modules.decorator import *
 app.register_blueprint(checkpointcontroller)
 app.register_blueprint(statistics)
 
@@ -295,11 +296,11 @@ def mail_exist():
         if request.method == 'POST':
             if request.is_json:
                 mail_list = User.return_mails()
-                if request.json['Mail'] in mail_list:
-                    value = {'value': True}
-                    return jsonify(value)
-                else:
-                    value = {'value': False}
-                    return jsonify(value)
+                for mail in mail_list:
+                    if mail.Email == request.json['Mail']:
+                        value = {'value': True}
+                        return jsonify(value)
+                value = {'value': False}
+                return jsonify(value)
             return redirect(url_for('index'))
         return redirect(url_for('index'))
