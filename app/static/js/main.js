@@ -20,6 +20,7 @@ $('.grade_input').change(function () {
         success: function(response) {
             var mentor_name = response['fullname'];
             $('.Changed').closest('tr').find('.mentor_name').html(mentor_name);
+            $('table').find("[data-link='" + link + "']" ).parent('tr').find('.mentor_name').html(mentor_name);
             $('.Changed').removeClass('Changed');
 
             // $('.grade_input').closest('tr').find('.left').val(mentor)
