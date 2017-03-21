@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
-from app.modules.mod_statistic.statistics_controller import statistics
+from flask_sqlalchemy import SQLAlchemy
+
 from app.modules.mod_student.student import Student
 from app.modules.mod_team.team import Team
 from app.modules.mod_user.user import *
@@ -12,16 +12,20 @@ from app.modules.decorator import *
 
 
 app = Flask(__name__)
-app.register_blueprint(checkpointcontroller)
-app.register_blueprint(statistics)
 # app.secret_key = 'any random string'
+# Configurations
 app.config.from_object('config')
 
+# Define the database object which is imported
+# by modules and controllers
+db = SQLAlchemy(app)
 
-@app.route('/checkpoint')
-def checkpoint():
-    return render_template('checkpoint.html')
+from app.modules.mod_checkpoint.checkpoint import *
+from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
+from app.modules.mod_statistic.statistics_controller import statistics
 
+app.register_blueprint(checkpointcontroller)
+app.register_blueprint(statistics)
 
 @app.route('/assignments', methods=['GET', 'POST'])
 @login_required
