@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 from app.modules.mod_student.student import Student
-from app.modules.mod_team.team import Team
+# from app.modules.mod_team.team import Team
 from app.modules.mod_user.user import *
 from app.modules.mod_assigment.assignment import Assignment
 from app.modules.mod_submission.submission import Submission
@@ -23,9 +23,12 @@ db = SQLAlchemy(app)
 from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
 from app.modules.mod_statistic.statistics_controller import statistics
+from app.modules.mod_team.team_controller import teamcontroller
 
 app.register_blueprint(checkpointcontroller)
 app.register_blueprint(statistics)
+app.register_blueprint(teamcontroller)
+
 
 @app.route('/assignments', methods=['GET', 'POST'])
 @login_required
@@ -108,59 +111,6 @@ def index():
         return render_template('index.html', user=session['user'])
     else:
         return render_template('login.html')
-
-
-@app.route('/teams')
-@login_required
-@correct_type(['Mentor'])
-def teams():
-    teams_list = Team.create_teams_list()
-    students_list = Student.students_list()
-    return render_template('team/teams.html', user=session['user'], teams=teams_list, students=students_list)
-
-
-@app.route('/team_name_edit', methods=['POST'])
-@login_required
-@correct_type(['Mentor'])
-@correct_form(['id', 'team_name'])
-def team_name_edit():
-    idx = request.form['id']
-    team_name = request.form['team_name']
-    Team.update_name(idx, team_name)
-    return redirect('/teams')
-
-
-@app.route('/add_to_team/<student_id>/<team_id>')
-@login_required
-@correct_type(['Mentor'])
-def add_to_team(student_id, team_id):
-    Team.add_student_to_team(student_id, team_id)
-    return redirect('/teams')
-
-
-@app.route('/remove_team/<team_id>')
-@login_required
-@correct_type(['Mentor'])
-def remove_team(team_id):
-    Team.remove_team(team_id)
-    return redirect('/teams')
-
-
-@app.route('/add_team', methods=['POST'])
-@login_required
-@correct_type(['Mentor'])
-def add_team():
-    name = request.form['new_team_name']
-    Team.new_team(name)
-    return redirect('/teams')
-
-
-@app.route('/remove_from_team/<student_id>')
-@login_required
-@correct_type(['Mentor'])
-def remove_from_team(student_id):
-        Team.remove_student_from_team(student_id)
-        return redirect('/teams')
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
