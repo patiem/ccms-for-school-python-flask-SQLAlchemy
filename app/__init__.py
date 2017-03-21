@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 from app.modules.mod_student.student import Student
-# from app.modules.mod_team.team import Team
 from app.modules.mod_user.user import *
 from app.modules.mod_assigment.assignment import Assignment
 from app.modules.mod_submission.submission import Submission
