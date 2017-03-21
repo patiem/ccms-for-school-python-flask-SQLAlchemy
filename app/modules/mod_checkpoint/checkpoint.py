@@ -1,5 +1,4 @@
 from app import db
-
 from app.modules import sql
 import datetime
 
