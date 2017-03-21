@@ -1,7 +1,8 @@
 from flask import session, render_template, Blueprint, request, redirect, url_for
-from app.models.mod_student.student import Student
-from app.models.mod_checkpoint.checkpoint import *
-from app.models.mod_mentor.mentor import Mentor
+from app.modules.mod_student.student import Student
+from app.modules.mod_checkpoint.checkpoint import *
+from app.modules.mod_mentor.mentor import Mentor
+import datetime
 
 checkpointcontroller = Blueprint('checkpointcontroller', __name__, template_folder='templates')
 
@@ -66,8 +67,9 @@ def checkpoint():
     if request.method == 'POST':
         new_checkpoint = request.form['new_checkpoint']
         date_of_checkpoint = request.form['date_checkpoint']
-        Checkpoint.add_checkpoint(new_checkpoint, date_of_checkpoint, session['user']['id'])
+        Checkpoint23.add_checkpoint(new_checkpoint, date_of_checkpoint, session['user']['id'])
 
-    checkpoints = Checkpoint.show_checkpoints()
 
+    checkpoints = Checkpoint23.show_checkpoints()
+    
     return render_template('checkpoint/checkpoint.html', checkpoints=checkpoints, user=session['user'], today=datetime.date.today())

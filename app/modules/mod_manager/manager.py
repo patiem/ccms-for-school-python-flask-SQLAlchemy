@@ -1,5 +1,5 @@
-from app.models.mod_user.user import *
-from app.models import sql
+from app.modules.mod_user.user import *
+from app.modules import sql
 
 
 class Manager(User):
