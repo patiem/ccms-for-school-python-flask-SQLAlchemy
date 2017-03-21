@@ -1,8 +1,8 @@
-from app.models import sql
-from app.models.common import *
-from app.models.mod_student.student import Student
-from app.models.mod_team.team import Team
-from app.models.test import Test
+from app.modules import sql
+from app.modules.common import *
+from app.modules.mod_student.student import Student
+from app.modules.mod_team.team import Team
+from app.modules.test import Test
 
 
 class Submission:

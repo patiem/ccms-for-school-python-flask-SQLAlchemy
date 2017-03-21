@@ -1,5 +1,5 @@
 import hashlib
-from app.models import sql
+from app.modules import sql
 from abc import ABCMeta
 
 

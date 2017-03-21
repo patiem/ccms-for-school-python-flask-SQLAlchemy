@@ -1,14 +1,14 @@
 from flask import Flask, jsonify
-from app.models.mod_checkpoint.checkpoint_controller import checkpointcontroller
-from app.models.mod_statistic.statistics_controller import statistics
-from app.models.mod_student.student import Student
-from app.models.mod_team.team import Team
-from app.models.mod_user.user import *
-from app.models.mod_assigment.assignment import Assignment
-from app.models.mod_submission.submission import Submission
-from app.models.mod_mentor.mentor import Mentor
-from app.models.mod_attendance.attendance import Attendance
-from app.models.decorator import *
+from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
+from app.modules.mod_statistic.statistics_controller import statistics
+from app.modules.mod_student.student import Student
+from app.modules.mod_team.team import Team
+from app.modules.mod_user.user import *
+from app.modules.mod_assigment.assignment import Assignment
+from app.modules.mod_submission.submission import Submission
+from app.modules.mod_mentor.mentor import Mentor
+from app.modules.mod_attendance.attendance import Attendance
+from app.modules.decorator import *
 
 
 app = Flask(__name__)
