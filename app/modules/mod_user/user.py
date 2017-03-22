@@ -36,6 +36,8 @@ class User(db.Model):
 
     @classmethod
     def return_mails(cls):
+        """Return:
+                List of objects with users Emails"""
         return db.session.query(User.Email).all()
 
     @classmethod
@@ -54,8 +56,6 @@ class User(db.Model):
         :param idx: int (id of object)
         :return: object
         """
-        sql_query = "SELECT ID, Name, Surname, `Email`, Telephone, Password FROM Users WHERE ID = ?"
-
         user_object = User.query.filter_by(ID=idx).first()
         return user_object
 
@@ -69,6 +69,11 @@ class User(db.Model):
 
     @staticmethod
     def remove_sql(idx):
+        """
+        Remove user from user table and his attendance by id
+        :param idx: idx of user to remove
+        :return: None
+        """
         to_remove = User.query.filter_by(ID=idx).first()
         db.session.delete(to_remove)
         db.session.commit()
@@ -85,12 +90,12 @@ class User(db.Model):
         return 'ID: {}'.format(self.ID)
 
     @staticmethod
-    def get_id_by_login_and_pass(login, password):
+    def get_by_login_and_pass(login, password):
         """
-        Get id of user by login and pass from user list
-        :param login:
-        :param password:
-        :return:
+        Get user object by login and pass from user table
+        :param login: Login to check
+        :param password: Password to check
+        :return: Object
         """
 
         user = User.query.filter_by(Email=login, Password=password).first()
@@ -106,13 +111,13 @@ class User(db.Model):
     def login(user_login, user_pass):
         """
         login method
-        :return user_id:
+        :return Object of logged user
         """
         encoded_password = User.encode(user_pass)  # get passoword and encode using hash and salt
 
-        if User.get_id_by_login_and_pass(user_login, encoded_password) is not None:
+        if User.get_by_login_and_pass(user_login, encoded_password) is not None:
 
-            return User.get_id_by_login_and_pass(user_login, encoded_password)
+            return User.get_by_login_and_pass(user_login, encoded_password)
 
         else:
             return None
@@ -130,4 +135,5 @@ class User(db.Model):
         return str(encoded_password)
 
     def full_name(self):
-        return self.name + ' ' + self.last_name
+        """Create full name from name ans surname"""
+        return self.Name + ' ' + self.Surname
