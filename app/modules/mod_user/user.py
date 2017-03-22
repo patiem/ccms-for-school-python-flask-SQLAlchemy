@@ -13,8 +13,7 @@ class User(db.Model):
     Password = db.Column(db.String)
     Type = db.Column(db.String)
 
-
-    def __init__(self, idx, name, last_name, mail, telephone):
+    def __init__(self, idx, name, last_name, mail, telephone, type):
         """
         Create object
         :param idx: string (id of student)
@@ -29,12 +28,18 @@ class User(db.Model):
         self.Surname = last_name
         self.Email = mail
         self.Telephone = telephone
+        self.Type = type
 
 
 
     @classmethod
     def return_mails(cls):
-        return db.session.query(User.Email).all()
+        query = """ SELECT `E-MAIL` FROM Users"""
+        email_list = []
+        data_sql = sql.query(query)
+        for item in data_sql:
+            email_list.append(item[0])
+        return email_list
 
     @classmethod
     def add_user(cls, data):
@@ -52,7 +57,7 @@ class User(db.Model):
         :param idx: int (id of object)
         :return: object
         """
-        sql_query = "SELECT ID, Name, Surname, `Email`, Telephone, Password FROM Users WHERE ID = ?"
+        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
 
         user_data = sql.query(sql_query, [idx])
 
@@ -100,7 +105,7 @@ class User(db.Model):
         :return:
         """
 
-        query = "SELECT * FROM Users WHERE `Email` =? and `password`=?"
+        query = "SELECT * FROM Users WHERE `E-mail` =? and `password`=?"
         params = list([login, password])
 
         user = sql.query(query, params)
@@ -118,6 +123,7 @@ class User(db.Model):
         login method
         :return user_id:
         """
+
         encoded_password = User.encode(user_pass)  # get passoword and encode using hash and salt
 
         if User.get_id_by_login_and_pass(user_login, encoded_password) is not None:
