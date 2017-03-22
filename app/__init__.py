@@ -88,6 +88,31 @@ def update_submission():
     return jsonify(user_dict)
 
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+
+    if request.method == 'POST':
+        logged_user = User.login(request.form['user_login'], request.form['user_pass'])
+
+        if logged_user is not None:
+
+            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
+                    'type': logged_user['Type'], 'ave_grade': Student.ave_grade_flask_version(logged_user['ID']),
+                    'my_attendance': Student.my_attendance(logged_user['ID'])}
+
+            session['user'] = user
+    if 'user' in session:
+        return render_template('index.html', user=session['user'])
+    else:
+        return render_template('login.html')
+
+
 @app.route('/teams')
 @login_required
 @correct_type(['Mentor'])
