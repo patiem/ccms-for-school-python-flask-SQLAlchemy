@@ -52,12 +52,9 @@ class Team(db.Model):
         :param name: str - name of new team
         :return: None
         """
-        # new_team = Team('sdasd', 'sadas', [])
-        # db.session.add(new_team)
-
-        query = "INSERT INTO `TEAMS`(`NAME`) VALUES ('{}');".format(name)
-        sql.query(query)
-        # cls.clear_and_load_list()
+        new_team = Team(None, name, None)
+        db.session.add(new_team)
+        db.session.commit()
 
     # @classmethod
     # def clear_and_load_list(cls):
