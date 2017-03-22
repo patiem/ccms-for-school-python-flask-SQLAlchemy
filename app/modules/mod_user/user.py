@@ -1,19 +1,12 @@
 import hashlib
 from app.modules import sql
-from app import db
+from abc import ABCMeta
 
 
-class User(db.Model):
-    __tablename__ = 'Users'
-    ID = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String)
-    Surname = db.Column(db.String)
-    Email = db.Column(db.String)
-    Telephone = db.Column(db.Integer)
-    Password = db.Column(db.String)
-    Type = db.Column(db.String)
+class User(metaclass=ABCMeta):
+    object_list = None
 
-    def __init__(self, idx, name, last_name, mail, telephone, type):
+    def __init__(self, idx, name, last_name, mail, telephone):
         """
         Create object
         :param idx: string (id of student)
@@ -23,12 +16,11 @@ class User(db.Model):
         :param telephone: string (telephone number)
         :param password: string (encode password to usser account)
         """
-        self.ID = idx
-        self.Name = name
-        self.Surname = last_name
-        self.Email = mail
-        self.Telephone = telephone
-        self.Type = type
+        self.idx = idx
+        self.name = name
+        self.last_name = last_name
+        self.mail = mail
+        self.telephone = telephone
 
 
 

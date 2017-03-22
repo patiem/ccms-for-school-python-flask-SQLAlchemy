@@ -20,7 +20,7 @@ app.config.from_object('config')
 # by modules and controllers
 db = SQLAlchemy(app)
 
-# from app.modules.mod_checkpoint.checkpoint import *
+from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
 from app.modules.mod_statistic.statistics_controller import statistics
 
