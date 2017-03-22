@@ -32,10 +32,6 @@ class Student(User):
         new_student = Student(None, data[0], data[1], data[2], data[3],'Student', data[4], )
         db.session.add(new_student)
         db.session.commit()
-        # query = """
-        #         INSERT INTO Users (Name, Surname, `Email`, Telephone, Password, Type)
-        #         VALUES (?, ?, ?, ?, ?, 'Student')"""
-        # sql.query(query, data)
 
     @staticmethod
     def update_sql(edit_list):
@@ -44,10 +40,15 @@ class Student(User):
         :return:
         """
 
-        query = """UPDATE USERS
-                           SET Name = ?, Surname = ?, `Email` = ?, Telephone = ?
-                           WHERE ID = ?"""
-        sql.query(query, edit_list)
+        # query = """UPDATE USERS
+        #                    SET Name = ?, Surname = ?, `Email` = ?, Telephone = ?
+        #                    WHERE ID = ?"""
+        edit_student = Student.query.filter_by(ID=edit_list[4]).first()
+        edit_student.Name = edit_list[0]
+        edit_student.Surname = edit_list[1]
+        edit_student.Email = edit_list[2]
+        edit_student.Telephone = edit_list[3]
+        db.session.commit()
 
     @staticmethod
     def get_students_without_checkpoint(checkpoint_id):
