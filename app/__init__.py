@@ -25,10 +25,8 @@ from app.modules.mod_submission.submission import Submission
 from app.modules.mod_mentor.mentor import Mentor
 from app.modules.mod_attendance.attendance import Attendance
 from app.modules.decorator import *
-from app.modules.mod_user.user_controller import usercontroller
 app.register_blueprint(checkpointcontroller)
 app.register_blueprint(statistics)
-app.register_blueprint(usercontroller)
 
 @app.route('/assignments', methods=['GET', 'POST'])
 @login_required
@@ -227,10 +225,10 @@ def get_data():
         idx = request.json['Idx']
         user = User.return_by_id(idx)
         user_dict= {'id': idx,
-                    'name': user.Name,
-                    'surname': user.Surname,
-                    'e-mail': user.Email,
-                    'telephone': user.Telephone}
+                    'name': user.name,
+                    'surname': user.last_name,
+                    'e-mail': user.mail,
+                    'telephone': user.telephone}
         return jsonify(user_dict)
     return 'lipa'
 
@@ -290,4 +288,19 @@ def remove_user():
         User.remove_sql(idx)
 
 
-
+@app.route('/check-mail', methods=['POST'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_json(['Mail'])
+def mail_exist():
+        if request.method == 'POST':
+            if request.is_json:
+                mail_list = User.return_mails()
+                for mail in mail_list:
+                    if mail.Email == request.json['Mail']:
+                        value = {'value': True}
+                        return jsonify(value)
+                value = {'value': False}
+                return jsonify(value)
+            return redirect(url_for('index'))
+        return redirect(url_for('index'))
