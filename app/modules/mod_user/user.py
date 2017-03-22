@@ -69,19 +69,14 @@ class User(db.Model):
 
     @staticmethod
     def remove_sql(idx):
-        query = """
-                DELETE FROM Users
-                WHERE ID = ?"""
-        sql.query(query, [idx])
+        to_remove = User.query.filter_by(ID=idx).first()
+        db.session.delete(to_remove)
+        db.session.commit()
         query = """
                     DELETE FROM Attendance
                     WHERE ID_STUDENT = ?"""
         sql.query(query, [idx])
 
-        query = """
-                DELETE FROM Attendance
-                WHERE ID_STUDENT = ?"""
-        sql.query(query, [idx])
 
     def __str__(self):
         """
@@ -98,13 +93,10 @@ class User(db.Model):
         :return:
         """
 
-        query = "SELECT * FROM Users WHERE `Email` =? and `password`=?"
-        params = list([login, password])
-
-        user = sql.query(query, params)
+        user = User.query.filter_by(Email=login, Password=password).first()
 
         if user:
-            return user[0]
+            return user
 
     @staticmethod
     def update_sql(edit_list):
