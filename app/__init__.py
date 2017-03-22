@@ -1,13 +1,13 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from app.modules.mod_student.student import Student
-from app.modules.mod_user.user import *
-from app.modules.mod_assigment.assignment import Assignment
-from app.modules.mod_submission.submission import Submission
-from app.modules.mod_mentor.mentor import Mentor
-from app.modules.mod_attendance.attendance import Attendance
-from app.modules.decorator import *
+# from app.modules.mod_student.student import Student
+# from app.modules.mod_user.user import *
+# from app.modules.mod_assigment.assignment import Assignment
+# from app.modules.mod_submission.submission import Submission
+# from app.modules.mod_mentor.mentor import Mentor
+# from app.modules.mod_attendance.attendance import Attendance
+# from app.modules.decorator import *
 
 
 app = Flask(__name__)
@@ -18,6 +18,14 @@ app.config.from_object('config')
 # Define the database object which is imported
 # by modules and controllers
 db = SQLAlchemy(app)
+
+from app.modules.mod_student.student import Student
+from app.modules.mod_user.user import *
+from app.modules.mod_assigment.assignment import Assignment
+from app.modules.mod_submission.submission import Submission
+from app.modules.mod_mentor.mentor import Mentor
+from app.modules.mod_attendance.attendance import Attendance
+from app.modules.decorator import *
 
 from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
