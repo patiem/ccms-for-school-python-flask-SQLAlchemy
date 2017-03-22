@@ -30,7 +30,6 @@ class Team(db.Model):
             for alchemy_obj in users_id_list:
                 team_students.append(alchemy_obj.ID_USER)
             teams_list.append(Team(team.ID, team.NAME, team_students))
-
         return teams_list
 
     # @classmethod
@@ -104,13 +103,10 @@ class Team(db.Model):
         :param student_id: int - id of team which you object need
         :return: team_id in which student is or False if he is not in team
         """
-        query = "SELECT `id_team` FROM `Users_team` WHERE `id_user`=?;"
-        params = [student_id]
-        id_team = sql.query(query, params)
-        if id_team:
-            id_team = id_team[0][0]
-            return id_team
-        return False
+        team_id = db.session.query(UsersTeam.ID_TEAM).filter(UsersTeam.ID_USER == student_id).first()
+        if team_id:
+            team_id = team_id[0]
+        return team_id
 
     @staticmethod
     def add_student_to_team(student_id, team_id):
