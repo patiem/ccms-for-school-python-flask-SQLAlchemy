@@ -29,7 +29,7 @@ class Student(User):
     #     :return: None
     #     """
     #     query = """
-    #             SELECT ID, Name, Surname, `Email`, Telephone, Password
+    #             SELECT ID, Name, Surname, `E-mail`, Telephone, Password
     #             FROM Users
     #             WHERE Type = 'Student'"""
     #     data = sql.query(query)
@@ -72,7 +72,7 @@ class Student(User):
         :return:
         """
         query = """
-                INSERT INTO Users (Name, Surname, `Email`, Telephone, Password, Type)
+                INSERT INTO Users (Name, Surname, `E-mail`, Telephone, Password, Type)
                 VALUES (?, ?, ?, ?, ?, 'Student')"""
         sql.query(query, data)
 
@@ -84,7 +84,7 @@ class Student(User):
         """
 
         query = """UPDATE USERS
-                           SET Name = ?, Surname = ?, `Email` = ?, Telephone = ?
+                           SET Name = ?, Surname = ?, `E-mail` = ?, Telephone = ?
                            WHERE ID = ?"""
         sql.query(query, edit_list)
 
@@ -143,7 +143,7 @@ class Student(User):
     # @classmethod
     # def create_student_list(cls):
     #     query = """
-    #               SELECT ID, Name, Surname, `Email`, Telephone, Password
+    #               SELECT ID, Name, Surname, `E-mail`, Telephone, Password
     #               FROM Users
     #               WHERE Type = 'Student'"""
     #     data = sql.query(query)
@@ -206,7 +206,7 @@ class Student(User):
         """
         students_list =[]
         query = """
-                    SELECT `ID`, `Name`, Surname, `Email`, `Telephone`
+                    SELECT `ID`, `Name`, Surname, `E-mail`, `Telephone`
                     FROM Users
                     WHERE Type = 'Student'"""
         data = sql.query(query)
