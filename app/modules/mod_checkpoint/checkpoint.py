@@ -1,25 +1,9 @@
-from app import db
 from app.modules import sql
 import datetime
 
 
-class Checkpoint(db.Model):
 
-    __tablename__ = "Users"
-    ID = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String, nullable=False)
-    Surname = db.Column(db.String, nullable=False)
-    Email = db.Column(db.String, nullable=False)
-
-    def __init__(self, Name, Surname, Email):
-        self.Name = Name
-        self.Surname = Surname
-        self.Email = Email
-
-
-
-class Checkpoint23():
-
+class Checkpoint:
 
     @staticmethod
     def add_checkpoint(title, start_date,  mentor):
@@ -95,7 +79,7 @@ class Checkpoint23():
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
-
+    @staticmethod
     def show_checkpoints():
 
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
