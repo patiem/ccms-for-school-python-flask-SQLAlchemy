@@ -95,7 +95,7 @@ def save_user():
         add_list = [name, surname, email, telephone]
         if user_type == 'student':
             User.add_user(add_list, 'Student')
-            return redirect(url_for('student_list'))
+            return redirect(url_for('student.student_list'))
         elif user_type == 'mentor':
             User.add_user(add_list, 'Mentor')
             return redirect(url_for('mentor_list'))
