@@ -17,8 +17,18 @@ def grade_student(checkpoint_id, mentor_id, gradestudent):
         student = request.form['student']
         checkpoint_id = request.form['checkpoint']
         grade = request.form['grade' + request.form['student']]
-
+        today = datetime.date.today()
         Checkpoint.make_checkpoint(session['user']['id'], mentor, student, checkpoint_id, grade)
+        # new_grade=Users_checkpoints(checkpoint_id, today, grade, student, session['user']['id'], mentor)
+        #
+        # check = Checkpoint(ID=checkpoint_id, USERS_CHECKPOINTS=[new_grade])
+        #
+        # db.session.add(new_grade)
+        # db.session.add(check)
+        # db.session.commit()
+        #
+        # db.session.commit()
+
 
     students_list = Student.get_students_without_checkpoint(checkpoint_id)
 
@@ -67,9 +77,11 @@ def checkpoint():
     if request.method == 'POST':
         new_checkpoint = request.form['new_checkpoint']
         date_of_checkpoint = request.form['date_checkpoint']
-        Checkpoint23.add_checkpoint(new_checkpoint, date_of_checkpoint, session['user']['id'])
+        new_checkpoint = Checkpoint(session['user']['id'], new_checkpoint, date_of_checkpoint)
+        db.session.add(new_checkpoint)
+        db.session.commit()
 
-
-    checkpoints = Checkpoint23.show_checkpoints()
+    Checkpoint(session['user']['id'], 'test', '')
+    checkpoints = Checkpoint.show_checkpoints()
     
     return render_template('checkpoint/checkpoint.html', checkpoints=checkpoints, user=session['user'], today=datetime.date.today())

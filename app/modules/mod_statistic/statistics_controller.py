@@ -1,16 +1,20 @@
 from flask import session, render_template, Blueprint, request, redirect, url_for
 from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_student.student import Student
-
+from sqlalchemy import func
 
 statistics = Blueprint('statistics', __name__, template_folder='templates')
 
 @statistics.route('/statistics_mentor', methods=['POST', 'GET'])
 def statistics_mentor():
     if session['user']['type'] == 'Mentor':
-        cards = Checkpoint.show_statistics_for_mentor_cards(session['user']['id'])
-        checkpoints = Checkpoint.show_statistics_for_mentor_checkpoints(session['user']['id'])
-        print(checkpoints[0][0])
+
+        id_mentor = session['user']['id']
+        cards = db.session.query(Users_checkpoints.GRADE, func.count(Users_checkpoints.GRADE)).\
+            filter((Users_checkpoints.ID_MENTOR_1==id_mentor)|(Users_checkpoints.ID_MENTOR_2==id_mentor)).\
+            group_by('GRADE').all()
+
+        checkpoints = Checkpoint.query.filter_by(ID_USER=session['user']['id']).all()
 
         return render_template('statistic/statistics_mentor.html', user=session['user'], cards=cards, checkpoints=checkpoints)
     return redirect(url_for('index'))

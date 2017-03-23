@@ -1,5 +1,16 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< HEAD
+=======
+from app.modules.mod_student.student import Student
+from app.modules.mod_team.team import Team
+from app.modules.mod_user.user import *
+from app.modules.mod_assigment.assignment import Assignment
+from app.modules.mod_submission.submission import Submission
+from app.modules.mod_mentor.mentor import Mentor
+from app.modules.mod_attendance.attendance import Attendance
+from app.modules.decorator import *
+>>>>>>> a4fdb70c51be535d8c19d3376128efa828734211
 
 
 app = Flask(__name__)
