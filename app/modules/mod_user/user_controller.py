@@ -94,10 +94,10 @@ def save_user():
         telephone = request.form['telephone']
         add_list = [name, surname, email, telephone]
         if user_type == 'student':
-            Student.add_user(add_list, 'Student')
+            User.add_user(add_list, 'Student')
             return redirect(url_for('student_list'))
         elif user_type == 'mentor':
-            Mentor.add_user(add_list, 'Mentor')
+            User.add_user(add_list, 'Mentor')
             return redirect(url_for('mentor_list'))
         else:
             return render_template('bad.html')
