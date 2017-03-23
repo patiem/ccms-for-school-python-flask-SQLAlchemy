@@ -64,7 +64,7 @@ def update_user():
         edit_list = [name, surname, email, telephone, idx]
         if user_type == 'student':
             User.update_sql(edit_list)
-            return redirect(url_for('student_list'))
+            return redirect(url_for('student.student_list'))
         elif user_type == 'mentor':
             User.update_sql(edit_list)
             return redirect(url_for('mentor_list'))

@@ -1,10 +1,8 @@
-from app.modules import sql
 from app.modules.mod_student.student import Student
 from app import db
 
 
 class Team(db.Model):
-    # teams_list = []
 
     __tablename__ = "TEAMS"
     ID = db.Column(db.Integer, primary_key=True)
@@ -22,20 +20,7 @@ class Team(db.Model):
         Creates teams_list with Team objects
         """
         list_from_db = Team.query.all()
-        print(Team.get_team_members(22)[0][0])
         return list_from_db
-
-    # @classmethod
-    # def get_by_id(cls, team_id):
-    #     """
-    #     Returns Team object
-    #     :param team_id: int - id of team which you object need
-    #     :return: Team object
-    #     """
-    #     for team in cls.teams_list:
-    #         if team.ID == team_id:
-    #             return team
-    #     return False
 
     @classmethod
     def new_team(cls, name):
@@ -47,15 +32,6 @@ class Team(db.Model):
         new_team = Team(None, name, [])
         db.session.add(new_team)
         db.session.commit()
-
-    # @classmethod
-    # def clear_and_load_list(cls):
-    #     """
-    #     Loads class attribute teams_list
-    #     :return: None
-    #     """
-    #     cls.teams_list = []
-    #     cls.create_teams_list()
 
     @classmethod
     def student_to_team(cls, team, student):
@@ -144,12 +120,6 @@ class Team(db.Model):
         db.session.delete(remove_student)
         db.session.commit()
 
-    @classmethod
-    def get_team_members(cls, team_id):
-        query = "SELECT ID_USER FROM users_team WHERE ID_TEAM=?"
-        params = [team_id]
-        return sql.query(query, params)
-
     @staticmethod
     def update_name(idx, team_name):
         edited_team = Team.query.filter_by(ID=idx).first()
@@ -185,11 +155,3 @@ class UsersTeam(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
     ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'))
     ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))
-
-    # TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS'))
-    #
-    # def __init__(self, idx, id_team, id_user):
-    #     self.ID = idx
-    #     self.ID_TEAM = id_team
-    #     self.ID_USER = id_user
-
