@@ -20,10 +20,6 @@ class Submission(db.Model):
     LINK = db.Column(db.String, nullable=False)
     ID_MENTOR = db.Column(db.Integer)
 
-    # ID = db.Column(db.Integer, primary_key=True)
-    # NAME = db.Column(db.String, nullable=False)
-    # students = db.relationship('UsersTeam', backref='team', cascade='all, delete', lazy='dynamic')
-
     def __init__(self, idx, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
         Creates object of Submission class.
@@ -42,45 +38,30 @@ class Submission(db.Model):
         self.LINK = link
         self.ID_MENTOR = mentor_id
 
-    @classmethod  # IN USE
+    @classmethod
     def list_from_sql(cls):
-        submission_list = []
-        query = "SELECT * FROM `Sumbissions`;"
-        list_from_sql = sql.query(query)
-        if list_from_sql:
-            for item in list_from_sql:
-                idx = item['ID']
-                student_idx = item['ID_STUDENT']
-                assignment_idx = item['ID_ASSIGMENT']
-                mentor_id = item['ID_MENTOR']
-                grade = item['GRADE']
-                date = item['DATE']
-                link = item['LINK']
-                if Test.is_date_correct(date):
-                    date_of_submission = Common.make_corect_date(date)
-                    if grade != 0:
-                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link, grade,
-                                                   mentor_id))
-                    else:
-                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link))
-        return submission_list
+        try:
+            submission_list = Submission.query.all()
+            return submission_list
+        except:
+            return []
 
     @classmethod  # IN USE
     def subs_to_grade(cls):
         sub_list = cls.list_from_sql()
         list_for_mentor = []
         for sub in sub_list:
-            if Student.make_student(sub.student_idx):
-                ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
-                if sub.mentor_id != 0:
-                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])
+            if Student.make_student(sub.ID_STUDENT):
+                ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.ID_ASSIGMENT])[0][0]
+                if sub.ID_MENTOR != 0:
+                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.ID_MENTOR])
                     if mentor_name:
                         mentor_name = ' '.join(mentor_name[0])
                     else:
                         mentor_name = 'None'
                 else:
                     mentor_name = 'None'
-                student = Student.make_student(sub.student_idx)
+                student = Student.make_student(sub.ID_STUDENT)
                 list_for_mentor.append([sub, student, ass_title, mentor_name])
         return list_for_mentor
 
