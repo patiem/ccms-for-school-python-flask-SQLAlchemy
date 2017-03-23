@@ -167,12 +167,10 @@ class Team(db.Model):
 
     @classmethod
     def get_team(cls, idx):
-        query = """SELECT ID_TEAM FROM Users_team WHERE ID_USER = ?"""
-        team = sql.query(query, [str(idx)])
+
+        team = UsersTeam.query.filter_by(ID_USER=idx).first()
         if team:
-            team_idx = team[0]
-            return team_idx
-        return None
+            return team.ID_TEAM
 
 
 class UsersTeam(db.Model):
@@ -186,6 +184,3 @@ class UsersTeam(db.Model):
         self.ID = idx
         self.ID_TEAM = id_team
         self.ID_USER = id_user
-
-
-# Team.create_teams_list()
