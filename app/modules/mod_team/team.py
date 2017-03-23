@@ -64,15 +64,14 @@ class Team(db.Model):
         :param student: Student object
         :return: None
         """
-        id_t = team.ID
-        id_s = student.ID
-        if student.id_team:
-            query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
-        else:
-            query = "INSERT INTO `Users_team`(`ID_TEAM`, `ID_USER`) VALUES ({}, {});".format(id_t, id_s)
-        student.id_team = id_t
-        sql.query(query)
-        # cls.clear_and_load_list()
+        user_team = UsersTeam.query.filter_by(ID_USER=student.ID).first()
+
+        if user_team:
+            user_team.ID_TEAM = team.ID
+            return db.session.commit()
+        new_user_to_team = UsersTeam(team=team, ID_USER=student.ID)
+        db.session.add(new_user_to_team)
+        db.session.commit()
 
     @classmethod
     def get_team_by_id(cls, team_id):
@@ -187,8 +186,8 @@ class UsersTeam(db.Model):
     ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))
     ID_USER = db.Column(db.Integer, nullable=False)
     # TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS'))
-
-    def __init__(self, idx, id_team, id_user):
-        self.ID = idx
-        self.ID_TEAM = id_team
-        self.ID_USER = id_user
+    #
+    # def __init__(self, idx, id_team, id_user):
+    #     self.ID = idx
+    #     self.ID_TEAM = id_team
+    #     self.ID_USER = id_user
