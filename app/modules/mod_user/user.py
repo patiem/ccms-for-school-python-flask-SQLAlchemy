@@ -13,7 +13,6 @@ class User(db.Model):
     Password = db.Column(db.String)
     Type = db.Column(db.String)
 
-
     def __init__(self, idx, name, last_name, mail, telephone, type, password):
         """
         Create object
@@ -32,8 +31,6 @@ class User(db.Model):
         self.Password = password
         self.Type = type
 
-
-
     @classmethod
     def return_mails(cls):
         """Return:
@@ -41,13 +38,24 @@ class User(db.Model):
         return db.session.query(User.Email).all()
 
     @classmethod
-    def add_user(cls, data):
+    def add_user(cls, data, user_type):
         """
         :param data: LIST (FORMAT: NAME, SURNAME, E-MAIL, TELEPHONE)
         :return:
         """
         data.append(User.encode('1'))
-        cls.save_sql(data)
+        cls.save_sql(data, user_type)
+
+    @staticmethod
+    def save_sql(data, user_type):
+        """
+        Save data to sql
+        :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
+        :return:
+        """
+        new_student = User(None, data[0], data[1], data[2], data[3], user_type, data[4], )
+        db.session.add(new_student)
+        db.session.commit()
 
     @classmethod
     def return_by_id(cls, idx):
@@ -82,7 +90,6 @@ class User(db.Model):
                     WHERE ID_STUDENT = ?"""
         sql.query(query, [idx])
 
-
     def __str__(self):
         """
         :return: String representation for object
@@ -97,15 +104,18 @@ class User(db.Model):
         :param password: Password to check
         :return: Object
         """
-
         user = User.query.filter_by(Email=login, Password=password).first()
-
         if user:
             return user
 
     @staticmethod
     def update_sql(edit_list):
-        raise NotImplementedError
+        edit_user = User.query.filter_by(ID=edit_list[4]).first()
+        edit_user.Name = edit_list[0]
+        edit_user.Surname = edit_list[1]
+        edit_user.Email = edit_list[2]
+        edit_user.Telephone = edit_list[3]
+        db.session.commit()
 
     @staticmethod
     def login(user_login, user_pass):
