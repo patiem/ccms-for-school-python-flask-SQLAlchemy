@@ -63,10 +63,10 @@ def update_user():
         telephone = request.form['telephone']
         edit_list = [name, surname, email, telephone, idx]
         if user_type == 'student':
-            User.update_sql(edit_list, 'Student')
+            User.update_sql(edit_list)
             return redirect(url_for('student_list'))
         elif user_type == 'mentor':
-            User.update_sql(edit_list, 'Mentor')
+            User.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
         else:
             return render_template('bad.html')
@@ -80,3 +80,24 @@ def remove_user():
     if request.method == 'POST':
         idx = request.json['Idx']
         User.remove_sql(idx)
+
+@usercontroller.route('/save-user', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+@correct_form(['type', 'name', 'surname', 'email', 'telephone'])
+def save_user():
+    if request.method == 'POST':
+        user_type = request.form['type']
+        name = request.form['name']
+        surname = request.form['surname']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        add_list = [name, surname, email, telephone]
+        if user_type == 'student':
+            Student.add_user(add_list, 'Student')
+            return redirect(url_for('student_list'))
+        elif user_type == 'mentor':
+            Mentor.add_user(add_list, 'Mentor')
+            return redirect(url_for('mentor_list'))
+        else:
+            return render_template('bad.html')
