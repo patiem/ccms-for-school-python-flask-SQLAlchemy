@@ -9,12 +9,12 @@ class Team(db.Model):
     __tablename__ = "TEAMS"
     ID = db.Column(db.Integer, primary_key=True)
     NAME = db.Column(db.String, nullable=False)
-    students = db.relationship('UsersTeam', backref='team', lazy='dynamic')
+    students = db.relationship('UsersTeam', backref='team', cascade='all, delete', lazy='dynamic')
 
-    def __init__(self, id_team, name, students):
-        self.ID = id_team
-        self.NAME = name
-        self.students = students
+    # def __init__(self, id_team, name, students):
+    #     self.ID = id_team
+    #     self.NAME = name
+    #     self.students = students
 
     @staticmethod
     def create_teams_list():
@@ -119,11 +119,15 @@ class Team(db.Model):
 
     @staticmethod
     def remove_team(team_id):
-        query = "DELETE FROM `TEAMS` WHERE `ID` = {};".format(int(team_id))
-        sql.query(query)
-
-        query = "DELETE FROM `Users_team` WHERE `ID_TEAM` = {};".format(int(team_id))
-        sql.query(query)
+        # print(Team.query.filter_by(ID=team_id).first())
+        team_to_remove = Team.query.filter_by(ID=team_id).first()
+        db.session.delete(team_to_remove)
+        db.session.commit()
+        # query = "DELETE FROM `TEAMS` WHERE `ID` = {};".format(int(team_id))
+        # sql.query(query)
+        #
+        # query = "DELETE FROM `Users_team` WHERE `ID_TEAM` = {};".format(int(team_id))
+        # sql.query(query)
 
     @staticmethod
     def add_new_team(team_name):
@@ -183,7 +187,7 @@ class UsersTeam(db.Model):
 
     __tablename__ = "Users_team"
     ID = db.Column(db.Integer, primary_key=True)
-    ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'), nullable=False )
+    ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'))
     ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))
 
     # TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS'))
