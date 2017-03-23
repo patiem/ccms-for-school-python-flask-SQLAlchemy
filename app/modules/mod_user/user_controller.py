@@ -101,3 +101,18 @@ def save_user():
             return redirect(url_for('mentor_list'))
         else:
             return render_template('bad.html')
+
+@usercontroller.route('/edit', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+def get_data():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        user = User.return_by_id(idx)
+        user_dict= {'id': idx,
+                    'name': user.Name,
+                    'surname': user.Surname,
+                    'e-mail': user.Email,
+                    'telephone': user.Telephone}
+        return jsonify(user_dict)
+    return 'lipa'
