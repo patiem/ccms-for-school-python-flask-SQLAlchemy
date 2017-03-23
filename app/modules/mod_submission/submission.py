@@ -173,12 +173,14 @@ class Submission(db.Model):
     #     sql.query(query, values_list)
 
     @classmethod
-    def update_grade(cls, value, link, mentor_id):
-        query = """UPDATE Sumbissions
-                   SET GRADE = ?, ID_MENTOR = ?
-                   WHERE LINK = ?"""
-        edit_list = [value, mentor_id, link]
-        sql.query(query, edit_list)
-
-
-Submission.get_team_users(11)
+    def update_grade(cls, grade, link, mentor_id):
+        """
+        Sets grade & mentor (id) for submission
+        :param grade: int
+        :param link: str
+        :param mentor_id: int
+        """
+        for submission in Submission.query.filter_by(LINK=link).all():
+            submission.GRADE = grade
+            submission.ID_MENTOR = mentor_id
+        db.session.commit()
