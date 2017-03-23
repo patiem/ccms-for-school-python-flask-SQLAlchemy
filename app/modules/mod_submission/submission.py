@@ -146,8 +146,8 @@ class Submission(db.Model):
         """
         submissions_list = cls.list_from_sql()
         for submission in submissions_list:
-            if submission.student_idx == student.idx:
-                if submission.assignment_idx == assignment.idx:
+            if submission.student_idx == student.ID:
+                if submission.assignment_idx == assignment.ID:
                     return submission
         return False
 
