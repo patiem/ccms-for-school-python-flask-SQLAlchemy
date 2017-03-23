@@ -8,7 +8,7 @@ class Attendance(db.Model):
 
     __tablename__ = "Attendance"
     ID = db.Column(db.Integer, primary_key=True)
-    ID_STUDENT = db.Column(db.Integer, primary_key=True)
+    ID_STUDENT = db.Column(db.Integer, nullable=False)
     DATE = db.Column(db.String, nullable=False)
     STATUS = db.Column(db.String, nullable=False)
 
@@ -31,15 +31,13 @@ class Attendance(db.Model):
         """
         attendance_list = []
 
-        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
-        params = [date]
-        attendance = sql.query(query, params)
+        attendance = Attendance.query.filter_by(DATE=date).all()
 
         if attendance:
             for student in attendance:
-                user = Student.return_by_id(int(student['ID_STUDENT']))
+                user = Student.query.filter_by(ID=student.ID_STUDENT).first()
                 fullname = user.full_name()
-                attendance_list.append(Attendance(student['ID_STUDENT'], fullname, student['DATE'], student['STATUS']))
+                attendance_list.append(Attendance(student.ID_STUDENT, fullname, student.DATE, student.STATUS))
 
             return attendance_list
         return False
