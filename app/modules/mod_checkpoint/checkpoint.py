@@ -86,7 +86,6 @@ class Checkpoint(db.Model):
     def show_checkpoints():
 
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
-        titles = ['ID', 'Subject', 'Created by', 'Start date']
 
         sql_query_result = sql.query(query)
         return sql_query_result
