@@ -3,7 +3,7 @@ from app.modules.common import *
 from app.modules.mod_student.student import Student
 from app.modules.mod_user.user import User
 from app.modules.mod_team.team import Team, UsersTeam
-from app.modules.mod_assigment.assignment import *
+# from app.modules.mod_assigment.assignment import *
 from app.modules.test import Test
 from app import db
 
@@ -59,7 +59,20 @@ class Submission(db.Model):
         for sub in sub_list:
             if Student.make_student(sub.ID_STUDENT):
 
-                ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+                # ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+                ass = db.Table(
+                                    'Assigments',
+                                    db.Column('ID', db.Integer, primary_key=True),
+                                    db.Column('ID_MENTOR', db.Integer),
+                                    db.Column('TITLE', db.String),
+                                    db.Column('START_DATA', db.String),
+                                    db.Column('END_DATA', db.String),
+                                    db.Column('LINK', db.String),
+                                    db.Column('GROUP', db.String)
+                                    )
+
+                ass_title = ass.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+
                 if ass_title:
                     ass_title = ass_title.TITLE
                 else:
@@ -138,27 +151,35 @@ class Submission(db.Model):
         """
         submissions_list = cls.list_from_sql()
         for submission in submissions_list:
-            if submission.student_idx == student.ID:
-                if submission.assignment_idx == assignment.ID:
+            if submission.ID_STUDENT == student.ID:
+                if submission.ID_ASSIGMENT == assignment.ID:
                     return submission
         return False
 
-    @staticmethod
-    def find_submission_sql(assignment_id, student_id):
+    @classmethod
+    def find_submission_sql(cls, assignment_id, student_id):
         """
         :param student_id: logged student id
         :param assignment_id: assignment id
         :return: submission object / False
         """
-        query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
-        params = [assignment_id, student_id]
-        if sql.query(query, params):
-            if sql.query(query, params)[0][0] == -1:
-                grade = 'Not graded'
-            else:
-                grade = sql.query(query, params)[0][0]
-            return [grade, sql.query(query, params)[0][1]]
+
+        submission = cls.query.filter_by(ID_ASSIGMENT=assignment_id, ID_STUDENT=student_id).first()
+
+        # query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
+        # params = [assignment_id, student_id]
+
+        if submission:
+            return [submission.GRADE, submission.DATE]
         return False
+
+        # if sql.query(query, params):
+        #     if sql.query(query, params)[0][0] == -1:
+        #         grade = 'Not graded'
+        #     else:
+        #         grade = sql.query(query, params)[0][0]
+        #     return [grade, sql.query(query, params)[0][1]]
+        # return False
 
     # def change_grade(self, grade, mentor_id, student_id, assignment_id):
     #     """
