@@ -43,7 +43,7 @@ class Team(db.Model):
         :param name: str - name of new team
         :return: None
         """
-        new_team = Team(None, name, None)
+        new_team = Team(None, name, [])
         db.session.add(new_team)
         db.session.commit()
 

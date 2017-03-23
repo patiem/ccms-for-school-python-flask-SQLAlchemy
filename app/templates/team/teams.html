@@ -70,7 +70,7 @@
                     <th>Email</th>
                 </tr>
 
-                {% for student in students %}
+                {% for student in students_list %}
                     <tr>
                         <td><a href="/add_to_team/{{ student.ID }}/" class="to_team">{{ student.full_name() }}</a></td>
                     </tr>
