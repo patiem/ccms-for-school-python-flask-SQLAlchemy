@@ -183,11 +183,13 @@ class UsersTeam(db.Model):
 
     __tablename__ = "Users_team"
     ID = db.Column(db.Integer, primary_key=True)
+    ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'), nullable=False )
     ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))
-    ID_USER = db.Column(db.Integer, nullable=False)
+
     # TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS'))
     #
     # def __init__(self, idx, id_team, id_user):
     #     self.ID = idx
     #     self.ID_TEAM = id_team
     #     self.ID_USER = id_user
+
