@@ -1,5 +1,4 @@
 import datetime
-from app.modules import sql
 from app.modules.mod_student.student import Student
 from app import db
 
@@ -37,8 +36,11 @@ class Attendance(db.Model):
             for student in attendance:
                 user = Student.query.filter_by(ID=student.ID_STUDENT).first()
                 fullname = user.full_name()
-                attendance_list.append(Attendance(student.ID_STUDENT, fullname, student.DATE, student.STATUS))
-
+                attendance_list.append(Attendance(student.ID_STUDENT,
+                                                  fullname,
+                                                  student.DATE,
+                                                  student.STATUS
+                                                  ))
             return attendance_list
         return False
 
@@ -59,7 +61,8 @@ class Attendance(db.Model):
                 pass
             else:
                 for student in Student.students_list():
-                    new_attendance = Attendance(id_student=student.ID, date=today)
+                    new_attendance = Attendance(id_student=student.ID,
+                                                date=today)
                     db.session.add(new_attendance)
                 db.session.commit()
         list_of_attendance = Attendance.create_attendance_list(date)
@@ -67,19 +70,13 @@ class Attendance(db.Model):
         return list_of_attendance
 
     @classmethod
-    def update(cls, students_dict, date):  # IN USE
-
-        # ----------- SQL UPDATE EXAMPLE ------------
-        # """UPDATE `Attendance` SET `STATUS`='None'
-        # WHERE `ID_STUDENT`=12
-        # AND `DATE`='2017-03-09';"""
-        # -------------------------------------------
-
+    def update(cls, students_dict, date):
+        """
+        Updates attendance for students from dict {id: status}
+        :param students_dict:
+        :param date:
+        """
         for idx in students_dict:
-
-            query = """UPDATE `Attendance` SET `STATUS`=?
-                       WHERE `ID_STUDENT`=? AND `DATE`=?;"""
-
-            params = [students_dict[idx], idx, date]
-            sql.query(query, params)
-
+            student_attendance = Attendance.query.filter_by(ID_STUDENT=idx, DATE=date).first()
+            student_attendance.STATUS = students_dict[idx]
+            db.session.commit()
