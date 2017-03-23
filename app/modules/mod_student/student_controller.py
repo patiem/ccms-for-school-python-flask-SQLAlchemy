@@ -2,7 +2,7 @@ from app.modules.decorator import *
 from flask import Blueprint
 from app.modules.mod_student.student import Student
 
-studentcontroller = Blueprint('user', __name__)
+studentcontroller = Blueprint('student', __name__)
 
 @studentcontroller.route('/student_list')
 @login_required
