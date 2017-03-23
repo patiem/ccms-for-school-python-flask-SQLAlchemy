@@ -20,7 +20,7 @@ class Student(User):
         self.id_team = id_team
 
     def full_name(self):
-        return self.name + ' ' + self.last_name
+        return self.Name + ' ' + self.Surname
 
     @staticmethod
     def save_sql(data):
@@ -31,23 +31,6 @@ class Student(User):
         """
         new_student = Student(None, data[0], data[1], data[2], data[3],'Student', data[4], )
         db.session.add(new_student)
-        db.session.commit()
-
-    @staticmethod
-    def update_sql(edit_list):
-        """
-        :param edit_list: (FORMAT:Name, Surname,  E-MAIL, Telephone, ID)
-        :return:
-        """
-
-        # query = """UPDATE USERS
-        #                    SET Name = ?, Surname = ?, `Email` = ?, Telephone = ?
-        #                    WHERE ID = ?"""
-        edit_student = Student.query.filter_by(ID=edit_list[4]).first()
-        edit_student.Name = edit_list[0]
-        edit_student.Surname = edit_list[1]
-        edit_student.Email = edit_list[2]
-        edit_student.Telephone = edit_list[3]
         db.session.commit()
 
     @staticmethod
