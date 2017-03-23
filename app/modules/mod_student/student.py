@@ -113,8 +113,6 @@ class Student(User):
         :return: None
         """
         student_list = Student.query.filter_by(Type='Student')
-        for student in student_list:
-            print(student.id_team)
         return student_list
 
     @classmethod
@@ -123,3 +121,7 @@ class Student(User):
             logged_user = cls.return_by_id(user_id)  # what with team id??
             return logged_user
         return False
+
+    def id_team(self):
+        if self.id_team_object:
+            return self.id_team_object[0].ID_TEAM
