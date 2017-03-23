@@ -3,7 +3,6 @@ from app.modules.common import *
 from app.modules.mod_student.student import Student
 from app.modules.mod_user.user import User
 from app.modules.mod_team.team import Team, UsersTeam
-# from app.modules.mod_assigment.assignment import *
 from app.modules.test import Test
 from app import db
 
@@ -58,20 +57,9 @@ class Submission(db.Model):
         list_for_mentor = []
         for sub in sub_list:
             if Student.make_student(sub.ID_STUDENT):
+                from app.modules.mod_assigment.assignment import Assignment
 
-                # ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
-                ass = db.Table(
-                                    'Assigments',
-                                    db.Column('ID', db.Integer, primary_key=True),
-                                    db.Column('ID_MENTOR', db.Integer),
-                                    db.Column('TITLE', db.String),
-                                    db.Column('START_DATA', db.String),
-                                    db.Column('END_DATA', db.String),
-                                    db.Column('LINK', db.String),
-                                    db.Column('GROUP', db.String)
-                                    )
-
-                ass_title = ass.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+                ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
 
                 if ass_title:
                     ass_title = ass_title.TITLE
