@@ -1,5 +1,5 @@
 import datetime
-
+from app import db
 from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
@@ -7,12 +7,20 @@ from app.modules.mod_submission.submission import Submission
 from app.modules.test import Test
 
 
-class Assignment:
+class Assignment(db.Model):
     """
     Class of assignments.
     """
 
-    assigments_list = []
+    # assigments_list = []
+    __tablename__ = 'Assigments'
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_MENTOR = db.Column(db.Integer)
+    TITLE = db.Column(db.String)
+    START_DATA = db.Column(db.String)
+    END_DATA = db.Column(db.String)
+    LINK = db.Column(db.String)
+    GROUP = db.Column(db.String)
 
     def __init__(self, idx, title, mentor_id, start_date, end_date, file_name, group='0'):
         """
@@ -26,31 +34,31 @@ class Assignment:
         :param group: int (if assignment is for group = 1, else 0)
 
         """
-        self.idx = idx
-        self.title = title
-        self.mentor_id = mentor_id
-        self.start_date = start_date
-        self.end_date = end_date
-        self.file_name = file_name
-        self.group = group
+        self.ID = idx
+        self.ID_MENTOR = mentor_id
+        self.TITLE = title
+        self.START_DATA = start_date
+        self.END_DATA = end_date
+        self.LINK = file_name
+        self.GROUP = group
 
     @classmethod
     def list_from_sql(cls):
-        assignments_list = []
-        query = "SELECT * FROM `Assigments`;"
-        list_from_sql = sql.query(query)
-        if list_from_sql:
-            for item in list_from_sql:
-                idx = item['ID']
-                title = item['TITLE']
-                mentor_id = item['ID_MENTOR']
-                if Test.is_date_correct(item['START_DATA']):
-                    start_date = Common.make_corect_date(item['START_DATA'])
-                    if Test.is_date_correct(item['END_DATA']):
-                        end_date = Common.make_corect_date(item['END_DATA'])
-                        file_name = item['LINK']
-                        group = item['GROUP']
-                        assignments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
+        assignments_list = cls.query.all()
+        # query = "SELECT * FROM `Assigments`;"
+        # list_from_sql = sql.query(query)
+        # if list_from_sql:
+        #     for item in list_from_sql:
+        #         idx = item['ID']
+        #         title = item['TITLE']
+        #         mentor_id = item['ID_MENTOR']
+        #         if Test.is_date_correct(item['START_DATA']):
+        #             start_date = Common.make_corect_date(item['START_DATA'])
+        #             if Test.is_date_correct(item['END_DATA']):
+        #                 end_date = Common.make_corect_date(item['END_DATA'])
+        #                 file_name = item['LINK']
+        #                 group = item['GROUP']
+        #                 assignments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
         return assignments_list
 
     @classmethod
