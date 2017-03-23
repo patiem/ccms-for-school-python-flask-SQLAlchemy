@@ -53,11 +53,11 @@ class Submission(db.Model):
 
         :return:
         """
+        from app.modules.mod_assigment.assignment import Assignment
         sub_list = cls.list_from_sql()
         list_for_mentor = []
         for sub in sub_list:
             if Student.make_student(sub.ID_STUDENT):
-                from app.modules.mod_assigment.assignment import Assignment
 
                 ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
 
