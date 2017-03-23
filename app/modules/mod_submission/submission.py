@@ -3,12 +3,26 @@ from app.modules.common import *
 from app.modules.mod_student.student import Student
 from app.modules.mod_team.team import Team, UsersTeam
 from app.modules.test import Test
+from app import db
 
 
-class Submission:
+class Submission(db.Model):
     """
     Class of students submission.
     """
+    __tablename__ = "Sumbissions"
+
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_ASSIGMENT = db.Column(db.Integer, nullable=False)
+    ID_STUDENT = db.Column(db.Integer, nullable=False)
+    GRADE = db.Column(db.Integer)
+    DATE = db.Column(db.String, nullable=False)
+    LINK = db.Column(db.String, nullable=False)
+    ID_MENTOR = db.Column(db.Integer)
+
+    # ID = db.Column(db.Integer, primary_key=True)
+    # NAME = db.Column(db.String, nullable=False)
+    # students = db.relationship('UsersTeam', backref='team', cascade='all, delete', lazy='dynamic')
 
     def __init__(self, idx, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
@@ -20,13 +34,13 @@ class Submission:
         :param grade: None (if not graded)/ str (if graded)
         :param mentor_id: None/int (id of mentor, who graded submission)
         """
-        self.idx = idx
-        self.student_idx = student_idx
-        self.assignment_idx = assignment_idx
-        self.date_of_submission = date_of_submission
-        self.link = link
-        self.grade = grade
-        self.mentor_id = mentor_id
+        self.ID = idx
+        self.ID_ASSIGMENT = assignment_idx
+        self.ID_STUDENT = student_idx
+        self.GRADE = grade
+        self.DATE = date_of_submission
+        self.LINK = link
+        self.ID_MENTOR = mentor_id
 
     @classmethod  # IN USE
     def list_from_sql(cls):
