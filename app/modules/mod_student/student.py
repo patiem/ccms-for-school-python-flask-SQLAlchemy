@@ -129,6 +129,8 @@ class Student(User):
         :return: None
         """
         student_list = Student.query.filter_by(Type='Student')
+        for student in student_list:
+            print(student.id_team)
         return student_list
 
     @classmethod
