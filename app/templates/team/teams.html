@@ -20,12 +20,12 @@
 
         {% set student_number = 1 %}
         {% for student in students %}
-            {% if student.idx in team.students_id %}
+            {% if student.ID in team.students_id %}
 
             <tr>
                 <td>{{ student_number }}</td>
-                <td>{{ student.name }} {{ student.last_name }}</td>
-                <td><a href="remove_from_team/{{ student.idx }}" class="remove_button">REMOVE</a></td>
+                <td>{{ student.Name }} {{ student.Surname }}</td>
+                <td><a href="remove_from_team/{{ student.ID }}" class="remove_button">REMOVE</a></td>
 
                 {% set student_number = student_number + 1 %}
             </tr>
@@ -72,7 +72,7 @@
 
                 {% for student in students %}
                     <tr>
-                        <td><a href="/add_to_team/{{ student.idx }}/" class="to_team">{{ student.full_name() }}</a></td>
+                        <td><a href="/add_to_team/{{ student.ID }}/" class="to_team">{{ student.full_name() }}</a></td>
                     </tr>
                 {% endfor %}
 
