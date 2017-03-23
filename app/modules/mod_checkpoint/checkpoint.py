@@ -85,6 +85,7 @@ class Checkpoint(db.Model):
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
+    @staticmethod
     def show_checkpoints():
 
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
