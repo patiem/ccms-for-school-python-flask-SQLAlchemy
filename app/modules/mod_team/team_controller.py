@@ -12,9 +12,10 @@ teamcontroller = Blueprint('teamcontroller', __name__, template_folder='template
 @correct_type(['Mentor'])
 def teams():
     teams_list = Team.create_teams_list()
+    students_dict = Team.dict_with_students_id(teams_list)
     students_list = Student.students_list()
-    # return 'dupa'
-    return render_template('team/teams.html', user=session['user'], teams=teams_list, students=students_list)
+    return render_template('team/teams.html', user=session['user'], teams=teams_list,
+                           students_list=students_list, students_dict=students_dict)
 
 
 @teamcontroller.route('/team_name_edit', methods=['POST'])
