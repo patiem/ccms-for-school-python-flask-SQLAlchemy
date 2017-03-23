@@ -12,10 +12,10 @@
             </tr>
             {% for mentor in table %}
             <tr>
-                <td data-id={{ mentor[0] }} class='id' >{{ mentor[0] }}</td>
-                <td>{{ mentor[1] + ' ' + mentor[2] }}</td>
-                <td>{{ mentor[3] }}</td>
-                <td>{{ mentor[4] }}</td>
+                <td data-id={{ mentor.ID }} class='id' >{{ mentor.ID }}</td>
+                <td>{{ mentor.Name + ' ' + mentor.Surname}}</td>
+                <td>{{ mentor.Email }}</td>
+                <td>{{ mentor.Telephone }}</td>
                 <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button remove_user" >Remove</a> </td>
             </tr>
             {% endfor %}
