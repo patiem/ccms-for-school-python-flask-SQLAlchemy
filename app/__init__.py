@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 # app.secret_key = 'any random string'
 # Configurations
@@ -11,22 +10,24 @@ app.config.from_object('config')
 # by modules and controllers
 db = SQLAlchemy(app)
 
-from app.modules.mod_student.student import Student
-from app.modules.mod_user.user import *
-from app.modules.mod_assigment.assignment import Assignment
-from app.modules.mod_submission.submission import Submission
-from app.modules.mod_mentor.mentor import Mentor
-from app.modules.mod_attendance.attendance import Attendance
-from app.modules.decorator import *
-
 from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
 from app.modules.mod_statistic.statistics_controller import statistics
+from app.modules.mod_user.user import *
+from app.modules.decorator import *
+from app.modules.mod_student.student import Student
+from app.modules.mod_mentor.mentor import Mentor
+from app.modules.mod_team.team import Team
+from app.modules.mod_assigment.assignment import Assignment
+from app.modules.mod_submission.submission import Submission
+from app.modules.mod_attendance.attendance import Attendance
 from app.modules.mod_team.team_controller import teamcontroller
+from app.modules.mod_user.user_controller import usercontroller
 
 app.register_blueprint(checkpointcontroller)
 app.register_blueprint(statistics)
 app.register_blueprint(teamcontroller)
+app.register_blueprint(usercontroller)
 
 
 @app.route('/assignments', methods=['GET', 'POST'])
@@ -85,31 +86,6 @@ def update_submission():
     Submission.update_grade(value, link, mentor_id)
     user_dict = {'fullname': session['user']['name'] + ' ' + session['user']['surname']}
     return jsonify(user_dict)
-
-
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('index'))
-
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-
-    if request.method == 'POST':
-        logged_user = User.login(request.form['user_login'], request.form['user_pass'])
-
-        if logged_user is not None:
-
-            user = {'id': logged_user['ID'], 'name': logged_user['Name'], 'surname': logged_user['Surname'],
-                    'type': logged_user['Type'], 'ave_grade': Student.ave_grade_flask_version(logged_user['ID']),
-                    'my_attendance': Student.my_attendance(logged_user['ID'])}
-
-            session['user'] = user
-    if 'user' in session:
-        return render_template('index.html', user=session['user'])
-    else:
-        return render_template('login.html')
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
@@ -173,10 +149,10 @@ def get_data():
         idx = request.json['Idx']
         user = User.return_by_id(idx)
         user_dict= {'id': idx,
-                    'name': user.name,
-                    'surname': user.last_name,
-                    'e-mail': user.mail,
-                    'telephone': user.telephone}
+                    'name': user.Name,
+                    'surname': user.Surname,
+                    'e-mail': user.Email,
+                    'telephone': user.Telephone}
         return jsonify(user_dict)
     return 'lipa'
 
@@ -236,19 +212,4 @@ def remove_user():
         User.remove_sql(idx)
 
 
-@app.route('/check-mail', methods=['POST'])
-@login_required
-@correct_type(['Manager', 'Mentor'])
-@correct_json(['Mail'])
-def mail_exist():
-        if request.method == 'POST':
-            if request.is_json:
-                mail_list = User.return_mails()
-                if request.json['Mail'] in mail_list:
-                    value = {'value': True}
-                    return jsonify(value)
-                else:
-                    value = {'value': False}
-                    return jsonify(value)
-            return redirect(url_for('index'))
-        return redirect(url_for('index'))
+

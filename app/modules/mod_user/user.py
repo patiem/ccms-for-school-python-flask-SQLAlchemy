@@ -1,12 +1,20 @@
 import hashlib
 from app.modules import sql
-from abc import ABCMeta
+from app import db
 
 
-class User(metaclass=ABCMeta):
-    object_list = None
+class User(db.Model):
+    __tablename__ = 'Users'
+    ID = db.Column(db.Integer, primary_key=True)
+    Name = db.Column(db.String)
+    Surname = db.Column(db.String)
+    Email = db.Column(db.String)
+    Telephone = db.Column(db.Integer)
+    Password = db.Column(db.String)
+    Type = db.Column(db.String)
 
-    def __init__(self, idx, name, last_name, mail, telephone):
+
+    def __init__(self, idx, name, last_name, mail, telephone, type, password):
         """
         Create object
         :param idx: string (id of student)
@@ -16,22 +24,21 @@ class User(metaclass=ABCMeta):
         :param telephone: string (telephone number)
         :param password: string (encode password to usser account)
         """
-        self.idx = idx
-        self.name = name
-        self.last_name = last_name
-        self.mail = mail
-        self.telephone = telephone
+        self.ID = idx
+        self.Name = name
+        self.Surname = last_name
+        self.Email = mail
+        self.Telephone = telephone
+        self.Password = password
+        self.Type = type
 
 
 
     @classmethod
     def return_mails(cls):
-        query = """ SELECT `E-MAIL` FROM Users"""
-        email_list = []
-        data_sql = sql.query(query)
-        for item in data_sql:
-            email_list.append(item[0])
-        return email_list
+        """Return:
+                List of objects with users Emails"""
+        return db.session.query(User.Email).all()
 
     @classmethod
     def add_user(cls, data):
@@ -49,14 +56,8 @@ class User(metaclass=ABCMeta):
         :param idx: int (id of object)
         :return: object
         """
-        sql_query = "SELECT ID, Name, Surname, `E-mail`, Telephone, Password FROM Users WHERE ID = ?"
-
-        user_data = sql.query(sql_query, [idx])
-
-        if user_data:
-            new_object = cls(user_data[0][0], user_data[0][1], user_data[0][2], user_data[0][3], user_data[0][4])
-            return new_object
-        return False
+        user_object = User.query.filter_by(ID=idx).first()
+        return user_object
 
     @classmethod
     def create_object_list(cls):
@@ -68,42 +69,39 @@ class User(metaclass=ABCMeta):
 
     @staticmethod
     def remove_sql(idx):
-        query = """
-                DELETE FROM Users
-                WHERE ID = ?"""
-        sql.query(query, [idx])
+        """
+        Remove user from user table and his attendance by id
+        :param idx: idx of user to remove
+        :return: None
+        """
+        to_remove = User.query.filter_by(ID=idx).first()
+        db.session.delete(to_remove)
+        db.session.commit()
         query = """
                     DELETE FROM Attendance
                     WHERE ID_STUDENT = ?"""
         sql.query(query, [idx])
 
-        query = """
-                DELETE FROM Attendance
-                WHERE ID_STUDENT = ?"""
-        sql.query(query, [idx])
 
     def __str__(self):
         """
         :return: String representation for object
         """
-        return 'ID: {} Name: {} Last Name: {}'.format(self.idx, self.name, self.last_name)
+        return 'ID: {}'.format(self.ID)
 
     @staticmethod
-    def get_id_by_login_and_pass(login, password):
+    def get_by_login_and_pass(login, password):
         """
-        Get id of user by login and pass from user list
-        :param login:
-        :param password:
-        :return:
+        Get user object by login and pass from user table
+        :param login: Login to check
+        :param password: Password to check
+        :return: Object
         """
 
-        query = "SELECT * FROM Users WHERE `E-mail` =? and `password`=?"
-        params = list([login, password])
-
-        user = sql.query(query, params)
+        user = User.query.filter_by(Email=login, Password=password).first()
 
         if user:
-            return user[0]
+            return user
 
     @staticmethod
     def update_sql(edit_list):
@@ -113,14 +111,13 @@ class User(metaclass=ABCMeta):
     def login(user_login, user_pass):
         """
         login method
-        :return user_id:
+        :return Object of logged user
         """
-
         encoded_password = User.encode(user_pass)  # get passoword and encode using hash and salt
 
-        if User.get_id_by_login_and_pass(user_login, encoded_password) is not None:
+        if User.get_by_login_and_pass(user_login, encoded_password) is not None:
 
-            return User.get_id_by_login_and_pass(user_login, encoded_password)
+            return User.get_by_login_and_pass(user_login, encoded_password)
 
         else:
             return None
@@ -138,4 +135,5 @@ class User(metaclass=ABCMeta):
         return str(encoded_password)
 
     def full_name(self):
-        return self.name + ' ' + self.last_name
+        """Create full name from name ans surname"""
+        return self.Name + ' ' + self.Surname
