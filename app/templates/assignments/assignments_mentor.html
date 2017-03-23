@@ -26,11 +26,11 @@
         {% for item in assignments %}
 
         <tr>
-            <td>{{ item.idx }}</td>
-            <td class='left'><a href="/assignments/{{ item.idx }}">{{ item.title }}</a></td>
-            <td>{{ item.start_date }}</td>
-            <td>{{ item.end_date }}</td>
-            <td>{{ item.mentor_id }}</td>
+            <td>{{ item.ID }}</td>
+            <td class='left'><a href="/assignments/{{ item.ID }}">{{ item.TITLE }}</a></td>
+            <td>{{ item.START_DATA }}</td>
+            <td>{{ item.END_DATA }}</td>
+            <td>{{ item.ID_MENTOR }}</td>
             {% if item.group == '0' %}
                 <td>No</td>
             {% else %}
@@ -44,7 +44,7 @@
 
     <div id="popup" class="overlay">
         <h2>Add submission</h2>
-        <form class="edit_user" name="add_assignment" method="post" action="{{ url_for('show_assignments_list') }}">
+        <form class="edit_user" name="add_assignment" method="post" action="{{ url_for('assigment.show_assignments_list') }}">
             <a class="close" href="#">&times;</a>
             <div class="form-block">
                 <label for="a_title">Assignment title:</label>
