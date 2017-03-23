@@ -81,6 +81,7 @@ def remove_user():
         idx = request.json['Idx']
         User.remove_sql(idx)
 
+
 @usercontroller.route('/save-user', methods=['POST', 'GET'])
 @login_required
 @correct_type(['Manager', 'Mentor'])
@@ -101,6 +102,7 @@ def save_user():
             return redirect(url_for('mentor_list'))
         else:
             return render_template('bad.html')
+
 
 @usercontroller.route('/edit', methods=['POST', 'GET'])
 @login_required
