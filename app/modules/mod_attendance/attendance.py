@@ -8,7 +8,7 @@ class Attendance(db.Model):
 
     __tablename__ = "Attendance"
     ID = db.Column(db.Integer, primary_key=True)
-    ID_STUDENT = db.Column(db.Integer, primary_key=True)
+    ID_STUDENT = db.Column(db.Integer, db.ForeignKey('Users.ID'), nullable=False)
     DATE = db.Column(db.String, nullable=False)
     STATUS = db.Column(db.String, nullable=False)
 

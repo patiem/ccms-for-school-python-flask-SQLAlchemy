@@ -13,6 +13,7 @@ class User(db.Model):
     Password = db.Column(db.String)
     Type = db.Column(db.String)
     id_team_object = db.relationship('UsersTeam', backref='student', cascade='all, delete', lazy='joined')
+    attendance_object = db.relationship('Attendance', backref='student', cascade='all, delete', lazy='joined')
 
     def __init__(self, idx, name, last_name, mail, telephone, type, password):
         """
@@ -86,10 +87,6 @@ class User(db.Model):
         to_remove = User.query.filter_by(ID=idx).first()
         db.session.delete(to_remove)
         db.session.commit()
-        query = """
-                    DELETE FROM Attendance
-                    WHERE ID_STUDENT = ?"""
-        sql.query(query, [idx])
 
     def __str__(self):
         """
