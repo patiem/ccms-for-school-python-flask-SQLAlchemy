@@ -21,14 +21,14 @@
 
                 <tr class="attendance_tr">
                     <td>{{ student.fullname }}</td>
-                    <td><label>Present <input type="radio" name="person{{ student.id_student }}" value="Present"
-                            {% if student.present == 'Present' %} checked="checked" {% endif %}/></label></td>
+                    <td><label>Present <input type="radio" name="person{{ student.ID_STUDENT }}" value="Present"
+                            {% if student.STATUS == 'Present' %} checked="checked" {% endif %}/></label></td>
 
-                    <td><label>Late <input type="radio" name="person{{ student.id_student }}" value="Late"
-                            {% if student.present == 'Late' %} checked="checked" {% endif %}/></label></td>
+                    <td><label>Late <input type="radio" name="person{{ student.ID_STUDENT }}" value="Late"
+                            {% if student.STATUS == 'Late' %} checked="checked" {% endif %}/></label></td>
 
-                    <td><label>Absent <input type="radio" name="person{{ student.id_student }}" value="Absent"
-                            {% if student.present == 'Absent' %} checked="checked" {% endif %}/></label></td>
+                    <td><label>Absent <input type="radio" name="person{{ student.ID_STUDENT }}" value="Absent"
+                            {% if student.STATUS == 'Absent' %} checked="checked" {% endif %}/></label></td>
                 </tr>
 
             {% endfor %}

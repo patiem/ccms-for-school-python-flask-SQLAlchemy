@@ -23,17 +23,6 @@ class Student(User):
         return self.Name + ' ' + self.Surname
 
     @staticmethod
-    def save_sql(data):
-        """
-        Save data to sql
-        :param data: list (FORMAT : NAME, SURNAME, E-MAIL, TELEPHONE, PASSWORD)
-        :return:
-        """
-        new_student = Student(None, data[0], data[1], data[2], data[3],'Student', data[4], )
-        db.session.add(new_student)
-        db.session.commit()
-
-    @staticmethod
     def get_students_without_checkpoint(checkpoint_id):
         """
         :param checkpoint_id:
@@ -74,7 +63,7 @@ class Student(User):
 
         table = []
         for student in students:
-            table.append([student.name, student.last_name, Student.my_attendance(student.idx)])
+            table.append([student.Name, student.Surname, Student.my_attendance(student.ID)])
         return table
 
     @staticmethod
@@ -82,7 +71,7 @@ class Student(User):
         students = Student.students_list()
         table = []
         for student in students:
-            table.append([student.name, student.last_name, Student.ave_grade_flask_version(student.idx)])
+            table.append([student.Name, student.Surname, Student.ave_grade_flask_version(student.ID)])
         return table
 
     @staticmethod

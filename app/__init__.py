@@ -13,19 +13,22 @@ db = SQLAlchemy(app)
 from app.modules.mod_checkpoint.checkpoint import *
 from app.modules.mod_checkpoint.checkpoint_controller import checkpointcontroller
 from app.modules.mod_statistic.statistics_controller import statistics
-from app.modules.mod_user.user import *
+from app.modules.mod_attendance.attendance_controller import attendancecontroller
 from app.modules.decorator import *
-from app.modules.mod_student.student import Student
-from app.modules.mod_mentor.mentor import Mentor
 from app.modules.mod_team.team import Team
 from app.modules.mod_assigment.assignment import Assignment
 from app.modules.mod_submission.submission import Submission
 from app.modules.mod_attendance.attendance import Attendance
 from app.modules.mod_team.team_controller import teamcontroller
 from app.modules.mod_user.user_controller import usercontroller
+from app.modules.mod_student.student_controller import studentcontroller
+from app.modules.mod_mentor.mentor_controller import mentorcontroller
 
 app.register_blueprint(checkpointcontroller)
+app.register_blueprint(mentorcontroller)
+app.register_blueprint(studentcontroller)
 app.register_blueprint(statistics)
+app.register_blueprint(attendancecontroller)
 app.register_blueprint(teamcontroller)
 app.register_blueprint(usercontroller)
 
@@ -86,83 +89,3 @@ def update_submission():
     Submission.update_grade(value, link, mentor_id)
     user_dict = {'fullname': session['user']['name'] + ' ' + session['user']['surname']}
     return jsonify(user_dict)
-
-
-@app.route('/attendance', methods=['GET', 'POST'])
-@login_required
-@correct_type(['Mentor'])
-@correct_form(['set_date'])
-def attendance():
-    if request.method == 'GET':
-        import datetime
-        date = str(datetime.date.today())
-        if 'date' in request.args:
-            date = request.args['date']
-        attendance_list = Attendance.get_attendance_list(date)
-        return render_template('attendance/attendance.html', user=session['user'], date=date, attendance_list=attendance_list)
-
-    elif request.method == 'POST':
-        students_present = {}
-        date_from_form = ''
-        for item in request.form:
-            if item[:6] == 'person':
-                student_id = int(item[6:])
-                students_present[student_id] = request.form[item]
-            elif item == 'set_date':
-                date_from_form = request.form[item]
-        Attendance.update(students_present, date_from_form)
-        return redirect(url_for('attendance', date=date_from_form))
-
-
-@app.route('/attendance/<date>')
-@login_required
-@correct_type(['Mentor'])
-def attendance_date(date):
-    return redirect(url_for('attendance', date=date))
-
-
-@app.route('/student_list')
-@login_required
-@correct_type(['Manager', 'Employee', 'Mentor'])
-def student_list():
-    table = Student.students_list()
-    if table:
-        return render_template('student/student_list.html', table=table, user=session['user'])
-    return render_template('student/student_list.html', user=session['user'])
-
-
-@app.route('/mentor_list')
-@login_required
-@correct_type(['Manager'])
-def mentor_list():
-    table = Mentor.create_mentor_list()
-    if table:
-        return render_template('mentor/mentor_list.html', table=table, user=session['user'])
-    return render_template('mentor/mentor_list.html', user=session['user'])
-
-
-@app.route('/edit', methods=['POST', 'GET'])
-@login_required
-@correct_type(['Manager', 'Mentor'])
-def get_data():
-    if request.method == 'POST':
-        idx = request.json['Idx']
-        user = User.return_by_id(idx)
-        user_dict= {'id': idx,
-                    'name': user.Name,
-                    'surname': user.Surname,
-                    'e-mail': user.Email,
-                    'telephone': user.Telephone}
-        return jsonify(user_dict)
-    return 'lipa'
-
-
-
-
-
-
-
-
-
-
-

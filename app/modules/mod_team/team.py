@@ -1,19 +1,18 @@
-from app.modules import sql
 from app.modules.mod_student.student import Student
 from app import db
 
 
 class Team(db.Model):
-    # teams_list = []
 
     __tablename__ = "TEAMS"
     ID = db.Column(db.Integer, primary_key=True)
     NAME = db.Column(db.String, nullable=False)
+    students = db.relationship('UsersTeam', backref='team', cascade='all, delete', lazy='dynamic')
 
-    def __init__(self, id_team, name, students_id):
+    def __init__(self, id_team, name, students):
         self.ID = id_team
         self.NAME = name
-        self.students_id = students_id
+        self.students = students
 
     @staticmethod
     def create_teams_list():
@@ -21,28 +20,7 @@ class Team(db.Model):
         Creates teams_list with Team objects
         """
         list_from_db = Team.query.all()
-        teams_list = []
-
-        for team in list_from_db:
-            team_students = []
-            users_id_list = db.session.query(UsersTeam.ID_USER).filter_by(ID_TEAM=team.ID).all()
-
-            for alchemy_obj in users_id_list:
-                team_students.append(alchemy_obj.ID_USER)
-            teams_list.append(Team(team.ID, team.NAME, team_students))
-        return teams_list
-
-    # @classmethod
-    # def get_by_id(cls, team_id):
-    #     """
-    #     Returns Team object
-    #     :param team_id: int - id of team which you object need
-    #     :return: Team object
-    #     """
-    #     for team in cls.teams_list:
-    #         if team.ID == team_id:
-    #             return team
-    #     return False
+        return list_from_db
 
     @classmethod
     def new_team(cls, name):
@@ -51,18 +29,9 @@ class Team(db.Model):
         :param name: str - name of new team
         :return: None
         """
-        new_team = Team(None, name, None)
+        new_team = Team(None, name, [])
         db.session.add(new_team)
         db.session.commit()
-
-    # @classmethod
-    # def clear_and_load_list(cls):
-    #     """
-    #     Loads class attribute teams_list
-    #     :return: None
-    #     """
-    #     cls.teams_list = []
-    #     cls.create_teams_list()
 
     @classmethod
     def student_to_team(cls, team, student):
@@ -72,15 +41,14 @@ class Team(db.Model):
         :param student: Student object
         :return: None
         """
-        id_t = team.ID
-        id_s = student.ID
-        if student.id_team:
-            query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
-        else:
-            query = "INSERT INTO `Users_team`(`ID_TEAM`, `ID_USER`) VALUES ({}, {});".format(id_t, id_s)
-        student.id_team = id_t
-        sql.query(query)
-        # cls.clear_and_load_list()
+        user_team = UsersTeam.query.filter_by(ID_USER=student.ID).first()
+
+        if user_team:
+            user_team.ID_TEAM = team.ID
+            return db.session.commit()
+        new_user_to_team = UsersTeam(team=team, ID_USER=student.ID)
+        db.session.add(new_user_to_team)
+        db.session.commit()
 
     @classmethod
     def get_team_by_id(cls, team_id):
@@ -128,11 +96,9 @@ class Team(db.Model):
 
     @staticmethod
     def remove_team(team_id):
-        query = "DELETE FROM `TEAMS` WHERE `ID` = {};".format(int(team_id))
-        sql.query(query)
-
-        query = "DELETE FROM `Users_team` WHERE `ID_TEAM` = {};".format(int(team_id))
-        sql.query(query)
+        team_to_remove = Team.query.filter_by(ID=team_id).first()
+        db.session.delete(team_to_remove)
+        db.session.commit()
 
     @staticmethod
     def add_new_team(team_name):
@@ -150,14 +116,9 @@ class Team(db.Model):
 
     @staticmethod
     def remove_student_from_team(student_id):
-        query = "DELETE FROM `Users_team` WHERE `ID_USER` = {};".format(int(student_id))
-        sql.query(query)
-
-    @classmethod
-    def get_team_members(cls, team_id):
-        query = "SELECT ID_USER FROM users_team WHERE ID_TEAM=?"
-        params = [team_id]
-        return sql.query(query, params)
+        remove_student = UsersTeam.query.filter_by(ID_USER=student_id).first()
+        db.session.delete(remove_student)
+        db.session.commit()
 
     @staticmethod
     def update_name(idx, team_name):
@@ -172,15 +133,25 @@ class Team(db.Model):
         if team:
             return team.ID_TEAM
 
+    @staticmethod
+    def dict_with_students_id(teams_list):
+        """
+        Returns dict {team_id: [users_ids]}
+        :param teams_list: list with Team objects
+        :return dict_with_ids: dict {team_id: [users_ids]}
+        """
+        dict_with_ids = {}
+        for team in teams_list:
+            students_ids = []
+            for student in team.students:
+                students_ids.append(student.ID_USER)
+            dict_with_ids[team.ID] = students_ids
+        return dict_with_ids
+
 
 class UsersTeam(db.Model):
 
     __tablename__ = "Users_team"
     ID = db.Column(db.Integer, primary_key=True)
-    ID_TEAM = db.Column(db.Integer, nullable=False)
-    ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'), nullable=False )
-
-    def __init__(self, idx, id_team, id_user):
-        self.ID = idx
-        self.ID_TEAM = id_team
-        self.ID_USER = id_user
+    ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'))
+    ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))

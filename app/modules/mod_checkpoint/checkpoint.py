@@ -7,14 +7,11 @@ class Checkpoint(db.Model):
 
     __tablename__ = "Checkpoints"
     ID = db.Column(db.Integer, primary_key=True)
-    ID_USER = db.Column(db.Integer, nullable=False)
-    TITLE = db.Column(db.String, nullable=False)
-    START_DATE = db.Column(db.String, nullable=False)
+    ID_USER = db.Column(db.Integer)
+    TITLE = db.Column(db.String)
+    START_DATE = db.Column(db.String)
+    USERS_CHECKPOINTS = db.relationship("Users_checkpoints", backref="current_checkpoint", lazy='dynamic')
 
-    def __init__(self, id_user, title, start_date):
-        self.ID_USER = id_user
-        self.TITLE = title
-        self.START_DATE = start_date
 
     @staticmethod
     def select_mentors_not_in_checkpoint(checkpoint_id):
@@ -94,11 +91,6 @@ class Checkpoint(db.Model):
         sql_query_result = sql.query(query)
         return sql_query_result
 
-    @staticmethod
-    def get_name(checkpoint_id):
-
-        query = "SELECT TITLE FROM Checkpoints WHERE ID = ?"
-        return sql.query(query, [checkpoint_id])
 
     @staticmethod
     def show_checkpoint_results(checkpoint_id):
@@ -172,6 +164,13 @@ class Checkpoint(db.Model):
     #                                     line['ID_MENTOR_2']])
     #     Ui.print_table(user_checkpoints, titles)
 
+class Users_checkpoints(db.Model):
 
-
-
+    __tablename__ = "Users_checkpoints"
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_CHECKPOINT = db.Column(db.Integer,  db.ForeignKey('Checkpoints.ID'))
+    DATE = db.Column(db.String(20))
+    GRADE = db.Column(db.String(20))
+    ID_STUDENT = db.Column(db.Integer)
+    ID_MENTOR_1 = db.Column(db.Integer)
+    ID_MENTOR_2 = db.Column(db.Integer)

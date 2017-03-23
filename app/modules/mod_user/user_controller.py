@@ -64,7 +64,7 @@ def update_user():
         edit_list = [name, surname, email, telephone, idx]
         if user_type == 'student':
             User.update_sql(edit_list)
-            return redirect(url_for('student_list'))
+            return redirect(url_for('student.student_list'))
         elif user_type == 'mentor':
             User.update_sql(edit_list)
             return redirect(url_for('mentor_list'))
@@ -95,9 +95,24 @@ def save_user():
         add_list = [name, surname, email, telephone]
         if user_type == 'student':
             User.add_user(add_list, 'Student')
-            return redirect(url_for('student_list'))
+            return redirect(url_for('student.student_list'))
         elif user_type == 'mentor':
             User.add_user(add_list, 'Mentor')
             return redirect(url_for('mentor_list'))
         else:
             return render_template('bad.html')
+
+@usercontroller.route('/edit', methods=['POST', 'GET'])
+@login_required
+@correct_type(['Manager', 'Mentor'])
+def get_data():
+    if request.method == 'POST':
+        idx = request.json['Idx']
+        user = User.return_by_id(idx)
+        user_dict= {'id': idx,
+                    'name': user.Name,
+                    'surname': user.Surname,
+                    'e-mail': user.Email,
+                    'telephone': user.Telephone}
+        return jsonify(user_dict)
+    return 'lipa'
