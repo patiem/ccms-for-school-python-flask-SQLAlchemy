@@ -39,5 +39,5 @@ def show_assignment(idx):
     elif request.method == 'POST':
         link = request.form['link']
         comment = request.form['comment']
-        Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
-        return redirect(url_for('show_assignment', idx=idx))
+        Submission.add_submission(session['user']['id'], assignment.ID, link, comment, assignment.GROUP)
+        return redirect(url_for('assigment.show_assignments_list'))
