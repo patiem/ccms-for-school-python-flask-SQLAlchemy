@@ -12,7 +12,7 @@ class Attendance(db.Model):
     DATE = db.Column(db.String, nullable=False)
     STATUS = db.Column(db.String, nullable=False)
 
-    def __init__(self, id_student, fullname, date, status):
+    def __init__(self, id_student, date, fullname='', status='None'):
         """
         Create Attendance object
         :param id_student: string (user id)
@@ -52,29 +52,17 @@ class Attendance(db.Model):
 
         # EXAMPLE: today = '2017-03-07', date = '2017-03-07'
         today = str(datetime.date.today())
-
-        query = "SELECT * FROM `Attendance` WHERE `DATE`=?"
-        params = [date]
-        attendance = sql.query(query, params)
+        attendance = Attendance.query.filter_by(DATE=date).first()
 
         if today == date:
             if attendance:
                 pass
             else:
                 for student in Student.students_list():
-                    query = """INSERT INTO `Attendance`(`ID`,`ID_STUDENT`,`DATE`,`STATUS`) VALUES (NULL,?,?,'None');"""
-                    params = [student.ID, today]
-                    sql.query(query, params)
+                    new_attendance = Attendance(id_student=student.ID, date=today)
+                    db.session.add(new_attendance)
+                db.session.commit()
         list_of_attendance = Attendance.create_attendance_list(date)
-
-        # ------------------------- EXAMPLE USE -------------------------- #
-
-        # attendance_list = Attendance.get_attendance_list('2016-10-00')
-        # if attendance_list:
-        #     for student in attendance_list:
-        #         print(student.id_student, student.date, student.present)
-
-        # ---------------------------------------------------------------- #
 
         return list_of_attendance
 
