@@ -1,22 +1,28 @@
 import datetime
-
 from app.modules import sql
 from app.modules.mod_student.student import Student
+from app import db
 
 
-class Attendance:
+class Attendance(db.Model):
 
-    def __init__(self, id_student, fullname, date, present):
+    __tablename__ = "Attendance"
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_STUDENT = db.Column(db.Integer, primary_key=True)
+    DATE = db.Column(db.String, nullable=False)
+    STATUS = db.Column(db.String, nullable=False)
+
+    def __init__(self, id_student, fullname, date, status):
         """
         Create Attendance object
         :param id_student: string (user id)
         :param date: string (date: DD.MM.YYYY)
-        :param present: string (Present/Late/Absent)
+        :param status: string (Present/Late/Absent)
         """
-        self.id_student = id_student
+        self.ID_STUDENT = id_student
         self.fullname = fullname
-        self.date = date
-        self.present = present
+        self.DATE = date
+        self.STATUS = status
 
     @classmethod
     def create_attendance_list(cls, date):
@@ -59,7 +65,7 @@ class Attendance:
             else:
                 for student in Student.students_list():
                     query = """INSERT INTO `Attendance`(`ID`,`ID_STUDENT`,`DATE`,`STATUS`) VALUES (NULL,?,?,'None');"""
-                    params = [student.idx, today]
+                    params = [student.ID, today]
                     sql.query(query, params)
         list_of_attendance = Attendance.create_attendance_list(date)
 

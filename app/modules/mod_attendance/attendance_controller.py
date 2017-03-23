@@ -21,6 +21,7 @@ def attendance():
     elif request.method == 'POST':
         students_present = {}
         date_from_form = ''
+        print(request.form)
         for item in request.form:
             if item[:6] == 'person':
                 student_id = int(item[6:])
