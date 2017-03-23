@@ -11,7 +11,6 @@ checkpointcontroller = Blueprint('checkpointcontroller', __name__, template_fold
 def grade_student(checkpoint_id, mentor_id, gradestudent):
 
     mentor = mentor_id
-
     if request.method == 'POST':
 
         student = request.form['student']
