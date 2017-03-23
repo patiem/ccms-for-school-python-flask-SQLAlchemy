@@ -1,5 +1,4 @@
 from app import db
-from sqlalchemy.orm import relationship
 from app.modules import sql
 import datetime
 
@@ -23,6 +22,54 @@ class Checkpoint(db.Model):
 
         return sql_result
 
+    # @staticmethod
+    # def select_student_id_from_list(checkpoint_id):
+    #
+    #     # Ui.clear()
+    #     # Ui.print_head('Select student to checkpoint (not graded yet)', 'header')
+    #     query = "SELECT * FROM Users  WHERE type='Student' and (SELECT count(ID) FROM Users_checkpoints " \
+    #             "WHERE ID_STUDENT = Users.ID AND ID_CHECKPOINT = {}) = 0".format(checkpoint_id)
+    #
+    #     students = []
+    #     students_ids = []
+    #
+    #     query_result = sql.query(query)
+    #
+    #     if isinstance(query_result, list):
+    #         for student in query_result:
+    #             students.append([student['ID'], student['SURNAME'], student['NAME'], ])
+    #             students_ids.append(student['ID'])
+    #
+    #         Ui.print_table(students, ['ID', 'Surname', 'Name'])
+    #         return Ui.get_id_only_in_list('Select student (ID): ', students_ids)
+    #
+    #     else:
+    #         Ui.print_text('\n All students are graded in this checkpoint! \n')
+    #         Ui.press_any_key_input()
+    #         return None
+
+    # @staticmethod
+    # def grade(student):
+    #
+    #     Ui.clear()
+    #     Ui.print_head('Grade', 'header')
+    #     Ui.print_head('{} You are grading {} {}'.format('Mentor! ', student.name, student.last_name))
+    #     options = 'Your grade for this student:\n\n' \
+    #               '\t1: Green card\n' \
+    #               '\t2: Yellow card\n' \
+    #               '\t3: Red card\n' \
+    #               '\t0: Cancel '
+    #
+    #     user_choice = Ui.get_menu(options, 0, 3)
+    #
+    #     if user_choice == '1':
+    #         return 'Green'
+    #     elif user_choice == '2':
+    #         return 'Yellow'
+    #     elif user_choice == '3':
+    #         return 'Red'
+    #     elif user_choice == '0':
+    #         return 0
 
     @staticmethod
     def make_checkpoint(mentor1, mentor2, student, checkpoint_id, grade):
@@ -35,9 +82,11 @@ class Checkpoint(db.Model):
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
+    @staticmethod
     def show_checkpoints():
 
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
+        titles = ['ID', 'Subject', 'Created by', 'Start date']
 
         sql_query_result = sql.query(query)
         return sql_query_result
@@ -72,7 +121,48 @@ class Checkpoint(db.Model):
 
                 return table
 
+    @staticmethod
+    def show_statistics_for_mentor_cards(id_mentor):
 
+        query = "SELECT *, COUNT(GRADE) as cards FROM Users_checkpoints WHERE ID_MENTOR_1 = {} OR ID_MENTOR_2 = {} " \
+                "GROUP BY grade".format(id_mentor, id_mentor)
+
+        sql_query_result = sql.query(query)
+
+        return sql_query_result
+
+    @staticmethod
+    def show_statistics_for_mentor_checkpoints(id_mentor):
+
+        query = "SELECT * FROM Checkpoints WHERE ID_USER = {} ORDER BY START_DATE ASC".format(
+            id_mentor, id_mentor)
+
+        sql_query_result = sql.query(query)
+
+        return sql_query_result
+
+            # @staticmethod
+    # def show_statistics_for_mentor(id_mentor):
+    #
+    #     Ui.print_head('Statistics of mentor', 'header')
+    #     Checkpoint.show_statistics_for_mentor_cards(id_mentor)
+    #     Checkpoint.show_statistics_for_mentor_checkpoints(id_mentor)
+    #     Ui.press_any_key_input()
+
+    # def student_checkpoint(user_object):
+    #     query = "SELECT * FROM USERS_CHECKPOINT WHERE ID_STUDENT=?"
+    #     titles = ['Title', 'Grade', 'Date', 'Mentor_1', 'Mentor_2']
+    #     values = [user_object.idx]
+    #     user_checkpoints = []
+    #     query_results = sql.query(query, values)
+    #     if isinstance(query_results, list):
+    #         for line in query_results:
+    #             query = "SELECT title FROM Checkpoints WHERE ID=?"
+    #             value = [line['ID_CHECKPOINT']]
+    #             title = sql.query(query, value)[0][0]
+    #             user_checkpoints.append([title, line['GRADE'], line['DATE'], line['ID_MENTOR_1'],
+    #                                     line['ID_MENTOR_2']])
+    #     Ui.print_table(user_checkpoints, titles)
 
 class Users_checkpoints(db.Model):
 

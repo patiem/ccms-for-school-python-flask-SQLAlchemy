@@ -14,10 +14,10 @@
             </tr>
             {% for student in table %}
             <tr>
-                <td data-id={{ student.idx }} class='id' >{{ student.idx }}</td>
-                <td>{{ student.name + ' ' + student.last_name }}</td>
-                <td>{{ student.mail }}</td>
-                <td>{{ student.telephone }}</td>
+                <td data-id={{ student.ID }} class='id' >{{ student.ID }}</td>
+                <td>{{ student.Name + ' ' + student.Surname }}</td>
+                <td>{{ student.Email }}</td>
+                <td>{{ student.Telephone }}</td>
                 {% if user['type'] != 'Employee' %}
                     <td><a class="remove_button edit" href="#edit">Edit</a><a href="#" class="remove_button remove_user" >Remove</a> </td>
                 {% endif %}

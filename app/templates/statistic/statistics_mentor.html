@@ -14,9 +14,9 @@
         {% if checkpoints != None %}
             {% for checkpoint in checkpoints %}
             <tr>
-                <td>{{ checkpoint.TITLE }}</td>
+                <td>{{ checkpoint['Title'] }}</td>
                 <td>{{ user.name }} {{ user.surname }} </td>
-                <td>{{ checkpoint.START_DATE }}</td>
+                <td>{{ checkpoint['Start_date'] }}</td>
             </tr>
             {% endfor %}
         {% endif %}
@@ -38,8 +38,8 @@
     {% if cards != None %}
         {% for card in cards %}
          <tr>
-             <td>{{ card['GRADE'] }} cards</td>
-            <td>{{ card[1] }}</td>
+             <td>{{ card['grade'] }} cards</td>
+            <td>{{ card['cards'] }}</td>
         </tr>
         {% endfor %}
         </tr>
