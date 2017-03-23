@@ -13,8 +13,8 @@
     <div class="table_parent">
     <table class="team_table">
         <tr>
-            <th data-id={{ team.id_team }} class="team_id">TEAM ID: {{ team.id_team }}</th>
-            <th data-name='{{ team.name }}' class="team_name">NAME: {{ team.name }}</th>
+            <th data-id={{ team.ID }} class="team_id">TEAM ID: {{ team.ID }}</th>
+            <th data-name='{{ team.NAME }}' class="team_name">NAME: {{ team.NAME }}</th>
             <th>Action</th>
         </tr>
 
@@ -34,7 +34,7 @@
 
     </table>
         <a href="#add_student_to_team" class="add_to_team"><div class="fixed_table_button orange_shadow"> + Student </div></a>
-        <a href="/remove_team/{{ team.id_team }}"><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
+        <a href="/remove_team/{{ team.ID }}"><div class="fixed_table_button remove_team orange_shadow"> - Remove team </div></a>
         <a href="#edit_team" class="edit_team">
             <div class="fixed_table_button orange_shadow edit_team"> Edit team name </div>
         </a>
@@ -84,7 +84,7 @@
     </div>
 
     <div id="edit_team" class="overlay">
-            <form name="add_student" class="edit_user" method="post" action="{{ url_for('team_name_edit') }}">
+            <form name="add_student" class="edit_user" method="post" action="{{ url_for('teamcontroller.team_name_edit') }}">
                 <a class="close" href="#">&times;</a>
 
                 <div class="hidden">
