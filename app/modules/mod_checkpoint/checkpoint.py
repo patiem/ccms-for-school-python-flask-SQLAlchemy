@@ -5,32 +5,19 @@ import datetime
 
 class Checkpoint(db.Model):
 
-    __tablename__ = "Users"
+    __tablename__ = "Checkpoints"
     ID = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String, nullable=False)
-    Surname = db.Column(db.String, nullable=False)
-    Email = db.Column(db.String, nullable=False)
+    ID_USER = db.Column(db.Integer)
+    TITLE = db.Column(db.String)
+    START_DATE = db.Column(db.String)
+    USERS_CHECKPOINTS = db.relationship("Users_checkpoints", backref="current_checkpoint", lazy='dynamic')
 
-    def __init__(self, Name, Surname, Email):
-        self.Name = Name
-        self.Surname = Surname
-        self.Email = Email
-
-
-
-class Checkpoint23():
-
-
-    @staticmethod
-    def add_checkpoint(title, start_date,  mentor):
-
-        query = "INSERT INTO Checkpoints ('ID_USER', 'TITLE', 'START_DATE') VALUES (?, ?, ?)"
-        sql.query(query, [mentor, title, start_date])
 
     @staticmethod
     def select_mentors_not_in_checkpoint(checkpoint_id):
 
-        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor' AND `ID` NOT IN (SELECT ID_USER FROM Checkpoints WHERE ID={})".format(checkpoint_id)
+        query = "SELECT * FROM Users WHERE `TYPE` = 'Mentor' AND `ID` NOT IN (SELECT ID_USER FROM Checkpoints WHERE ID={})".format(
+            checkpoint_id)
         sql_result = sql.query(query)
 
         return sql_result
@@ -90,12 +77,12 @@ class Checkpoint23():
         today = datetime.date.today()
 
         query = "INSERT INTO Users_checkpoints " \
-                        "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
-                        " VALUES (?, ?, ?, ?, ?, ?)"
+                "(ID_CHECKPOINT, DATE, GRADE, ID_STUDENT, ID_MENTOR_1, ID_MENTOR_2)" \
+                " VALUES (?, ?, ?, ?, ?, ?)"
         params = [checkpoint_id, today, grade, int(student), int(mentor1), int(mentor2)]
         sql.query(query, params)
 
-
+    @staticmethod
     def show_checkpoints():
 
         query = "SELECT * FROM Checkpoints, Users WHERE Checkpoints.ID_USER = Users.ID"
@@ -104,11 +91,7 @@ class Checkpoint23():
         sql_query_result = sql.query(query)
         return sql_query_result
 
-    @staticmethod
-    def get_name(checkpoint_id):
 
-        query = "SELECT TITLE FROM Checkpoints WHERE ID = ?"
-        return sql.query(query, [checkpoint_id])
     @staticmethod
     def show_checkpoint_results(checkpoint_id):
         if checkpoint_id != 0:
@@ -129,7 +112,6 @@ class Checkpoint23():
             if isinstance(sql_query_result, list):
 
                 for checkpoint in sql_query_result:
-
                     table.append({'student': checkpoint['student_name'] + ' ' + checkpoint['student_surname'],
                                   'mentor1': checkpoint['mentor_name'] + ' ' + checkpoint['mentor_surname'],
                                   'mentor2': checkpoint['mentor2_name'] + ' ' + checkpoint['mentor2_surname'],
@@ -159,7 +141,7 @@ class Checkpoint23():
 
         return sql_query_result
 
-    # @staticmethod
+            # @staticmethod
     # def show_statistics_for_mentor(id_mentor):
     #
     #     Ui.print_head('Statistics of mentor', 'header')
@@ -182,6 +164,13 @@ class Checkpoint23():
     #                                     line['ID_MENTOR_2']])
     #     Ui.print_table(user_checkpoints, titles)
 
+class Users_checkpoints(db.Model):
 
-
-
+    __tablename__ = "Users_checkpoints"
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_CHECKPOINT = db.Column(db.Integer,  db.ForeignKey('Checkpoints.ID'))
+    DATE = db.Column(db.String(20))
+    GRADE = db.Column(db.String(20))
+    ID_STUDENT = db.Column(db.Integer)
+    ID_MENTOR_1 = db.Column(db.Integer)
+    ID_MENTOR_2 = db.Column(db.Integer)

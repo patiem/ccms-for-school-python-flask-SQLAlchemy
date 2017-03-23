@@ -1,7 +1,7 @@
 from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
-from app.modules.mod_team.team import Team
+from app.modules.mod_team.team import Team, UsersTeam
 from app.modules.test import Test
 
 
@@ -100,12 +100,13 @@ class Submission:
 
     @staticmethod  # IN USE
     def get_team_users(student_idx):
-        team_id = Team.find_student_team(student_idx)
+        users_team = UsersTeam.query.filter_by(ID_USER=student_idx).first()
+
         clean_list = []
-        if team_id:
-            team_members = Team.get_team_members(team_id)
-            for item in team_members:
-                clean_list.append(item[0])
+
+        if users_team:
+            for student in users_team.team.students.all():
+                clean_list.append(student.ID_USER)
         return clean_list
 
     # @classmethod
@@ -172,3 +173,6 @@ class Submission:
                    WHERE LINK = ?"""
         edit_list = [value, mentor_id, link]
         sql.query(query, edit_list)
+
+
+Submission.get_team_users(11)
