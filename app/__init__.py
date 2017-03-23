@@ -210,27 +210,7 @@ def get_data():
     return 'lipa'
 
 
-@app.route('/edit-form', methods=['POST', 'GET'])
-@login_required
-@correct_type(['Manager', 'Mentor'])
-@correct_form(['type', 'id', 'name', 'surname', 'email', 'telephone'])
-def update_user():
-    if request.method == 'POST':
-        user_type = request.form['type']
-        idx = request.form['id']
-        name = request.form['name']
-        surname = request.form['surname']
-        email = request.form['email']
-        telephone = request.form['telephone']
-        edit_list = [name, surname, email, telephone, idx]
-        if user_type == 'student':
-            Student.update_sql(edit_list)
-            return redirect(url_for('student_list'))
-        elif user_type == 'mentor':
-            Mentor.update_sql(edit_list)
-            return redirect(url_for('mentor_list'))
-        else:
-            return render_template('bad.html')
+
 
 
 @app.route('/save-user', methods=['POST', 'GET'])
@@ -255,14 +235,6 @@ def save_user():
             return render_template('bad.html')
 
 
-@app.route('/remove-user', methods=['POST', 'GET'])
-@login_required
-@correct_type(['Manager', 'Mentor'])
-@correct_json(['Idx'])
-def remove_user():
-    if request.method == 'POST':
-        idx = request.json['Idx']
-        User.remove_sql(idx)
 
 
 
