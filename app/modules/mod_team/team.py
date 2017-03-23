@@ -22,6 +22,7 @@ class Team(db.Model):
         Creates teams_list with Team objects
         """
         list_from_db = Team.query.all()
+        print(Team.get_team_members(22)[0][0])
         return list_from_db
 
     # @classmethod
