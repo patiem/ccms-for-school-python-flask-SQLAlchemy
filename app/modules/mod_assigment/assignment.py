@@ -88,28 +88,10 @@ class Assignment(db.Model):
         """
         return '{}, start: {}, end: {}'.format(self.title, self.start_date, self.end_date)
 
-    # def assignment_description(self):
-    #     """
-    #     Creates string from description file of assignment.
-    #     :return: text_to_print (str)
-    #     """
-    #     filename = 'csv/assignments_description/{}'.format(self.file_name)
-    #     with open(filename, 'r') as f:
-    #         text_to_print = f.read()
-    #     return text_to_print
-
-    # @classmethod
-    # def get_by_id(cls, assignment_idx):
-    #     for assignment in cls.assigments_list:
-    #         if assignment.idx == assignment_idx:
-    #             return assignment
 
     @classmethod
     def get_by_id(cls, assignment_idx):
-        query = "SELECT * FROM `assigments` WHERE id=?"
-        params = [assignment_idx]
-        assignment = sql.query(query, params)[0]
-        print(assignment)
+        assignment = Assignment.query.filter_by(ID=assignment_idx).first()
         return assignment
 
     @staticmethod
@@ -144,6 +126,3 @@ class Assignment(db.Model):
             assignments_list_to_print.append(new_line)
 
         return assignments_list_to_print
-
-
-Assignment.pass_assign_for_student()
