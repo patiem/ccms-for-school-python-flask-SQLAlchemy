@@ -110,7 +110,12 @@ class User(db.Model):
 
     @staticmethod
     def update_sql(edit_list):
-        raise NotImplementedError
+        edit_user = User.query.filter_by(ID=edit_list[4]).first()
+        edit_user.Name = edit_list[0]
+        edit_user.Surname = edit_list[1]
+        edit_user.Email = edit_list[2]
+        edit_user.Telephone = edit_list[3]
+        db.session.commit()
 
     @staticmethod
     def login(user_login, user_pass):
