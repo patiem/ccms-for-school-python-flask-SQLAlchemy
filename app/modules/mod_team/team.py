@@ -159,13 +159,11 @@ class Team(db.Model):
         params = [team_id]
         return sql.query(query, params)
 
-    @classmethod
-    def update_name(cls, idx, team_name):
-        query = """UPDATE TEAMS
-                   SET NAME = ?
-                   WHERE ID = ?"""
-        edit_list = [team_name, idx]
-        sql.query(query, edit_list)
+    @staticmethod
+    def update_name(idx, team_name):
+        edited_team = Team.query.filter_by(ID=idx).first()
+        edited_team.NAME = team_name
+        db.session.commit()
 
     @classmethod
     def get_team(cls, idx):
