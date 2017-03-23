@@ -11,7 +11,6 @@ checkpointcontroller = Blueprint('checkpointcontroller', __name__, template_fold
 def grade_student(checkpoint_id, mentor_id, gradestudent):
 
     mentor = mentor_id
-
     if request.method == 'POST':
 
         student = request.form['student']
@@ -24,8 +23,6 @@ def grade_student(checkpoint_id, mentor_id, gradestudent):
                                       ID_MENTOR_1=session['user']['id'], ID_MENTOR_2=mentor, current_checkpoint=checkpoint_to_grade)
         db.session.add(new_grade)
         db.session.commit()
-
-        Checkpoint.make_checkpoint(session['user']['id'], mentor, student, checkpoint_id, grade)
 
     students_list = Student.get_students_without_checkpoint(checkpoint_id)
 
@@ -62,7 +59,7 @@ def checkpoint_results(checkpoint_id):
 def checkpoint_mentor(checkpoint_id):
 
     mentors = Checkpoint.select_mentors_not_in_checkpoint(checkpoint_id)
-    if Checkpoint.get_name(checkpoint_id) is None:
+    if Checkpoint.query.filter_by(ID=checkpoint_id).first() is None:
         return redirect(url_for('checkpointcontroller.checkpoint'))
 
     return render_template('checkpoint/checkpoint-select-mentor.html', user=session['user'], checkpoint_id=checkpoint_id,

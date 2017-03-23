@@ -115,8 +115,8 @@ class Assignment(db.Model):
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
                 new_line.append('submitted')
-                if submission.grade:
-                    new_line.append(submission.grade)
+                if submission.GRADE:
+                    new_line.append(submission.GRADE)
                 else:
                     new_line.append('None')
             else:
