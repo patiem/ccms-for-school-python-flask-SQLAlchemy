@@ -3,7 +3,7 @@ from app import db
 from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
-from app.modules.mod_submission.submission import Submission
+from app.modules.mod_submission.submission import *
 from app.modules.test import Test
 
 

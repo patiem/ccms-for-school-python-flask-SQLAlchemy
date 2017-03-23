@@ -1,7 +1,9 @@
 from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
+from app.modules.mod_user.user import User
 from app.modules.mod_team.team import Team, UsersTeam
+from app.modules.mod_assigment.assignment import *
 from app.modules.test import Test
 from app import db
 
@@ -46,21 +48,30 @@ class Submission(db.Model):
         except:
             return []
 
-    @classmethod  # IN USE
+    @classmethod
     def subs_to_grade(cls):
+        """
+
+        :return:
+        """
         sub_list = cls.list_from_sql()
         list_for_mentor = []
         for sub in sub_list:
             if Student.make_student(sub.ID_STUDENT):
-                ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.ID_ASSIGMENT])[0][0]
-                if sub.ID_MENTOR != 0:
-                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.ID_MENTOR])
+
+                ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+                if ass_title:
+                    ass_title = ass_title.TITLE
+                else:
+                    ass_title = None
+
+                if sub.ID_MENTOR:
+                    mentor_name = User.query.filter_by(ID=sub.ID_MENTOR).first()
                     if mentor_name:
-                        mentor_name = ' '.join(mentor_name[0])
-                    else:
-                        mentor_name = 'None'
+                        mentor_name = mentor_name.full_name()
                 else:
                     mentor_name = 'None'
+
                 student = Student.make_student(sub.ID_STUDENT)
                 list_for_mentor.append([sub, student, ass_title, mentor_name])
         return list_for_mentor
