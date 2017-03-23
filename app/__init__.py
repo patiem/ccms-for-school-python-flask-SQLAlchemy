@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -23,6 +23,7 @@ from app.modules.mod_team.team_controller import teamcontroller
 from app.modules.mod_user.user_controller import usercontroller
 from app.modules.mod_student.student_controller import studentcontroller
 from app.modules.mod_mentor.mentor_controller import mentorcontroller
+from app.modules.mod_submission.submission_controller import submissioncontroller
 
 app.register_blueprint(checkpointcontroller)
 app.register_blueprint(mentorcontroller)
@@ -31,6 +32,7 @@ app.register_blueprint(statistics)
 app.register_blueprint(attendancecontroller)
 app.register_blueprint(teamcontroller)
 app.register_blueprint(usercontroller)
+app.register_blueprint(submissioncontroller)
 
 
 @app.route('/assignments', methods=['GET', 'POST'])
@@ -68,24 +70,3 @@ def show_assignment(idx):
         comment = request.form['comment']
         Submission.add_submission(session['user']['id'], assignment[0], link, comment, assignment[6])
         return redirect(url_for('show_assignment', idx=idx))
-
-
-@app.route('/grade_submission', methods=['GET', 'POST'])
-@login_required
-@correct_type(['Mentor'])
-def grade_submission():
-    if request.method == 'GET':
-        sub_list = Submission.subs_to_grade()
-        return render_template('submission/grade_submission.html', user=session['user'], sub_list=sub_list)
-
-
-@app.route('/update_submission', methods=['POST'])
-@login_required
-@correct_type(['Mentor'])
-def update_submission():
-    value = request.json['Value']
-    link = request.json['Link']
-    mentor_id = session['user']['id']
-    Submission.update_grade(value, link, mentor_id)
-    user_dict = {'fullname': session['user']['name'] + ' ' + session['user']['surname']}
-    return jsonify(user_dict)
