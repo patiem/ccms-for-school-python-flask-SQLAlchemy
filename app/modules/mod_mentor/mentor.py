@@ -12,8 +12,11 @@ class Mentor(User):
 
     @staticmethod
     def mentor_exist(idx):
-        mentor = Mentor.query().fiter_by(Type='Mentor',ID=idx).first()
+        mentor = Mentor.query.filter_by(Type='Mentor', ID=idx).first()
         if mentor:
             return True
         else:
             return False
+
+
+
