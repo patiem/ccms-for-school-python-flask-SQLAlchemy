@@ -1,4 +1,4 @@
-import datetime
+
 from app import db
 from app.modules import sql
 from app.modules.common import *
@@ -22,7 +22,7 @@ class Assignment(db.Model):
     LINK = db.Column(db.String)
     GROUP = db.Column(db.String)
 
-    def __init__(self, idx, title, mentor_id, start_date, end_date, file_name, group='0'):
+    def __init__(self, title, mentor_id, start_date, end_date, file_name, group='0'):
         """
         Creates object of Assignment class.
         :param idx: str (unique randomly created id)
@@ -34,7 +34,6 @@ class Assignment(db.Model):
         :param group: int (if assignment is for group = 1, else 0)
 
         """
-        self.ID = idx
         self.ID_MENTOR = mentor_id
         self.TITLE = title
         self.START_DATA = start_date
@@ -45,20 +44,6 @@ class Assignment(db.Model):
     @classmethod
     def list_from_sql(cls):
         assignments_list = cls.query.all()
-        # query = "SELECT * FROM `Assigments`;"
-        # list_from_sql = sql.query(query)
-        # if list_from_sql:
-        #     for item in list_from_sql:
-        #         idx = item['ID']
-        #         title = item['TITLE']
-        #         mentor_id = item['ID_MENTOR']
-        #         if Test.is_date_correct(item['START_DATA']):
-        #             start_date = Common.make_corect_date(item['START_DATA'])
-        #             if Test.is_date_correct(item['END_DATA']):
-        #                 end_date = Common.make_corect_date(item['END_DATA'])
-        #                 file_name = item['LINK']
-        #                 group = item['GROUP']
-        #                 assignments_list.append(cls(idx, title, mentor_id, start_date, end_date, file_name, group))
         return assignments_list
 
     @classmethod
@@ -73,22 +58,9 @@ class Assignment(db.Model):
         :param group: bool (group/ind)
         :return: None
         """
-        query = "INSERT INTO `Assigments` (TITLE, ID_MENTOR, START_DATA, END_DATA, LINK, `GROUP`)" \
-                "VALUES (?, ?, ?, ?, ?, ?);"
-        values_list = [title, mentor_id, start_date, end_date, file_name, group]
-        sql.query(query, values_list)
-
-    # @classmethod
-    # def create_list_to_save(cls):
-    #     """
-    #     Creates 2d list which can be use for saving process
-    #     :return: list_to_save - 2d list ready to be saved in csv file
-    #     """
-    #     list_to_save = []
-    #     for assigment in cls.assigments_list:
-    #         list_to_save.append([assigment.idx, assigment.title, assigment.mentor_id,
-    #                             assigment.start_date, assigment.end_date, assigment.file_name])
-    #     return list_to_save
+        new = Assignment(mentor_id, title, start_date, end_date, file_name, group)
+        db.session.add(new)
+        db.session.commit()
 
     @classmethod
     def pass_assign_for_mentor(cls):
@@ -107,12 +79,8 @@ class Assignment(db.Model):
         :return: assignments_for_students (list)
         """
         today = datetime.date.today()
-        assignments_for_students = []
-        assignments_list = cls.list_from_sql()
-        for assignment in assignments_list:
-            if assignment.start_date <= today:
-                assignments_for_students.append(assignment)
-        return assignments_for_students
+        assignments_list = Assignment.query.filter(Assignment.START_DATA <= today).all()
+        return assignments_list
 
     def __str__(self):
         """
@@ -155,13 +123,12 @@ class Assignment(db.Model):
         logged_user = Student.make_student(user_id)
         Assignment.list_from_sql()
         assignments_list = Assignment.pass_assign_for_student()
-        # submissions = Submission.list_from_sql()  # ??
         assignments_list_to_print = []
         for assignment in assignments_list:
             type_of_assignment = 'Individual'
-            if assignment.group == '1':
+            if assignment.GROUP == '1':
                 type_of_assignment = 'Group'
-            new_line = [assignment.title, assignment.mentor_id, assignment.start_date, assignment.end_date,
+            new_line = [assignment.TITLE, assignment.ID_MENTOR, assignment.START_DATA, assignment.END_DATA,
                         type_of_assignment]
             submission = Submission.find_submission(logged_user, assignment)
             if submission:
@@ -173,7 +140,10 @@ class Assignment(db.Model):
             else:
                 new_line.append('not submitted')
                 new_line.append('None')
-            new_line.append(assignment.idx)
+            new_line.append(assignment.ID)
             assignments_list_to_print.append(new_line)
 
         return assignments_list_to_print
+
+
+Assignment.pass_assign_for_student()
