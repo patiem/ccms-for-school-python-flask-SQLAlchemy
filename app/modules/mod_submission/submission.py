@@ -1,14 +1,25 @@
 from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
+from app.modules.mod_user.user import User
 from app.modules.mod_team.team import Team, UsersTeam
 from app.modules.test import Test
+from app import db
 
 
-class Submission:
+class Submission(db.Model):
     """
     Class of students submission.
     """
+    __tablename__ = "Sumbissions"
+
+    ID = db.Column(db.Integer, primary_key=True)
+    ID_ASSIGMENT = db.Column(db.Integer, nullable=False)
+    ID_STUDENT = db.Column(db.Integer, nullable=False)
+    GRADE = db.Column(db.Integer)
+    DATE = db.Column(db.String, nullable=False)
+    LINK = db.Column(db.String, nullable=False)
+    ID_MENTOR = db.Column(db.Integer)
 
     def __init__(self, idx, student_idx, assignment_idx, date_of_submission, link, grade=None, mentor_id=None):
         """
@@ -20,53 +31,49 @@ class Submission:
         :param grade: None (if not graded)/ str (if graded)
         :param mentor_id: None/int (id of mentor, who graded submission)
         """
-        self.idx = idx
-        self.student_idx = student_idx
-        self.assignment_idx = assignment_idx
-        self.date_of_submission = date_of_submission
-        self.link = link
-        self.grade = grade
-        self.mentor_id = mentor_id
+        self.ID = idx
+        self.ID_ASSIGMENT = assignment_idx
+        self.ID_STUDENT = student_idx
+        self.GRADE = grade
+        self.DATE = date_of_submission
+        self.LINK = link
+        self.ID_MENTOR = mentor_id
 
-    @classmethod  # IN USE
+    @classmethod
     def list_from_sql(cls):
-        submission_list = []
-        query = "SELECT * FROM `Sumbissions`;"
-        list_from_sql = sql.query(query)
-        if list_from_sql:
-            for item in list_from_sql:
-                idx = item['ID']
-                student_idx = item['ID_STUDENT']
-                assignment_idx = item['ID_ASSIGMENT']
-                mentor_id = item['ID_MENTOR']
-                grade = item['GRADE']
-                date = item['DATE']
-                link = item['LINK']
-                if Test.is_date_correct(date):
-                    date_of_submission = Common.make_corect_date(date)
-                    if grade != 0:
-                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link, grade,
-                                                   mentor_id))
-                    else:
-                        submission_list.append(cls(idx, student_idx, assignment_idx, date_of_submission, link))
-        return submission_list
+        try:
+            submission_list = Submission.query.all()
+            return submission_list
+        except:
+            return []
 
-    @classmethod  # IN USE
+    @classmethod
     def subs_to_grade(cls):
+        """
+
+        :return:
+        """
+        from app.modules.mod_assigment.assignment import Assignment
         sub_list = cls.list_from_sql()
         list_for_mentor = []
         for sub in sub_list:
-            if Student.make_student(sub.student_idx):
-                ass_title = sql.query('SELECT title FROM Assigments WHERE ID=?', [sub.assignment_idx])[0][0]
-                if sub.mentor_id != 0:
-                    mentor_name = sql.query('SELECT name, surname FROM Users WHERE ID=?', [sub.mentor_id])
+            if Student.make_student(sub.ID_STUDENT):
+
+                ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
+
+                if ass_title:
+                    ass_title = ass_title.TITLE
+                else:
+                    ass_title = None
+
+                if sub.ID_MENTOR:
+                    mentor_name = User.query.filter_by(ID=sub.ID_MENTOR).first()
                     if mentor_name:
-                        mentor_name = ' '.join(mentor_name[0])
-                    else:
-                        mentor_name = 'None'
+                        mentor_name = mentor_name.full_name()
                 else:
                     mentor_name = 'None'
-                student = Student.make_student(sub.student_idx)
+
+                student = Student.make_student(sub.ID_STUDENT)
                 list_for_mentor.append([sub, student, ass_title, mentor_name])
         return list_for_mentor
 
@@ -132,27 +139,35 @@ class Submission:
         """
         submissions_list = cls.list_from_sql()
         for submission in submissions_list:
-            if submission.student_idx == student.ID:
-                if submission.assignment_idx == assignment.ID:
+            if submission.ID_STUDENT == student.ID:
+                if submission.ID_ASSIGMENT == assignment.ID:
                     return submission
         return False
 
-    @staticmethod
-    def find_submission_sql(assignment_id, student_id):
+    @classmethod
+    def find_submission_sql(cls, assignment_id, student_id):
         """
         :param student_id: logged student id
         :param assignment_id: assignment id
         :return: submission object / False
         """
-        query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
-        params = [assignment_id, student_id]
-        if sql.query(query, params):
-            if sql.query(query, params)[0][0] == -1:
-                grade = 'Not graded'
-            else:
-                grade = sql.query(query, params)[0][0]
-            return [grade, sql.query(query, params)[0][1]]
+
+        submission = cls.query.filter_by(ID_ASSIGMENT=assignment_id, ID_STUDENT=student_id).first()
+
+        # query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
+        # params = [assignment_id, student_id]
+
+        if submission:
+            return [submission.GRADE, submission.DATE]
         return False
+
+        # if sql.query(query, params):
+        #     if sql.query(query, params)[0][0] == -1:
+        #         grade = 'Not graded'
+        #     else:
+        #         grade = sql.query(query, params)[0][0]
+        #     return [grade, sql.query(query, params)[0][1]]
+        # return False
 
     # def change_grade(self, grade, mentor_id, student_id, assignment_id):
     #     """
@@ -167,12 +182,14 @@ class Submission:
     #     sql.query(query, values_list)
 
     @classmethod
-    def update_grade(cls, value, link, mentor_id):
-        query = """UPDATE Sumbissions
-                   SET GRADE = ?, ID_MENTOR = ?
-                   WHERE LINK = ?"""
-        edit_list = [value, mentor_id, link]
-        sql.query(query, edit_list)
-
-
-Submission.get_team_users(11)
+    def update_grade(cls, grade, link, mentor_id):
+        """
+        Sets grade & mentor (id) for submission
+        :param grade: int
+        :param link: str
+        :param mentor_id: int
+        """
+        for submission in Submission.query.filter_by(LINK=link).all():
+            submission.GRADE = grade
+            submission.ID_MENTOR = mentor_id
+        db.session.commit()

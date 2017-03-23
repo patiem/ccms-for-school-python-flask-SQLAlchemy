@@ -24,20 +24,20 @@
 {#                item[3] mentor name#}
 
             <tr>
-                <td class="sub_idx" data-id ={{ item[0].idx }} >{{ item[0].idx }}</td>
+                <td class="sub_idx" data-id ={{ item[0].ID }} >{{ item[0].ID }}</td>
                 <td>{{ item[1].full_name() }}</td>
-                <td>{{ item[0].date_of_submission }}</td>
-                <td class='left' data-link = {{ item[0].link }} ><a href="{{ item[0].link }}">{{ item[2]}}</a></td>
+                <td>{{ item[0].DATE }}</td>
+                <td class='left' data-link = {{ item[0].LINK }} ><a href="{{ item[0].LINK }}">{{ item[2]}}</a></td>
                 <td>
                     <div class="grade_range">
-                    {% if item[0].grade == -1 %}
-                    <output data-link = {{ item[0].link }} name="gradeOutput1" class="grade_output">Not graded</output>
+                    {% if item[0].GRADE == -1 %}
+                    <output data-link = {{ item[0].LINK }} name="gradeOutput1" class="grade_output">Not graded</output>
                     {% else %}
-                    <output data-link = {{ item[0].link }} name="gradeOutput1" class="grade_output">{{ item[0].grade }}</output>
+                    <output data-link = {{ item[0].LINK }} name="gradeOutput1" class="grade_output">{{ item[0].GRADE }}</output>
                     {% endif %}
                         <label for="gradeInput1"></label>
-                        <input data-link = {{ item[0].link }} type="range" class="grade_range grade_input" name="gradeInput1"
-                           value="{{ item[0].grade }}" min="-1" max="100">
+                        <input data-link = {{ item[0].LINK }} type="range" class="grade_range grade_input" name="gradeInput1"
+                           value="{{ item[0].GRADE }}" min="-1" max="100">
                     </div>
                 </td>
                 <td class="mentor_name">{{ item[3] }}</td>
