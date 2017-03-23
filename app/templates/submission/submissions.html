@@ -4,12 +4,12 @@
 
 {% block content %}
     <div id="top">
-    <h2 class="assign_title">{{ assignment[2] }}</h2>
+    <h2 class="assign_title">{{ assignment.TITLE }}</h2>
     <div>
         {% if user['type'] == 'Student' %}
             <a href="#popup"><div class="fixed_table_button gray_button orange_shadow"> Submit assignment </div></a>
         {% endif %}
-        <a href="{{ url_for('show_assignments_list') }}" ><div class="fixed_table_button orange_button orange_shadow">
+        <a href="{{ url_for('assigment.show_assignments_list') }}" ><div class="fixed_table_button orange_button orange_shadow">
             Back to list </div></a>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <table class="assignment">
             <tr>
                 <th>End date</th>
-                <td>{{ assignment[4] }}</td>
+                <td>{{ assignment.END_DATA }}</td>
             </tr>
             {% if submission %}
                 <tr>
@@ -61,7 +61,7 @@
             </form>
             {% else %}
             <h2>Add submission</h2>
-            <form class="edit_user" name="add_submission" method="POST" action="/assignments/{{ assignment[0] }}">
+            <form class="edit_user" name="add_submission" method="POST" action="{{ url_for('assigment.show_assignments_list') }}/{{ assignment.ID }}">
                 <a class="close" href="#">&times;</a>
                 <div class="form-block">
                     <label for="link">Link to assignment:</label>
