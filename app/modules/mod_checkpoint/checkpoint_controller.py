@@ -24,8 +24,6 @@ def grade_student(checkpoint_id, mentor_id, gradestudent):
         db.session.add(new_grade)
         db.session.commit()
 
-        Checkpoint.make_checkpoint(session['user']['id'], mentor, student, checkpoint_id, grade)
-
     students_list = Student.get_students_without_checkpoint(checkpoint_id)
 
     return redirect(url_for('checkpointcontroller.checkpoint_mentor_student', user=session['user'],
