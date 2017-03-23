@@ -23,8 +23,10 @@ from app.modules.mod_submission.submission import Submission
 from app.modules.mod_attendance.attendance import Attendance
 from app.modules.mod_team.team_controller import teamcontroller
 from app.modules.mod_user.user_controller import usercontroller
+from app.modules.mod_student.student_controller import studentcontroller
 
 app.register_blueprint(checkpointcontroller)
+app.register_blueprint(studentcontroller)
 app.register_blueprint(statistics)
 app.register_blueprint(teamcontroller)
 app.register_blueprint(usercontroller)
@@ -121,14 +123,7 @@ def attendance_date(date):
     return redirect(url_for('attendance', date=date))
 
 
-@app.route('/student_list')
-@login_required
-@correct_type(['Manager', 'Employee', 'Mentor'])
-def student_list():
-    table = Student.students_list()
-    if table:
-        return render_template('student/student_list.html', table=table, user=session['user'])
-    return render_template('student/student_list.html', user=session['user'])
+
 
 
 @app.route('/mentor_list')
