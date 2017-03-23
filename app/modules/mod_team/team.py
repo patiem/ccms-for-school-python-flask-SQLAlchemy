@@ -73,7 +73,7 @@ class Team(db.Model):
         :return: None
         """
         id_t = team.ID
-        id_s = student.idx
+        id_s = student.ID
         if student.id_team:
             query = "UPDATE `Users_team` SET ID_TEAM={} WHERE ID_USER={};".format(id_t, id_s)
         else:
@@ -116,7 +116,7 @@ class Team(db.Model):
         """
         student = Student.return_by_id(student_id)
         if student:
-            student_team = Team.get_team(student.idx)
+            student_team = Team.get_team(student.ID)
             student.id_team = student_team
             team = Team.get_team_by_id(int(team_id))
             if team:
