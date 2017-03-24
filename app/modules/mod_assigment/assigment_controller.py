@@ -25,7 +25,7 @@ def show_assignments_list():
             group = request.form['group']
             description = request.form['description']
             Assignment.add_assignment(title, session['user']['id'], start_date, end_date, description, group)
-            return redirect(url_for('show_assignments_list'))
+            return redirect(url_for('assigment.show_assignments_list'))
 
 
 @assigmentcontroller.route('/assignments/<idx>', methods=['GET', 'POST'])
