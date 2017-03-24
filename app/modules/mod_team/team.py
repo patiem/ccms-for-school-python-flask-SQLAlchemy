@@ -3,8 +3,12 @@ from app import db
 
 
 class Team(db.Model):
+    """
+    Class of Team
+    """
 
     __tablename__ = "TEAMS"
+
     ID = db.Column(db.Integer, primary_key=True)
     NAME = db.Column(db.String, nullable=False)
     students = db.relationship('UsersTeam', backref='team', cascade='all, delete', lazy='dynamic')
@@ -96,6 +100,10 @@ class Team(db.Model):
 
     @staticmethod
     def remove_team(team_id):
+        """
+        Removes team from db
+        :param team_id: int
+        """
         team_to_remove = Team.query.filter_by(ID=team_id).first()
         db.session.delete(team_to_remove)
         db.session.commit()
@@ -116,18 +124,32 @@ class Team(db.Model):
 
     @staticmethod
     def remove_student_from_team(student_id):
+        """
+        Removes student from `Users_team` table
+        :param student_id: int
+        """
         remove_student = UsersTeam.query.filter_by(ID_USER=student_id).first()
         db.session.delete(remove_student)
         db.session.commit()
 
     @staticmethod
     def update_name(idx, team_name):
+        """
+        Updates name of team in `TEAMS` table
+        :param idx: int
+        :param team_name: str
+        """
         edited_team = Team.query.filter_by(ID=idx).first()
         edited_team.NAME = team_name
         db.session.commit()
 
     @classmethod
     def get_team(cls, idx):
+        """
+        Returns Team ID where is Student with 'idx'
+        :param idx: int
+        :return: Team ID (int) / None
+        """
 
         team = UsersTeam.query.filter_by(ID_USER=idx).first()
         if team:
@@ -150,8 +172,12 @@ class Team(db.Model):
 
 
 class UsersTeam(db.Model):
+    """
+    Class of UsersTeam
+    """
 
     __tablename__ = "Users_team"
+
     ID = db.Column(db.Integer, primary_key=True)
     ID_USER = db.Column(db.Integer, db.ForeignKey('Users.ID'))
     ID_TEAM = db.Column(db.Integer, db.ForeignKey('TEAMS.ID'))

@@ -4,8 +4,11 @@ from app import db
 
 
 class Attendance(db.Model):
-
+    """
+    Class of students submission.
+    """
     __tablename__ = "Attendance"
+
     ID = db.Column(db.Integer, primary_key=True)
     ID_STUDENT = db.Column(db.Integer, db.ForeignKey('Users.ID'), nullable=False)
     DATE = db.Column(db.String, nullable=False)
@@ -37,8 +40,8 @@ class Attendance(db.Model):
                 user = Student.query.filter_by(ID=student.ID_STUDENT).first()
                 fullname = user.full_name()
                 attendance_list.append(Attendance(student.ID_STUDENT,
-                                                  fullname,
                                                   student.DATE,
+                                                  fullname,
                                                   student.STATUS
                                                   ))
             return attendance_list
