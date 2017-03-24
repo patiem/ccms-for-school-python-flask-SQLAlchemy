@@ -2,8 +2,7 @@ from app.modules import sql
 from app.modules.common import *
 from app.modules.mod_student.student import Student
 from app.modules.mod_user.user import User
-from app.modules.mod_team.team import Team, UsersTeam
-from app.modules.test import Test
+from app.modules.mod_team.team import UsersTeam
 from app import db
 
 
@@ -41,6 +40,10 @@ class Submission(db.Model):
 
     @classmethod
     def list_from_sql(cls):
+        """
+        Returns list with Submission objects
+        :return: list
+        """
         try:
             submission_list = Submission.query.all()
             return submission_list
@@ -50,15 +53,15 @@ class Submission(db.Model):
     @classmethod
     def subs_to_grade(cls):
         """
-
-        :return:
+        Returns list for mentor to grade submission
+        :return: submission(obj), student(ID-int),
+                 ass_title(str), mentor_name(str)
         """
         from app.modules.mod_assigment.assignment import Assignment
         sub_list = cls.list_from_sql()
         list_for_mentor = []
         for sub in sub_list:
             if Student.make_student(sub.ID_STUDENT):
-
                 ass_title = Assignment.query.filter_by(ID=sub.ID_ASSIGMENT).first()
 
                 if ass_title:
@@ -105,30 +108,20 @@ class Submission(db.Model):
             param = [sub_id, comment]
             sql.query(query_3, param)
 
-    @staticmethod  # IN USE
+    @staticmethod
     def get_team_users(student_idx):
+        """
+        Returns list with students ids
+        :param student_idx: int
+        :return: list with int
+        """
         users_team = UsersTeam.query.filter_by(ID_USER=student_idx).first()
-
         clean_list = []
 
         if users_team:
             for student in users_team.team.students.all():
                 clean_list.append(student.ID_USER)
         return clean_list
-
-    # @classmethod
-    # def pass_submission_for_student(cls, student):
-    #     """
-    #     EEeee nie wiem w sumie po co to miało być.
-    #     Może mnie potem oswieci.
-    #     :param student:
-    #     :return:
-    #     """
-    #     submission_for_student = []
-    #     for submission in cls.submission_list:
-    #         if submission.student_idx == student.idx:
-    #             submission_for_student.append(submission)
-    #     return submission_for_student
 
     @classmethod
     def find_submission(cls, student, assignment):
@@ -154,32 +147,9 @@ class Submission(db.Model):
 
         submission = cls.query.filter_by(ID_ASSIGMENT=assignment_id, ID_STUDENT=student_id).first()
 
-        # query = 'SELECT grade, `date` FROM sumbissions WHERE id_assigment=? AND id_student=?'
-        # params = [assignment_id, student_id]
-
         if submission:
             return [submission.GRADE, submission.DATE]
         return False
-
-        # if sql.query(query, params):
-        #     if sql.query(query, params)[0][0] == -1:
-        #         grade = 'Not graded'
-        #     else:
-        #         grade = sql.query(query, params)[0][0]
-        #     return [grade, sql.query(query, params)[0][1]]
-        # return False
-
-    # def change_grade(self, grade, mentor_id, student_id, assignment_id):
-    #     """
-    #     Changes grade of submission. Then saves to file.
-    #     :param grade: int
-    #     :return: None
-    #     """
-    #     self.grade = grade
-    #     self.mentor_id = mentor_id
-    #     query = "UPDATE `Sumbissions` SET GRADE=?, ID_MENTOR=? WHERE ID_ASSIGMENT=? AND ID_STUDENT=?;"
-    #     values_list = [int(grade), mentor_id, assignment_id, student_id]
-    #     sql.query(query, values_list)
 
     @classmethod
     def update_grade(cls, grade, link, mentor_id):
