@@ -47,7 +47,7 @@ class Assignment(db.Model):
         return assignments_list
 
     @classmethod
-    def add_assignment(cls, title, mentor_id, start_date, end_date, file_name, group='0'):
+    def add_assignment(cls, mentor_id, title, start_date, end_date, file_name, group='0'):
         """
         Add new student object to list
         :param title: string (assignment name)
