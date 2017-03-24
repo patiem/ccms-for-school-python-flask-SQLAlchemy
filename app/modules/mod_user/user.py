@@ -14,6 +14,7 @@ class User(db.Model):
     Type = db.Column(db.String)
     id_team_object = db.relationship('UsersTeam', backref='student', cascade='all, delete', lazy='joined')
     attendance_object = db.relationship('Attendance', backref='student', cascade='all, delete', lazy='joined')
+    checkpoint = db.relationship('Users_checkpoints', backref='student', cascade='all, delete', lazy='joined')
 
     def __init__(self, idx, name, last_name, mail, telephone, type, password):
         """

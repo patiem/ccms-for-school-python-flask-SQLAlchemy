@@ -163,6 +163,7 @@ class Checkpoint(db.Model):
     #                                     line['ID_MENTOR_2']])
     #     Ui.print_table(user_checkpoints, titles)
 
+
 class Users_checkpoints(db.Model):
 
     __tablename__ = "Users_checkpoints"
@@ -170,6 +171,6 @@ class Users_checkpoints(db.Model):
     ID_CHECKPOINT = db.Column(db.Integer,  db.ForeignKey('Checkpoints.ID'))
     DATE = db.Column(db.String(20))
     GRADE = db.Column(db.String(20))
-    ID_STUDENT = db.Column(db.Integer)
+    ID_STUDENT = db.Column(db.Integer, db.ForeignKey('Users.ID'))
     ID_MENTOR_1 = db.Column(db.Integer)
     ID_MENTOR_2 = db.Column(db.Integer)
